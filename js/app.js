@@ -95,6 +95,7 @@
             }
         };
 
+
         $scope.genders = [
             {value: 'M', text: 'M'},
             {value: 'F', text: 'F'}
@@ -121,6 +122,50 @@
             {value: 'FT', text: 'Full Time'},
             {value: 'NLE', text: 'No Longer Employed'},
         ];
+
+        //pull these from a database or API -
+        //BUG WARNING: if value doesn't match index in array things will get wonky
+        $scope.documentType=[
+          {value: '0', text: 'Photo', required_by: 'all'},
+          {value: '1', text: 'CV/Resume', required_by: 'all'},
+          {value: '2', text: 'Statement of Faith', required_by: 'all'},
+          {value: '3', text: 'Letter of Reference', required_by: 'all'},
+          {value: '4', text: 'Child Protection Policy', required_by: 'all'},
+          {value: '5', text: 'Background Check', required_by: 'all'},
+          {value: '6', text: 'Offer Letter', required_by: 'all'},
+          {value: '7', text: 'Employee Handbook Receipt', required_by: 'all'},
+          {value: '8', text: 'Position Description', required_by: 'all'},
+          {value: '9', text: 'Physical Examination Report', required_by: 'all'},
+          {value: '10', text: 'Copy of Passport', required_by: 'all'},
+          {value: '11', text: 'Copy of Visa', required_by: 'all'},
+          {value: '12', text: 'Copy of ID', required_by: 'all'},
+          {value: '13', text: 'W4', required_by: 'all'},
+          {value: '14', text: 'Code of Ethics', required_by: 'all'},
+          {value: '15', text: 'Employee Status Form', required_by: 'all'},
+          {value: '16', text: 'Other Supporting Documentation', required_by: ''},
+
+
+        ];
+
+        $scope.showMissingDocs = function(doclist, required_docs){
+          var tempid;
+          var reqdocs = required_docs.slice();
+          var missingdocs=[];
+          if(!doclist) return required_docs;
+
+          //get rid of all docs they have
+          for(var i=0; i<doclist.length; i++){
+            tempid=doclist[i].document_id;
+            delete reqdocs[tempid];
+          }
+
+          for(var i=0; i<required_docs.length; i++){
+            if(reqdocs[i]) missingdocs.push(reqdocs[i]);
+          }
+
+          return missingdocs;
+        };
+
 
         $scope.maritalstatuses= [
             {value: 'Married', text: 'Married'},
@@ -421,7 +466,19 @@
    degreeArea: 'Educational Psychology',
    nssf:'12345',
    visaExpires: '2014-05-01',
-   notes: 'These are notes.\n\non Multiple lines\n\nOh he gets lots of airfare.'
+   notes: 'These are notes.\n\non Multiple lines\n\nOh he gets lots of airfare.',
+   employee_documentation: [
+    {document_id:'0', url:'files/1000061/agordon_photo.jpg', description:''},
+    {document_id:'1', url:'files/1000061/agordon_cv.jpg', description:''},
+    {document_id:'2', url:'files/1000061/agordon_sof.jpg', description:''},
+    {document_id:'3', url:'files/1000061/agordon_reference.jpg', description:''},
+    {document_id:'4', url:'files/1000061/agordon_cpp.jpg', description:''},
+    {document_id:'16', url:'files/1000061/agordon_misc_termination.jpg', description:'Employee Termination Form'},
+    {document_id:'16', url:'files/1000061/agordon_15.jpg', description:'Miscellaneous Employee Award'},
+    {document_id:'16', url:'files/1000061/agordon_16.jpg', description:'Salary Increase'},
+
+
+   ],
 
 
 },

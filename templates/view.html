@@ -9,6 +9,12 @@
                                     {{elist.curemployee.visaExpires || "Not Entered"}}
                                 </a>
             </h2>
+            <h2 class="text-center" style="color: red;">Missing Documents:</h2>
+                               <ul>
+                                 <li ng-repeat="document in showMissingDocs(elist.curemployee.employee_documentation, documentType)">
+                                     {{document.text}}
+                                </li>
+                               </ul>
          </div>
         </div>
             <div class="container col-md-8">
@@ -110,6 +116,16 @@
                  <!-- Statuses -->
                  <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
                       <div class="col-md-6">
+                          <h4>Passport/ID Card:
+                              <small><a href="#" title="Click to edit" editable-text="elist.curemployee.idnumber">
+                                  {{elist.curemployee.idnumber || "Not Entered"}}
+                              </a></small>
+                          </h4>
+                          <h4>NSSF Number:
+                              <small><a href="#" title="Click to edit" editable-text="elist.curemployee.nssf">
+                                  {{elist.curemployee.nssf || "Not Entered"}}
+                              </a></small>
+                          </h4>
                           <h4>Religion:
                               <small><a href="#" title="Click to edit" editable-select="elist.curemployee.faith"
                                   e-ng-options="religion.value as religion.text for religion in religions">
@@ -127,6 +143,7 @@
                                   {{elist.curemployee.children|| "Not Entered"}}
                               </a></small>
                           </h4>
+
                       </div>
                       <div class="col-md-6">
                           <h4>Educational Degree:
@@ -144,44 +161,29 @@
                                   {{elist.curemployee.enteredCambodia || "Not Entered"}}
                               </a></small>
                           </h4>
+                          <h4>Insurance Provider:
+                              <small><a href="#" title="Click to edit" editable-text="elist.curemployee.insurance">
+                                  {{elist.curemployee.insurance || "Not Entered"}}
+                              </a></small>
+                          </h4>
                       </div>
                  </div>
 
                  <!-- Documents Section -->
                  <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
                       <div class="col-md-12">
-
-                          <h4>Passport/ID Card:
-                              <small><a href="#" title="Click to edit" editable-text="elist.curemployee.idnumber">
-                                  {{elist.curemployee.idnumber || "Not Entered"}}
-                              </a></small>
+                          <h3>Documenation <small><a href="">add a new document?</a></h3>
+                          <!--if there is no description, show the default description -->
+                          <h4 class = "text-left" ng-repeat="document in elist.curemployee.employee_documentation" ng-hide="document.description">
+                            <img src="static/drive_icon.png"> <a href="{{document.url}}">
+                            {{documentType[document.document_id].text}}</a>
+                            <small><a href="">change?</a></small>
                           </h4>
-                          <h4 class="text-left"><img src="static/drive_icon.png"> <a href="">Copy of Passport/ID Card</a><small> <a href="">change?</a></small></h4>
-                          <h4>NSSF Number:
-                              <small><a href="#" title="Click to edit" editable-text="elist.curemployee.nssf">
-                                  {{elist.curemployee.nssf || "Not Entered"}}
-                              </a></small>
+                          <h4 ng-repeat="document in elist.curemployee.employee_documentation" ng-show="document.description">
+                            <img src="static/drive_icon.png"> <a href="{{document.url}}">
+                            {{document.description}}
+                            <small><a href="">change?</a></small>
                           </h4>
-
-                      </div>
-                      <div class="col-md-6">
-                          <h4>Insurance Provider:
-                              <small><a href="#" title="Click to edit" editable-text="elist.curemployee.insurance">
-                                  {{elist.curemployee.insurance || "Not Entered"}}
-                              </a></small>
-                          </h4>
-                          <h4 class="text-left"><img src="static/drive_icon.png"> <a href="">Statement of Faith</a><small> <a href="">change?</a></small></h4>
-                          <h4 class="text-left"><img src="static/drive_icon.png"> <a href="">CV/Application</a><small> <a href="">change?</a></small></h4>
-                          <h4 class="text-left"><img src="static/drive_icon.png"> <a href="">Job Description</a><small> <a href="">change?</a></small></h4>
-                          <h4 class="text-left"><img src="static/drive_icon.png"> <a href="">Child Protection Policy</a> <small><a href="">change?</a></small></h4>
-                      </div>
-                      <div class="col-md-6">
-                          <h4 class="text-left"><img src="static/drive_icon.png"> <a href ="">Copy of Insurance Card:</a><small> <a href="">change?</a></small></h4>
-                          <h4 class="text-left"><img src="static/drive_icon.png"> <a href ="">Reference Letters</a><small> <a href="">change?</a></small></h4>
-                          <h4 class="text-left"><img src="static/drive_icon.png"> <a href ="">Emergency Contacts</a><small> <a href="">change?</a></small></h4>
-                          <h4 class="text-left"><img src="static/drive_icon.png"> <a href ="">Criminal Record Check</a><small ><a href="">change?</a></small></h4>
-                          <h4 class="text-left"><img src="static/folder.png"> <a href ="">Other Supporting Documents</a></h4>
-                      </div>
                  </div>
 
 
