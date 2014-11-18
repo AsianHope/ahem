@@ -47,6 +47,11 @@
                                   {{elist.curemployee.givenNamekh || "Name"}}
                               </a>
                           </h4>
+                          <h4 class="text-left">
+                              <a href="#" title="Click to edit: Title" editable-text="elist.curemployee.title">
+                                  {{elist.curemployee.title || "Staff"}}
+                              </a>
+                          </h4>
 
 
                       </div>
@@ -72,11 +77,9 @@
                  <!-- Quick Info -->
                  <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
                       <div class="col-md-6">
-                          <h4 class="text-left">
-                              <a href="#" title="Click to edit: Title" editable-text="elist.curemployee.title">
-                                  {{elist.curemployee.title || "Staff"}}
-                              </a>
-                          </h4>
+                        <h4 class="text-left"><a href="mailto:{{elist.curemployee.mail}}" target="_blank">{{elist.curemployee.mail}}</a></h4>
+                        <h4 class="text-left"><a href="mailto:{{elist.curemployee.personalmail}}" target="_blank">{{elist.curemployee.personalmail}}</a></h4>
+
                           <h4 class="text-left">
                               <a href="#" title="Click to edit: Birthday" editable-date="elist.curemployee.appleBirthday">
                                   {{elist.curemployee.appleBirthday || "DOB"}}
@@ -93,7 +96,8 @@
 
                       </div>
                       <div class="col-md-6">
-                          <h4 class="text-right"><a href="mailto:{{elist.curemployee.mail}}" target="_blank">{{elist.curemployee.mail}}</a></h4>
+
+
                           <h4 class="text-right">
                               <a href="#" title="Click to edit: Phone Number" editable-text="elist.curemployee.mobile">
                                   {{elist.curemployee.mobile || "Phone"}}

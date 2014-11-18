@@ -438,6 +438,7 @@
    givenName: 'Andrew',
    sn: 'Gordon',
    mail: 'agordon@asianhope.org',
+   personalmail: 'andyg@gmail.com',
    departmentNumber: 'AHIS',
    title: 'Special Educational Needs',
    uidNumber: '1000061',
