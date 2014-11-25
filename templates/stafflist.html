@@ -1,7 +1,7 @@
 <div ng-controller="EmployeeListController as elist">
     <div ng-show="!elist.curemployee">
         <div class="form-inline" style="margin: 5px;">
-            <label>Search:</label> 
+            <label>Search:</label>
             <input class="form-control" ng-model="query"/>
             <label>Sort By:</label>
             <select class="form-control" ng-model="orderProp">
@@ -16,7 +16,7 @@
 
         <table class="table table-striped table-hover">
             <tr><th>T</th><th>Dept</th><th>ID</th><th>First Name</th><th>Surname</th><th>Phone</th><th>Email</th></tr>
-            <tr ng-repeat="employee in elist.employees | filter:query | orderBy:orderProp">
+            <tr ng-repeat="employee in employees | filter:query | orderBy:orderProp">
                 <td style="width: 1em;">{{employee.employeeType}}</a></td>
                 <td style="width: 1em;">{{employee.departmentNumber}}</a></td>
             <td style="width: 8em;"><a href ng-click="this.elist.setEmployee(employee)">{{employee.employeeNumber}}</a></td>
