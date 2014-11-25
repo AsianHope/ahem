@@ -53,7 +53,7 @@
 
    app.controller('EmployeeListController', function($scope, $http, $filter){
         //load test data
-        $http.get('static/stafftest.json').
+        $http.get('cgi-bin/dump.cgi?test=test').
           success(function(data, status, headers, config){
             $scope.employees = data;
             console.log(data[0]['cn']);
