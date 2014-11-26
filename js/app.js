@@ -34,11 +34,6 @@
 	};
     });
 
-   app.controller('EditableCtrl', function($scope){
-        $scope.user={
-                name: 'awesome user'
-        };
-    });
 
    app.controller('TabController', function(){
         this.tab=3;
@@ -51,15 +46,38 @@
         };
     });
 
+
+   app.controller('LoginController', function($scope, $http){
+     $scope.user = {
+       uname: null,
+       pw: null,
+     }
+
+      $scope.login = function () {
+          $scope.user.uname = $scope.username;
+          $scope.user.pw = $scope.password;
+      };
+
+   });
+
    app.controller('EmployeeListController', function($scope, $http, $filter){
+
         //load test data
-        $http.get('cgi-bin/dump.cgi?test=test').
+        $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw).
           success(function(data, status, headers, config){
-            $scope.employees = data;
-            console.log(data[0]['cn']);
+            if(data.status == 'error'){
+              console.log('Got an error!');
+              $scope.user.uname = null;
+              $scope.user.pw = null;
+
+            }
+            else
+              $scope.employees = data;
+
           }).
           error(function(data, status, headers, config){
-            //error!
+            $scope.user.uname = null;
+            $scope.user.pw = null;
           });
 
         this.curemployee=null;

@@ -4,8 +4,8 @@ import ldap
 import ldap.modlist as modlist
 import cgi
 #better errors, disable in production
-import cgitb
-cgitb.enable()
+#import cgitb
+#cgitb.enable()
 
 import os,sys
 import json
@@ -14,12 +14,20 @@ def main():
     print "Content-type: application/json; charset=utf-8"
     #print "Content-type: text/html; charset=utf-8"
     print
+    formData = cgi.FieldStorage()
+    username = formData.getlist("username")[0]
+    pw = formData.getlist("pw")[0]
 
     slave = ldap.initialize("ldaps://ldap02.asianhope.org:636")
     slave.protocol_version = ldap.VERSION3
-    susername = "uid=tfoolery,cn=users,dc=asianhope,dc=org"
-    spassword = "starwars"
-    slave.simple_bind_s(susername,spassword)
+    susername = "uid="+username+",cn=users,dc=asianhope,dc=org"
+    try:
+        slave.simple_bind_s(susername,pw)
+    except:
+        print '{"status":"error"}'
+        sys.exit(1)
+
+
 
     sbaseDN = "cn=users,dc=asianhope,dc=org"
     ssearchScope = ldap.SCOPE_SUBTREE

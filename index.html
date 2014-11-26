@@ -6,41 +6,64 @@
     <link rel="stylesheet" type="text/css" href="static/font-awesome/css/font-awesome.min.css" />
     </head>
     <body>
-        <div class="container">
+        <div class="container" ng-controller="LoginController as loginctrl">
 
             <div class="page-header">
                 <h1>*AHEM*<small> - Asian Hope Employee Management</small></h1>
            </div>
-           <section ng-controller="TabController as tab">
-                <ul class = "nav nav-tabs" >
-                    <li ng-class="{ active:this.tab.isSet(1) }">
-                        <a href ng-click="this.tab.setTab(1)">Home</a>
-                    </li>
-                    <li ng-class="{ active:this.tab.isSet(2) }">
-                        <a href ng-click="this.tab.setTab(2)">Register a new account</a>
-                    </li>
-                    <li ng-class="{ active:this.tab.isSet(3) }">
-                        <a href ng-click="this.tab.setTab(3)">Browse staff info</a>
-                    </li>
-                    <li ng-class="{ active:this.tab.isSet(4) }">
-                        <a href ng-click="this.tab.setTab(4)">Reports</a>
-                    </li>
-                </ul>
+            <!-- If logged in !-->
+             <section ng-if="user.uname != null" ng-controller="TabController as tab">
+                  <ul class = "nav nav-tabs" >
+                      <li ng-class="{ active:this.tab.isSet(1) }">
+                          <a href ng-click="this.tab.setTab(1)">Home</a>
+                      </li>
+                      <li ng-class="{ active:this.tab.isSet(2) }">
+                          <a href ng-click="this.tab.setTab(2)">Register a new account</a>
+                      </li>
+                      <li ng-class="{ active:this.tab.isSet(3) }">
+                          <a href ng-click="this.tab.setTab(3)">Browse staff info</a>
+                      </li>
+                      <li ng-class="{ active:this.tab.isSet(4) }">
+                          <a href ng-click="this.tab.setTab(4)">Reports</a>
+                      </li>
+                  </ul>
 
-                <div ng-show="this.tab.isSet(1)">
-                    <h1>Home</h1>
-                </div>
-                <div ng-show="this.tab.isSet(2)">
-                    <new-staff></new-staff>
-                </div>
-                <div ng-show="this.tab.isSet(3)">
-                    <staff-list></staff-list>
-                </div>
-                <div ng-show="this.tab.isSet(4)">
-                    <h1>Reports</h1>
-                    <editable-test></edtiable-test>
-                </div>
-            </section>
+                  <div ng-show="this.tab.isSet(1)">
+                      <h1>Home</h1>
+                  </div>
+                  <div ng-show="this.tab.isSet(2)">
+                      <new-staff></new-staff>
+                  </div>
+                  <div ng-show="this.tab.isSet(3)">
+                      <staff-list></staff-list>
+                  </div>
+                  <div ng-show="this.tab.isSet(4)">
+                      <h1>Reports</h1>
+                      <editable-test></edtiable-test>
+                  </div>
+              </section>
+
+              <!-- If not logged in !-->
+              <section ng-show="user.uname == null">
+                <form name="form" ng-submit="login()" role="form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <i class="fa fa-key"></i>
+                        <input type="text" name="username" id="username" class="form-control" ng-model="username" required />
+                        <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <i class="fa fa-lock"></i>
+                        <input type="password" name="password" id="password" class="form-control" ng-model="password" required />
+                        <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-danger">Login</button>
+                        <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                    </div>
+                </form>
+              </section>
         </div>
 
         <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
