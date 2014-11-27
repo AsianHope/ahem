@@ -48,28 +48,29 @@
 
 
    app.controller('LoginController', function($scope, $http){
+    
      $scope.user = {
        uname: null,
        pw: null,
-     }
+     } 
 
-      $scope.login = function () {
+     $scope.login = function () {
           $scope.user.uname = $scope.username;
           $scope.user.pw = $scope.password;
-      };
+     };
 
    });
 
-   app.controller('EmployeeListController', function($scope, $http, $filter){
+   app.controller('EmployeeListController', function($scope, $http, $filter, $q){
 
-        //load test data
+        //load data
         $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw).
           success(function(data, status, headers, config){
-            if(data.status == 'error'){
-              console.log('Got an error!');
+            //if dump.cgi says we can't bind for some reason
+            if(data.result== 'error'){
+              //pop us back out to the login screen
               $scope.user.uname = null;
               $scope.user.pw = null;
-
             }
             else
               $scope.employees = data;
@@ -120,7 +121,30 @@
             }
         };
 
-        var staff= $scope.staff;
+        $scope.updateUser = function(uid, field, data){
+                console.log('field to update: '+field);
+                console.log('data to update: '+data);
+                console.log('uid: '+uid);
+                var d = $q.defer();
+                $http.get('cgi-bin/update.cgi?uid='+uid+'&field='+field+'&data='+data+
+                            '&username='+$scope.user.uname+'&pw='+$scope.user.pw).
+                  success(function(data, status, headers, config){
+
+                    if(data.result== 'success'){
+                        //console.log('success!!');
+                        d.resolve()
+                    }
+                    else
+                        d.resolve("There was an error");
+                  }).
+                  error(function(data, status, headers, config){
+                        d.reject('Server error!');
+                });
+
+                return d.promise;
+        }
+
+        var staff=$scope.staff;
 
         $scope.genders = [
             {value: 'M', text: 'M'},

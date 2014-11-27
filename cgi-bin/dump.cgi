@@ -1,5 +1,8 @@
 #!/usr/bin/python
-
+# dump.cgi will dump all of the @asianhope.org accounts that a given user
+# can access. Access is controlled by normal LDAP ACLs
+# If a user cannot bind to the server, an error is returned.
+    
 import ldap
 import ldap.modlist as modlist
 import cgi
@@ -24,7 +27,7 @@ def main():
     try:
         slave.simple_bind_s(susername,pw)
     except:
-        print '{"status":"error"}'
+        print '{"result":"error"}'
         sys.exit(1)
 
 
@@ -50,6 +53,7 @@ def main():
 def printUser(user):
         print '{'
         printAttribute(user,'cn',0)
+        printAttribute(user,'uid',0)
         printAttribute(user,'displayName',0)
         printAttribute(user,'givenName',0)
         printAttribute(user,'givenName',1, 'givenNamekh')

@@ -30,10 +30,12 @@
               <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
                     <div class="col-md-6">
                         <h3 class="text-left">
-                            <a href="#" title="Click to edit: Surname" editable-text="elist.curemployee.sn">
+                            <a href="#" title="Click to edit: Surname" editable-text="elist.curemployee.sn" 
+                                onbeforesave="updateUser(elist.curemployee.uid,'sn',$data)">
                                 {{elist.curemployee.sn +', '}}
                             </a>
-                            <a href="#" title="Click to edit: First Name" editable-text="elist.curemployee.givenName">
+                            <a href="#" title="Click to edit: First Name" editable-text="elist.curemployee.givenName"
+                                onbeforesave="updateUser(elist.curemployee.uid,'givenName',$data)">
                                 {{elist.curemployee.givenName}}
                             </a>
                             <a href="#" title="Click to edit: Gender" editable-select="elist.curemployee.gender"
@@ -50,7 +52,8 @@
                             </a>
                         </h4>
                         <h4 class="text-left">
-                            <a href="#" title="Click to edit: Title" editable-text="elist.curemployee.title">
+                            <a href="#" title="Click to edit: Title" editable-text="elist.curemployee.title"
+                                onbeforesave="updateUser(elist.curemployee.uid,'title',$data)">
                                 {{elist.curemployee.title || "Staff"}}
                             </a>
                         </h4>
@@ -60,11 +63,13 @@
                     <div class="col-md-6">
                         <h3 class="text-right">
                             <a href="#" title ="Click to edit: Employee Status" editable-select="elist.curemployee.employeeType"
-                                e-ng-options="employeetype.value as employeetype.text for employeetype in employeetypes">
+                                e-ng-options="employeetype.value as employeetype.text for employeetype in employeetypes"
+                                onbeforesave="updateUser(elist.curemployee.uid,'employeeType',$data)">
                                 {{elist.curemployee.employeeType|| "empty"}}
                             </a> -
                             <a href="#" title ="Click to edit: Department" editable-select="elist.curemployee.departmentNumber"
-                                e-ng-options="department.value as department.text for department in departments">
+                                e-ng-options="department.value as department.text for department in departments"
+                                onbeforesave="updateUser(elist.curemployee.uid,'departmentNumber',$data)">
                                 {{elist.curemployee.departmentNumber || "empty"}}
                             </a>
                         </h3>
@@ -83,13 +88,15 @@
                       <h4 class="text-left"><a href="mailto:{{elist.curemployee.personalmail}}" target="_blank">{{elist.curemployee.personalmail}}</a></h4>
 
                         <h4 class="text-left">
-                            <a href="#" title="Click to edit: Birthday" editable-date="elist.curemployee.appleBirthday">
+                            <a href="#" title="Click to edit: Birthday" editable-date="elist.curemployee.appleBirthday"
+                                onbeforesave="updateUser(elist.curemployee.uid,'appleBirthday',$data)">
                                 {{elist.curemployee.appleBirthday || "DOB"}}
                             </a>
                         </h4>
                         <h4 class="text-left">
                             <a href="#" title="Click to edit: Passport Country" editable-select="elist.curemployee.c"
-                                e-ng-options="country.value as country.text for country in countries">
+                                e-ng-options="country.value as country.text for country in countries"
+                                onbeforesave="updateUser(elist.curemployee.uid,'c',$data)">
                                 {{elist.curemployee.c || "Passport Country"}}
                             </a>
                         </h4>
@@ -101,18 +108,21 @@
 
 
                         <h4 class="text-right">
-                            <a href="#" title="Click to edit: Phone Number" editable-text="elist.curemployee.mobile">
+                            <a href="#" title="Click to edit: Phone Number" editable-text="elist.curemployee.mobile"
+                                onbeforesave="updateUser(elist.curemployee.uid,'mobile',$data)">
                                 {{elist.curemployee.mobile || "Phone"}}
                             </a>
                         </h4>
                         <h4 class="text-right">
-                            <a href="#" title="Click to edit: Address" editable-text="elist.curemployee.postalAddress">
+                            <a href="#" title="Click to edit: Address" editable-text="elist.curemployee.postalAddress"
+                                onbeforesave="updateUser(elist.curemployee.uid,'postalAddress',$data)">
                                 {{elist.curemployee.postalAddress || "Home Address"}}
                             </a>
                         </h4>
                         <h4 class="text-right">
                             <a href="#" title="Click to edit: Country of Residence" editable-select="elist.curemployee.l"
-                                e-ng-options="country.value as country.text for country in ahcountries">
+                                e-ng-options="country.value as country.text for country in ahcountries"
+                                onbeforesave="updateUser(elist.curemployee.uid,'l',$data)">
                                 {{elist.curemployee.l || "Country"}}
                             </a>
                         </h4>
