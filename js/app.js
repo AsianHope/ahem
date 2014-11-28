@@ -64,6 +64,7 @@
    app.controller('EmployeeListController', function($scope, $http, $filter, $q){
 
         //load data
+        //to do: encode uri?
         $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw).
           success(function(data, status, headers, config){
             //if dump.cgi says we can't bind for some reason
@@ -126,8 +127,11 @@
                 console.log('data to update: '+data);
                 console.log('uid: '+uid);
                 var d = $q.defer();
-                $http.get('cgi-bin/update.cgi?uid='+uid+'&field='+field+'&data='+data+
-                            '&username='+$scope.user.uname+'&pw='+$scope.user.pw).
+
+                var encoded_data = encodeURIComponent(data)
+                var uri = encodeURI('cgi-bin/update.cgi?uid='+uid+'&field='+field+'&data='+encoded_data+
+                                        '&username='+$scope.user.uname+'&pw='+$scope.user.pw);
+                $http.get(uri).
                   success(function(data, status, headers, config){
 
                     if(data.result== 'success'){
