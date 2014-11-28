@@ -56,18 +56,27 @@ def main():
         dn=ssearchFilter+","+sbaseDN
 
         #special cases
-        #snkh
-        #givenNamekh
-        #when name is involved (not kh version) update gecos
+        if(field == 'snkh' or field == 'givenNamekh'):
+            #replace existing sn entries with just English version (field[:-2] chops off last 2 chars)
+            clearsn = [( ldap.MOD_REPLACE, field[:-2], sresult_data[0][1]['sn'][0])]
+            slave.modify_s(dn,clearsn)
 
-
-        #if the field isn't in the result set, we need to do a MOD_ADD
-        if(field not in sresult_data[0][1]):
-            new = [(ldap.MOD_ADD,field,data)]
-
-        #otherwise do a modify
+            #re-add khmer version (or add it for the first time)
+            new = [(ldap.MOD_ADD,field[:-2],data)]
+                    
+        elif((field == 'sn' or field =='givenName')):
+            print 'hi'
+        elif(field == 'appleBirthday'):
+            print 'hi'
         else:
-            new = [(ldap.MOD_REPLACE,field,data)]
+
+            #if the field isn't in the result set, we need to do a MOD_ADD
+            if(field not in sresult_data[0][1]):
+                new = [(ldap.MOD_ADD,field,data)]
+
+            #otherwise do a modify
+            else:
+                new = [(ldap.MOD_REPLACE,field,data)]
 
 
         #future - add to log file saying who performed what
