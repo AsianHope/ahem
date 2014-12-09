@@ -2,10 +2,11 @@
 # dump.cgi will dump all of the @asianhope.org accounts that a given user
 # can access. Access is controlled by normal LDAP ACLs
 # If a user cannot bind to the server, an error is returned.
-    
+
 import ldap
 import ldap.modlist as modlist
 import cgi
+import urllib
 #better errors, disable in production
 import cgitb
 cgitb.enable()
@@ -20,12 +21,13 @@ def main():
     formData = cgi.FieldStorage()
     username = formData.getlist("username")[0]
     pw = formData.getlist("pw")[0]
-    
+
     field = formData.getlist("field")[0]
-    data = formData.getlist("data")[0]
+    #decode unicode and make sure special characters don't mess stuff up
+    data = urllib.unquote(formData.getlist("data")[0])​
     uid = formData.getlist("uid")[0]
 
-    
+
     slave = ldap.initialize("ldaps://ldap02.asianhope.org:636")
     slave.protocol_version = ldap.VERSION3
     susername = "uid="+username+",cn=users,dc=asianhope,dc=org"
@@ -56,14 +58,16 @@ def main():
         dn=ssearchFilter+","+sbaseDN
 
         #special cases
-        if(field == 'snkh' or field == 'givenNamekh'):
-            #replace existing sn entries with just English version (field[:-2] chops off last 2 chars)
-            clearsn = [( ldap.MOD_REPLACE, field[:-2], sresult_data[0][1]['sn'][0])]
+        if(field == 'snkh' or field == 'givenNamekh' or field == 'mailpr'):
+            #(field[:-2] chops off last 2 chars)
+            ldapfield = field[:-2]
+            #replace existing sn entries with just English version
+            clearsn = [( ldap.MOD_REPLACE, ldapfield, sresult_data[0][1][ldapfield][0])]
             slave.modify_s(dn,clearsn)
 
             #re-add khmer version (or add it for the first time)
             new = [(ldap.MOD_ADD,field[:-2],data)]
-                    
+
         elif((field == 'sn' or field =='givenName')):
             print 'hi'
         elif(field == 'appleBirthday'):
