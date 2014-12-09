@@ -59,16 +59,18 @@ def main():
 
     #special cases
 
-        #update gecos to equal givenName+sn
-        if((field == 'sn' or field =='givenName')):
-            updateGecos(slave, dn, field, data, sresult_data)
+
 
         #if we're getting a birthday, convert it and continue on
         if(field == 'apple-birthday'):
             data = convertToAppleBirthday(data)
 
+        #update gecos to equal givenName+sn
+        if((field == 'sn' or field =='givenName')):
+            updateName(slave, dn, field, data, sresult_data)
+
         #if it's some khmer stuff or the secondary email handle it all
-        if(field == 'snkh' or field == 'givenNamekh' or field == 'mailpr'):
+        elif(field == 'snkh' or field == 'givenNamekh' or field == 'mailpr'):
 
             #(field[:-2] chops off last 2 chars) (get rid of kh/pr)
             field = field[:-2]
@@ -104,11 +106,18 @@ def convertToAppleBirthday(data):
     #strip out - and add the magic time string for UTC+7 7AM
     return data.replace('-','')+'070000Z'
 
-def updateGecos(slave, dn, field, data, previous_data):
+def updateName(slave, dn, field, data, previous_data):
+
     if field == 'sn':
         new = [(ldap.MOD_REPLACE,'gecos',previous_data[0][1]['givenName'][0]+" "+data)]
     else:
         new = [(ldap.MOD_REPLACE,'gecos',data+" "+previous_data[0][1]['sn'][0])]
 
     slave.modify_s(dn,new)
+    clearsn = [(ldap.MOD_REPLACE, field, data)]
+    slave.modify_s(dn,clearsn)
+
+    #add back the Khmer entries if they existed
+    previousentrykh = [(ldap.MOD_ADD, field, previous_data[0][1][field][1])]
+    slave.modify_s(dn,previousentrykh)
 main()
