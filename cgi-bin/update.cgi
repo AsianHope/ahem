@@ -57,46 +57,45 @@ def main():
     else:
         dn=ssearchFilter+","+sbaseDN
 
-        #special cases
+    #special cases
+
+        #update gecos to equal givenName+sn
+        if((field == 'sn' or field =='givenName')):
+            updateGecos(slave, dn, field, data, sresult_data)
 
         #if we're getting a birthday, convert it and continue on
         if(field == 'apple-birthday'):
             data = convertToAppleBirthday(data)
 
-        #if it's some khmer stuff or the secondary mail update the field
+        #if it's some khmer stuff or the secondary email handle it all
         if(field == 'snkh' or field == 'givenNamekh' or field == 'mailpr'):
 
             #(field[:-2] chops off last 2 chars) (get rid of kh/pr)
-            ldapfield = field[:-2]
+            field = field[:-2]
+
             #replace existing sn entries with just primary versions (English or company email)
-            clearsn = [( ldap.MOD_REPLACE, ldapfield, sresult_data[0][1][ldapfield][0])]
+            clearsn = [( ldap.MOD_REPLACE, field, sresult_data[0][1][field][0])]
             slave.modify_s(dn,clearsn)
 
             #re-add secondary version (or add it for the first time)
-            new = [(ldap.MOD_ADD,ldapfield,data)]
-
-        if((field == 'sn' or field =='givenName')):
-            #update gecos to equal givenName+sn
-                if field == 'sn':
-                    new = [(ldap.MOD_REPLACE,'gecos',sresult_data[0][1]['givenName'][0]+" "+data)]
-                else:
-                    new = [(ldap.MOD_REPLACE,'gecos',data+" "+sresult_data[0][1]['sn'][0])]
-
-                slave.modify_s(dn,new)
-
-        #end special cases
-
-        #if the field isn't in the result set, we need to do a MOD_ADD
-        if(field not in sresult_data[0][1]):
             new = [(ldap.MOD_ADD,field,data)]
+            slave.modify_s(dn,new)
 
-        #otherwise do a modify
+        #otherwise make the modification
         else:
-            new = [(ldap.MOD_REPLACE,field,data)]
 
 
-        #future - add to log file saying who performed what
-        slave.modify_s(dn,new)
+            #if the field isn't in the result set, we need to do a MOD_ADD
+            if(field not in sresult_data[0][1]):
+                new = [(ldap.MOD_ADD,field,data)]
+
+            #otherwise do a modify
+            else:
+                new = [(ldap.MOD_REPLACE,field,data)]
+
+
+            #future - add to log file saying who performed what
+            slave.modify_s(dn,new)
         print '{"result":"success"}'
         slave.unbind_s()
 
@@ -104,4 +103,12 @@ def main():
 def convertToAppleBirthday(data):
     #strip out - and add the magic time string for UTC+7 7AM
     return data.replace('-','')+'070000Z'
+
+def updateGecos(slave, dn, field, data, previous_data):
+    if field == 'sn':
+        new = [(ldap.MOD_REPLACE,'gecos',previous_data[0][1]['givenName'][0]+" "+data)]
+    else:
+        new = [(ldap.MOD_REPLACE,'gecos',data+" "+previous_data[0][1]['sn'][0])]
+
+    slave.modify_s(dn,new)
 main()
