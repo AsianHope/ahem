@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 # dump.cgi will dump all of the @asianhope.org accounts that a given user
 # can access. Access is controlled by normal LDAP ACLs
 # If a user cannot bind to the server, an error is returned.
@@ -23,8 +24,7 @@ def main():
     pw = formData.getlist("pw")[0]
 
     field = formData.getlist("field")[0]
-    #decode unicode and make sure special characters don't mess stuff up
-    data = urllib.unquote(formData.getlist("data")[0])​
+    data = urllib.unquote(formData.getlist("data")[0])
     uid = formData.getlist("uid")[0]
 
 
@@ -58,29 +58,41 @@ def main():
         dn=ssearchFilter+","+sbaseDN
 
         #special cases
+
+        #if we're getting a birthday, convert it and continue on
+        if(field == 'apple-birthday'):
+            data = convertToAppleBirthday(data)
+
+        #if it's some khmer stuff or the secondary mail update the field
         if(field == 'snkh' or field == 'givenNamekh' or field == 'mailpr'):
-            #(field[:-2] chops off last 2 chars)
+
+            #(field[:-2] chops off last 2 chars) (get rid of kh/pr)
             ldapfield = field[:-2]
-            #replace existing sn entries with just English version
+            #replace existing sn entries with just primary versions (English or company email)
             clearsn = [( ldap.MOD_REPLACE, ldapfield, sresult_data[0][1][ldapfield][0])]
             slave.modify_s(dn,clearsn)
 
-            #re-add khmer version (or add it for the first time)
-            new = [(ldap.MOD_ADD,field[:-2],data)]
+            #re-add secondary version (or add it for the first time)
+            new = [(ldap.MOD_ADD,ldapfield,data)]
 
-        elif((field == 'sn' or field =='givenName')):
-            print 'hi'
-        elif(field == 'appleBirthday'):
-            print 'hi'
+        if((field == 'sn' or field =='givenName')):
+            #update gecos to equal givenName+sn
+                if field == 'sn':
+                    new = [(ldap.MOD_REPLACE,'gecos',sresult_data[0][1]['givenName'][0]+" "+data)]
+                else:
+                    new = [(ldap.MOD_REPLACE,'gecos',data+" "+sresult_data[0][1]['sn'][0])]
+
+                slave.modify_s(dn,new)
+
+        #end special cases
+
+        #if the field isn't in the result set, we need to do a MOD_ADD
+        if(field not in sresult_data[0][1]):
+            new = [(ldap.MOD_ADD,field,data)]
+
+        #otherwise do a modify
         else:
-
-            #if the field isn't in the result set, we need to do a MOD_ADD
-            if(field not in sresult_data[0][1]):
-                new = [(ldap.MOD_ADD,field,data)]
-
-            #otherwise do a modify
-            else:
-                new = [(ldap.MOD_REPLACE,field,data)]
+            new = [(ldap.MOD_REPLACE,field,data)]
 
 
         #future - add to log file saying who performed what
@@ -89,4 +101,7 @@ def main():
         slave.unbind_s()
 
 
+def convertToAppleBirthday(data):
+    #strip out - and add the magic time string for UTC+7 7AM
+    return data.replace('-','')+'070000Z'
 main()

@@ -48,11 +48,11 @@
 
 
    app.controller('LoginController', function($scope, $http){
-    
+
      $scope.user = {
        uname: null,
        pw: null,
-     } 
+     }
 
      $scope.login = function () {
           $scope.user.uname = $scope.username;
@@ -148,6 +148,20 @@
                 return d.promise;
         }
 
+        $scope.decodeAppleBirthday = function(applebirthday){
+          if(applebirthday == null) return 'DOB'
+          else{
+              //if they replace the dob the data stored locally will have dashes in it.
+              applebirthday=applebirthday.replace(/-/g,'')
+
+              year = applebirthday.substr(0,4)
+              month = applebirthday.substr(4,2)
+              day = applebirthday.substr(6,2)
+              return year+'-'+month+'-'+day
+          }
+
+
+        }
         var staff=$scope.staff;
 
         $scope.genders = [
