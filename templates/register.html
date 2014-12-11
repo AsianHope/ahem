@@ -1,261 +1,306 @@
-<div class="container col-md-12" style="padding-top: 5px;">
+
+<div class="container col-md-12" style="padding-top: 5px;" ng-controller="EmployeeRegistrationController as ERegCtrl">
 <div id="imagePreview" class="col-md-4 well well-sm" style="width: 236px; height:355px; background-position: center center; background-size: cover;"></div>
-<div class="container col-md-8">
-	<div class="row">
-      <div class="col-md-12">
-        <div class="well well-sm">
-          <form class="form-horizontal" method="POST" enctype= "multipart/form-data" action="cgi-bin/register.cgi">
-          <fieldset>
-            <legend class="text-center header">Register a New Account</legend>    
-            <div class="form-group">              
-              <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-photo bigicon"></i></span>              
-              <div class="col-md-4">
-                 <input id="uploadFile" size=40 name="image" type="file" class="form-control">
-              </div>
+	<div class="container col-md-8">
+		<div class="row">
+				<div class="col-md-12">
+					<div class="well well-sm">
+						<form class="form-horizontal" method="POST" enctype= "multipart/form-data" action="cgi-bin/register.cgi">
+						<fieldset>
+							<legend class="text-center header">Register a New Account</legend>
 
-            </div>    
+							<div class="form-group">
+									<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-calendar bigicon"></i></span>
+									<div class="col-md-8" >
+										<label>Start Date</label>
+										<input type="date" class="form-control" name="start_date"></input>
+									</div>
+							</div>
 
-             <div class="form-group">
-              <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-archive bigicon"></i></span>
-              <div class="col-md-8">
-                <input id="type" name="employeeType" type="radio" value="S">Staff&nbsp;
-                <input id="type" name="employeeType" type="radio" value="Student">Student
-              </div>
-            </div>
+							<div class="form-group">
+								<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-photo bigicon"></i></span>
+								<div class="col-md-4">
+									<label>Photo</label>
+									<input id="uploadFile" size=40 name="image" type="file" class="form-control">
+								</div>
 
-             <div class="form-group">
-                  <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-building-o bigicon"></i></span>
-                  <div class="col-md-8">
-                    <select id="site_staff" name="site" class="form-control">
-                        <option selected="selected">-- Department --</option>
-                        <option>AHIS</option>
-                        <option>LIS</option>
-                        <option>VDP</option>
-                        <option>Other</option>
-                    </select>
-                  </div>
-              </div>
+							</div>
 
-            <div class="form-group">
-                  <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-suitcase bigicon"></i></span>
-                  <div class="col-md-8">
-                    <input id="title_staff" name="title" type="text" placeholder="Position" class="form-control">
-                    <select id="title_student" name="title" class="form-control" style="display:none">
-                        <option selected="selected">-- Grade --</option>
-                        <option>PK3</option>
-                        <option>PK4</option>
-                        <option>KG3</option>
-                        <option>KG4</option>
-                        <option>G1</option>
-                        <option>G2</option>
-                        <option>G3</option>
-                        <option>G4</option>
-                        <option>G5</option>
-                        <option>G6</option>
-                        <option>G7</option>
-                        <option>G8</option>
-                        <option>G9</option>
-                        <option>G10</option>
-                        <option>G11</option>
-                        <option>G12</option>
-                    </select>
-                  </div>
-            </div>    
-               
+							<div class="form-group">
+								<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-archive bigicon"></i></span>
+								<div class="col-md-8">
+									<label>Type</label>
+									<input id="type" name="employeeType" type="radio" value="FT" checked>Full Time Staff&nbsp;
+									<input id="type" name="employeeType" type="radio" value="PT">Part Time Staff&nbsp;
+									<input id="type" name="employeeType" type="radio" value="Student">Student
+								</div>
+							</div>
 
-            <div class="form-group">              
-              <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>              
-              <div class="col-md-8">
-                <input id="fname" name="fname" type="text" placeholder="First Name" class="form-control">
-              </div>
-            </div>    
-              <div class="form-group">
-                  <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-users bigicon"></i></span>
-                  <div class="col-md-8">
-                    <input id="lname" name="lname" type="text" placeholder="Family Name" class="form-control">
-                  </div>
-              </div>
+							<div class="form-group">
+								<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-map-marker bigicon"></i></span>
+								<div class="col-md-8">
+									<label>Work Site</label>
+									<input id="type" name="l" type="radio" value="KH" checked>Cambodia&nbsp;
+									<input id="type" name="l" type="radio" value="PT">USA&nbsp;
+								</div>
+							</div>
 
-              <div class="form-group">
-                  <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-birthday-cake bigicon"></i></span>
-                  <div class="col-md-8" >
-                    <div class="col-md-3"><input type="text" id="birthday" name="birthday" placeholder="DD" class="form-control"></div>
-                    <div class="col-md-1" style="font-size: x-large; position:relative;">/</div>
-                    <div class="col-md-3"><input type="text" id="birthmonth" name="birthmonth" placeholder="MM" class="form-control"></div>   
-                    <div class="col-md-1" style="font-size: x-large; position:relative;">/</div>
-                    <div class="col-md-4"><input type="text" id="birthyear" name="birthyear" placeholder="YYYY" class="form-control"></div>  
-                  </div>
-              </div>    
+							<div class="form-group">
+										<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-building-o bigicon"></i></span>
+										<div class="col-md-8">
+											<select id="site_staff" name="site" class="form-control">
+													<option selected="selected">-- Department --</option>
+													<option ng-repeat="department in departments" value="{{department.value}}">{{department.text}}</option>
+											</select>
+										</div>
+								</div>
 
-           
-            <div class="form-group">
-              <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-envelope-o bigicon"></i></span>
-              <div class="col-md-8">
-                <input id="email" name="email" type="text" placeholder="Email Address" class="form-control">
-              </div>
-            </div>
+								<div class="form-group">
+											<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-flag bigicon"></i></span>
+											<div class="col-md-8">
+												<select id="nationality" name="c" class="form-control">
+														<option selected="selected">-- Passport Country --</option>
+														<option ng-repeat="country in countries" value="{{country.value}}">{{country.text}}</option>
+												</select>
+											</div>
+									</div>
 
-              <div class="form-group">
-              <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-phone bigicon"></i></span>
-              <div class="col-md-8">
-                <input id="phone" name="phone" type="text" placeholder="Phone (in the form +855XXXXXXXX)" class="form-control">
-              </div>
-            </div>
-
-             <div class="form-group">
-                <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-pencil-square-o bigicon"></i></span>
-                <div class="col-md-8">
-                 <textarea class="form-control" id="message" name="message" placeholder="Notes?" rows="7"></textarea>
-                </div>
-              </div>
-
-            <div class="form-group">
-                <div class="col-md-12 text-center">
-                    <h1>Temporary Password:</h1>
-                    <h2 id="pw" class = "header" style="font-family: mono;"></h2>
-                    <input id="password" type = "hidden" name="password" value=""/>
-                    <i id="pw-refresh" class="fa fa-refresh bigicon" style="color: gray"></i>
-                </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-                <div class="text-center"><h4>Email confirmation will be sent within 1 working day.</h4></div>
-              </div>
-            </div>
-          </fieldset>
-          </form>
-        </div>
-      </div>
-</div>
-<style>
-    .header {
-        color:#36A0FF;
-        font-size:27px;
-        padding:10px;
-    }
-    .bigicon {
-        font-size:35px;
-        color:#36A0FF;
-    }
-</style>
-<!-- Contact Form - END -->
-<script type='text/javascript'>
- 
-    var keylist="abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$*&";
-    var temp='';
-    var plength=8;
-
-    var uname = 'No suggestions yet!'; 
-    var fname = '';
-    var lname = '';
-    var ahstem = '@asianhope.org';
-    var lisstem = '@students.logoscambodia.org';
-    var stem = ahstem;
-
-    $(document).ready(function(){
-        $('#fname').change(function(){
-            fname = $('#fname').val();
-            updateEmail();
-        });
-
-        $('#lname').change(function(){
-            lname = $('#lname').val();
-            updateEmail();
-        });
-
-        $('input:radio[name=employeeType]').click(function(){
-           if($(this).val() == 'Student'){
-               stem = lisstem;
-               updateEmail();
-               $('#title_staff').hide(); 
-               $('#title_student').show();
-           }
-           else{
-               stem=ahstem;
-               updateEmail();
-               $('#title_staff').show(); 
-               $('#title_student').hide();
-           }
-        });
-
-        password = tempPassword()
-        $('#pw').html(password);
-        $('#password').attr("value",password);
-
-     });
-
-    
-    $('#pw-refresh').click(function(){
-        password = tempPassword()
-        $('#pw').html(password);
-        $('#password').attr("value",password);
-
-    });
-
-    $('#pw-refresh').hover(
-        function(){$(this).css('color','lightgrey'); $(this).css('cursor','pointer');},
-        function(){$(this).css('color','gray');});
-
-    $('#email').change(function(){
-        checkEmail($('#email').val());
-    });
-    var updateEmail = function(){
-        var email = fname.substring(0,1) + lname.replace(/\s+/g, '') + stem;
-        email = email.toLowerCase();
-        checkEmail(email);
-    }
-
-    var checkEmail = function(email){
-
-        //post our suggestion. 
-        $.post("cgi-bin/verifyemail.cgi",{email: email},
-        function(data,status){
-            data = data.replace(/\s/g,'');
-            if(data=="1"){ 
-                $('#email').val('');
-                $('#email').attr("placeholder",email+" in use, please re-enter");
-                $('#email').css("border","#FF0000 1px solid");
-                $('#email').css("color","#FF0000");
-            }
-            else{
-                $('#email').val(data);
-                $('#email').css("border","#00AA00 1px solid");
-                $('#email').css("color","#00AA00");
-            }
-        });
+							<div class="form-group">
+										<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-suitcase bigicon"></i></span>
+										<div class="col-md-8">
+											<input id="title_staff" name="title" type="text" placeholder="Position" class="form-control">
+											<select id="title_student" name="title" class="form-control" style="display:none">
+													<option selected="selected">-- Grade --</option>
+													<option>PK3</option>
+													<option>PK4</option>
+													<option>KG3</option>
+													<option>KG4</option>
+													<option>G1</option>
+													<option>G2</option>
+													<option>G3</option>
+													<option>G4</option>
+													<option>G5</option>
+													<option>G6</option>
+													<option>G7</option>
+													<option>G8</option>
+													<option>G9</option>
+													<option>G10</option>
+													<option>G11</option>
+													<option>G12</option>
+													<option>HELP</option>
+											</select>
+										</div>
+							</div>
 
 
-    }
+							<div class="form-group">
+								<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
+								<div class="col-md-8">
+									<input id="fname" name="fname" type="text" placeholder="First Name" class="form-control">
+								</div>
+							</div>
+
+								<div class="form-group">
+										<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-users bigicon"></i></span>
+										<div class="col-md-8">
+											<input id="lname" name="lname" type="text" placeholder="Family Name" class="form-control">
+										</div>
+								</div>
+
+								<div class="form-group">
+									<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
+									<div class="col-md-8">
+										<input id="givenNamekh" name="givenNamekh" type="text" placeholder="First Name (Khmer)" class="form-control">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-users bigicon"></i></span>
+									<div class="col-md-8">
+										<input id="snkh" name="snkh" type="text" placeholder="Family Name (Khmer)" class="form-control">
+									</div>
+								</div>
+
+								<div class="form-group">
+										<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-birthday-cake bigicon"></i></span>
+										<div class="col-md-8" >
+											<input type="date" class="form-control" name="birthday"></input>
+										</div>
+								</div>
 
 
-    // taken from http://www.javascriptkit.com/script/script2/passwordgenerate.shtml
-    var tempPassword = function(){
-        temp=''
-        for (i=0;i<plength;i++)
-        temp+=keylist.charAt(Math.floor(Math.random()*keylist.length))
-        return temp
-    }
+							<div class="form-group">
+								<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-envelope-o bigicon"></i></span>
+								<div class="col-md-8">
+									<input id="email" name="email" type="text" placeholder="Email Address" class="form-control">
+								</div>
+							</div>
+							<div class="form-group">
+								<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-envelope bigicon"></i></span>
+								<div class="col-md-8">
+									<input id="mailpr" name="mailpr" type="text" placeholder="Personal Email Address" class="form-control">
+								</div>
+							</div>
 
-$(function() {
-    $("#uploadFile").on("change", function()
-        {
-                var files = !!this.files ? this.files : [];
-                if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
-                       
-                if (/^image/.test( files[0].type)){ // only image file
-                    var reader = new FileReader(); // instance of the FileReader
-                    reader.readAsDataURL(files[0]); // read the local file
-                                                              
-                    reader.onloadend = function(){ // set image data as background of div
-                        $("#imagePreview").css("background-image", "url("+this.result+")");
-                    }
-                }
-           });
-});
-</script>
+								<div class="form-group">
+								<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-phone bigicon"></i></span>
+								<div class="col-md-8">
+									<input id="phone" name="phone" type="text" placeholder="Phone (in the form +855XXXXXXXX)" class="form-control">
+								</div>
+							</div>
 
-</div>
+					<div class="form-group">
+							<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-home bigicon"></i></span>
+							<div class="col-md-8">
+							<textarea class="form-control" id="postalAddress" name="postalAddress" placeholder="Residential Address" rows="3"></textarea>
+							</div>
+						</div>
 
-</body>
-</html>
+							<div class="form-group">
+									<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-pencil-square-o bigicon"></i></span>
+									<div class="col-md-8">
+									<textarea class="form-control" id="message" name="message" placeholder="Notes" rows="7"></textarea>
+									</div>
+								</div>
+
+							<div class="form-group">
+									<div class="col-md-12 text-center">
+											<h1>Temporary Password:</h1>
+											<h2 id="pw" class = "header" style="font-family: mono;">{{password}}</h2>
+											<input id="password" type = "hidden" name="password" value="{{password}}"/>
+											<i id="pw-refresh" class="fa fa-refresh bigicon" style="color: gray" ng-click="tempPassword()"></i>
+									</div>
+							</div>
+							<div class="form-group">
+								<div class="col-md-12 text-center">
+									<button type="submit" class="btn btn-primary btn-lg">Submit</button>
+								</div>
+							</div>
+						</fieldset>
+						</form>
+					</div>
+				</div>
+		</div>
+	</div>
+
+	<style>
+			.header {
+					color:#36A0FF;
+					font-size:27px;
+					padding:10px;
+			}
+			.bigicon {
+					font-size:35px;
+					color:#36A0FF;
+			}
+	</style>
+	<!-- Contact Form - END -->
+	<script type='text/javascript'>
+
+			var uname = 'No suggestions yet!';
+			var fname = '';
+			var lname = '';
+			var ahstem = '@asianhope.org';
+			var lis_student_stem = '@students.logoscambodia.org';
+			var ahis_student_stem = '@students.asianhopeschool.org';
+			var stem = ahstem;
+
+			$(document).ready(function(){
+					$('#fname').change(function(){
+							fname = $('#fname').val();
+							updateEmail();
+					});
+
+					$('#lname').change(function(){
+							lname = $('#lname').val();
+							updateEmail();
+					});
+
+					$('input:radio[name=employeeType]').click(function(){
+						if($(this).val() == 'Student'){
+								stem = ahis_student_stem;
+								console.log('set stem to: '+stem);
+								updateEmail();
+								$('#title_staff').hide();
+								$('#title_student').show();
+						}
+						else{
+								stem=ahstem;
+								updateEmail();
+								$('#title_staff').show();
+								$('#title_student').hide();
+						}
+					});
+
+			});
+
+
+
+			$('#pw-refresh').hover(
+					function(){$(this).css('color','lightgrey'); $(this).css('cursor','pointer');},
+					function(){$(this).css('color','gray');});
+
+			$('#email').change(function(){
+					checkUid($('#email').val());
+			});
+			var updateEmail = function(){
+					var uid = fname.substring(0,1) + lname.replace(/\s+/g, '');
+					uid = uid.toLowerCase();
+
+					var email = uid +'@'+stem;
+					email = email.toLowerCase();
+
+					checkUid(email);
+			}
+
+			var checkUid = function(useruid){
+
+					uid=useruid.split('@')[0]; //make sure we're checking a UID and not an email address
+					userstem=useruid.split('@')[1];
+					//if there is no user stem set it to the default, if there is prepend the @ we stripped above
+					if(userstem.length==0) userstem = stem;
+					else userstem = '@'+userstem;
+
+					console.log('userstem is: '+userstem);
+					//post our suggestion.
+					$.post("cgi-bin/verifyuid.cgi",{uid: uid},
+					function(data,status){
+							data = data.replace(/\s/g,'');
+							if(data=="1"){
+									$('#email').val('');
+									$('#email').attr("placeholder",useruid+" in use, please re-enter");
+									$('#email').css("border","#FF0000 1px solid");
+									$('#email').css("color","#FF0000");
+							}
+							else{
+									$('#email').val(data+userstem);
+									$('#email').css("border","#00AA00 1px solid");
+									$('#email').css("color","#00AA00");
+							}
+					});
+
+
+			}
+
+
+
+
+	$(function() {
+			$("#uploadFile").on("change", function()
+					{
+									var files = !!this.files ? this.files : [];
+									if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
+
+									if (/^image/.test( files[0].type)){ // only image file
+											var reader = new FileReader(); // instance of the FileReader
+											reader.readAsDataURL(files[0]); // read the local file
+
+											reader.onloadend = function(){ // set image data as background of div
+													$("#imagePreview").css("background-image", "url("+this.result+")");
+											}
+									}
+						});
+	});
+	</script>
+
+	</div>
