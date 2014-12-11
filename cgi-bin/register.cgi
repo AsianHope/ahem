@@ -99,7 +99,7 @@ attrs['uidNumber'] = str(uidnumber)
 attrs['gidNumber'] = '1000001' #users
 attrs['l'] = location
 attrs['c'] = nationality
-attrs['postalAddress'] = postal_address
+attrs['postalAddress'] = postal_address #need to massage this a bit
 attrs['mobile'] = phone
 
 if employeeType=='FT' or employeeType=='PT':
@@ -137,9 +137,12 @@ print '"cn": "'+username+'",'
 print '"uid": "'+username+'",'
 print '"displayName": "'+fname+' '+lname+'",'
 print '"givenName": "'+fname+'",'
+print '"givenName": "'+givenNamekh+'",'
 print '"sn": "'+lname+'",'
+print '"sn": "'+snkh+'",'
 print '"departmentNumber": "'+site+'",'
 print '"mail": "'+email+'",'
+print '"mail": "'+mailpr+'",'
 print '"title": "'+attrs['title']+'",'
 print '"uidNumber": "'+str(uidnumber)+'",'
 print '"employeeNumber": "'+str(uidnumber)+'",'
