@@ -1,7 +1,11 @@
         <div id="imagePreview" class="col-md-4 well well-sm" style="width: 236px; height:355px; background-position: center center; background-size: cover; background-image: url('files/{{elist.curemployee.employeeNumber}}.jpg');">
          <div class="form-group">
            <div class="col-md-12 text-center" style="padding-top: 355px; padding-bottom: 2em;">
-            <input id="uploadFile" size=40 name="image" type="file" class="form-control">
+             <form class="form-horizontal" method="POST" enctype= "multipart/form-data" action="cgi-bin/upload.cgi">
+               <!--input id="uploadFile" size=40 name="image" type="file" class="form-control"-->
+               <input type="hidden" name="uidNumber" value="{{elist.curemployee.uidNumber}}">
+               <!--button type="submit" class="btn btn-primary btn-lg">Submit</button -->
+             </form>
            </div>
              <h2 class="text-center">Visa Expires:
                                 <a href="#" title="Click to edit: Passport Country" editable-date="elist.curemployee.visaExpires">
@@ -245,5 +249,6 @@
               </div>
             </div>
         </div>
+
 
         <!-- <div class="col-md-12" id="debug"> {{elist.curemployee | json}} -->
