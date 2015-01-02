@@ -7,14 +7,14 @@
                <!--button type="submit" class="btn btn-primary btn-lg">Submit</button -->
              </form>
            </div>
-             <h2 class="text-center">Visa Expires:
+             <h2 class="text-center nonldap">Visa Expires:
                                 <a href="#" title="Click to edit: Passport Country" editable-date="elist.curemployee.visaExpires">
 
                                     {{elist.curemployee.visaExpires || "Not Entered"}}
                                 </a>
             </h2>
-            <h2 class="text-center" style="color: red;">Missing Documents:</h2>
-               <ul>
+            <h2 class="text-center nonldap" style="color: red;">Missing Documents:</h2>
+               <ul class="nonldap">
                  <li ng-repeat="document in showMissingDocs(elist.curemployee.employee_documentation, documentType)">
                      {{document.text}}
                 </li>
@@ -143,7 +143,7 @@
                </div>
 
                <!-- Statuses -->
-               <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
+               <div class="col-md-12 nonldap" style="border-bottom: 1px solid #e5e5e5;">
                     <div class="col-md-6">
                         <h4>Passport/ID Card:
                             <small><a href="#" title="Click to edit" editable-text="elist.curemployee.idnumber">
@@ -174,7 +174,7 @@
                         </h4>
 
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 nonldap">
                         <h4>Educational Degree:
                             <small><a href="#" title="Click to edit" editable-text="elist.curemployee.degree">
                                 {{elist.curemployee.degree || "Not Entered"}}
@@ -199,7 +199,7 @@
                </div>
 
                <!-- Documents Section -->
-                 <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
+                 <div class="col-md-12 nonldap" style="border-bottom: 1px solid #e5e5e5;">
                       <div class="col-md-12">
                           <h3>Documenation <small><a href="#" editable-select="elist.curemployee.employee_documentation"
                               e-ng-options="document.value as document.text for document in documentType">add a new document?</a></h3>
@@ -224,7 +224,7 @@
 
 
                      <!-- Employment Information -->
-                     <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
+                     <div class="col-md-12 nonldap" style="border-bottom: 1px solid #e5e5e5;">
                          <h3 class="text-center">Employed from
                              <a href="#" title="Click to edit: Employment Start Date" editable-date="elist.curemployee.employmentStart">
                                  {{elist.curemployee.employmentStart || "unknown"}}
@@ -239,7 +239,7 @@
                      </div>
 
                     <!-- Notes Section -->
-                    <div class="col-md-12" >
+                    <div class="col-md-12 nonldap" >
                         <h4>Notes</h4>
                         <a href="#" editable-textarea="elist.curemployee.notes"
                           e-rows="7" e-cols="60">

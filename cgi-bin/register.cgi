@@ -13,7 +13,7 @@ import ldap
 import ldap.modlist as modlist
 from passlib.hash import ldap_md5
 
-import HTMLParser
+import HTMLParser #unicode names are coming in in HTML Decimal - may need to push this to update.cgi
 h = HTMLParser.HTMLParser()
 #better errors, disable in production
 import cgitb
