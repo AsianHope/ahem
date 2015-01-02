@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import cgi
 import os,sys
@@ -12,11 +13,13 @@ import ldap
 import ldap.modlist as modlist
 from passlib.hash import ldap_md5
 
+import HTMLParser
+h = HTMLParser.HTMLParser()
 #better errors, disable in production
 import cgitb
 cgitb.enable()
 
-print "Content-Type: text/json"     # HTML is following
+print "Content-type: text/html; charset=utf-8"
 print                               # blank line, end of headers
 
 #get stuff from the form
@@ -35,8 +38,8 @@ nationality = formData.getlist("c")[0]
 start_date = formData.getlist("start_date")[0]
 postal_address = formData.getlist("postalAddress")[0]
 mailpr = formData.getlist("mailpr")[0]
-snkh = formData.getlist("snkh")[0]
-givenNamekh = formData.getlist("givenNamekh")[0]
+snkh = h.unescape(formData.getlist("snkh")[0]) #stuff comes in encoded HTML Decimal format?
+givenNamekh = h.unescape(formData.getlist("givenNamekh")[0])
 phone = formData.getlist("phone")[0]
 
 #get dob in apple-birthday format, magic number at the end is 7:00am, UTC+7
@@ -76,7 +79,7 @@ else:
 
 
 
-#write new user to disabled CN
+#write new user to requests CN
 dn="uid="+username+",cn=requests,dc=asianhope,dc=org"
 attrs={}
 #Synology LDAP attributes
@@ -119,6 +122,15 @@ ldif=modlist.addModlist(attrs)
 l.add_s(dn,ldif)
 
 #double fields givenNamekh snkh and mailpr
+mod_attrs = [
+    (ldap.MOD_ADD, 'givenName', givenNamekh.encode('utf-8')),
+    (ldap.MOD_ADD, 'sn', snkh.encode('utf-8')),
+    (ldap.MOD_ADD, 'mail', mailpr),
+
+]
+print mod_attrs
+l.modify_s(dn,mod_attrs)
+
 
 #increase Synology internal count so we don't mess up creating accounts directly on the box
 uiddn = "cn=CurID,cn=synoconf,dc=asianhope,dc=org"
@@ -137,9 +149,9 @@ print '"cn": "'+username+'",'
 print '"uid": "'+username+'",'
 print '"displayName": "'+fname+' '+lname+'",'
 print '"givenName": "'+fname+'",'
-print '"givenName": "'+givenNamekh+'",'
+#print '"givenName": "'+givenNamekh+'",'
 print '"sn": "'+lname+'",'
-print '"sn": "'+snkh+'",'
+#print '"sn": "'+snkh+'",'
 print '"departmentNumber": "'+site+'",'
 print '"mail": "'+email+'",'
 print '"mail": "'+mailpr+'",'
