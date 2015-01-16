@@ -15,6 +15,9 @@ print                               # blank line, end of headers
 formData = cgi.FieldStorage()
 uid = formData.getlist("uid")[0]
 
+#don't require a valid certificate.. we don't currently have one!
+ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
+
 slave = ldap.initialize("ldaps://ldap02.asianhope.org:636")
 slave.protocol_version = ldap.VERSION3
 susername = "uid=tfoolery,cn=users,dc=asianhope,dc=org"
