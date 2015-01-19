@@ -8,6 +8,8 @@ import cgi
 #cgitb.enable()
 
 import os,sys
+import logging
+logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
 print "Content-Type: text/html"     # HTML is following
 print                               # blank line, end of headers
@@ -28,6 +30,8 @@ sbaseDN = "cn=users,dc=asianhope,dc=org"
 ssearchScope = ldap.SCOPE_SUBTREE
 sretrieveAttributes = ['uid']
 ssearchFilter = "uid="+uid
+
+logging.debug('verifiying that uid: %s does not exist',uid)
 
 ldap_slave_result_id = slave.search(sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
 sresult_set = []

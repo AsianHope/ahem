@@ -15,6 +15,10 @@ cgitb.enable()
 import os,sys
 import json
 
+import logging
+logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
+
+
 def main():
     #print "Content-type: application/json; charset=utf-8"
     print "Content-type: text/html; charset=utf-8"
@@ -27,6 +31,7 @@ def main():
     data = urllib.unquote(formData.getlist("data")[0])
     uid = formData.getlist("uid")[0]
 
+    logging.debug('%s attempting to modify user %s, field: %s, data: %s', username, uid, field, data)
     #don't require a valid certificate.. we don't currently have one!
     ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
@@ -37,6 +42,7 @@ def main():
         slave.simple_bind_s(susername,pw)
     except:
         print '{"result":"error"}'
+        logging.debug('update.cgi could not bind to server')
         slave.unbind_s()
         sys.exit(1)
 
@@ -54,6 +60,7 @@ def main():
 
     if(sresult_data == []):
         print '{"result":"error"}'
+        logging.debug('update.cgi could not find uid')
         slave.unbind_s()
         sys.exit(1)
     else:
@@ -73,6 +80,7 @@ def main():
 
         #if it's some khmer stuff or the secondary email handle it all
         elif(field == 'snkh' or field == 'givenNamekh' or field == 'mailpr'):
+            logging.debug('update.cgi updating Khmer or personal mail')
 
             #(field[:-2] chops off last 2 chars) (get rid of kh/pr)
             field = field[:-2]
@@ -92,16 +100,19 @@ def main():
             #if the field isn't in the result set, we need to do a MOD_ADD
             if(field not in sresult_data[0][1]):
                 new = [(ldap.MOD_ADD,field,data)]
-
+                logging.debug('update.cgi field %s not found, adding it', field)
             #otherwise do a modify
             else:
                 new = [(ldap.MOD_REPLACE,field,data)]
+                logging.debug('update.cgi field %s found, modifying it', field)
 
 
             #future - add to log file saying who performed what
             slave.modify_s(dn,new)
         print '{"result":"success"}'
         slave.unbind_s()
+        logging.info('%s modified user %s, field: %s, data: %s', username, uid, field, data)
+
 
 
 def convertToAppleBirthday(data):

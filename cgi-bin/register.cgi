@@ -19,6 +19,9 @@ h = HTMLParser.HTMLParser()
 import cgitb
 cgitb.enable()
 
+import logging
+logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
+
 print "Content-type: text/html; charset=utf-8"
 print                               # blank line, end of headers
 

@@ -12,6 +12,8 @@ import cgi
 
 import os,sys
 import json
+import logging
+logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
 def main():
     print "Content-type: application/json; charset=utf-8"
@@ -21,6 +23,7 @@ def main():
     username = formData.getlist("username")[0]
     pw = formData.getlist("pw")[0]
 
+    logging.info('%s requested dump', username)
     #don't require a valid certificate.. we don't currently have one!
     ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
@@ -31,6 +34,7 @@ def main():
         slave.simple_bind_s(susername,pw)
     except:
         print '{"result":"error"}'
+        logging.warning('Bind failed - aborting')
         sys.exit(1)
 
 
@@ -51,7 +55,7 @@ def main():
            printUser(sresult_data)
 
     print '{}]' #additional silliness to get rid of commas
-
+    logging.info('dump delivered.', username)
 
 def printUser(user):
         print '{'
