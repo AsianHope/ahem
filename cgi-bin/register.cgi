@@ -44,6 +44,8 @@ mailpr = formData.getlist("mailpr")[0]
 snkh = h.unescape(formData.getlist("snkh")[0]) #stuff comes in encoded HTML Decimal format?
 givenNamekh = h.unescape(formData.getlist("givenNamekh")[0])
 phone = formData.getlist("phone")[0]
+myuid = formData.getlist("myuid")[0]
+mypass = formData.getlist("mypass")[0]
 
 #get dob in apple-birthday format, magic number at the end is 7:00am, UTC+7
 dob = birthday.replace('-','')+'070000Z'
@@ -58,8 +60,9 @@ ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 #open connection to LDAP
 l = ldap.initialize("ldaps://ldap02.asianhope.org:636/")
 l.protocol_version = ldap.VERSION3
-lusername = "uid=root,cn=users,dc=asianhope,dc=org"
-lpassword = "ldapsicksnakeow"
+
+lusername = "uid="+myuid+",cn=users,dc=asianhope,dc=org"
+lpassword = mypass
 l.simple_bind_s(lusername,lpassword)
 
 #find next availble uid from Synology
