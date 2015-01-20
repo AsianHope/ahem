@@ -63,6 +63,9 @@ l.protocol_version = ldap.VERSION3
 
 lusername = "uid="+myuid+",cn=users,dc=asianhope,dc=org"
 lpassword = mypass
+
+logging.info('user: %s requested an account for %s',myuid,email)
+
 l.simple_bind_s(lusername,lpassword)
 
 #find next availble uid from Synology

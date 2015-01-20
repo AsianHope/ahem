@@ -26,7 +26,7 @@
                           <a href ng-click="this.tab.setTab(3)">Browse staff info</a>
                       </li>
                       <li ng-class="{ active:this.tab.isSet(4) }">
-                          <a href ng-click="this.tab.setTab(4)">Reports</a>
+                          <a href ng-click="this.tab.setTab(4)">Log</a>
                       </li>
                   </ul>
 
@@ -40,8 +40,8 @@
                       <staff-list></staff-list>
                   </div>
                   <div ng-show="this.tab.isSet(4)">
-                      <h1>Reports</h1>
-                      <editable-test></edtiable-test>
+                      <h1>Log</h1>
+                      <ahem-log></ahem-log>
                   </div>
               </section>
 

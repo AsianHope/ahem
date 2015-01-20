@@ -26,10 +26,10 @@
 	};
     });
 
-   app.directive('editableTest', function(){
+   app.directive('ahem-log', function(){
 	return {
 		restrict: 'E',
-		templateUrl: 'templates/editable.html',
+		templateUrl: 'templates/ahem-log.html',
 	};
     });
 
@@ -281,7 +281,7 @@
 
     var world_countries = [
       {value: 'AF', text: 'Afghanistan'},
-      {value: 'AX', text: 'Ã…land Islands'},
+      {value: 'AX', text: 'Åland Islands'},
       {value: 'AL', text: 'Albania'},
       {value: 'DZ', text: 'Algeria'},
       {value: 'AS', text: 'American Samoa'},
@@ -333,10 +333,10 @@
       {value: 'CD', text: 'Congo'},
       {value: 'CK', text: 'Cook Islands'},
       {value: 'CR', text: 'Costa Rica'},
-      {value: 'CI', text: 'CÃ´te d\'Ivoire'},
+      {value: 'CI', text: 'Côte d\'Ivoire'},
       {value: 'HR', text: 'Croatia'},
       {value: 'CU', text: 'Cuba'},
-      {value: 'CW', text: 'CuraÃ§ao'},
+      {value: 'CW', text: 'Curaçao'},
       {value: 'CY', text: 'Cyprus'},
       {value: 'CZ', text: 'Czech Republic'},
       {value: 'DK', text: 'Denmark'},
@@ -453,11 +453,11 @@
       {value: 'PT', text: 'Portugal'},
       {value: 'PR', text: 'Puerto Rico'},
       {value: 'QA', text: 'Qatar'},
-      {value: 'RE', text: 'RÃ©union'},
+      {value: 'RE', text: 'Réunion'},
       {value: 'RO', text: 'Romania'},
       {value: 'RU', text: 'Russian Federation'},
       {value: 'RW', text: 'Rwanda'},
-      {value: 'BL', text: 'Saint BarthÃ©lemy'},
+      {value: 'BL', text: 'Saint Barthélemy'},
       {value: 'SH', text: 'Saint Helena'},
       {value: 'WS', text: 'Samoa'},
       {value: 'SM', text: 'San Marino'},
