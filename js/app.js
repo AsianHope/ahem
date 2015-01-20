@@ -26,7 +26,7 @@
 	};
     });
 
-   app.directive('ahem-log', function(){
+   app.directive('ahemlog', function(){
 	return {
 		restrict: 'E',
 		templateUrl: 'templates/ahem-log.html',
