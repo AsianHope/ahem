@@ -23,7 +23,7 @@ def main():
     username = formData.getlist("username")[0]
     pw = formData.getlist("pw")[0]
 
-    logging.info('%s requested dump', username)
+    logging.debug('%s attempting to log in.', username)
     #don't require a valid certificate.. we don't currently have one!
     ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
@@ -38,7 +38,7 @@ def main():
         sys.exit(1)
 
 
-
+    logging.info('%s logged in.', username)
     sbaseDN = "cn=users,dc=asianhope,dc=org"
     ssearchScope = ldap.SCOPE_SUBTREE
     sretrieveAttributes = ['*']
