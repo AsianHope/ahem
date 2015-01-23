@@ -116,8 +116,8 @@ def main():
 
 
 def convertToAppleBirthday(data):
-    #strip out - and add the magic time string for UTC+7 7AM
-    return data.replace('-','')+'070000Z'
+    #strip out - and add the magic time string for UTC Midnight
+    return data.replace('-','')+'000000Z'
 
 def updateName(slave, dn, field, data, previous_data):
 
@@ -131,6 +131,9 @@ def updateName(slave, dn, field, data, previous_data):
     slave.modify_s(dn,clearsn)
 
     #add back the Khmer entries if they existed
-    previousentrykh = [(ldap.MOD_ADD, field, previous_data[0][1][field][1])]
-    slave.modify_s(dn,previousentrykh)
+    try: 
+    	previousentrykh = [(ldap.MOD_ADD, field, previous_data[0][1][field][1])]
+    	slave.modify_s(dn,previousentrykh)
+    except:
+	logging.debug("No previous Khmer name to add back")	
 main()
