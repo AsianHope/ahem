@@ -109,8 +109,19 @@
 
         this.setEmployee = function(setEmployee){
             this.curemployee=setEmployee;
+		console.log("just set employee: "+this.curemployee);
         };
 
+	this.selectSelf = function(){
+            for(var i=0; i<$scope.employees.length; i++){
+		if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
+		   console.log("found a match: "+$scope.employees[i].employeeNumber);
+		   this.setEmployee($scope.employees[i]);
+		   break;
+		}
+	    }
+	};
+	
         this.shift = function(amount){
             for(var i=0; i<$scope.employees.length; i++){
                 if($scope.employees[i].employeeNumber === this.curemployee.employeeNumber){
