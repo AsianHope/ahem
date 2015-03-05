@@ -27,25 +27,25 @@ print                               # blank line, end of headers
 
 #get stuff from the form
 formData = cgi.FieldStorage()
-fname = formData.getlist("fname")[0]
-lname = formData.getlist("lname")[0]
-birthday = formData.getlist("birthday")[0]
-title = formData.getlist("title")
-email = formData.getlist("email")[0]
-site = formData.getlist("site")[0]
-password = formData.getlist("password")[0]
-message= formData.getlist("message")[0]
+fname = formData.getfirst("fname","Not Entered")
+lname = formData.getfirst("lname","Not Entered")
+birthday = formData.getfirst("birthday","19700101")
+title = formData.getfirst("title","Not Entered")
+email = formData.getfirst("email","Not Entered")
+site = formData.getfirst("site","Not Entered")
+password = formData.getfirst("password","Not Entered")
+message= formData.getfirst("message","Not Entered")
 employeeType= formData.getvalue("employeeType") #radio buttons are tricky - have to get value
 location = formData.getvalue("l")
-nationality = formData.getlist("c")[0]
-start_date = formData.getlist("start_date")[0]
-postal_address = formData.getlist("postalAddress")[0]
-mailpr = formData.getlist("mailpr")[0]
-snkh = h.unescape(formData.getlist("snkh")[0]) #stuff comes in encoded HTML Decimal format?
-givenNamekh = h.unescape(formData.getlist("givenNamekh")[0])
-phone = formData.getlist("phone")[0]
-myuid = formData.getlist("myuid")[0]
-mypass = formData.getlist("mypass")[0]
+nationality = formData.getfirst("c","Not Entered")
+start_date = formData.getfirst("start_date","Not Entered")
+postal_address = formData.getfirst("postalAddress","Not Entered")
+mailpr = formData.getfirst("mailpr","Not Entered")
+snkh = h.unescape(formData.getfirst("snkh","Not Entered")) #stuff comes in encoded HTML Decimal format?
+givenNamekh = h.unescape(formData.getfirst("givenNamekh","Not Entered"))
+phone = formData.getfirst("phone","Not Entered")
+myuid = formData.getfirst("myuid","Not Entered")
+mypass = formData.getfirst("mypass","Not Entered")
 
 #get dob in apple-birthday format, magic number at the end is 7:00am, UTC+7
 dob = birthday.replace('-','')+'070000Z'
@@ -87,8 +87,7 @@ if fileitem.filename:
     open('files/' + str(uidnumber)+".jpg", 'wb').write(fileitem.file.read())
 
 else:
-    print 'File upload failed.'
-
+    pass
 
 
 #write new user to requests CN
@@ -113,17 +112,12 @@ attrs['employeeNumber'] = str(uidnumber)
 attrs['uidNumber'] = str(uidnumber)
 attrs['gidNumber'] = '1000001' #users
 attrs['l'] = location
-attrs['c'] = nationality
+attrs['c'] = nationality if len(nationality)==2 else "US"
 attrs['postalAddress'] = postal_address #need to massage this a bit
 attrs['mobile'] = phone
 
-if employeeType=='FT' or employeeType=='PT':
-    print employeeType
-    attrs['employeeType'] = employeeType #Staff employeeType is 'S'
-    attrs['title'] = title[0] #Their title is their title!
-else:
-    attrs['employeeType'] = title[1] #Students employeeType is their Grade
-    attrs['title'] = employeeType #their title is "Student"
+attrs['employeeType'] = employeeType #Staff employeeType is 'S'
+attrs['title'] = title #Their title is their title!
 
 attrs['mail'] = email
 attrs['apple-birthday'] = dob
@@ -134,14 +128,17 @@ ldif=modlist.addModlist(attrs)
 l.add_s(dn,ldif)
 
 #double fields givenNamekh snkh and mailpr
-mod_attrs = [
-    (ldap.MOD_ADD, 'givenName', givenNamekh.encode('utf-8')),
-    (ldap.MOD_ADD, 'sn', snkh.encode('utf-8')),
-    (ldap.MOD_ADD, 'mail', mailpr),
+mod_attrs = []
+if len(givenNamekh)>1:
+    mod_attrs.append( (ldap.MOD_ADD, 'givenName', givenNamekh.encode('utf-8')) )
+if len(snkh)>1:
+    mod_attrs.append( (ldap.MOD_ADD, 'sn', snkh.encode('utf-8')) )
+if len(mailpr)>1:
+    mod_attrs.append( (ldap.MOD_ADD, 'mail', mailpr) )
 
-]
 print mod_attrs
-l.modify_s(dn,mod_attrs)
+if len(mod_attrs)>0:
+    l.modify_s(dn,mod_attrs)
 
 
 #increase Synology internal count so we don't mess up creating accounts directly on the box
@@ -154,7 +151,9 @@ l.modify_s(uiddn,uidldif)
 
 l.unbind_s()
 
+print 'Your account request has been submitted. Sorry, but because this is super early stage software you have to go back to <a href="https://ahem.asianhope.org">AHEM</a> and log back in'
 
+'''
 #debug
 print '{'
 print '"cn": "'+username+'",'
@@ -183,11 +182,14 @@ print '"":""},'
 
 print "message: "+message
 print "start date: "+start_date
-
+'''
 #send email
 msg = MIMEText(message)
 msg['To'] = 'lyle@asianhope.org'
 msg['From'] = 'noreply@asianhope.org'
 msg['Subject'] = 'New Account Request: ' +site+'-'+username
-#p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
-#p.communicate(msg.as_string())
+try:
+    p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
+    p.communicate(msg.as_string())
+except Exception:
+    pass
