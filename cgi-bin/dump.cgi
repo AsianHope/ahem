@@ -42,7 +42,7 @@ def main():
     sbaseDN = "cn=users,dc=asianhope,dc=org"
     ssearchScope = ldap.SCOPE_SUBTREE
     sretrieveAttributes = ['*']
-    ssearchFilter = "mail=*@asianhope.org"
+    ssearchFilter = "(&(!(departmentNumber=CPU))(mail=*@asianhope.org))"
 
     ldap_slave_result_id = slave.search(sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
     sresult_set = []
