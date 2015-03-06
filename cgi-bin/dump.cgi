@@ -42,7 +42,8 @@ def main():
     sbaseDN = "cn=users,dc=asianhope,dc=org"
     ssearchScope = ldap.SCOPE_SUBTREE
     sretrieveAttributes = ['*']
-    ssearchFilter = "(&(!(departmentNumber=CPU))(mail=*@asianhope.org))"
+    #employees are either FT or PT and don't belong to the CPU department, others are students
+    ssearchFilter = "(&(!(departmentNumber=CPU))(|(employeeType=FT)(employeeType=PT)))"
 
     ldap_slave_result_id = slave.search(sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
     sresult_set = []
