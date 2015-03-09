@@ -78,6 +78,15 @@ result_set = []
 result_type, result_data = l.result(ldap_result_id,0)
 uidnumber=result_data[0][1]['uidNumber'][0]
 
+#and increment it immediately. Better to have non-sequential UIDs than to have overlapping!
+uiddn = "cn=CurID,cn=synoconf,dc=asianhope,dc=org"
+old = {'uidNumber':uidnumber}
+new = {'uidNumber':str(int(uidnumber)+1)}
+
+uidldif=modlist.modifyModlist(old,new)
+l.modify_s(uiddn,uidldif)
+
+
 
 #verify uploaded file came through correctly
 fileitem = formData['image']
@@ -141,14 +150,7 @@ if len(mod_attrs)>0:
     l.modify_s(dn,mod_attrs)
 
 
-#increase Synology internal count so we don't mess up creating accounts directly on the box
-uiddn = "cn=CurID,cn=synoconf,dc=asianhope,dc=org"
-old = {'uidNumber':uidnumber}
-new = {'uidNumber':str(int(uidnumber)+1)}
-
-uidldif=modlist.modifyModlist(old,new)
-l.modify_s(uiddn,uidldif)
-
+#unbind, because we're nice.
 l.unbind_s()
 
 print 'Your account request has been submitted. Sorry, but because this is super early stage software you have to go back to <a href="https://ahem.asianhope.org">AHEM</a> and log back in'
