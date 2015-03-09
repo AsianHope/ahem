@@ -3,5 +3,5 @@ ahem.log
 cgi-bin/ahem.log
 rest/env
 *.pyc
-rest/restless/migrations
+rest/ahem_REST/restless/migrations
 *.sqlite3
