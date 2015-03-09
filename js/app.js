@@ -287,6 +287,7 @@
         {value: 'VDP-PPT', text: 'VDP Phnom Penh Thmey'},
         {value: 'VDP-NKO', text: 'VDP NKO'},
         {value: 'MULTI', text: 'Multiple Departments'},
+        {value: 'CPU', text: 'Computer'},
 
     ];
 

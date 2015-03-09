@@ -1,3 +1,7 @@
 files
 ahem.log
 cgi-bin/ahem.log
+rest/env
+*.pyc
+rest/restless/migrations
+*.sqlite3
