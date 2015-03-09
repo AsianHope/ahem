@@ -8,7 +8,19 @@ LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted((item,item) for item in get_all_styles())
 
 DEPARTMENTS = (
-    ('LIS','Logos International School'),
+        ('ADMIN-KH','Admin Cambodia'),
+        ('ADMIN-USA','Admin USA'),
+        ('AHIS','Asian Hope School'),
+        ('HELP-ASIA','HELP Asia'),
+        ('HELP-USA','HELP USA'),
+        ('LIS','Logos'),
+        ('MIS','MIS Department'),
+        ('VDP-G','VDP General'),
+        ('VDP-TK','VDP Toul Kork'),
+        ('VDP-PPT','VDP Phnom Penh Thmey'),
+        ('VDP-NKO','VDP NKO'),
+        ('MULTI','Multiple Departments'),
+        ('CPU','Computer'),
 )
 
 EMPLOYEETYPES = (
@@ -45,7 +57,9 @@ DEGREES = (
 
 class Employee(models.Model):
     #LDAP Attributes (imported)
-    uidNumber = models.AutoField(primary_key=True)
+    uidNumber = models.IntegerField(primary_key=True,unique=True)
+    employeeNumber = models.IntegerField(null=True)
+    cn = models.CharField('cn', max_length=32,unique=True,default='')
     uid = models.CharField('username', max_length=32,null=True)
     sn = models.CharField('Surname', max_length=32,null=True)
     c = models.CharField('Nationality',max_length=2,null=True)
@@ -60,6 +74,7 @@ class Employee(models.Model):
     mobile = models.CharField('Phone Number',max_length=32,null=True)
     postalAddress = models.TextField('Present Address',null=True)
     title = models.CharField('Title',max_length=32,null=True)
+    appleBirthday = models.CharField('DOB in Apple Format',max_length=64,null=True)
 
     #imported, but not specifically ldap attributes
     givenNamekh = models.CharField('Given Name in Khmer',max_length=32,null=True)
@@ -68,6 +83,7 @@ class Employee(models.Model):
 
     #extended attributes
     created = models.DateField(auto_now_add=True,editable=False,default=datetime.datetime.today())
+    created_by = models.ForeignKey('auth.User', related_name='employees',null=True)
     modified= models.DateField(auto_now_add=True,default=datetime.datetime.today())
     startdate = models.DateField(null=True)
     enddate = models.DateField(null=True)

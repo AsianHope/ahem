@@ -3,49 +3,35 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
+from rest_framework import generics
+
 from restless.models import Employee
 from restless.serializers import EmployeeSerializer
+from restless.serializers import UserSerializer
+from rest_framework import permissions
+from django.contrib.auth.models import User
+from rest_framework import viewsets
 
-class JSONResponse(HttpResponse):
-    def __init__(self, data, **kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
-        super(JSONResponse, self).__init__(content, **kwargs)
+@api_view(('GET',))
+def api_root(request, format=None):
+    return Response({
+        'users': reverse('user-list', request=request, format=format),
+        'employees': reverse('employee-list', request=request, format=format)
+    })
 
+class EmployeeViewSet(viewsets.ModelViewSet):
+    model=Employee
+    serializer_class = EmployeeSerializer
+    queryset = Employee.objects.all()
 
-@csrf_exempt
-def employee_list(request):
-    if request.method == 'GET':
-        employees = Employee.objects.all()
-        serializer = EmployeeSerializer(employees, many=True)
-        return JSONResponse(serializer.data)
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = EmployeeSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JSONResponse(serialzier.data, status=201)
-        return JSONResponse(serializer.errors, status=400)
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-
-def employee_detail(request, pk):
-    try:
-        employee = Employee.objects.get(pk=pk)
-    except Employee.DoesNotExist:
-        return HttpResponse(status=404)
-
-    if request.method == 'GET':
-        serializer = EmployeeSerializer(employee)
-        return JSONResponse(serializer.data)
-
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = EmployeeSerializer(snippet, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JSONRespons(serializer.data)
-        return JSONResponse(serializer.errors, status=400)
-
-    elif request.method == 'DELETE':
-        employee.delete()
-        return HttpResponse(status=204)
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
