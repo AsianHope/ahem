@@ -1,4 +1,4 @@
-        <div id="imagePreview" class="col-md-4 well well-sm" style="width: 236px; height:355px; background-position: center center; background-size: cover; background-image: url('files/{{elist.curemployee.employeeNumber}}.jpg');">
+        <div id="imagePreview" class="col-md-4 well well-sm" style="width: 236px; height:355px; background-position: center center; background-size: cover; background-image: url('/static/files/{{elist.curemployee.employeeNumber}}.jpg');">
          <div class="form-group">
            <div class="col-md-12 text-center" style="padding-top: 355px; padding-bottom: 2em;">
              <form class="form-horizontal" method="POST" enctype= "multipart/form-data" action="cgi-bin/upload.cgi">
@@ -15,7 +15,7 @@
             </h2>
             <h2 class="text-center nonldap" style="color: red;">Missing Documents:</h2>
                <ul class="nonldap">
-                 <li ng-repeat="document in showMissingDocs(elist.curemployee.employee_documentation, documentType)">
+                 <li ng-repeat="document in showMissingDocs(elist.curemployee.documents, documentType)">
                      {{document.text}}
                 </li>
                </ul>
@@ -201,20 +201,20 @@
                <!-- Documents Section -->
                  <div class="col-md-12 nonldap" style="border-bottom: 1px solid #e5e5e5;">
                       <div class="col-md-12">
-                          <h3>Documenation <small><a href="#" editable-select="elist.curemployee.employee_documentation"
+                          <h3>Documenation <small><a href="#" editable-select="elist.curemployee.documents"
                               e-ng-options="document.value as document.text for document in documentType">add a new document?</a></h3>
 
                           <!--if there is no description, show the default description -->
-                          <h4 class = "text-left" ng-repeat="document in elist.curemployee.employee_documentation" ng-hide="document.description">
-                            <img src="static/drive_icon.png"> <a href="{{document.url}}">
-                            {{documentType[document.document_id].text}}</a>
+                          <h4 class = "text-left" ng-repeat="document in elist.curemployee.documents" ng-hide="document.description">
+                            <img src="static/static/drive_icon.png"> <a href="{{document.url}}" target="_blank">
+                            {{documentType[document.documentID].text}}</a>
                             <small><a href=""><i class="fa fa-upload"></i></a>
                                    <a href=""><i class="fa fa-remove"></i></a>
                             </small>
 
                           </h4>
-                          <h4 ng-repeat="document in elist.curemployee.employee_documentation" ng-show="document.description">
-                            <img src="static/drive_icon.png"> <a href="{{document.url}}">
+                          <h4 ng-repeat="document in elist.curemployee.documents" ng-show="document.description">
+                            <img src="static/static/drive_icon.png"> <a href="{{document.url}}">
                             {{document.description}}
                             <small><a href=""><i class="fa fa-upload"></i></a>
                                      <a href=""><i class="fa fa-remove"></i></a>
@@ -251,4 +251,4 @@
         </div>
 
 
-         <div class="col-md-12" id="debug"> {{elist.curemployee | json}} 
+         <div class="col-md-12" id="debug"> {{elist.curemployee | json}}

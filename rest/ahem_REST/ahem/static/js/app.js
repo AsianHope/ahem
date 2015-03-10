@@ -82,6 +82,14 @@
 
         this.curemployee=null;
 
+        this.refreshEmployeeData = function(){
+          $scope.employees = [];
+          this.curemployee=null;
+          $http.get('employees/.json').
+            success(function(data, status, headers, config){
+                $scope.employees = data;
+            })
+        };
         //rough approximation
         this.timeBetween = function(startDate, endDate){
           if (endDate === 'present') endDate=new Date();
@@ -109,19 +117,18 @@
 
         this.setEmployee = function(setEmployee){
             this.curemployee=setEmployee;
-		console.log("just set employee: "+this.curemployee);
         };
 
-	this.selectSelf = function(){
-            for(var i=0; i<$scope.employees.length; i++){
-		if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
-		   console.log("found a match: "+$scope.employees[i].employeeNumber);
-		   this.setEmployee($scope.employees[i]);
-		   break;
-		}
-	    }
-	};
-	
+      	this.selectSelf = function(){
+          for(var i=0; i<$scope.employees.length; i++){
+          		if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
+          		   console.log("found a match: "+$scope.employees[i].employeeNumber);
+          		   this.setEmployee($scope.employees[i]);
+          		   break;
+          		}
+           }
+      	};
+
         this.shift = function(amount){
             for(var i=0; i<$scope.employees.length; i++){
                 if($scope.employees[i].employeeNumber === this.curemployee.employeeNumber){
@@ -185,23 +192,24 @@
         //pull these from a database or API -
         //BUG WARNING: if value doesn't match index in array things will get wonky
         $scope.documentType=[
-          {value: '0', text: 'Photo', required_by: 'all'},
-          {value: '1', text: 'CV/Resume', required_by: 'all'},
-          {value: '2', text: 'Statement of Faith', required_by: 'all'},
-          {value: '3', text: 'Letter of Reference', required_by: 'all'},
-          {value: '4', text: 'Child Protection Policy', required_by: 'all'},
-          {value: '5', text: 'Background Check', required_by: 'all'},
-          {value: '6', text: 'Offer Letter', required_by: 'all'},
-          {value: '7', text: 'Employee Handbook Receipt', required_by: 'all'},
-          {value: '8', text: 'Position Description', required_by: 'all'},
-          {value: '9', text: 'Physical Examination Report', required_by: 'all'},
-          {value: '10', text: 'Copy of Passport', required_by: 'all'},
-          {value: '11', text: 'Copy of Visa', required_by: 'all'},
-          {value: '12', text: 'Copy of ID', required_by: 'all'},
-          {value: '13', text: 'W4', required_by: 'all'},
-          {value: '14', text: 'Code of Ethics', required_by: 'all'},
-          {value: '15', text: 'Employee Status Form', required_by: 'all'},
-          {value: '16', text: 'Other Supporting Documentation', required_by: ''},
+          {value: '0', text: ''},
+          {value: '1', text: 'Photo', required_by: 'all'},
+          {value: '2', text: 'CV/Resume', required_by: 'all'},
+          {value: '3', text: 'Statement of Faith', required_by: 'all'},
+          {value: '4', text: 'Letter of Reference', required_by: 'all'},
+          {value: '5', text: 'Child Protection Policy', required_by: 'all'},
+          {value: '6', text: 'Background Check', required_by: 'all'},
+          {value: '7', text: 'Offer Letter', required_by: 'all'},
+          {value: '8', text: 'Employee Handbook Receipt', required_by: 'all'},
+          {value: '9', text: 'Position Description', required_by: 'all'},
+          {value: '10', text: 'Physical Examination Report', required_by: 'all'},
+          {value: '11', text: 'Copy of Passport', required_by: 'all'},
+          {value: '12', text: 'Copy of Visa', required_by: 'all'},
+          {value: '13', text: 'Copy of ID', required_by: 'all'},
+          {value: '14', text: 'W4', required_by: 'all'},
+          {value: '15', text: 'Code of Ethics', required_by: 'all'},
+          {value: '16', text: 'Employee Status Form', required_by: 'all'},
+          {value: '17', text: 'Other Supporting Documentation', required_by: ''},
 
 
         ];
@@ -214,7 +222,7 @@
 
           //get rid of all docs they have
           for(var i=0; i<doclist.length; i++){
-            tempid=doclist[i].document_id;
+            tempid=doclist[i].documentID;
             delete reqdocs[tempid];
           }
 
@@ -296,7 +304,7 @@
 
     var world_countries = [
       {value: 'AF', text: 'Afghanistan'},
-      {value: 'AX', text: 'Åland Islands'},
+      {value: 'AX', text: 'ï¿½land Islands'},
       {value: 'AL', text: 'Albania'},
       {value: 'DZ', text: 'Algeria'},
       {value: 'AS', text: 'American Samoa'},
@@ -348,10 +356,10 @@
       {value: 'CD', text: 'Congo'},
       {value: 'CK', text: 'Cook Islands'},
       {value: 'CR', text: 'Costa Rica'},
-      {value: 'CI', text: 'Côte d\'Ivoire'},
+      {value: 'CI', text: 'Cï¿½te d\'Ivoire'},
       {value: 'HR', text: 'Croatia'},
       {value: 'CU', text: 'Cuba'},
-      {value: 'CW', text: 'Curaçao'},
+      {value: 'CW', text: 'Curaï¿½ao'},
       {value: 'CY', text: 'Cyprus'},
       {value: 'CZ', text: 'Czech Republic'},
       {value: 'DK', text: 'Denmark'},
@@ -468,11 +476,11 @@
       {value: 'PT', text: 'Portugal'},
       {value: 'PR', text: 'Puerto Rico'},
       {value: 'QA', text: 'Qatar'},
-      {value: 'RE', text: 'Réunion'},
+      {value: 'RE', text: 'Rï¿½union'},
       {value: 'RO', text: 'Romania'},
       {value: 'RU', text: 'Russian Federation'},
       {value: 'RW', text: 'Rwanda'},
-      {value: 'BL', text: 'Saint Barthélemy'},
+      {value: 'BL', text: 'Saint Barthï¿½lemy'},
       {value: 'SH', text: 'Saint Helena'},
       {value: 'WS', text: 'Samoa'},
       {value: 'SM', text: 'San Marino'},

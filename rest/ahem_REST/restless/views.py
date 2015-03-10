@@ -9,9 +9,11 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import generics
 
-from restless.models import Employee
+from restless.models import Employee, Document, EmployeeDocument
 from restless.serializers import EmployeeSerializer
 from restless.serializers import UserSerializer
+from restless.serializers import DocumentSerializer
+from restless.serializers import EmployeeDocumentSerializer
 from rest_framework import permissions
 from django.contrib.auth.models import User
 from rest_framework import viewsets
@@ -27,6 +29,16 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     model=Employee
     serializer_class = EmployeeSerializer
     queryset = Employee.objects.all()
+
+class DocumentViewSet(viewsets.ModelViewSet):
+    model = Document
+    serializer_class = DocumentSerializer
+    queryset = Document.objects.all()
+
+class EmployeeDocumentViewSet(viewsets.ModelViewSet):
+    model = EmployeeDocument
+    serializer_class = EmployeeDocumentSerializer
+    queryset = EmployeeDocument.objects.all()
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()

@@ -100,7 +100,6 @@ class Employee(models.Model):
     idnumber = models.CharField('Passport/ID Card Number',max_length=32,null=True)
     insurance = models.CharField('Insurance Provider', max_length=32,null=True)
 
-
     '''
     # We'll have to look at this closer to see how we can massage incoming data
     def save(self, *args, **kwargs):
@@ -119,8 +118,17 @@ class Document(models.Model):
     description = models.CharField(max_length=256)
     required = models.BooleanField(default=True)
 
+    def __unicode__(self):
+        return self.description
+
 class EmployeeDocument(models.Model):
-    uidNumber = models.ForeignKey(Employee)
+    uidNumber = models.ForeignKey(Employee, related_name='documents')
     documentID = models.ForeignKey(Document)
     url = models.URLField()
-    updated = models.DateTimeField()
+    updated = models.DateField(auto_now_add=True,default=datetime.datetime.today())
+    added_by = models.ForeignKey('auth.User', related_name='creator',null=True)
+
+    class Meta:
+        unique_together = ('uidNumber','documentID')
+    def __unicode__(self):
+        return str(self.uidNumber) +"-"+str(self.documentID)
