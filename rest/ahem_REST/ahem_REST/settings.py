@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from os.path import join
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -23,6 +24,9 @@ SECRET_KEY = 'yk4y2w!c6ggu)tbi$jjhed0j0e$3sg85m*1^40lg1%^#qki)#v'
 DEBUG = True
 
 TEMPLATE_DEBUG = True
+TEMPLATE_DIRS = (
+    join(BASE_DIR, 'templates'),
+)
 
 ALLOWED_HOSTS = []
 
@@ -38,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'restless',
+    'ahem',
 )
 
 MIDDLEWARE_CLASSES = (

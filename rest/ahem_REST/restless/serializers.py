@@ -12,9 +12,9 @@ class EmployeeSerializer(serializers.ModelSerializer):
                     'cn','uid','uidNumber','employeeNumber','sn','c','departmentNumber','displayName',
                     'employeeType','gecos','givenName','jpegPhoto','l','mail','appleBirthday',
                     'mobile','postalAddress','title','givenNamekh','snkh','mailpr',
-                    'modified','startdate','enddate','faith','maritialstatus',
-                    'children','gender','enteredCambodia','degree','visaExpires',
-                    'nssf','notes',
+                    'modified','startdate','enddate','faith','maritalstatus',
+                    'children','gender','enteredCambodia','degree','degreeArea','visaExpires',
+                    'nssf','notes','idnumber','insurance',
                  )
         created_by = serializers.ReadOnlyField(source='created_by.username')
 class UserSerializer(serializers.ModelSerializer):

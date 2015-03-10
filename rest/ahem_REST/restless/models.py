@@ -88,15 +88,29 @@ class Employee(models.Model):
     startdate = models.DateField(null=True)
     enddate = models.DateField(null=True)
     faith = models.CharField(choices=FAITHS,max_length=2,default='UD')
-    maritialstatus = models.CharField(choices=MARITALSTATUSES,max_length=1,default='S')
+    maritalstatus = models.CharField(choices=MARITALSTATUSES,max_length=1,default='S')
     children = models.IntegerField(null=True)
     gender = models.CharField(choices=GENDERS,max_length=1,default='M')
     enteredCambodia = models.DateField(null=True)
     degree = models.CharField(choices=DEGREES,max_length=3,null=True)
+    degreeArea = models.CharField(max_length=16,null=True)
     visaExpires = models.DateField(null=True)
     nssf = models.IntegerField(null=True)
     notes = models.TextField(null=True)
+    idnumber = models.CharField('Passport/ID Card Number',max_length=32,null=True)
+    insurance = models.CharField('Insurance Provider', max_length=32,null=True)
 
+
+    '''
+    # We'll have to look at this closer to see how we can massage incoming data
+    def save(self, *args, **kwargs):
+        self.uid = str(self.cn)
+        self.mail = str(self.uid)+'@asianhope.org'
+        self.gecos = str(self.givenName) + ' ' + str(self.sn)
+        self.displayName = str(self.uid)
+        self.employeeNumber = self.uidNumber
+        super(Employee, self).save(*args, **kwargs)
+    '''
     def __unicode__(self):
         return str(self.uidNumber)
 
