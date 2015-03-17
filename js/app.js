@@ -121,7 +121,7 @@
 		}
 	    }
 	};
-	
+
         this.shift = function(amount){
             for(var i=0; i<$scope.employees.length; i++){
                 if($scope.employees[i].employeeNumber === this.curemployee.employeeNumber){
@@ -214,7 +214,7 @@
 
           //get rid of all docs they have
           for(var i=0; i<doclist.length; i++){
-            tempid=doclist[i].document_id;
+            tempid=doclist[i].documentID;
             delete reqdocs[tempid];
           }
 
@@ -293,7 +293,7 @@
 
     var world_countries = [
       {value: 'AF', text: 'Afghanistan'},
-      {value: 'AX', text: 'Åland Islands'},
+      {value: 'AX', text: 'ï¿½land Islands'},
       {value: 'AL', text: 'Albania'},
       {value: 'DZ', text: 'Algeria'},
       {value: 'AS', text: 'American Samoa'},
@@ -345,10 +345,10 @@
       {value: 'CD', text: 'Congo'},
       {value: 'CK', text: 'Cook Islands'},
       {value: 'CR', text: 'Costa Rica'},
-      {value: 'CI', text: 'Côte d\'Ivoire'},
+      {value: 'CI', text: 'Cï¿½te d\'Ivoire'},
       {value: 'HR', text: 'Croatia'},
       {value: 'CU', text: 'Cuba'},
-      {value: 'CW', text: 'Curaçao'},
+      {value: 'CW', text: 'Curaï¿½ao'},
       {value: 'CY', text: 'Cyprus'},
       {value: 'CZ', text: 'Czech Republic'},
       {value: 'DK', text: 'Denmark'},
@@ -465,11 +465,11 @@
       {value: 'PT', text: 'Portugal'},
       {value: 'PR', text: 'Puerto Rico'},
       {value: 'QA', text: 'Qatar'},
-      {value: 'RE', text: 'Réunion'},
+      {value: 'RE', text: 'Rï¿½union'},
       {value: 'RO', text: 'Romania'},
       {value: 'RU', text: 'Russian Federation'},
       {value: 'RW', text: 'Rwanda'},
-      {value: 'BL', text: 'Saint Barthélemy'},
+      {value: 'BL', text: 'Saint Barthï¿½lemy'},
       {value: 'SH', text: 'Saint Helena'},
       {value: 'WS', text: 'Samoa'},
       {value: 'SM', text: 'San Marino'},

@@ -1,4 +1,4 @@
-        <div id="imagePreview" class="col-md-4 well well-sm" style="width: 236px; height:355px; background-position: center center; background-size: cover; background-image: url('files/{{elist.curemployee.employeeNumber}}.jpg');">
+        <div id="imagePreview" class="col-md-4 well well-sm" style="width: 236px; height:355px; background-position: center center; background-size: cover; background-image: url('/static/files/{{elist.curemployee.employeeNumber}}.jpg');">
          <div class="form-group">
            <div class="col-md-12 text-center" style="padding-top: 355px; padding-bottom: 2em;">
              <form class="form-horizontal" method="POST" enctype= "multipart/form-data" action="cgi-bin/upload.cgi">
@@ -15,7 +15,7 @@
             </h2>
             <h2 class="text-center nonldap" style="color: red;">Missing Documents:</h2>
                <ul class="nonldap">
-                 <li ng-repeat="document in showMissingDocs(elist.curemployee.employee_documentation, documentType)">
+                 <li ng-repeat="document in showMissingDocs(elist.curemployee.extended.0.documents, documentType)">
                      {{document.text}}
                 </li>
                </ul>
@@ -43,8 +43,9 @@
                                 {{elist.curemployee.givenName}}
                             </a>
                             <a href="#" title="Click to edit: Gender" editable-select="elist.curemployee.gender"
-                                e-ng-options="gender.value as gender.text for gender in genders">
-                                <small>({{elist.curemployee.gender}})</small>
+                                e-ng-options="gender.value as gender.text for gender in genders"
+                                onaftersave="updateUser(elist.curemployee.uid,'jsonData',elist.curemployee.extended.0)">
+                                <small>({{elist.curemployee.extended.0.gender}})</small>
                             </a>
                         </h3>
                         <h4 class="text-left">
@@ -146,53 +147,53 @@
                <div class="col-md-12 nonldap" style="border-bottom: 1px solid #e5e5e5;">
                     <div class="col-md-6">
                         <h4>Passport/ID Card:
-                            <small><a href="#" title="Click to edit" editable-text="elist.curemployee.idnumber">
-                                {{elist.curemployee.idnumber || "Not Entered"}}
+                            <small><a href="#" title="Click to edit" editable-text="elist.curemployee.extended.0.idnumber">
+                                {{elist.curemployee.extended.0.idnumber || "Not Entered"}}
                             </a></small>
                         </h4>
                         <h4>NSSF Number:
-                            <small><a href="#" title="Click to edit" editable-text="elist.curemployee.nssf">
-                                {{elist.curemployee.nssf || "Not Entered"}}
+                            <small><a href="#" title="Click to edit" editable-text="elist.curemployee.extended.0.nssf">
+                                {{elist.curemployee.extended.0.nssf || "Not Entered"}}
                             </a></small>
                         </h4>
                         <h4>Religion:
-                            <small><a href="#" title="Click to edit" editable-select="elist.curemployee.faith"
+                            <small><a href="#" title="Click to edit" editable-select="elist.curemployee.extended.0.faith"
                                 e-ng-options="religion.value as religion.text for religion in religions">
-                                {{elist.curemployee.faith || "Not Entered"}}
+                                {{elist.curemployee.extended.0.faith || "Not Entered"}}
                             </a></small>
                         </h4>
                         <h4>Marital Status:
-                            <small><a href="#" title="Click to edit" editable-select="elist.curemployee.maritalstatus"
+                            <small><a href="#" title="Click to edit" editable-select="elist.curemployee.extended.0.maritalstatus"
                                 e-ng-options="maritalstatus.value as maritalstatus.text for maritalstatus in maritalstatuses">
-                                {{elist.curemployee.maritalstatus|| "Not Entered"}}
+                                {{elist.curemployee.extended.0.maritalstatus|| "Not Entered"}}
                             </a></small>
                         </h4>
                         <h4>Children:
-                            <small><a href="#" title="Click to edit" editable-number="elist.curemployee.children">
-                                {{elist.curemployee.children|| "Not Entered"}}
+                            <small><a href="#" title="Click to edit" editable-number="elist.curemployee.extended.0.children">
+                                {{elist.curemployee.extended.0.children|| "Not Entered"}}
                             </a></small>
                         </h4>
 
                     </div>
                     <div class="col-md-6 nonldap">
                         <h4>Educational Degree:
-                            <small><a href="#" title="Click to edit" editable-text="elist.curemployee.degree">
-                                {{elist.curemployee.degree || "Not Entered"}}
+                            <small><a href="#" title="Click to edit" editable-text="elist.curemployee.extended.0.degree">
+                                {{elist.curemployee.extended.0.degree || "Not Entered"}}
                             </a></small>
                         </h4>
                         <h4>Specialization:
-                            <small><a href="#" title="Click to edit" editable-text="elist.curemployee.degreeArea">
-                                {{elist.curemployee.degreeArea || "Not Entered"}}
+                            <small><a href="#" title="Click to edit" editable-text="elist.curemployee.extended.0.degreeArea">
+                                {{elist.curemployee.extended.0.degreeArea || "Not Entered"}}
                             </a></small>
                         </h4>
                         <h4>Date Entered Cambodia:
-                            <small><a href="#" title="Click to edit" editable-date="elist.curemployee.enteredCambodia">
-                                {{elist.curemployee.enteredCambodia || "Not Entered"}}
+                            <small><a href="#" title="Click to edit" editable-date="elist.curemployee.extened.0.enteredCambodia">
+                                {{elist.curemployee.extended.0.enteredCambodia || "Not Entered"}}
                             </a></small>
                         </h4>
                         <h4>Insurance Provider:
-                            <small><a href="#" title="Click to edit" editable-text="elist.curemployee.insurance">
-                                {{elist.curemployee.insurance || "Not Entered"}}
+                            <small><a href="#" title="Click to edit" editable-text="elist.curemployee.extended.0.insurance">
+                                {{elist.curemployee.extended.0.insurance || "Not Entered"}}
                             </a></small>
                         </h4>
                     </div>
@@ -201,20 +202,20 @@
                <!-- Documents Section -->
                  <div class="col-md-12 nonldap" style="border-bottom: 1px solid #e5e5e5;">
                       <div class="col-md-12">
-                          <h3>Documenation <small><a href="#" editable-select="elist.curemployee.employee_documentation"
+                          <h3>Documenation <small><a href="#" editable-select="elist.curemployee.documents"
                               e-ng-options="document.value as document.text for document in documentType">add a new document?</a></h3>
 
                           <!--if there is no description, show the default description -->
-                          <h4 class = "text-left" ng-repeat="document in elist.curemployee.employee_documentation" ng-hide="document.description">
-                            <img src="static/drive_icon.png"> <a href="{{document.url}}">
-                            {{documentType[document.document_id].text}}</a>
+                          <h4 class = "text-left" ng-repeat="document in elist.curemployee.extended.0.documents" ng-hide="document.description">
+                            <img src="static/static/drive_icon.png"> <a href="{{document.url}}" target="_blank">
+                            {{documentType[document.documentID].text}}</a>
                             <small><a href=""><i class="fa fa-upload"></i></a>
                                    <a href=""><i class="fa fa-remove"></i></a>
                             </small>
 
                           </h4>
-                          <h4 ng-repeat="document in elist.curemployee.employee_documentation" ng-show="document.description">
-                            <img src="static/drive_icon.png"> <a href="{{document.url}}">
+                          <h4 ng-repeat="document in elist.curemployee.extended.0.documents" ng-show="document.description">
+                            <img src="static/static/drive_icon.png"> <a href="{{document.url}}">
                             {{document.description}}
                             <small><a href=""><i class="fa fa-upload"></i></a>
                                      <a href=""><i class="fa fa-remove"></i></a>
@@ -226,24 +227,24 @@
                      <!-- Employment Information -->
                      <div class="col-md-12 nonldap" style="border-bottom: 1px solid #e5e5e5;">
                          <h3 class="text-center">Employed from
-                             <a href="#" title="Click to edit: Employment Start Date" editable-date="elist.curemployee.employmentStart">
-                                 {{elist.curemployee.employmentStart || "unknown"}}
+                             <a href="#" title="Click to edit: Employment Start Date" editable-date="elist.curemployee.extended.0.employmentStart">
+                                 {{elist.curemployee.extended.0.startdate || "unknown"}}
                              </a> to
-                             <a href="#" title="Click to edit: Employment End Date" editable-date="elist.curemployee.employmentEnd">
-                                 {{elist.curemployee.employmentEnd || "present"}}
+                             <a href="#" title="Click to edit: Employment End Date" editable-date="elist.curemployee.extended.0.employmentEnd">
+                                 {{elist.curemployee.extended.0.enddate|| "present"}}
                              </a>
                          </h3>
                          <h4 class="text-center"><small>
-                           {{elist.timeBetween(elist.curemployee.employmentStart, elist.curemployee.employmentEnd || 'present')}}
+                           {{elist.timeBetween(elist.curemployee.extended.0.startdate, elist.curemployee.extended.0.enddate|| 'present')}}
                          </small></h4>
                      </div>
 
                     <!-- Notes Section -->
                     <div class="col-md-12 nonldap" >
                         <h4>Notes</h4>
-                        <a href="#" editable-textarea="elist.curemployee.notes"
+                        <a href="#" editable-textarea="elist.curemployee.extended.0.notes"
                           e-rows="7" e-cols="60">
-                            <pre>{{elist.curemployee.notes || 'no notes entered'}}</pre>
+                            <pre>{{elist.curemployee.extended.0.notes || 'no notes entered'}}</pre>
                         </a>
                     </div>
               </div>
@@ -251,4 +252,4 @@
         </div>
 
 
-        <!-- <div class="col-md-12" id="debug"> {{elist.curemployee | json}} -->
+         <div class="col-md-12" id="debug"> {{elist.curemployee | json}}

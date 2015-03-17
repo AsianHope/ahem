@@ -79,6 +79,7 @@ def printUser(user):
         printAttribute(user,'mobile',0)
         printAttribute(user,'postalAddress',0)
         printAttribute(user,'apple-birthday',0,'appleBirthday')
+        printExtendedAttributes(user)
         print '"":""},' #this is a silly hack to fake out the last attributes comma
 
 def printAttribute(user,attribute,index,attrname=None):
@@ -86,6 +87,12 @@ def printAttribute(user,attribute,index,attrname=None):
             attrname=attribute
     try:
         print '"'+attrname+'": "'+user[0][1][attribute][index]+'",'
+    except:
+        return
+
+def printExtendedAttributes(user):
+    try:
+        print '"extended": '+user[0][1]['jsonData'][0]+','
     except:
         return
 
