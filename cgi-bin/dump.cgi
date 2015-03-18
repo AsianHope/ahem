@@ -92,8 +92,10 @@ def printAttribute(user,attribute,index,attrname=None):
 
 def printExtendedAttributes(user):
     try:
-        print '"extended": '+user[0][1]['jsonData'][0]+','
-    except:
+        extattrs = json.loads(user[0][1]['jsonData'][0])
+        for key, attr in extattrs.iteritems():
+            print '"'+key+'": "'+attr+'",'
+    except KeyError:
         return
 
 main()

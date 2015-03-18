@@ -1,4 +1,8 @@
 .nonldap{
 }
 #debug{
+  display:none;
+}
+.documents{
+  display:none;
 }

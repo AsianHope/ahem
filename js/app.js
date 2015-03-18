@@ -133,7 +133,7 @@
 
         $scope.updateUser = function(uid, field, data){
                 console.log('field to update: '+field);
-                console.log('data to update: '+data);
+                console.log('data to update: '+JSON.stringify(data));
                 console.log('uid: '+uid);
                 var d = $q.defer();
 

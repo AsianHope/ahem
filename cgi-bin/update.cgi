@@ -18,6 +18,20 @@ import json
 import logging
 logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
+ldapfields = [
+    'cn',
+    'givenName',
+    'sn',
+    'departmentNumber',
+    'mail',
+    'title',
+    'employeeType',
+    'c',
+    'l',
+    'mobile'
+    'postalAddress',
+    'apple-birthday',
+]
 
 def main():
     #print "Content-type: application/json; charset=utf-8"
@@ -66,49 +80,43 @@ def main():
     else:
         dn=ssearchFilter+","+sbaseDN
 
-    #special cases
+        #if it's an ldap field, we should insert it directly
+        if field in ldapfields:
 
+            #unless if it's a birthday, then we should convert it.
+            if(field == 'apple-birthday'):
+                data = convertToAppleBirthday(data)
 
-
-        #if we're getting a birthday, convert it and continue on
-        if(field == 'apple-birthday'):
-            data = convertToAppleBirthday(data)
-
-        #update gecos to equal givenName+sn
-        if((field == 'sn' or field =='givenName')):
-            updateName(slave, dn, field, data, sresult_data)
-
-        #if it's some khmer stuff or the secondary email handle it all
-        elif(field == 'snkh' or field == 'givenNamekh' or field == 'mailpr'):
-            logging.debug('update.cgi updating Khmer or personal mail')
-
-            #(field[:-2] chops off last 2 chars) (get rid of kh/pr)
-            field = field[:-2]
-
-            #replace existing sn entries with just primary versions (English or company email)
-            clearsn = [( ldap.MOD_REPLACE, field, sresult_data[0][1][field][0])]
-            slave.modify_s(dn,clearsn)
-
-            #re-add secondary version (or add it for the first time)
-            new = [(ldap.MOD_ADD,field,data)]
-            slave.modify_s(dn,new)
-
-        #otherwise make the modification
-        else:
-
-
-            #if the field isn't in the result set, we need to do a MOD_ADD
-            if(field not in sresult_data[0][1]):
-                new = [(ldap.MOD_ADD,field,data)]
-                logging.debug('update.cgi field %s not found, adding it', field)
-            #otherwise do a modify
+            #otherwise make the modification
             else:
-                new = [(ldap.MOD_REPLACE,field,data)]
-                logging.debug('update.cgi field %s found, modifying it', field)
+
+                #if the field isn't in the result set, we need to do a MOD_ADD
+                if(field not in sresult_data[0][1]):
+                    new = [(ldap.MOD_ADD,field,data)]
+                    logging.debug('update.cgi field %s not found, adding it', field)
+                #otherwise do a modify
+                else:
+                    new = [(ldap.MOD_REPLACE,field,data)]
+                    logging.debug('update.cgi field %s found, modifying it', field)
 
 
-            #future - add to log file saying who performed what
-            slave.modify_s(dn,new)
+                #future - add to log file saying who performed what
+                slave.modify_s(dn,new)
+        #if it's an extended field, then we're going to pull the JSON and rewrite it
+        else:
+                #if the jsonData hasn't been added to the entry, add it.
+                if('jsonData' not in sresult_data[0][1]):
+                    new = [(ldap.MOD_ADD,'jsonData','{"'+field+'":"'+data+'"}')]
+                    logging.debug('update.cgi field %s not found, adding it', field)
+                #otherwise do a modify
+                else:
+                    original = json.loads(sresult_data[0][1]['jsonData'][0])
+                    original[field]=data
+                    modified = json.dumps(original)
+                    new = [(ldap.MOD_REPLACE,'jsonData',modified)]
+                    logging.debug('update.cgi field %s found, modifying it', field)
+
+                slave.modify_s(dn,new)
         print '{"result":"success"}'
         slave.unbind_s()
         logging.info('%s modified user %s, field: %s, data: %s', username, uid, field, data)
@@ -131,9 +139,9 @@ def updateName(slave, dn, field, data, previous_data):
     slave.modify_s(dn,clearsn)
 
     #add back the Khmer entries if they existed
-    try: 
+    try:
     	previousentrykh = [(ldap.MOD_ADD, field, previous_data[0][1][field][1])]
     	slave.modify_s(dn,previousentrykh)
     except:
-	logging.debug("No previous Khmer name to add back")	
+	logging.debug("No previous Khmer name to add back")
 main()
