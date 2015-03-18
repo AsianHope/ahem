@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 # dump.cgi will dump all of the @asianhope.org accounts that a given user
 # can access. Access is controlled by normal LDAP ACLs
 # If a user cannot bind to the server, an error is returned.
@@ -92,9 +93,11 @@ def printAttribute(user,attribute,index,attrname=None):
 
 def printExtendedAttributes(user):
     try:
-        extattrs = json.loads(user[0][1]['jsonData'][0])
+        extattrs = json.loads(user[0][1]['jsonData'][0],'utf-8')
         for key, attr in extattrs.iteritems():
-            print '"'+key+'": "'+attr+'",'
+            print '"'+key+'": "',
+            print attr.encode('unicode_escape'),
+            print '",'
     except KeyError:
         return
 
