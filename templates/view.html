@@ -1,4 +1,4 @@
-        <div id="imagePreview" class="col-md-4 well well-sm" style="width: 236px; height:355px; background-position: center center; background-size: cover; background-image: url('/static/files/{{elist.curemployee.employeeNumber}}.jpg');">
+        <div id="imagePreview" class="col-md-4 well well-sm" style="width: 236px; height:355px; background-position: center center; background-size: cover; background-image: url('files/{{elist.curemployee.employeeNumber}}.jpg');">
          <div class="form-group">
            <div class="col-md-12 text-center" style="padding-top: 355px; padding-bottom: 2em;">
              <form class="form-horizontal" method="POST" enctype= "multipart/form-data" action="cgi-bin/upload.cgi">
@@ -217,7 +217,7 @@
 
                           <!--if there is no description, show the default description -->
                           <h4 class = "text-left" ng-repeat="document in elist.curemployee.extended.documents" ng-hide="document.description">
-                            <img src="static/static/drive_icon.png"> <a href="{{document.url}}" target="_blank">
+                            <img src="static/drive_icon.png"> <a href="{{document.url}}" target="_blank">
                             {{documentType[document.documentID].text}}</a>
                             <small><a href=""><i class="fa fa-upload"></i></a>
                                    <a href=""><i class="fa fa-remove"></i></a>
@@ -225,7 +225,7 @@
 
                           </h4>
                           <h4 ng-repeat="document in elist.curemployee.extended.documents" ng-show="document.description">
-                            <img src="static/static/drive_icon.png"> <a href="{{document.url}}">
+                            <img src="static/drive_icon.png"> <a href="{{document.url}}">
                             {{document.description}}
                             <small><a href=""><i class="fa fa-upload"></i></a>
                                      <a href=""><i class="fa fa-remove"></i></a>
