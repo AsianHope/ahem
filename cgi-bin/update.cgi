@@ -31,6 +31,7 @@ ldapfields = [
     'mobile'
     'postalAddress',
     'apple-birthday',
+    'jsonData'
 ]
 
 def main():
