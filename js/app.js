@@ -272,6 +272,7 @@
         {value: 'PT', text: 'Part Time'},
         {value: 'FT', text: 'Full Time'},
         {value: 'NLE', text: 'No Longer Employed'},
+        {value: 'DUP', text: 'Duplicate Entry'}
     ];
 
     var ah_departments = [
