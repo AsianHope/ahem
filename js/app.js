@@ -80,7 +80,18 @@
             $scope.user.pw = null;
           });
 
-        this.curemployee=null;
+          //no one selected initially
+          this.curemployee=null;
+
+          //begin internal functions
+          this.refreshEmployeeData = function(){
+            $scope.employees = [];
+            this.curemployee=null;
+            $http.get('employees/.json').
+              success(function(data, status, headers, config){
+                  $scope.employees = data;
+              })
+          };
 
         //rough approximation
         this.timeBetween = function(startDate, endDate){
