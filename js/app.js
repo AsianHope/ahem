@@ -87,7 +87,7 @@
           this.refreshEmployeeData = function(){
             $scope.employees = [];
             this.curemployee=null;
-            $http.get('employees/.json').
+            $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw).
               success(function(data, status, headers, config){
                   $scope.employees = data;
               })
