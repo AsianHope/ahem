@@ -7,7 +7,7 @@
                <!--button type="submit" class="btn btn-primary btn-lg">Submit</button -->
              </form>
            </div>
-             <h2 class="text-center nonldap">Visa Expires:
+             <h2 class="text-center nonldap" ng-hide="elist.curemployee.c=='KH'">Visa Expires:
                                 <a href="#" title="Click to edit: Visa Expiry" editable-date="elist.curemployee.visaExpires"
                                 onbeforesave="updateUser(elist.curemployee.uid,'visaExpires',$data)">
 
@@ -194,7 +194,7 @@
                                 {{elist.curemployee.degreeArea || "Not Entered"}}
                             </a></small>
                         </h4>
-                        <h4>Date Entered Cambodia:
+                        <h4 ng-hide="elist.curemployee.c=='KH'">Date Entered Cambodia:
                             <small><a href="#" title="Click to edit" editable-date="elist.curemployee.enteredCambodia"
                               onbeforesave="updateUser(elist.curemployee.uid,'enteredCambodia',$data)">
                                 {{elist.curemployee.enteredCambodia || "Not Entered"}}
