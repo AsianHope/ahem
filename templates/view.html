@@ -206,6 +206,12 @@
                                 {{elist.curemployee.insurance || "Not Entered"}}
                             </a></small>
                         </h4>
+                        <h4>Insurance ID Number:
+                            <small><a href="#" title="Click to edit" editable-text="elist.curemployee.insuranceNumber"
+                              onbeforesave="updateUser(elist.curemployee.uid,'insuranceNumber',$data)">
+                                {{elist.curemployee.insuranceNumber || "Not Entered"}}
+                            </a></small>
+                        </h4>
                     </div>
                </div>
 
