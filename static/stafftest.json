@@ -1,3 +1,55 @@
+###  Production Spec ####
+{
+"cn": "tfoolery",
+"uid": "tfoolery",
+"displayName": "tfoolery",
+"givenName": "Tom",
+"givenNamekh": "សិហាni",
+"sn": "Folery",
+"snkh": "ហ្វុលលរិ",
+"departmentNumber": "AHIS",
+"mail": "tfoolery@asianhope.org",
+"mailpr": "timmyfool@personal.com",
+"title": "Amazing Person",
+"uidNumber": "1000252",
+"employeeNumber": "1000252",
+"employeeType": "FT",
+"c": "CY",
+"l": "US",
+"mobile": "55179334600",
+"postalAddress": "#152 St 371B, Phnom Penh",
+"appleBirthday": "20150204000000Z",
+
+## extended  - stored in JSON in JSONData##
+"startdate": " 2015-03-01 ",
+"maritalstatus": " Married ",
+"enddate": " 2015-03-07 ",
+"degree": " Neatoness ",
+"faith": " Buddhist ",
+"degreeArea": " Ear ",
+"nssf": " \u17801241 ",
+"insurance": " Talen Trust ",
+"insuranceNumber": "121423"
+"idnumber": " 15123 ",
+"notes": " test\ntest\nteast ",
+"gender": " M ",
+"enteredCambodia": " 2015-03-01 ",
+"children": " 2 ",
+"documents": [
+  {"document_id":"0", "url":"files/1000061/agordon_photo.jpg", "description":""},
+  {"document_id":"1", "url":"files/1000061/agordon_cv.jpg", "description":""},
+  {"document_id":"2", "url":"files/1000061/agordon_sof.jpg", "description":""},
+  {"document_id":"3", "url":"files/1000061/agordon_reference.jpg", "description":""},
+  {"document_id":"4", "url":"files/1000061/agordon_cpp.jpg", "description":""},
+  {"document_id":"16", "url":"files/1000061/agordon_misc_termination.jpg", "description":"Employee Termination Form"},
+  {"document_id":"16", "url":"files/1000061/agordon_15.jpg", "description":"Miscellaneous Employee Award"},
+  {"document_id":"16", "url":"files/1000061/agordon_16.jpg", "description":"Salary Increase"}
+
+],
+}
+
+### Reference Spec, slightly different ###
+
 [{
 "cn": "agordon",
 "displayName": "agordon",
