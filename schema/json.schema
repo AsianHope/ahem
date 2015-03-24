@@ -1,4 +1,4 @@
-attributetype ( 1.1.1.1.1.1.1.2
+attributetype ( 1.3.6.1.4.1.45548.2.3.1
     NAME 'jsonData'
     DESC 'Misc related data encoded as JSON'
-    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768})
+   SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768})

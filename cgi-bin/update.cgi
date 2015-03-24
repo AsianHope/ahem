@@ -88,21 +88,18 @@ def main():
             if(field == 'apple-birthday'):
                 data = convertToAppleBirthday(data)
 
-            #otherwise make the modification
+            #if the field isn't in the result set, we need to do a MOD_ADD
+            if(field not in sresult_data[0][1]):
+                new = [(ldap.MOD_ADD,field,data)]
+                logging.debug('update.cgi field %s not found, adding it', field)
+            #otherwise do a modify
             else:
-
-                #if the field isn't in the result set, we need to do a MOD_ADD
-                if(field not in sresult_data[0][1]):
-                    new = [(ldap.MOD_ADD,field,data)]
-                    logging.debug('update.cgi field %s not found, adding it', field)
-                #otherwise do a modify
-                else:
-                    new = [(ldap.MOD_REPLACE,field,data)]
-                    logging.debug('update.cgi field %s found, modifying it', field)
+                new = [(ldap.MOD_REPLACE,field,data)]
+                logging.debug('update.cgi field %s found, modifying it', field)
 
 
-                #future - add to log file saying who performed what
-                slave.modify_s(dn,new)
+            #future - add to log file saying who performed what
+            slave.modify_s(dn,new)
         #if it's an extended field, then we're going to pull the JSON and rewrite it
         else:
                 #if the jsonData hasn't been added to the entry, add it.

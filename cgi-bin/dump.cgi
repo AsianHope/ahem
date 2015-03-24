@@ -79,7 +79,7 @@ def printUser(user):
         printAttribute(user,'l',0)
         printAttribute(user,'mobile',0)
         printAttribute(user,'postalAddress',0)
-        printAttribute(user,'apple-birthday',0,'appleBirthday')
+        printAttribute(user,'apple-birthday',0,'applebirthday')
         printExtendedAttributes(user)
         print '"":""},' #this is a silly hack to fake out the last attributes comma
 
