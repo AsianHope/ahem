@@ -79,9 +79,10 @@
             $scope.user.uname = null;
             $scope.user.pw = null;
           });
-
+        //no one selected initially
         this.curemployee=null;
 
+        //begin internal functions
         this.refreshEmployeeData = function(){
           $scope.employees = [];
           this.curemployee=null;
