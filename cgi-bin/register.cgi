@@ -13,6 +13,7 @@ import ldap
 import ldap.modlist as modlist
 from passlib.hash import ldap_md5
 
+import json
 import HTMLParser #unicode names are coming in in HTML Decimal - may need to push this to update.cgi
 h = HTMLParser.HTMLParser()
 #better errors, disable in production
@@ -133,27 +134,15 @@ attrs['apple-birthday'] = dob
 #attrs['userPassword'] = ldap_md5.encrypt(password)
 attrs['userPassword'] = password #plaintext is fine for unapproved accounts. We can recover and display until they change it
 
+json_attrs = {'snkh':snkh, 'givenNamekh':givenNamekh,'mailpr':mailpr}
+attrs['jsonData'] = json.dumps(json_attrs)
+
 ldif=modlist.addModlist(attrs)
 l.add_s(dn,ldif)
 
-#double fields givenNamekh snkh and mailpr
-mod_attrs = []
-if len(givenNamekh)>1:
-    mod_attrs.append( (ldap.MOD_ADD, 'givenName', givenNamekh.encode('utf-8')) )
-if len(snkh)>1:
-    mod_attrs.append( (ldap.MOD_ADD, 'sn', snkh.encode('utf-8')) )
-if len(mailpr)>1:
-    mod_attrs.append( (ldap.MOD_ADD, 'mail', mailpr) )
-
-print mod_attrs
-if len(mod_attrs)>0:
-    l.modify_s(dn,mod_attrs)
-
-
 #unbind, because we're nice.
 l.unbind_s()
-
-print 'Your account request has been submitted. Sorry, but because this is super early stage software you have to go back to <a href="https://ahem.asianhope.org">AHEM</a> and log back in'
+print '{"result":"success"}'
 
 '''
 #debug
