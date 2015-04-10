@@ -24,10 +24,10 @@ import logging
 logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
 print "Content-type: text/html; charset=utf-8"
-print                               # blank line, end of headers
-
-#get stuff from the form
+print
+                               # blank line, end of headers
 formData = cgi.FieldStorage()
+#get stuff from the form
 fname = formData.getfirst("fname","Not Entered")
 lname = formData.getfirst("lname","Not Entered")
 birthday = formData.getfirst("birthday","19700101")
@@ -39,7 +39,7 @@ message= formData.getfirst("message","Not Entered")
 employeeType= formData.getvalue("employeeType") #radio buttons are tricky - have to get value
 location = formData.getvalue("l")
 nationality = formData.getfirst("c","Not Entered")
-start_date = formData.getfirst("start_date","Not Entered")
+start_date = formData.getfirst("startdate","Not Entered")
 postal_address = formData.getfirst("postalAddress","Not Entered")
 mailpr = formData.getfirst("mailpr","Not Entered")
 snkh = h.unescape(formData.getfirst("snkh","Not Entered")) #stuff comes in encoded HTML Decimal format?
@@ -66,8 +66,10 @@ lusername = "uid="+myuid+",cn=users,dc=asianhope,dc=org"
 lpassword = mypass
 
 logging.info('user: %s requested an account for %s',myuid,email)
-
-l.simple_bind_s(lusername,lpassword)
+try:
+    l.simple_bind_s(lusername,lpassword)
+except:
+    sys.exit(0)
 
 #find next availble uid from Synology
 sbaseDN="cn=synoconf,dc=asianhope,dc=org"
@@ -134,7 +136,7 @@ attrs['apple-birthday'] = dob
 #attrs['userPassword'] = ldap_md5.encrypt(password)
 attrs['userPassword'] = password #plaintext is fine for unapproved accounts. We can recover and display until they change it
 
-json_attrs = {'snkh':snkh, 'givenNamekh':givenNamekh,'mailpr':mailpr}
+json_attrs = {'snkh':snkh, 'givenNamekh':givenNamekh,'mailpr':mailpr,'startdate':startdate}
 attrs['jsonData'] = json.dumps(json_attrs)
 
 ldif=modlist.addModlist(attrs)
