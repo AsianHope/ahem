@@ -191,50 +191,6 @@
 
                 return d.promise;
         }
-        $scope.registerAccount = function(){
-                console.log('something worked!')
-                var d = $q.defer();
-                var data = {
-                    fname: $scope.fname,
-                    lname: $scope.lname,
-                    birthday: $scope.birthday,
-                    title: $scope.title,
-                    email: $scope.email,
-                    site: $scope.site,
-                    password: $scope.password,
-                    employeeType: $scope.employeeType,
-                    location: $scope.location,
-                    message: $scope.message,
-                    nationality: $scope.nationality,
-                    start_date: $scope.start_date,
-                    postal_address: $scope.postal_address,
-                    mailpr: $scope.mailpr,
-                    snkh: $scope.snkh,
-                    givenNamekh: $scope.givenNamekh,
-                    phone: $scope.phone,
-                    myuid: $scope.myuid,
-                    mypass: $scope.mypass,
-                    dob: $scope.dob,
-                };
-                console.log(data)
-                var encoded_data = encodeURIComponent(data)
-                var uri = encodeURI('cgi-bin/register.cgi');
-                $http.post(uri).
-                  success(function(data, status, headers, config){
-
-                    if(data.result== 'success'){
-                        //console.log('success!!');
-                        d.resolve()
-                    }
-                    else
-                        d.resolve("There was an error");
-                  }).
-                  error(function(data, status, headers, config){
-                        d.reject('Server error!');
-                });
-
-                return d.promise;
-        }
 
         $scope.decodeAppleBirthday = function(applebirthday){
           if(applebirthday == null) return 'DOB'
@@ -325,7 +281,7 @@
     });
 
 
-   app.controller('EmployeeRegistrationController', function($scope, $http){
+   app.controller('EmployeeRegistrationController', function($scope, $http, $q){
      $scope.password;
      $scope.countries = world_countries;
      $scope.departments = ah_departments;
@@ -345,6 +301,75 @@
       };
 
       $scope.tempPassword();
+
+      //not working yet
+      $scope.registerAccount = function(){
+              console.log('something worked!')
+              var d = $q.defer();
+              var data = {
+                  givenName: $scope.givenName,
+                  sn: $scope.sn,
+                  birthday: $scope.birthday,
+                  title: $scope.title,
+                  mail: $scope.mail,
+                  departmentNumber: $scope.departmentNumber,
+                  password: $scope.password,
+                  employeeType: $scope.employeeType,
+                  l: $scope.l,
+                  message: $scope.message,
+                  c: $scope.c,
+                  startdate: $scope.startdate,
+                  postalAddress: $scope.postalAddress,
+                  mailpr: $scope.mailpr,
+                  snkh: $scope.snkh,
+                  givenNamekh: $scope.givenNamekh,
+                  mobile: $scope.mobile,
+                  myuid: $scope.myuid,
+                  mypass: $scope.mypass,
+              };
+
+              data = {
+                  givenName: 'test',
+                  sn: 'test',
+                  birthday: '2012-02-01',
+                  title: 'coolguy',
+                  mail: 'frankiebeenz@asianhope.org',
+                  departmentNumber: 'LIS',
+                  password: '123456',
+                  employeeType: 'PT',
+                  l: 'KH',
+                  message: 'message',
+                  c: 'US',
+                  startdate: '2014-01-09',
+                  postalAddress: '123',
+                  mailpr: 'dude@dude.com',
+                  snkh: 'ka',
+                  givenNamekh: 'kee',
+                  mobile: '1213',
+                  myuid: 'user',
+                  mypass: 'password',
+              };
+
+              console.log(data)
+              var encoded_data = encodeURIComponent(data)
+              var uri = encodeURI('cgi-bin/register.cgi');
+              $http.post(uri,data).
+                success(function(data, status, headers, config){
+
+                  if(data.result== 'success'){
+                      console.log('success!!');
+                      d.resolve()
+                  }
+                  else
+                      d.resolve("There was an error");
+                }).
+                error(function(data, status, headers, config){
+                      d.reject('Server error!');
+              });
+
+              return d.promise;
+      }
+
    });
 //globals
     var ah_employeetypes = [
