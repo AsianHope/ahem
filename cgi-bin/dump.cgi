@@ -23,8 +23,9 @@ def main():
     formData = cgi.FieldStorage()
     username = formData.getlist("username")[0]
     pw = formData.getlist("pw")[0]
+    scope = formData.getlist("scope")[0]
 
-    logging.debug('%s attempting to log in.', username)
+    logging.debug('%s attempting to pull data in scope: %s', username,scope)
     #don't require a valid certificate.. we don't currently have one!
     ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
@@ -40,11 +41,20 @@ def main():
 
 
     logging.info('%s logged in.', username)
-    sbaseDN = "cn=users,dc=asianhope,dc=org"
+
+    if scope=='REQUESTS':
+        sbaseDN = "cn=requests,dc=asianhope,dc=org"
+    else:
+        sbaseDN = "cn=users,dc=asianhope,dc=org"
+
     ssearchScope = ldap.SCOPE_SUBTREE
     sretrieveAttributes = ['*']
-    #employees are either FT or PT and don't belong to the CPU or DUP department, others are students
-    ssearchFilter = "(&(!(|(departmentNumber=CPU)(departmentNumber=DUP)))(|(employeeType=FT)(employeeType=PT)))"
+
+    if scope=='DISABLED':
+        ssearchFilter = '(employeeType=NLE)'
+    else:
+        #employees are either FT or PT and don't belong to the CPU or DUP department, others are students
+        ssearchFilter = "(&(!(|(departmentNumber=CPU)(departmentNumber=DUP)))(|(employeeType=FT)(employeeType=PT)))"
 
     ldap_slave_result_id = slave.search(sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
     sresult_set = []

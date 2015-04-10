@@ -61,7 +61,7 @@ def main():
         slave.unbind_s()
         sys.exit(1)
 
-    sbaseDN = "cn=users,dc=asianhope,dc=org"
+    sbaseDN = "dc=asianhope,dc=org"
     ssearchScope = ldap.SCOPE_SUBTREE
     sretrieveAttributes = ['*']
     ssearchFilter = "uid="+uid
@@ -79,7 +79,8 @@ def main():
         slave.unbind_s()
         sys.exit(1)
     else:
-        dn=ssearchFilter+","+sbaseDN
+        #pull the dn from the search result
+        dn=sresult_data[0][0]
 
         #if it's an ldap field, we should insert it directly
         if field in ldapfields:

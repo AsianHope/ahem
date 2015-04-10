@@ -23,7 +23,7 @@ ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 slave = ldap.initialize("ldaps://ldap02.asianhope.org:636")
 slave.protocol_version = ldap.VERSION3
 susername = "uid=tfoolery,cn=users,dc=asianhope,dc=org"
-spassword = "starwars1"
+spassword = "starwars2"
 slave.simple_bind_s(susername,spassword)
 
 sbaseDN = "cn=users,dc=asianhope,dc=org"

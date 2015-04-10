@@ -32,6 +32,12 @@
 		templateUrl: 'templates/ahem-log.html',
 	};
     });
+    app.directive('staffStatus', function(){
+  return {
+    restrict: 'E',
+    templateUrl: 'templates/status.html',
+  };
+    });
 
    app.controller('TabController', function(){
         this.tab=3;
@@ -63,7 +69,7 @@
 
         //load data
         //to do: encode uri?
-        $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw).
+        $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw+'&scope=CURSTAFF').
           success(function(data, status, headers, config){
             //if dump.cgi says we can't bind for some reason
             if(data.result== 'error'){
@@ -87,7 +93,25 @@
           this.refreshEmployeeData = function(){
             $scope.employees = [];
             this.curemployee=null;
-            $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw).
+            $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw+'&scope=CURSTAFF').
+              success(function(data, status, headers, config){
+                  $scope.employees = data;
+              })
+          };
+
+          this.showRequestedAccounts = function(){
+            $scope.employees = [];
+            this.curemployee=null;
+            $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw+'&scope=REQUESTS').
+              success(function(data, status, headers, config){
+                  $scope.employees = data;
+              })
+          };
+
+          this.showDisabledAccounts = function(){
+            $scope.employees = [];
+            this.curemployee=null;
+            $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw+'&scope=DISABLED').
               success(function(data, status, headers, config){
                   $scope.employees = data;
               })
@@ -152,6 +176,50 @@
                 var uri = encodeURI('cgi-bin/update.cgi?uid='+uid+'&field='+field+'&data='+encoded_data+
                                         '&username='+$scope.user.uname+'&pw='+$scope.user.pw);
                 $http.get(uri).
+                  success(function(data, status, headers, config){
+
+                    if(data.result== 'success'){
+                        //console.log('success!!');
+                        d.resolve()
+                    }
+                    else
+                        d.resolve("There was an error");
+                  }).
+                  error(function(data, status, headers, config){
+                        d.reject('Server error!');
+                });
+
+                return d.promise;
+        }
+        $scope.registerAccount = function(){
+                console.log('something worked!')
+                var d = $q.defer();
+                var data = {
+                    fname: $scope.fname,
+                    lname: $scope.lname,
+                    birthday: $scope.birthday,
+                    title: $scope.title,
+                    email: $scope.email,
+                    site: $scope.site,
+                    password: $scope.password,
+                    employeeType: $scope.employeeType,
+                    location: $scope.location,
+                    message: $scope.message,
+                    nationality: $scope.nationality,
+                    start_date: $scope.start_date,
+                    postal_address: $scope.postal_address,
+                    mailpr: $scope.mailpr,
+                    snkh: $scope.snkh,
+                    givenNamekh: $scope.givenNamekh,
+                    phone: $scope.phone,
+                    myuid: $scope.myuid,
+                    mypass: $scope.mypass,
+                    dob: $scope.dob,
+                };
+                console.log(data)
+                var encoded_data = encodeURIComponent(data)
+                var uri = encodeURI('cgi-bin/register.cgi');
+                $http.post(uri).
                   success(function(data, status, headers, config){
 
                     if(data.result== 'success'){

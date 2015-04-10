@@ -12,7 +12,10 @@
                 <option value="uidNumber">Employee Number: Low to High</option>
                 <option value="-uidNumber">Employee: High to Low</option>
             </select>
-	    <h1><a href ng-click="elist.selectSelf()" style="color:red; text-decoration: underline;">Go to my profile</a> <a href ng-click="elist.refreshEmployeeData()"><i class="fa fa-refresh"></i></a></h1>
+	    <h1><a href ng-click="elist.selectSelf()" style="color:red; text-decoration: underline;">Go to my profile</a>
+          <a href ng-click="elist.refreshEmployeeData()" alt="Show current employees"><i class="fa fa-group"></i></a>
+          <a href ng-click="elist.showRequestedAccounts()" alt = "Show requested accounts"><i class="fa fa-cogs"></i></a>
+          <a href ng-click="elist.showDisabledAccounts()" alt = "Show disabled accounts"><i class="fa fa-question-circle"></i></a></h1>
         </div>
 
         <table class="table table-striped table-hover">
