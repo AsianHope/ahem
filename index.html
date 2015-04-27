@@ -17,7 +17,7 @@
              <section ng-if="user.uname != null" ng-controller="TabController as tab">
                   <ul class = "nav nav-tabs" >
                       <li ng-class="{ active:this.tab.isSet(1) }">
-                          <a href ng-click="this.tab.setTab(1)">Home</a>
+                          <a href ng-click="this.tab.setTab(1)">Status</a>
                       </li>
                       <li ng-class="{ active:this.tab.isSet(2) }">
                           <a href ng-click="this.tab.setTab(2)">Register a new account</a>
@@ -31,8 +31,8 @@
                   </ul>
 
                   <div ng-show="this.tab.isSet(1)">
-			<h1>Home</h1>
-			<p>Not much to see here.</p>
+            			<h1>Home</h1>
+            			<p>Not much to see here.</p>
                   </div>
                   <div ng-show="this.tab.isSet(2)">
                       <new-staff></new-staff>

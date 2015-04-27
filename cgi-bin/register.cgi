@@ -3,7 +3,7 @@
 
 import cgi
 import os,sys
-
+import json
 #email sending stuff
 from subprocess import Popen, PIPE
 from email.mime.text import MIMEText
@@ -26,71 +26,75 @@ logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s 
 print "Content-type: text/html; charset=utf-8"
 print
                                # blank line, end of headers
+logging.debug('got a POST to register.cgi')
+
 formData = cgi.FieldStorage()
+logging.debug(formData)
 #get stuff from the form
-fname = formData.getfirst("fname","Not Entered")
-lname = formData.getfirst("lname","Not Entered")
+givenName = formData.getfirst("givenName","Not Entered")
+sn = formData.getfirst("sn","Not Entered")
 birthday = formData.getfirst("birthday","19700101")
 title = formData.getfirst("title","Not Entered")
-email = formData.getfirst("email","Not Entered")
-site = formData.getfirst("site","Not Entered")
+mail = formData.getfirst("mail","Not Entered")
+departmentNumber = formData.getfirst("departmentNumber","Not Entered")
 password = formData.getfirst("password","Not Entered")
-message= formData.getfirst("message","Not Entered")
+message = formData.getfirst("message","Not Entered")
 employeeType= formData.getvalue("employeeType") #radio buttons are tricky - have to get value
-location = formData.getvalue("l")
-nationality = formData.getfirst("c","Not Entered")
-start_date = formData.getfirst("startdate","Not Entered")
-postal_address = formData.getfirst("postalAddress","Not Entered")
+l = formData.getvalue("l","US")
+c = formData.getfirst("c","Not Entered")
+startdate = formData.getfirst("startdate","Not Entered")
+postalAddress = formData.getfirst("postalAddress","Not Entered")
 mailpr = formData.getfirst("mailpr","Not Entered")
 snkh = h.unescape(formData.getfirst("snkh","Not Entered")) #stuff comes in encoded HTML Decimal format?
 givenNamekh = h.unescape(formData.getfirst("givenNamekh","Not Entered"))
-phone = formData.getfirst("phone","Not Entered")
+mobile = formData.getfirst("mobile","Not Entered")
 myuid = formData.getfirst("myuid","Not Entered")
 mypass = formData.getfirst("mypass","Not Entered")
-
 #get dob in apple-birthday format, magic number at the end is 7:00am, UTC+7
 dob = birthday.replace('-','')+'070000Z'
 
 #pull out the username
-splits = email.split('@')
+splits = mail.split('@')
 username = splits[0]
 
 #don't require a valid certificate.. we don't currently have one!
 ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
 #open connection to LDAP
-l = ldap.initialize("ldaps://ldap02.asianhope.org:636/")
-l.protocol_version = ldap.VERSION3
+s = ldap.initialize("ldaps://ldap02.asianhope.org:636/")
+s.protocol_version = ldap.VERSION3
 
 lusername = "uid="+myuid+",cn=users,dc=asianhope,dc=org"
 lpassword = mypass
 
-logging.info('user: %s requested an account for %s',myuid,email)
+logging.info('user: %s requested an account for %s',myuid,mail)
 try:
-    l.simple_bind_s(lusername,lpassword)
+    s.simple_bind_s(lusername,lpassword)
 except:
+    logging.debug('Could not bind to LDAP server with username: %s',myuid)
     sys.exit(0)
 
+logging.debug('credentials check out.')
 #find next availble uid from Synology
 sbaseDN="cn=synoconf,dc=asianhope,dc=org"
 ssearchScope = ldap.SCOPE_SUBTREE
 sretrieveAttributes = ['uidNumber']
 ssearchFilter='cn=CurID'
-ldap_result_id = l.search(sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
+ldap_result_id = s.search(sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
 result_set = []
-result_type, result_data = l.result(ldap_result_id,0)
+result_type, result_data = s.result(ldap_result_id,0)
 uidnumber=result_data[0][1]['uidNumber'][0]
-
+logging.debug('Next available uid is: %s',uidnumber)
 #and increment it immediately. Better to have non-sequential UIDs than to have overlapping!
 uiddn = "cn=CurID,cn=synoconf,dc=asianhope,dc=org"
 old = {'uidNumber':uidnumber}
 new = {'uidNumber':str(int(uidnumber)+1)}
-
+logging.debug(new)
 uidldif=modlist.modifyModlist(old,new)
-l.modify_s(uiddn,uidldif)
+s.modify_s(uiddn,uidldif)
+logging.debug('Incrementing it')
 
-
-
+'''
 #verify uploaded file came through correctly
 fileitem = formData['image']
 if fileitem.filename:
@@ -100,7 +104,8 @@ if fileitem.filename:
 
 else:
     pass
-
+'''
+logging.debug('Building LDIF')
 
 #write new user to requests CN
 dn="uid="+username+",cn=requests,dc=asianhope,dc=org"
@@ -111,27 +116,30 @@ attrs['objectclass'] = ['apple-user','extensibleObject','inetOrgPerson','organiz
                         'top']
 
 attrs['cn'] = username
+
 attrs['homeDirectory'] = '/home/'+username
 attrs['loginShell'] = '/bin/bash' #once approved we'll change this
 attrs['sambaSID'] = 'S-1-5-21-3527002495-2526512175-3850050249-'+str(uidnumber)#need to generate last bit?
-attrs['sn'] = lname
-attrs['givenName'] = fname
-attrs['gecos']= fname+' '+lname
+attrs['sn'] = sn
+attrs['givenName'] = givenName
+attrs['gecos']= givenName+' '+sn
 attrs['uid'] = username
-attrs['departmentNumber'] = site
+attrs['departmentNumber'] = departmentNumber
 attrs['displayName'] = username
+
 attrs['employeeNumber'] = str(uidnumber)
 attrs['uidNumber'] = str(uidnumber)
 attrs['gidNumber'] = '1000001' #users
-attrs['l'] = location
-attrs['c'] = nationality if len(nationality)==2 else "US"
-attrs['postalAddress'] = postal_address #need to massage this a bit
-attrs['mobile'] = phone
+attrs['l'] = l
+attrs['c'] = c
+
+attrs['postalAddress'] = postalAddress
+attrs['mobile'] = mobile
 
 attrs['employeeType'] = employeeType #Staff employeeType is 'S'
 attrs['title'] = title #Their title is their title!
 
-attrs['mail'] = email
+attrs['mail'] = mail
 attrs['apple-birthday'] = dob
 #attrs['userPassword'] = ldap_md5.encrypt(password)
 attrs['userPassword'] = password #plaintext is fine for unapproved accounts. We can recover and display until they change it
@@ -140,10 +148,11 @@ json_attrs = {'snkh':snkh, 'givenNamekh':givenNamekh,'mailpr':mailpr,'startdate'
 attrs['jsonData'] = json.dumps(json_attrs)
 
 ldif=modlist.addModlist(attrs)
-l.add_s(dn,ldif)
+logging.debug(ldif)
+s.add_s(dn,ldif)
 
 #unbind, because we're nice.
-l.unbind_s()
+s.unbind_s()
 print '{"result":"success"}'
 
 '''
@@ -175,7 +184,7 @@ print '"":""},'
 
 print "message: "+message
 print "start date: "+start_date
-'''
+
 #send email
 msg = MIMEText(message)
 msg['To'] = 'lyle@asianhope.org'
@@ -186,3 +195,4 @@ try:
     p.communicate(msg.as_string())
 except Exception:
     pass
+'''

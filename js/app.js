@@ -304,6 +304,7 @@
 
       //not working yet
       $scope.registerAccount = function(){
+              //$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
               console.log('something worked!')
               var d = $q.defer();
               var data = {
@@ -324,10 +325,10 @@
                   snkh: $scope.snkh,
                   givenNamekh: $scope.givenNamekh,
                   mobile: $scope.mobile,
-                  myuid: $scope.myuid,
-                  mypass: $scope.mypass,
+                  myuid: $scope.user.uname,
+                  mypass: $scope.user.pw,
               };
-
+/*
               data = {
                   givenName: 'test',
                   sn: 'test',
@@ -346,18 +347,24 @@
                   snkh: 'ka',
                   givenNamekh: 'kee',
                   mobile: '1213',
-                  myuid: 'user',
-                  mypass: 'password',
+                  myuid: $scope.user.uname,
+                  mypass: $scope.user.pw,
               };
+*/
 
               console.log(data)
               var encoded_data = encodeURIComponent(data)
               var uri = encodeURI('cgi-bin/register.cgi');
-              $http.post(uri,data).
+              $http({
+                    method  : 'POST',
+                    url     : uri,
+                    data    : $.param(data),  // pass in data as strings
+                    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                   }).
                 success(function(data, status, headers, config){
-
                   if(data.result== 'success'){
                       console.log('success!!');
+                      $scope.success_message = "Success!"
                       d.resolve()
                   }
                   else
