@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+from credentials import LDAP_CREDENTIALS
 import ldap
 import ldap.modlist as modlist
 import cgi
@@ -22,8 +22,8 @@ ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
 slave = ldap.initialize("ldaps://ldap02.asianhope.org:636")
 slave.protocol_version = ldap.VERSION3
-susername = "uid=tfoolery,cn=users,dc=asianhope,dc=org"
-spassword = "starwars2"
+susername = LDAP_CREDENTIALS['dn']
+spassword = LDAP_CREDENTIALS['password']
 slave.simple_bind_s(susername,spassword)
 
 sbaseDN = "cn=users,dc=asianhope,dc=org"
