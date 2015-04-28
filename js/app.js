@@ -302,69 +302,20 @@
 
       $scope.tempPassword();
 
-      //not working yet
+      
       $scope.registerAccount = function(){
-              //$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
-              console.log('something worked!')
               var d = $q.defer();
-              var data = {
-                  givenName: $scope.givenName,
-                  sn: $scope.sn,
-                  birthday: $scope.birthday,
-                  title: $scope.title,
-                  mail: $scope.mail,
-                  departmentNumber: $scope.departmentNumber,
-                  password: $scope.password,
-                  employeeType: $scope.employeeType,
-                  l: $scope.l,
-                  message: $scope.message,
-                  c: $scope.c,
-                  startdate: $scope.startdate,
-                  postalAddress: $scope.postalAddress,
-                  mailpr: $scope.mailpr,
-                  snkh: $scope.snkh,
-                  givenNamekh: $scope.givenNamekh,
-                  mobile: $scope.mobile,
-                  myuid: $scope.user.uname,
-                  mypass: $scope.user.pw,
-              };
-/*
-              data = {
-                  givenName: 'test',
-                  sn: 'test',
-                  birthday: '2012-02-01',
-                  title: 'coolguy',
-                  mail: 'frankiebeenz@asianhope.org',
-                  departmentNumber: 'LIS',
-                  password: '123456',
-                  employeeType: 'PT',
-                  l: 'KH',
-                  message: 'message',
-                  c: 'US',
-                  startdate: '2014-01-09',
-                  postalAddress: '123',
-                  mailpr: 'dude@dude.com',
-                  snkh: 'ka',
-                  givenNamekh: 'kee',
-                  mobile: '1213',
-                  myuid: $scope.user.uname,
-                  mypass: $scope.user.pw,
-              };
-*/
-
-              console.log(data)
-              var encoded_data = encodeURIComponent(data)
               var uri = encodeURI('cgi-bin/register.cgi');
               $http({
                     method  : 'POST',
                     url     : uri,
-                    data    : $.param(data),  // pass in data as strings
+                    data    : $.param($scope.formdata),  // pass in data as strings
                     headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                    }).
                 success(function(data, status, headers, config){
                   if(data.result== 'success'){
-                      console.log('success!!');
-                      $scope.success_message = "Success!"
+                      $scope.success_message = "Success!";
+                      console.log('set scucess')
                       d.resolve()
                   }
                   else
@@ -375,7 +326,14 @@
               });
 
               return d.promise;
-      }
+      };
+
+      $scope.resetRequestForm = function(){
+        console.log("reseting request form")
+        $scope.success_message = null;
+        $scope.formdata = null;
+      };
+
 
    });
 //globals
