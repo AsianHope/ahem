@@ -302,7 +302,7 @@
 
       $scope.tempPassword();
 
-      
+
       $scope.registerAccount = function(){
               var d = $q.defer();
               var uri = encodeURI('cgi-bin/register.cgi');
@@ -331,7 +331,7 @@
       $scope.resetRequestForm = function(){
         console.log("reseting request form")
         $scope.success_message = null;
-        $scope.formdata = null;
+        $scope.formdata = {};
       };
 
 

@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from credentials import LDAP_CREDENTIALS
 
 import cgi
 import os,sys
@@ -64,8 +65,8 @@ ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 s = ldap.initialize("ldaps://ldap02.asianhope.org:636/")
 s.protocol_version = ldap.VERSION3
 
-lusername = "uid="+myuid+",cn=users,dc=asianhope,dc=org"
-lpassword = mypass
+lusername = LDAP_CREDENTIALS['dn']
+lpassword = LDAP_CREDENTIALS['password']
 
 logging.info('user: %s requested an account for %s',myuid,mail)
 try:
@@ -87,7 +88,7 @@ uidnumber=result_data[0][1]['uidNumber'][0]
 logging.debug('Next available uid is: %s',uidnumber)
 #and increment it immediately. Better to have non-sequential UIDs than to have overlapping!
 uiddn = "cn=CurID,cn=synoconf,dc=asianhope,dc=org"
-old = {'uidNumber':uidnumber}
+old = result_data[0][1]
 new = {'uidNumber':str(int(uidnumber)+1)}
 logging.debug(new)
 uidldif=modlist.modifyModlist(old,new)
