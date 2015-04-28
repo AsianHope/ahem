@@ -1,13 +1,14 @@
 
 <div class="container col-md-12" style="padding-top: 5px;" ng-controller="EmployeeRegistrationController as ERegCtrl">
+	<div ng-show="success_message">{{success_message}} <a href ng-click="resetRequestForm()">Register another?</a></div>
+	<div ng-hide="success_message">
 <div id="imagePreview" class="col-md-4 well well-sm" style="width: 236px; height:355px; background-position: center center; background-size: cover;"></div>
+	{{formdata}}
 	<div class="container col-md-8">
 		<div class="row">
 				<div class="col-md-12">
 					<div class="well well-sm">
 						<form class="form-horizontal" ng-submit="registerAccount()">
-							<input type="hidden" name="myuid" value="{{user.uname}}">
-							<input type="hidden" name="mypass" value="{{user.pw}}">
 						<fieldset>
 							<legend class="text-center header">Register a New Account</legend>
 
@@ -15,7 +16,7 @@
 									<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-calendar bigicon"></i></span>
 									<div class="col-md-8" >
 										<label>Start Date</label>
-										<input type="date" class="form-control" name="start_date" ng-model="startdate"></input>
+										<input type="date" class="form-control" name="start_date" ng-model="formdata.startdate"></input>
 									</div>
 							</div>
 
@@ -23,8 +24,8 @@
 								<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-archive bigicon"></i></span>
 								<div class="col-md-8">
 									<label>Type</label>
-									<input id="type" name="employeeType" ng-model="employeeType" type="radio" value="FT" checked>Full Time Staff&nbsp;
-									<input id="type" name="employeeType" ng-model="employeeType" type="radio" value="PT">Part Time Staff&nbsp;
+									<input id="type" name="employeeType" ng-model="formdata.employeeType" type="radio" value="FT" checked>Full Time Staff&nbsp;
+									<input id="type" name="employeeType" ng-model="formdata.employeeType" type="radio" value="PT">Part Time Staff&nbsp;
 								</div>
 							</div>
 
@@ -32,17 +33,17 @@
 								<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-map-marker bigicon"></i></span>
 								<div class="col-md-8">
 									<label>Work Site</label>
-									<input id="type" name="l" ng-model="l" type="radio" value="KH" checked>Cambodia&nbsp;
-									<input id="type" name="l" ng-model="l" type="radio" value="PT">USA&nbsp;
+									<input id="type" name="l" ng-model="formdata.l" type="radio" value="KH" checked>Cambodia&nbsp;
+									<input id="type" name="l" ng-model="formdata.l" type="radio" value="PT">USA&nbsp;
 								</div>
 							</div>
 
 							<div class="form-group">
 										<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-building-o bigicon"></i></span>
 										<div class="col-md-8">
-											<select id="site_staff" ng-model="departmentNumber" name="site" class="form-control">
+											<select id="site_staff" ng-model="formdata.departmentNumber" name="site" class="form-control">
 													<option selected="selected">-- Department --</option>
-													<option ng-repeat="department in departments" ng-model="departmentNumber" value="{{department.value}}">{{department.value}}</option>
+													<option ng-repeat="department in departments" ng-model="formdata.departmentNumber" value="{{department.value}}">{{department.value}}</option>
 											</select>
 										</div>
 								</div>
@@ -50,9 +51,9 @@
 								<div class="form-group">
 											<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-flag bigicon"></i></span>
 											<div class="col-md-8">
-												<select id="nationality" name="c" ng-model="c" class="form-control">
+												<select id="nationality" name="c" ng-model="formdata.c" class="form-control">
 														<option selected="selected">-- Passport Country --</option>
-														<option ng-repeat="country in countries" ng-model="c" value="{{country.value}}">{{country.text}}</option>
+														<option ng-repeat="country in countries" ng-model="formdata.c" value="{{country.value}}">{{country.text}}</option>
 												</select>
 											</div>
 									</div>
@@ -60,7 +61,7 @@
 							<div class="form-group">
 										<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-suitcase bigicon"></i></span>
 										<div class="col-md-8">
-											<input id="title_staff" name="title" ng-model="title" type="text" placeholder="Position" class="form-control">
+											<input id="title_staff" name="title" ng-model="formdata.title" type="text" placeholder="Position" class="form-control">
 											<select id="title_student" name="title" class="form-control" style="display:none">
 													<option selected="selected">-- Grade --</option>
 													<option>PK3</option>
@@ -88,35 +89,35 @@
 							<div class="form-group">
 								<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
 								<div class="col-md-8">
-									<input id="fname" name="fname" type="text" ng-model="givenName" placeholder="First Name" class="form-control">
+									<input id="fname" name="fname" type="text" ng-model="formdata.givenName" placeholder="First Name" class="form-control">
 								</div>
 							</div>
 
 								<div class="form-group">
 										<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-users bigicon"></i></span>
 										<div class="col-md-8">
-											<input id="lname" name="lname" ng-model="sn" type="text" placeholder="Family Name" class="form-control">
+											<input id="lname" name="lname" ng-model="formdata.sn" type="text" placeholder="Family Name" class="form-control">
 										</div>
 								</div>
 
 								<div class="form-group">
 									<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
 									<div class="col-md-8">
-										<input id="givenNamekh" name="givenNamekh"  ng-model="givenNamekh" type="text" placeholder="First Name (Khmer)" class="form-control">
+										<input id="givenNamekh" name="givenNamekh"  ng-model="formdata.givenNamekh" type="text" placeholder="First Name (Khmer)" class="form-control">
 									</div>
 								</div>
 
 								<div class="form-group">
 									<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-users bigicon"></i></span>
 									<div class="col-md-8">
-										<input id="snkh" name="snkh" ng-model="snkh" type="text" placeholder="Family Name (Khmer)" class="form-control">
+										<input id="snkh" name="snkh" ng-model="formdata.snkh" type="text" placeholder="Family Name (Khmer)" class="form-control">
 									</div>
 								</div>
 
 								<div class="form-group">
 										<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-birthday-cake bigicon"></i></span>
 										<div class="col-md-8" >
-											<input type="date" value = "1970-01-01" class="form-control" name="birthday" ng-model="birthday"></input>
+											<input type="date" value = "1970-01-01" class="form-control" name="birthday" ng-model="formdata.birthday"></input>
 										</div>
 								</div>
 
@@ -124,34 +125,34 @@
 							<div class="form-group">
 								<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-envelope-o bigicon"></i></span>
 								<div class="col-md-8">
-									<input id="mail" name="mail" ng-model="mail" type="text" placeholder="Email Address" class="form-control">
+									<input id="mail" name="mail" ng-model="formdata.mail" type="text" placeholder="Email Address" class="form-control">
 								</div>
 							</div>
 							<div class="form-group">
 								<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-envelope bigicon"></i></span>
 								<div class="col-md-8">
-									<input id="mailpr" name="mailpr" ng-model="mailpr" type="text" placeholder="Personal Email Address" class="form-control">
+									<input id="mailpr" name="mailpr" ng-model="formdata.mailpr" type="text" placeholder="Personal Email Address" class="form-control">
 								</div>
 							</div>
 
 								<div class="form-group">
 								<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-phone bigicon"></i></span>
 								<div class="col-md-8">
-									<input id="phone" name="phone" ng-model="mobile" type="text" placeholder="Phone (in the form +855XXXXXXXX)" class="form-control">
+									<input id="phone" name="phone" ng-model="formdata.mobile" type="text" placeholder="Phone (in the form +855XXXXXXXX)" class="form-control">
 								</div>
 							</div>
 
 					<div class="form-group">
 							<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-home bigicon"></i></span>
 							<div class="col-md-8">
-							<textarea class="form-control" id="postalAddress" name="postalAddress" ng-model="postalAddress" placeholder="Residential Address" rows="3"></textarea>
+							<textarea class="form-control" id="postalAddress" name="postalAddress" ng-model="formdata.postalAddress" placeholder="Residential Address" rows="3"></textarea>
 							</div>
 						</div>
 
 							<div class="form-group">
 									<span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-pencil-square-o bigicon"></i></span>
 									<div class="col-md-8">
-									<textarea class="form-control" id="message" name="message" ng-model="message" placeholder="About this staff member (to be sent to all staff)" rows="7"></textarea>
+									<textarea class="form-control" id="message" name="message" ng-model="formdata.message" placeholder="About this staff member (to be sent to all staff)" rows="7"></textarea>
 									</div>
 								</div>
 
@@ -232,8 +233,8 @@
 					function(){$(this).css('color','lightgrey'); $(this).css('cursor','pointer');},
 					function(){$(this).css('color','gray');});
 
-			$('#email').change(function(){
-					checkUid($('#email').val());
+			$('#mail').change(function(){
+					checkUid($('#mail').val());
 			});
 			var updateEmail = function(){
 					var uid = fname.substring(0,1) + lname.replace(/\s+/g, '');
@@ -269,6 +270,8 @@
 									$('#mail').css("border","#00AA00 1px solid");
 									$('#mail').css("color","#00AA00");
 							}
+							//force Angular to realize we've changed something
+							$('#mail').trigger('input');
 					});
 
 
@@ -276,3 +279,4 @@
 	</script>
 
 	</div>
+</div>
