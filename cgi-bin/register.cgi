@@ -38,7 +38,7 @@ birthday = formData.getfirst("birthday","19700101")
 title = formData.getfirst("title","Not Entered")
 mail = formData.getfirst("mail","Not Entered")
 departmentNumber = formData.getfirst("departmentNumber","Not Entered")
-password = formData.getfirst("password","Not Entered")
+userPassword = formData.getfirst("userPassword","Not Entered")
 message = formData.getfirst("message","Not Entered")
 employeeType= formData.getvalue("employeeType") #radio buttons are tricky - have to get value
 l = formData.getvalue("l","US")
@@ -143,7 +143,7 @@ attrs['title'] = title #Their title is their title!
 attrs['mail'] = mail
 attrs['apple-birthday'] = dob
 #attrs['userPassword'] = ldap_md5.encrypt(password)
-attrs['userPassword'] = password #plaintext is fine for unapproved accounts. We can recover and display until they change it
+attrs['userPassword'] = userPassword #plaintext is fine for unapproved accounts. We can recover and display until they change it
 
 json_attrs = {'snkh':snkh, 'givenNamekh':givenNamekh,'mailpr':mailpr,'startdate':startdate}
 attrs['jsonData'] = json.dumps(json_attrs)

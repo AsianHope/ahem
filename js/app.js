@@ -305,6 +305,7 @@
 
       $scope.registerAccount = function(){
               var d = $q.defer();
+              $scope.formdata['userPassword']=$scope.password;
               var uri = encodeURI('cgi-bin/register.cgi');
               $http({
                     method  : 'POST',
@@ -332,6 +333,7 @@
         console.log("reseting request form")
         $scope.success_message = null;
         $scope.formdata = {};
+        $scope.tempPassword();
       };
 
 
