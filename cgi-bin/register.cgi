@@ -185,15 +185,14 @@ print '"":""},'
 
 print "message: "+message
 print "start date: "+start_date
-
+'''
 #send email
 msg = MIMEText(message)
 msg['To'] = 'lyle@asianhope.org'
 msg['From'] = 'noreply@asianhope.org'
-msg['Subject'] = 'New Account Request: ' +site+'-'+username
+msg['Subject'] = 'New Account Request: ' +departmentNumber+'-'+username
 try:
     p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
     p.communicate(msg.as_string())
 except Exception:
     pass
-'''
