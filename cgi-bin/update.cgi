@@ -6,6 +6,10 @@
 
 import ldap
 import ldap.modlist as modlist
+
+from clickatell.http import Http
+from credentials import CLICKATELL_CREDENTIALS
+
 import cgi
 import urllib
 #better errors, disable in production
@@ -101,6 +105,7 @@ def main():
 
             #future - add to log file saying who performed what
             slave.modify_s(dn,new)
+            
         #if it's an extended field, then we're going to pull the JSON and rewrite it
         else:
                 #if the jsonData hasn't been added to the entry, add it.
@@ -119,6 +124,13 @@ def main():
         print '{"result":"success"}'
         slave.unbind_s()
         logging.info('%s modified user %s, field: %s, data: %s', username, uid, field, data)
+
+        #and finally, if it was their mobile number - let them know it was updated!
+        if username == uid and field == 'mobile':    
+            clickatell = Http(CLICKATELL_CREDENTIALS['username'],CLICKATELL_CREDENTIALS['password'],CLICKATELL_CREDENTIALS['apiID'])
+            response = clickatell.sendMessage(data,"This number is now your AH emergency contact number", {'from':'AHALERTS'})
+            logging.info('clickatell message sent, response: %s', response)
+
 
 
 
