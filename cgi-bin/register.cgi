@@ -185,15 +185,40 @@ print '"":""},'
 
 print "message: "+message
 print "start date: "+start_date
-
+'''
 #send email
-msg = MIMEText(message)
+account_request = '''
+<html>
+<head></head>
+<body>
+<p>
+Hi '''+givenName+''',<br/>
+We've received and processed your request for an Asian Hope account.<br/>
+</p>
+<p>
+Your global username is: <strong>'''+username+'''</strong><br/>
+Your global password is: <strong>'''+userPassword+'''</strong>
+</p>
+<p>
+Your email address is: '''+mail+'''
+</p>
+<p>
+Take some time to review the <a href = "http://confluence.asianhope.org/pages/viewpage.action?pageId=917566">I'm new. Where do I start?"</a> section of the <a href="http://confluence.asianhope.org/display/MIS/Computer+Documentation">MIS Documentation</a> which will help get you set up!
+</p>
+<p>
+If you have any questions, don't hesitate to ask! We're here to support you!
+</p>
+
+-----<br/>
+
+personal email: '''+mailpr+'''
+'''
+msg = MIMEText(account_request + message+'</body></html>','html')
 msg['To'] = 'lyle@asianhope.org'
 msg['From'] = 'noreply@asianhope.org'
-msg['Subject'] = 'New Account Request: ' +site+'-'+username
+msg['Subject'] = 'New Account Request: ' +departmentNumber+'-'+username
 try:
     p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
     p.communicate(msg.as_string())
 except Exception:
     pass
-'''
