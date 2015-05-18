@@ -291,7 +291,14 @@
      var keylist="abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$*&";
      var temp='';
      var plength=8;
-
+     //default values
+     $scope.formdata = {
+        'employeeType':'FT',
+        'l':'KH',
+        'c':'US',
+        'apple-birthday':'1970-01-01',
+        'departmentNumber':'UNK'
+     };
       // taken from http://www.javascriptkit.com/script/script2/passwordgenerate.shtml
       $scope.tempPassword = function(){
           temp='';
@@ -332,7 +339,7 @@
       $scope.resetRequestForm = function(){
         console.log("reseting request form")
         $scope.success_message = null;
-        $scope.formdata = {};
+        $scope.formdata = {'l':'KH'};
         $scope.tempPassword();
       };
 
@@ -360,6 +367,7 @@
         {value: 'VDP-PKP', text: 'VDP Prek Pneu'},
         {value: 'VDP-NKO', text: 'VDP NKO'},
         {value: 'MULTI', text: 'Multiple Departments'},
+        {value: 'UNK', text: 'Unknown Department'},
 
     ];
 
