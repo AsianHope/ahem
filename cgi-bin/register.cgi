@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from credentials import LDAP_CREDENTIALS
+from credentials import SERVER
 
 import cgi
 import os,sys
@@ -62,7 +63,7 @@ username = splits[0]
 ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
 #open connection to LDAP
-s = ldap.initialize("ldaps://ldap02.asianhope.org:636/")
+s = ldap.initialize(SERVER)
 s.protocol_version = ldap.VERSION3
 
 lusername = LDAP_CREDENTIALS['dn']
