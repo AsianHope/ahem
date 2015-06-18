@@ -1,0 +1,159 @@
+<div id="imagePreview" class="col-md-4 well well-sm" style="width: 236px; height:355px; background-position: center center; background-size: cover; background-image: url('files/{{elist.selfselect.employeeNumber}}.jpg');">
+ <div class="form-group">
+   <div class="col-md-12 text-center" style="padding-top: 355px; padding-bottom: 2em;">
+     <form class="form-horizontal" method="POST" enctype= "multipart/form-data" action="cgi-bin/upload.cgi">
+       <!--input id="uploadFile" size=40 name="image" type="file" class="form-control"-->
+       <input type="hidden" name="uidNumber" value="{{elist.selfselect.uidNumber}}">
+       <!--button type="submit" class="btn btn-primary btn-lg">Submit</button -->
+     </form>
+   </div>
+     <h2 class="text-center nonldap" ng-hide="elist.selfselect.c=='KH'">Visa Expires:
+                        <a href="#" title="Click to edit: Visa Expiry" editable-date="elist.selfselect.visaExpires"
+                        onbeforesave="updateUser(elist.selfselect.uid,'visaExpires',$data)">
+
+                            {{elist.selfselect.visaExpires || "Not Entered"}}
+                        </a>
+    </h2>
+    <h2 class="text-center documents" style="color: red;">Missing Documents:</h2>
+       <ul class="documents">
+         <li ng-repeat="document in showMissingDocs(elist.selfselect.extended.documents, documentType)">
+             {{document.text}}
+        </li>
+       </ul>
+
+ </div>
+
+</div>
+<div class="container col-md-8">
+
+    <!-- Biogrpahical -->
+  <div class="col-md-12">
+    <div class="well well-sm">
+      <fieldset>
+
+      <!-- Name, Sex, Dept, Employee Number -->
+      <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
+            <div class="col-md-6">
+                <h3 class="text-left">
+                    <a href="#" title="Click to edit: Surname" editable-text="elist.selfselect.sn"
+                        onbeforesave="updateUser(elist.selfselect.uid,'sn',$data)">
+                        {{elist.selfselect.sn +', '}}
+                    </a>
+                    <a href="#" title="Click to edit: First Name" editable-text="elist.selfselect.givenName"
+                        onbeforesave="updateUser(elist.selfselect.uid,'givenName',$data)">
+                        {{elist.selfselect.givenName}}
+                    </a>
+                    <a href="#" title="Click to edit: Gender" editable-select="elist.selfselect.gender"
+                        e-ng-options="gender.value as gender.text for gender in genders"
+                        onbeforesave="updateUser(elist.selfselect.uid,'gender',$data)">
+                        <small>({{elist.selfselect.gender}})</small>
+                    </a>
+                </h3>
+                <h4 class="text-left">
+                    <a href="#" title="Click to edit: Khmer Surname" editable-text="elist.selfselect.snkh"
+                        onbeforesave="updateUser(elist.selfselect.uid,'snkh',$data)">
+                        {{elist.selfselect.snkh || "Khmer Surname"}}
+                    </a> &nbsp;
+                    <a href="#" title="Click to edit: Khmer First Name" editable-text="elist.selfselect.givenNamekh"
+                      onbeforesave="updateUser(elist.selfselect.uid,'givenNamekh',$data)">
+                        {{elist.selfselect.givenNamekh || "Name"}}
+                    </a>
+                </h4>
+                <h4 class="text-left">
+                    <a href="#" title="Click to edit: Title" editable-text="elist.selfselect.title"
+                        onbeforesave="updateUser(elist.selfselect.uid,'title',$data)">
+                        {{elist.selfselect.title || "Staff"}}
+                    </a>
+                </h4>
+
+
+            </div>
+            <div class="col-md-6">
+                <h3 class="text-right">
+                    <a href="#" title ="Click to edit: Employee Status" editable-select="elist.selfselect.employeeType"
+                        e-ng-options="employeetype.value as employeetype.text for employeetype in employeetypes"
+                        onbeforesave="updateUser(elist.selfselect.uid,'employeeType',$data)">
+                        {{elist.selfselect.employeeType|| "empty"}}
+                    </a> -
+                    <a href="#" title ="Click to edit: Department" editable-select="elist.selfselect.departmentNumber"
+                        e-ng-options="department.value as department.text for department in departments"
+                        onbeforesave="updateUser(elist.selfselect.uid,'departmentNumber',$data)">
+                        {{elist.selfselect.departmentNumber || "empty"}}
+                    </a>
+                </h3>
+                <h3 class="text-right">
+                    <small><a href ng-click="elist.shift(-1)"><i class="fa fa-arrow-left"></i></a></small>
+                    {{elist.selfselect.employeeNumber}}
+                    <small><a href ng-click="elist.shift(+1)"><i class="fa fa-arrow-right"></i></a></small>
+                </h3>
+            </div>
+       </div>
+
+       <!-- Quick Info -->
+       <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
+            <div class="col-md-6">
+              <h4 class="text-left"><a href="mailto:{{elist.selfselect.mail}}" target="_blank"> <i class="fa fa-envelope-o"></i> {{elist.selfselect.mail}}</a></h4>
+
+              <h4 class="text-left">
+                <a href="mailto:{{elist.selfselect.mailpr}}" target="_blank"><i class="fa fa-envelope-o"></i></a>
+                <a href="#" title="Click to edit: Personal Email Address" editable-email="elist.selfselect.mailpr"
+                  onbeforesave="updateUser(elist.selfselect.uid,'mailpr',$data)">
+                    {{elist.selfselect.mailpr || "Personal Email"}}
+                </a>
+              </h4>
+
+                <h4 class="text-left">
+                    <a href="#" title="Click to edit: Birthday" editable-date="elist.selfselect.applebirthday"
+                        onbeforesave="updateUser(elist.selfselect.uid,'apple-birthday',$data)"> <!-- note the field change to apple-birthday here -->
+                        {{decodeAppleBirthday(elist.selfselect.applebirthday) || "DOB"}}
+                    </a>
+                </h4>
+            </div>
+            <div class="col-md-6">
+                <h4 class="text-right">
+                    <a href="#" title="Click to edit: Phone Number" editable-text="elist.selfselect.mobile"
+                        onbeforesave="updateUser(elist.selfselect.uid,'mobile',$data)">
+                        {{elist.selfselect.mobile || "Phone"}}
+                    </a>
+                </h4>
+                <h4 class="text-right">
+                    <a href="#" title="Click to edit: Address" editable-text="elist.selfselect.postalAddress"
+                        onbeforesave="updateUser(elist.selfselect.uid,'postalAddress',$data)">
+                        {{elist.selfselect.postalAddress || "Home Address"}}
+                    </a>
+                </h4>
+
+            </div>
+       </div>
+       <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
+         <table class="cpass">
+            <tr>
+              <td><h4> Change password</h4></td>
+              <td><h4>:</h4></td>
+              <td><input type="password"/></td>
+            </tr>
+            <tr>
+              <td><h4> Confirm password</h4></td>
+              <td><h4>:<h4></td>
+              <td><input type="password"/></td>
+            </tr>
+            <tr>
+              <td colspan="3"><button type="submit" class="btn btn-warning">Change password</button></td>
+            </tr>
+         </table>
+
+      </div>
+      </div>
+    </div>
+</div>
+
+
+ <div class="col-md-12" id="debug"> {{elist.selfselect | json}}
+   <style>
+      .cpass tr td{
+        padding: 5px;
+        text-align: left;
+        color: #2a6496;
+        font-style: italic;
+      }
+   </style>
