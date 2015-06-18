@@ -26,6 +26,15 @@
 	};
     });
 
+    //---------------
+    app.directive('viewSelf', function(){
+  return {
+    restrict: 'E',
+    templateUrl: 'templates/viewSelf.html',
+  };
+    });
+    //---------------
+
    app.directive('ahemlog', function(){
 	return {
 		restrict: 'E',
@@ -50,6 +59,20 @@
         };
     });
 
+    //---------------
+    app.controller('TabControllerProfile', function(){
+        //  this.tab=3;
+         this.isSet = function(checkTab){
+             return this.tab === checkTab;
+         };
+
+         this.setTab = function(setTab){
+             this.tab = setTab;
+         };
+     });
+
+
+    //----------------
 
    app.controller('LoginController', function($scope, $http){
 
@@ -151,8 +174,10 @@
             for(var i=0; i<$scope.employees.length; i++){
 		if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
 		   console.log("found a match: "+$scope.employees[i].employeeNumber);
-		   this.setEmployee($scope.employees[i]);
+		  //  this.setEmployee($scope.employees[i]);
+      this.selfselect=$scope.employees[i];
 		   break;
+
 		}
 	    }
 	};

@@ -15,9 +15,10 @@
            </div>
             <!-- If logged in !-->
              <section ng-if="user.uname != null" ng-controller="TabController as tab">
-                  <ul class = "nav nav-tabs" >
-                      <li ng-class="{ active:this.tab.isSet(1) }">
-                          <a href ng-click="this.tab.setTab(1)">Status</a>
+                  <div ng-controller="EmployeeListController as elist">
+                  <ul class = "nav nav-tabs">
+                      <li ng-class="{ active:this.tab.isSet(1)}">
+                          <a href ng-click="this.tab.setTab(1);elist.selectSelf()">My Profile</a>
                       </li>
                       <li ng-class="{ active:this.tab.isSet(2) }">
                           <a href ng-click="this.tab.setTab(2)">Register a new account</a>
@@ -31,8 +32,7 @@
                   </ul>
 
                   <div ng-show="this.tab.isSet(1)">
-            			<h1>Home</h1>
-            			<p>Not much to see here.</p>
+                    <view-self> </view-self>
                   </div>
                   <div ng-show="this.tab.isSet(2)">
                       <new-staff></new-staff>
@@ -44,6 +44,7 @@
                       <h1>Log</h1>
                       <ahemlog></ahemlog>
                   </div>
+                </div>
               </section>
 
               <!-- If not logged in !-->
