@@ -1,4 +1,4 @@
-<div id="imagePreview" class="col-md-4 well well-sm" style="width:236px;">
+<div id="imagePreview" class="col-md-4 well well-sm" style="width:236px; margin-top:30px;">
  <div class="form-group">
    <div class="col-md-12 text-center"  style="height:348px; background-position: center center; background-size: cover; background-image: url('files/{{elist.selfselect.employeeNumber}}.jpg');">
      <form class="form-horizontal" method="POST" enctype= "multipart/form-data" action="cgi-bin/upload.cgi">
@@ -20,7 +20,7 @@
  </div>
 
 </div>
-<div class="container col-md-8">
+<div class="container col-md-8" style="margin-top:30px;">
 
     <!-- Biogrpahical -->
   <div class="col-md-12">
@@ -123,23 +123,26 @@
        </div>
        <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
          <table class="cpass">
-            <tr>
+            <tr class="hidechangepass">
               <td><h4>Current password</h4></td>
               <td><h4>:</h4></td>
               <td><input type="password"/></td>
             </tr>
-            <tr>
+            <tr class="hidechangepass">
               <td><h4>New password</h4></td>
               <td><h4>:<h4></td>
               <td><input type="password"/></td>
             </tr>
-            <tr>
+            <tr class="hidechangepass">
               <td><h4>Confirm New password</h4></td>
               <td><h4>:<h4></td>
               <td><input type="password"/></td>
             </tr>
+            <tr class="hidechangepass">
+              <td colspan="3"><button type="submit" class="btn btn-primary">Save</button></td>
+            </tr>
             <tr>
-              <td colspan="3"><button type="submit" class="btn btn-warning">Change password</button></td>
+              <td colspan="3"><button class="btn btn-warning showchpass">Change password</button></td>
             </tr>
          </table>
 
@@ -169,7 +172,18 @@
           text-align: left;
         }
         #imagePreview{
-          margin-left: 30%;
+          margin-left: 25%;
         }
     }
+    .hidechangepass{
+      display: none;
+    }
    </style>
+   <script type="text/javascript">
+
+   $('.showchpass').click(function() {
+      $(this).hide();
+      $('.hidechangepass').slideDown('slow');
+  });
+
+   </script>

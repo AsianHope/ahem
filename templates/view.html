@@ -1,6 +1,6 @@
-        <div id="imagePreview" class="col-md-4 well well-sm" style="width: 236px; height:355px; background-position: center center; background-size: cover; background-image: url('files/{{elist.curemployee.employeeNumber}}.jpg');">
+        <div id="imagePreview" class="col-md-4 well well-sm" style="width:236px;">
          <div class="form-group">
-           <div class="col-md-12 text-center" style="padding-top: 355px; padding-bottom: 2em;">
+           <div class="col-md-12 text-center" style="height:348px; background-position: center center; background-size: cover; background-image: url('files/{{elist.curemployee.employeeNumber}}.jpg');">
              <form class="form-horizontal" method="POST" enctype= "multipart/form-data" action="cgi-bin/upload.cgi">
                <!--input id="uploadFile" size=40 name="image" type="file" class="form-control"-->
                <input type="hidden" name="uidNumber" value="{{elist.curemployee.uidNumber}}">
@@ -69,7 +69,7 @@
 
                     </div>
                     <div class="col-md-6">
-                        <h3 class="text-right">
+                        <h3 class="right">
                             <a href="#" title ="Click to edit: Employee Status" editable-select="elist.curemployee.employeeType"
                                 e-ng-options="employeetype.value as employeetype.text for employeetype in employeetypes"
                                 onbeforesave="updateUser(elist.curemployee.uid,'employeeType',$data)">
@@ -81,7 +81,7 @@
                                 {{elist.curemployee.departmentNumber || "empty"}}
                             </a>
                         </h3>
-                        <h3 class="text-right">
+                        <h3 class="right">
                             <small><a href ng-click="elist.shift(-1)"><i class="fa fa-arrow-left"></i></a></small>
                             {{elist.curemployee.employeeNumber}}
                             <small><a href ng-click="elist.shift(+1)"><i class="fa fa-arrow-right"></i></a></small>
@@ -122,19 +122,19 @@
                     <div class="col-md-6">
 
 
-                        <h4 class="text-right">
+                        <h4 class="right">
                             <a href="#" title="Click to edit: Phone Number" editable-text="elist.curemployee.mobile"
                                 onbeforesave="updateUser(elist.curemployee.uid,'mobile',$data)">
                                 {{elist.curemployee.mobile || "Phone"}}
                             </a>
                         </h4>
-                        <h4 class="text-right">
+                        <h4 class="right">
                             <a href="#" title="Click to edit: Address" editable-text="elist.curemployee.postalAddress"
                                 onbeforesave="updateUser(elist.curemployee.uid,'postalAddress',$data)">
                                 {{elist.curemployee.postalAddress || "Home Address"}}
                             </a>
                         </h4>
-                        <h4 class="text-right">
+                        <h4 class="right">
                             <a href="#" title="Click to edit: Country of Residence" editable-select="elist.curemployee.l"
                                 e-ng-options="country.value as country.text for country in ahcountries"
                                 onbeforesave="updateUser(elist.curemployee.uid,'l',$data)">
@@ -272,3 +272,22 @@
 
 
          <div class="col-md-12" id="debug"> {{elist.curemployee | json}}
+
+         <style>
+            .right{
+              text-align: right;
+            }
+
+            @media screen and (max-width: 800px) {
+              .right{
+                text-align: left;
+              }
+              #imagePreview{
+                margin-left: 25%;
+              }
+              #goback{
+                text-align: center;
+              }
+          }
+
+         </style>
