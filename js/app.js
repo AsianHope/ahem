@@ -90,24 +90,34 @@
 
    app.controller('EmployeeListController', function($scope, $http, $filter, $q){
 
-        //load data
-        //to do: encode uri?
-        $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw+'&scope=CURSTAFF').
-          success(function(data, status, headers, config){
-            //if dump.cgi says we can't bind for some reason
-            if(data.result== 'error'){
-              //pop us back out to the login screen
-              $scope.user.uname = null;
-              $scope.user.pw = null;
-            }
-            else
-              $scope.employees = data;
+        // load data
+        // to do: encode uri?
 
-          }).
-          error(function(data, status, headers, config){
-            $scope.user.uname = null;
-            $scope.user.pw = null;
-          });
+            var data = {
+                  username: $scope.user.uname,
+                    pw: $scope.user.pw,
+                    scope:'CURSTAFF'
+                }
+            var uri = encodeURI('cgi-bin/dump.cgi');
+            $http({
+                  method  : 'POST',
+                  url     : uri,
+                  data    : $.param(data),  // pass in data as strings
+                  headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                 }).success(function(data, status, headers, config) {
+                       if(data.result== 'error'){
+                         //pop us back out to the login screen
+                         $scope.user.uname = null;
+                         $scope.user.pw = null;
+                       }
+                       else{
+                         $scope.employees = data;
+                         }
+                   }).error(function(data, status, headers, config){
+                       $scope.user.uname = null;
+                       $scope.user.pw = null;
+                     });
+
 
           //no one selected initially
           this.curemployee=null;
@@ -116,28 +126,58 @@
           this.refreshEmployeeData = function(){
             $scope.employees = [];
             this.curemployee=null;
-            $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw+'&scope=CURSTAFF').
-              success(function(data, status, headers, config){
-                  $scope.employees = data;
-              })
+              var data = {
+                    username: $scope.user.uname,
+                      pw: $scope.user.pw,
+                      scope:'CURSTAFF'
+                  }
+              var uri = encodeURI('cgi-bin/dump.cgi');
+              $http({
+                    method  : 'POST',
+                    url     : uri,
+                    data    : $.param(data),  // pass in data as strings
+                    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                   }).success(function(data, status, headers, config) {
+                     $scope.employees = data;
+                   });
           };
 
           this.showRequestedAccounts = function(){
             $scope.employees = [];
             this.curemployee=null;
-            $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw+'&scope=REQUESTS').
-              success(function(data, status, headers, config){
-                  $scope.employees = data;
-              })
-          };
+            var data = {
+                  username: $scope.user.uname,
+                    pw: $scope.user.pw,
+                    scope:'CURSTAFF'
+                }
+            var uri = encodeURI('cgi-bin/dump.cgi');
+            $http({
+                  method  : 'POST',
+                  url     : uri,
+                  data    : $.param(data),  // pass in data as strings
+                  headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                 }).success(function(data, status, headers, config) {
+                   $scope.employees = data;
+                   })
+            };
 
           this.showDisabledAccounts = function(){
             $scope.employees = [];
             this.curemployee=null;
-            $http.get('cgi-bin/dump.cgi?username='+$scope.user.uname+'&pw='+$scope.user.pw+'&scope=DISABLED').
-              success(function(data, status, headers, config){
-                  $scope.employees = data;
-              })
+            var data = {
+                  username: $scope.user.uname,
+                    pw: $scope.user.pw,
+                    scope:'CURSTAFF'
+                }
+            var uri = encodeURI('cgi-bin/dump.cgi');
+            $http({
+                  method  : 'POST',
+                  url     : uri,
+                  data    : $.param(data),  // pass in data as strings
+                  headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                 }).success(function(data, status, headers, config) {
+                   $scope.employees = data;
+                   })
           };
 
         //rough approximation
@@ -190,31 +230,37 @@
                 }
             }
         };
-
         $scope.updateUser = function(uid, field, data){
                 console.log('field to update: '+field);
                 console.log('data to update: '+JSON.stringify(data));
                 console.log('uid: '+uid);
                 var d = $q.defer();
-
-                var encoded_data = encodeURIComponent(data)
-                var uri = encodeURI('cgi-bin/update.cgi?uid='+uid+'&field='+field+'&data='+encoded_data+
-                                        '&username='+$scope.user.uname+'&pw='+$scope.user.pw);
-                $http.get(uri).
-                  success(function(data, status, headers, config){
-
-                    if(data.result== 'success'){
-                        //console.log('success!!');
-                        d.resolve()
+                var encoded_data = encodeURIComponent(data);
+                var data = {
+                    uid: uid,
+                    field: field,
+                    data:encoded_data,
+                    username:$scope.user.uname,
+                    pw:$scope.user.pw
                     }
-                    else
-                        d.resolve("There was an error");
-                  }).
-                  error(function(data, status, headers, config){
-                        d.reject('Server error!');
-                });
-
-                return d.promise;
+                var uri = encodeURI('cgi-bin/update.cgi');
+                $http({
+                      method  : 'POST',
+                      url     : uri,
+                      data    : $.param(data),  // pass in data as strings
+                      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                    }).success(function(data, status, headers, config){
+                         if(data.result== 'success'){
+                             //console.log('success!!');
+                             d.resolve()
+                         }
+                         else
+                             d.resolve("There was an error");
+                       }).
+                       error(function(data, status, headers, config){
+                             d.reject('Server error!');
+                     });
+                     return d.promise;
         }
 
         $scope.decodeAppleBirthday = function(applebirthday){
