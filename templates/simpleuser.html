@@ -1,0 +1,18 @@
+
+     <div ng-controller="EmployeeListController as elist">
+     <ul class = "nav nav-tabs">
+         <li ng-class="{ active:this.tab.isSet(1)}">
+             <a href ng-click="this.tab.setTab(1);elist.selectSelf()">My Profile</a>
+         </li>
+         <li ng-class="{ active:this.tab.isSet(3) }">
+             <a href ng-click="this.tab.setTab(3)">Browse staff info</a>
+         </li>
+     </ul>
+
+     <div ng-show="this.tab.isSet(1)">
+       <view-self></view-self>
+     </div>
+     <div ng-show="this.tab.isSet(3)">
+         <stafflist-simpleuser></stafflist-simpleuser>
+     </div>
+   </div>
