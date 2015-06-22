@@ -1,5 +1,19 @@
 (function(){
-    var app = angular.module('employeelist', ['xeditable']);
+    var app = angular.module('employeelist', ['xeditable','ngRoute']);
+
+    app.config(['$routeProvider',
+    function($routeProvider) {
+    $routeProvider.
+      when('/', {
+        templateUrl: 'templates/simpleuser.html'
+      }).
+      when('/admin', {
+        templateUrl: 'templates/admin.html'
+      }).
+      otherwise({
+        templateUrl: 'templates/simpleuser.html'
+      });
+    }]);
 
     app.run(function(editableOptions){
             editableOptions.theme='bs3';
@@ -28,10 +42,17 @@
 
     //---------------
     app.directive('viewSelf', function(){
-  return {
-    restrict: 'E',
-    templateUrl: 'templates/viewSelf.html',
-  };
+      return {
+        restrict: 'E',
+        templateUrl: 'templates/viewSelf.html',
+      };
+    });
+
+    app.directive('stafflistSimpleuser', function(){
+      return {
+        restrict: 'E',
+        templateUrl: 'templates/stafflistSimpleuser.html',
+      };
     });
     //---------------
 

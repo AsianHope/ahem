@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="employeelist">
     <head>
+
         <link rel ="stylesheet" type="text/css"
           href="bootstrap/css/bootstrap.min.css" />
           <link rel ="stylesheet" type="text/css"
@@ -14,39 +15,13 @@
                 <h1>*AHEM*<small> - Asian Hope Employee Management</small></h1>
            </div>
             <!-- If logged in !-->
-             <section ng-if="user.uname != null" ng-controller="TabController as tab">
-                  <div ng-controller="EmployeeListController as elist">
-                  <ul class = "nav nav-tabs">
-                      <li ng-class="{ active:this.tab.isSet(1)}">
-                          <a href ng-click="this.tab.setTab(1);elist.selectSelf()">My Profile</a>
-                      </li>
-                      <li ng-class="{ active:this.tab.isSet(2) }">
-                          <a href ng-click="this.tab.setTab(2)">Register a new account</a>
-                      </li>
-                      <li ng-class="{ active:this.tab.isSet(3) }">
-                          <a href ng-click="this.tab.setTab(3)">Browse staff info</a>
-                      </li>
-                      <li ng-class="{ active:this.tab.isSet(4) }">
-                          <a href ng-click="this.tab.setTab(4)">Log</a>
-                      </li>
-                  </ul>
 
-                  <div ng-show="this.tab.isSet(1)">
-                    <view-self> </view-self>
-                  </div>
-                  <div ng-show="this.tab.isSet(2)">
-                      <new-staff></new-staff>
-                  </div>
-                  <div ng-show="this.tab.isSet(3)">
-                      <staff-list></staff-list>
-                  </div>
-                  <div ng-show="this.tab.isSet(4)">
-                      <h1>Log</h1>
-                      <ahemlog></ahemlog>
-                  </div>
+
+            <section ng-if="user.uname != null" ng-controller="TabController as tab">
+                <div ng-view>
+
                 </div>
-              </section>
-
+            </section>
               <!-- If not logged in !-->
               <section ng-show="user.uname == null">
                 <form name="form" ng-submit="login()" role="form">
@@ -74,6 +49,7 @@
         <script type="text/javascript" src="js/angular.min.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
         <script type="text/javascript" src="js/xeditable.js"></script>
+        <script type="text/javascript" src="js/angular-route.js"></script>
         <link href="css/xeditable.css" rel="stylesheet"/>
         <!-- Contact Form - END -->
 
