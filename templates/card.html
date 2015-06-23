@@ -1,0 +1,70 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
+  <script type="text/jav../ascript" src="../js/photobooth_min.js"></script>
+  <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" type="text/css" href="../css/ahstaffcard.css">
+</head>
+<body>
+
+<div id="container" style="display:block;">
+    <div class="card">
+        <div class="logo"><img src = "../img/ahlogo.png" class = "logoimg" style="width: 100%"></div>
+        <div class="photo"></div>
+        <div id="name" class="name"></div>
+        <div id="title" class="title"></div>
+        <div class="barcode"><img src = "http://services.asianhope.org/idcards/barcode.php?text=123&size=30" id = "barcodeimg" alt="blah"></div>
+        <div id ="barcodenumber" class="barcodenumber">123</div>
+        <div class="footer"><img class="footerimg" src = "../img/ahfooter.png" style="width: 100%"/> </div>
+    </div>
+</div>
+<div id="controls" style="position: absolute;">
+
+<div id="photoControl" class="ui-widget-content" style="background-color:#ccc; opacity: 0.5;  width:200px; height:300px;"><div id="x-position"></div><div id="y-position"></div></div>
+</div>
+</body>
+<script type='text/javascript'>
+  $(function() {
+
+      var bcurl = "http://services.asianhope.org/idcards/barcode.php";
+      var bcsize = 30;
+      var name = getParameterByName('name');
+      var id = getParameterByName('id');
+      var title = getParameterByName('title');
+      var department = getParameterByName('department');
+      document.getElementById("name").innerHTML = name;
+      document.getElementById("title").innerHTML = title;
+      document.getElementById("barcodenumber").innerHTML=id;
+      $(".photo").css("background-image", "url('../files/"+id+".jpg')");
+      $('.barcode').html('<img src="'+bcurl+'?text='+id+'&size='+bcsize+'"/>');
+      $('link').attr('href','../css/ahstaffcard.css');
+      $('.footerimg').attr('src','../img/ahfooter.png');
+      $('.logoimg').attr('src','../img/ahlogo.png');
+      if(department=="LIS"){
+        console.log(department);
+        $('link').attr('href','../css/staffcard.css');
+        $('.footerimg').attr('src','../img/logosfooter.png');
+        $('.logoimg').attr('src','../img/logoslogo.png');
+      }
+      function getParameterByName(name) {
+          name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+          var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+              results = regex.exec(location.search);
+          return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+      $('#photoControl').draggable({
+          drag: function(){
+             var position = $(this).position()
+             $('.photo').css('background-position',position.left+'px '+position.top+'px');
+             console.log($(this).position());
+          }
+      });
+    });
+
+</script>
+
+</html>

@@ -1,4 +1,4 @@
-        <div id="imagePreview" class="col-md-4 well well-sm" style="width:236px;">
+    <div id="imagePreview" class="col-md-3 well well-sm" style="width:236px;">
          <div class="form-group">
            <div class="col-md-12 text-center" style="height:348px; background-position: center center; background-size: cover; background-image: url('files/{{elist.curemployee.employeeNumber}}.jpg');">
              <form class="form-horizontal" method="POST" enctype= "multipart/form-data" action="cgi-bin/upload.cgi">
@@ -24,7 +24,7 @@
          </div>
 
         </div>
-        <div class="container col-md-8">
+        <div class="container col-md-6">
 
             <!-- Biogrpahical -->
           <div class="col-md-12">
@@ -35,7 +35,7 @@
               <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
                     <div class="col-md-6">
                         <h3 class="text-left">
-                            <a href="#" title="Click to edit: Surname" editable-text="elist.curemployee.sn"
+                            <a id="lastname" href="#" title="Click to edit: Surname" editable-text="elist.curemployee.sn"
                                 onbeforesave="updateUser(elist.curemployee.uid,'sn',$data)">
                                 {{elist.curemployee.sn +', '}}
                             </a>
@@ -269,9 +269,11 @@
               </div>
             </div>
         </div>
-
-
-         <div class="col-md-12" id="debug"> {{elist.curemployee | json}}
+      </div>
+      <div class="col-md-3">
+        <a role="button" target="_blank" class="btn btn-primary" href="templates/card.html?name={{elist.curemployee.givenName}} {{elist.curemployee.sn}}&id={{elist.curemployee.employeeNumber}}&title={{elist.curemployee.title}}&department={{elist.curemployee.departmentNumber}}">Print ID card</a>
+      </div>
+         <div class="col-md-12" id="debug"> {{elist.curemployee | json}}</div>
 
          <style>
             .right{
@@ -289,5 +291,4 @@
                 text-align: center;
               }
           }
-
          </style>
