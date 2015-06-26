@@ -8,12 +8,8 @@
      </form>
    </div>
    <div class="col-md-12 text-center">
-     <h2 class="text-center nonldap" ng-hide="elist.selfselect.c=='KH'">Visa Expires:
-                        <a href="#" title="Click to edit: Visa Expiry" editable-date="elist.selfselect.visaExpires"
-                        onbeforesave="updateUser(elist.selfselect.uid,'visaExpires',$data)">
-
+     <h2 style="color: #2a6496;" class="text-center nonldap" ng-hide="elist.selfselect.c=='KH'">Visa Expires:
                             {{elist.selfselect.visaExpires || "Not Entered"}}
-                        </a>
     </h2>
    </div>
 
@@ -55,32 +51,22 @@
                         {{elist.selfselect.givenNamekh || "Name"}}
                     </a>
                 </h4>
-                <h4 class="text-left">
-                    <a href="#" title="Click to edit: Title" editable-text="elist.selfselect.title"
-                        onbeforesave="updateUser(elist.selfselect.uid,'title',$data)">
+                <h4 style="color: #2a6496;" class="text-left">
                         {{elist.selfselect.title || "Staff"}}
-                    </a>
                 </h4>
 
 
             </div>
             <div class="col-md-6">
-                <h3 class="right">
-                    <a href="#" title ="Click to edit: Employee Status" editable-select="elist.selfselect.employeeType"
-                        e-ng-options="employeetype.value as employeetype.text for employeetype in employeetypes"
-                        onbeforesave="updateUser(elist.selfselect.uid,'employeeType',$data)">
+                <h3 style="color: #2a6496;" class="right">
                         {{elist.selfselect.employeeType|| "empty"}}
-                    </a> -
-                    <a href="#" title ="Click to edit: Department" editable-select="elist.selfselect.departmentNumber"
-                        e-ng-options="department.value as department.text for department in departments"
-                        onbeforesave="updateUser(elist.selfselect.uid,'departmentNumber',$data)">
+                     -
                         {{elist.selfselect.departmentNumber || "empty"}}
-                    </a>
                 </h3>
-                <h3 class="right">
-                    <small><a href ng-click="elist.shift(-1)"><i class="fa fa-arrow-left"></i></a></small>
+                <h3 style="color: #2a6496;" class="right">
+                    <small><i class="fa fa-arrow-left"></i></small>
                     {{elist.selfselect.employeeNumber}}
-                    <small><a href ng-click="elist.shift(+1)"><i class="fa fa-arrow-right"></i></a></small>
+                    <small><i class="fa fa-arrow-right"></i></small>
                 </h3>
             </div>
        </div>
