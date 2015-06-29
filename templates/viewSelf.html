@@ -54,8 +54,6 @@
                 <h4 style="color: #2a6496;" class="text-left">
                         {{elist.selfselect.title || "Staff"}}
                 </h4>
-
-
             </div>
             <div class="col-md-6">
                 <h3 style="color: #2a6496;" class="right">
@@ -104,40 +102,41 @@
                         {{elist.selfselect.postalAddress || "Home Address"}}
                     </a>
                 </h4>
-
             </div>
        </div>
        <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
-         <table class="cpass">
-            <tr class="hidechangepass">
-              <td><h4>Current password</h4></td>
-              <td><h4>:</h4></td>
-              <td><input type="password"/></td>
-            </tr>
-            <tr class="hidechangepass">
-              <td><h4>New password</h4></td>
-              <td><h4>:<h4></td>
-              <td><input type="password"/></td>
-            </tr>
-            <tr class="hidechangepass">
-              <td><h4>Confirm New password</h4></td>
-              <td><h4>:<h4></td>
-              <td><input type="password"/></td>
-            </tr>
-            <tr class="hidechangepass">
-              <td colspan="3"><button type="submit" class="btn btn-primary">Save</button></td>
-            </tr>
-            <tr>
-              <td colspan="3"><button class="btn btn-warning showchpass">Change password</button></td>
-            </tr>
-         </table>
+         <section style="color:#2a6496;"class="hidechangepass">
+             <form name="form" ng-submit="resetPassword(elist.selfselect.uid,new_password,'youreset',current_password)" role="form">
+                 <div class="form-group">
+                     <label for="current_password">Current password</label>
+                     <input type="password"  name="current_password" id="current_password" class="form-control" ng-model="current_password" required />
+                     <span ng-show="form.current_password.$dirty && form.current_password.$error.required" class="help-block">Current password is required</span>
+                 </div>
+                 <div class="form-group">
+                     <label for="new_password">New password</label>
+                     <input type="password" name="new_password" id="new_password" class="form-control" ng-model="new_password" required />
+                     <span ng-show="form.new_password.$dirty && form.new_password.$error.required" class="help-block">New password is required</span>
+                 </div>
+                 <div class="form-group">
+                     <label for="confirm_password">Comfirm new password</label>
+                     <input type="password" password-match="new_password" name="confirm_password" id="confirm_password" class="form-control" ng-model="confirm_password" required />
+                     <span  ng-show="form.confirm_password.$dirty && form.confirm_password.$error.required" class="help-block">confirm password is required</span>
+                     <span class="help-block" ng-show="form.confirm_password.$error.unique">
+                       Passwords do not match.
+                    </span>
+                     <span ng-show="form.confirm_password.$error.noMatch">Passwords do not match.</span>
+                 </div>
+                <div class="form-actions">
+                     <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">Save</button>
+                </div>
+             </form>
 
-      </div>
+           </section>
+           <button class="btn btn-warning showchpass">Change password</button>
+
       </div>
     </div>
 </div>
-
-
  <div class="col-md-12" id="debug"> {{elist.selfselect | json}}
    <style>
       .cpass{

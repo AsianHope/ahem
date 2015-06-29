@@ -1,6 +1,31 @@
 (function(){
     var app = angular.module('employeelist', ['xeditable','ngRoute']);
 
+    //  password match
+    app.directive('passwordMatch', [function () {
+      return {
+          restrict: 'A',
+          scope:true,
+          require: 'ngModel',
+          link: function (scope, elem , attrs,control) {
+              var checker = function () {
+
+                  //get the value of the first password
+                  var e1 = scope.$eval(attrs.ngModel);
+
+                  //get the value of the other password
+                  var e2 = scope.$eval(attrs.passwordMatch);
+                  return e1 == e2;
+              };
+              scope.$watch(checker, function (n) {
+
+                  //set the form control to valid if both
+                  //passwords are the same, else invalid
+                  control.$setValidity("unique", n);
+              });
+          }
+      };
+    }]);
     app.config(['$routeProvider',
     function($routeProvider) {
     $routeProvider.
@@ -19,25 +44,30 @@
             editableOptions.theme='bs3';
     });
 
-    app.directive('staffList', function(){
-	return {
-		restrict: 'E',
-		templateUrl: 'templates/stafflist.html',
-	};
+    app.directive('resetPassword', function(){
+  	return {
+  		restrict: 'E',
+  		templateUrl: 'templates/resetpassword.html',
+  	};
     });
-
+    app.directive('staffList', function(){
+  	return {
+  		restrict: 'E',
+  		templateUrl: 'templates/stafflist.html',
+  	};
+    });
     app.directive('newStaff', function(){
-	return {
-		restrict: 'E',
-		templateUrl: 'templates/register.html',
-	};
+  	return {
+  		restrict: 'E',
+  		templateUrl: 'templates/register.html',
+  	};
     });
 
     app.directive('viewStaff', function(){
-	return {
-		restrict: 'E',
-		templateUrl: 'templates/view.html',
-	};
+  	return {
+  		restrict: 'E',
+  		templateUrl: 'templates/view.html',
+  	};
     });
 
     //---------------
@@ -110,9 +140,20 @@
    });
 
    app.controller('EmployeeListController', function($scope, $http, $filter, $q){
+        $scope.password;
+        $scope.password = password;
+        var keylist="abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$*&";
+        var temp='';
+        var plength=8;
+         // taken from http://www.javascriptkit.com/script/script2/passwordgenerate.shtml
+         $scope.tempPassword = function(){
+             temp='';
+             for (i=0;i<plength;i++)
+               temp+=keylist.charAt(Math.floor(Math.random()*keylist.length));
+             $scope.password = temp;
+         };
+         $scope.tempPassword();
 
-        // load data
-        // to do: encode uri?
 
             var data = {
                   username: $scope.user.uname,
@@ -269,7 +310,7 @@
                       headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                     }).success(function(data, status, headers, config){
                          if(data.result== 'success'){
-                             //console.log('success!!');
+                             console.log('success!!');
                              d.resolve()
                          }
                          else
@@ -279,6 +320,51 @@
                              d.reject('Server error!');
                      });
                      return d.promise;
+        }
+
+        $scope.resetPassword = function(uid,data,type,confirmpass){
+                var d = $q.defer();
+                var encoded_data = encodeURIComponent(data);
+                var data = {
+                    uid: uid,
+                    field: "userPassword",
+                    data:encoded_data,
+                    username:$scope.user.uname,
+                    pw:$scope.user.pw
+                    }
+                var uri = encodeURI('cgi-bin/update.cgi');
+                if(confirmpass==$scope.user.pw){
+                  $http({
+                        method  : 'POST',
+                        url     : uri,
+                        data    : $.param(data),  // pass in data as strings
+                        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                      }).success(function(data, status, headers, config){
+                           if(data.result== 'success'){
+                               d.resolve()
+                           }
+                           else
+                               d.resolve("There was an error");
+                         }).
+                         error(function(data, status, headers, config){
+                               d.reject('Server error!');
+                       });
+                       console.log(type);
+                       if(type=="youreset"){
+                         $scope.user.uname = null;
+                         $scope.user.pw = null;
+                       }
+                       else{
+                         alert("Password has been reset!");
+                       }
+                       return d.promise;
+                }
+                else{
+                  alert('Your current passwords do not match.');
+                }
+
+
+
         }
 
         $scope.decodeAppleBirthday = function(applebirthday){

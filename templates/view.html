@@ -120,8 +120,6 @@
 
                     </div>
                     <div class="col-md-6">
-
-
                         <h4 class="right">
                             <a href="#" title="Click to edit: Phone Number" editable-text="elist.curemployee.mobile"
                                 onbeforesave="updateUser(elist.curemployee.uid,'mobile',$data)">
@@ -238,8 +236,6 @@
                             </small>
                           </h4>
                       </div>
-
-
                      <!-- Employment Information -->
                      <div class="col-md-12 extended" style="border-bottom: 1px solid #e5e5e5;">
                          <h3 class="text-center">Employed from
@@ -270,9 +266,13 @@
             </div>
         </div>
       </div>
-      <div class="col-md-3">
-        <a role="button" target="_blank" class="btn btn-primary" href="templates/card.html?name={{elist.curemployee.givenName}} {{elist.curemployee.sn}}&id={{elist.curemployee.employeeNumber}}&title={{elist.curemployee.title}}&department={{elist.curemployee.departmentNumber}}">Print ID card</a>
-      </div>
+      <div class="text-center col-md-3">
+        <div class="form-group">
+          <a role="button" target="_blank" class="btn btn-primary btn-lg" href="templates/card.html?name={{elist.curemployee.givenName}} {{elist.curemployee.sn}}&id={{elist.curemployee.employeeNumber}}&title={{elist.curemployee.title}}&department={{elist.curemployee.departmentNumber}}">Print ID card</a>
+        </div>
+
+        <reset-password></reset-password>
+    </div>
          <div class="col-md-12" id="debug"> {{elist.curemployee | json}}</div>
 
          <style>

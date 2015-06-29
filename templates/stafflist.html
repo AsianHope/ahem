@@ -25,7 +25,7 @@
             <tr ng-repeat="employee in employees | filter:query | orderBy:orderProp">
                 <td style="width: 1em;">{{employee.employeeType}}</a></td>
                 <td style="width: 1em;">{{employee.departmentNumber}}</a></td>
-            <td style="width: 8em;"><a href ng-click="this.elist.setEmployee(employee)">{{employee.employeeNumber}}</a></td>
+                <td style="width: 8em;"><a href ng-click="this.elist.setEmployee(employee)">{{employee.employeeNumber}}</a></td>
                 <td style="width: 10em;">{{employee.givenName}}</td>
                 <td style="width: 10em;">{{employee.sn}}</td>
                 <td style="width: 10em;">{{employee.mobile}}</td>
@@ -38,5 +38,4 @@
         <h1 id="goback"><a href ng-click="elist.clearEmployee()">Go back?</a> </h1>
         <view-staff></view-staff>
     </div>
-
 </div>
