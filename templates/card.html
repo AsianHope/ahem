@@ -57,10 +57,7 @@
                $('.photo').css({
                 'background-size':parseInt(iw*i/100)+'px ' +parseInt(ih*i/100)+'px'
               });
-               console.log(iw+".."+ih);
-                console.log(parseInt(iw*i/100)+".."+parseInt(ih*i/100));
-
-              });
+          });
               image.src = image_url;
         };
         function setVal()
@@ -117,7 +114,6 @@
       $('.footerimg').attr('src','../img/ahfooter.png');
       $('.logoimg').attr('src','../img/ahlogo.png');
       if(department=="LIS"){
-        console.log(department);
         $('link').attr('href','../css/staffcard.css');
         $('.footerimg').attr('src','../img/logosfooter.png');
         $('.logoimg').attr('src','../img/logoslogo.png');
@@ -132,7 +128,6 @@
           drag: function(){
              var position = $(this).position()
              $('.photo').css('background-position',position.left+'px '+position.top+'px');
-             console.log($(this).position());
           }
       });
     });

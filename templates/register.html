@@ -210,7 +210,6 @@
       	$('input:radio[name=employeeType]').click(function() {
       		if ($(this).val() == 'Student') {
       			stem = ahis_student_stem;
-      			console.log('set stem to: ' + stem);
       			updateEmail();
       			$('#title_staff').hide();
       			$('#title_student').show();
@@ -255,8 +254,6 @@
       	//if there is no user stem set it to the default, if there is prepend the @ we stripped above
       	if (userstem.length == 0) userstem = stem;
       	else userstem = '@' + userstem;
-
-      	console.log('userstem is: ' + userstem);
       	//post our suggestion.
       	$.post("cgi-bin/verifyuid.cgi", {
       			uid: uid

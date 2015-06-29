@@ -269,14 +269,11 @@
 
         this.setEmployee = function(setEmployee){
             this.curemployee=setEmployee;
-		console.log("just set employee: "+this.curemployee);
         };
 
 	this.selectSelf = function(){
             for(var i=0; i<$scope.employees.length; i++){
 		if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
-		   console.log("found a match: "+$scope.employees[i].employeeNumber);
-		  //  this.setEmployee($scope.employees[i]);
       this.selfselect=$scope.employees[i];
 		   break;
 
@@ -310,7 +307,6 @@
                       headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                     }).success(function(data, status, headers, config){
                          if(data.result== 'success'){
-                             console.log('success!!');
                              d.resolve()
                          }
                          else
@@ -349,7 +345,6 @@
                          error(function(data, status, headers, config){
                                d.reject('Server error!');
                        });
-                       console.log(type);
                        if(type=="youreset"){
                          $scope.user.uname = null;
                          $scope.user.pw = null;
@@ -498,7 +493,6 @@
                 success(function(data, status, headers, config){
                   if(data.result== 'success'){
                       $scope.success_message = "Success!";
-                      console.log('set scucess')
                       d.resolve()
                   }
                   else
@@ -512,7 +506,6 @@
       };
 
       $scope.resetRequestForm = function(){
-        console.log("reseting request form")
         $scope.success_message = null;
         $scope.formdata = {'l':'KH'};
         $scope.tempPassword();
