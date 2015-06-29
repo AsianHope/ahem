@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
-  <script type="text/jav../ascript" src="../js/photobooth_min.js"></script>
+  <script type="text/javascript" src="../js/photobooth_min.js"></script>
   <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" type="text/css" href="../css/ahstaffcard.css">
@@ -26,7 +26,79 @@
 
 <div id="photoControl" class="ui-widget-content" style="background-color:#ccc; opacity: 0.5;  width:200px; height:300px;"><div id="x-position"></div><div id="y-position"></div></div>
 </div>
-</body>
+<div class="wr">
+    <input type="image" src="../img/out.png" class="btn" onclick="deSize()"/>
+    <input type="range" value="100" min="10" max="200" id="rg" class="rg" onchange="setVal()"/>
+    <input type="image" src="../img/in.png" class="btn" onclick="inSize()"/>
+  </div></body>
+    <style media="screen">
+      .wr{
+        position: absolute;
+        top: 370px;
+      }
+    </style>
+
+<script>
+    var iw;
+    var ih;
+    window.onload=function(){
+      var image_url = $('.photo').css('background-image'),image;
+      // Remove url() or in case of Chrome url("")
+      image_url = image_url.match(/^url\("?(.+?)"?\)$/);
+      // if (image_url[1]) {
+          image_url = image_url[1];
+          image = new Image();
+          // just in case it is not already loaded
+          $(image).load(function () {
+              iw = image.width;
+              ih = image.height;
+              var i = document.getElementById("rg").value;
+              image.style.transition = "All linear 0.5s";
+               $('.photo').css({
+                'background-size':parseInt(iw*i/100)+'px ' +parseInt(ih*i/100)+'px'
+              });
+               console.log(iw+".."+ih);
+                console.log(parseInt(iw*i/100)+".."+parseInt(ih*i/100));
+
+              });
+              image.src = image_url;
+        };
+        function setVal()
+        {
+          var img = new Image;
+          img.src = $('.photo').css('background-image').replace(/url\(|\)$/ig, "");
+          var i = document.getElementById("rg").value;
+          $('.photo').css({
+            'background-size':parseInt(iw*i/100)+'px ' +parseInt(ih*i/100)+'px'
+          });
+
+        }
+      function deSize()
+      {
+        var img = new Image;
+        img.src = $('.photo').css('background-image').replace(/url\(|\)$/ig, "");
+        var i = document.getElementById("rg").value-5;
+        document.getElementById("rg").value=i;
+          if(i>=10){
+              $('.photo').css({
+                'background-size':parseInt(iw*i/100)+'px ' +parseInt(ih*i/100)+'px'
+              });
+          }
+
+        }
+      function inSize()
+      {
+        var img = new Image;
+        img.src = $('.photo').css('background-image').replace(/url\(|\)$/ig, "");
+        var i = parseInt(document.getElementById("rg").value) + 5;
+        document.getElementById("rg").value=i;
+        if(i<=1000){
+          $('.photo').css({
+          'background-size':parseInt(iw*i/100)+'px ' +parseInt(ih*i/100)+'px'
+          });
+        }
+      }
+  </script>
 <script type='text/javascript'>
   $(function() {
 
