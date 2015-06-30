@@ -526,7 +526,7 @@
         {value: 'ADMIN-USA', text: 'Admin USA'},
         {value: 'AHIS', text: 'Asian Hope School'},
         {value: 'TTP', text: 'Teacher Training Program'},
-        {value: 'HELP', text: 'HELP USA'},
+        {value: 'HELP', text: 'HELP'},
         {value: 'LIS', text: 'Logos'},
         {value: 'MIS', text: 'MIS Department'},
         {value: 'VDP-G', text: 'VDP General'},
