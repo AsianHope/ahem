@@ -7,7 +7,7 @@
   <script type="text/javascript" src="../js/photobooth_min.js"></script>
   <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
   <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" type="text/css" href="../css/ahstaffcard.css">
+  <!-- <link rel="stylesheet" type="text/css" href="../css/ahstaffcard.css"> -->
 </head>
 <body>
 
@@ -27,9 +27,9 @@
 <div id="photoControl" class="ui-widget-content" style="background-color:#ccc; opacity: 0.5;  width:200px; height:300px;"><div id="x-position"></div><div id="y-position"></div></div>
 </div>
 <div class="wr">
-    <input type="image" src="../img/out.png" class="btn" onclick="deSize()"/>
+    <i class="fa fa-search-minus fa-2x" id="desize"></i>
     <input type="range" value="100" min="10" max="200" id="rg" class="rg" onchange="setVal()"/>
-    <input type="image" src="../img/in.png" class="btn" onclick="inSize()"/>
+    <i class="fa fa-search-plus fa-2x"  id="insize"></i>
   </div></body>
     <style media="screen">
       .wr{
@@ -39,6 +39,10 @@
     </style>
 
 <script>
+    var timeout_id_desize = 0,
+    hold_time_desize = 50;
+    var timeout_id_insize = 0,
+    hold_time_insize = 50;
     var iw;
     var ih;
     window.onload=function(){
@@ -53,7 +57,7 @@
               iw = image.width;
               ih = image.height;
               var i = document.getElementById("rg").value;
-              image.style.transition = "All linear 0.5s";
+              // image.style.transition = "All linear 0.5s";
                $('.photo').css({
                 'background-size':parseInt(iw*i/100)+'px ' +parseInt(ih*i/100)+'px'
               });
@@ -80,6 +84,7 @@
               $('.photo').css({
                 'background-size':parseInt(iw*i/100)+'px ' +parseInt(ih*i/100)+'px'
               });
+              timeout_id_desize =setTimeout(deSize, hold_time_desize);
           }
 
         }
@@ -93,8 +98,19 @@
           $('.photo').css({
           'background-size':parseInt(iw*i/100)+'px ' +parseInt(ih*i/100)+'px'
           });
+          timeout_id_insize =setTimeout(inSize, hold_time_insize);
         }
       }
+      $('#desize').mousedown(function() {
+        timeout_id_desize = setTimeout(deSize(), hold_time_desize);
+      }).bind('mouseup mouseleave', function() {
+          clearTimeout(timeout_id_desize);
+      });
+      $('#insize').mousedown(function() {
+        timeout_id_insize = setTimeout(inSize(), hold_time_insize);
+      }).bind('mouseup mouseleave', function() {
+          clearTimeout(timeout_id_insize);
+      });
   </script>
 <script type='text/javascript'>
   $(function() {
@@ -111,12 +127,14 @@
       $(".photo").css("background-image", "url('../files/"+id+".jpg')");
       $('.barcode').html('<img src="'+bcurl+'?text='+id+'&size='+bcsize+'"/>');
       $('link').attr('href','../css/ahstaffcard.css');
+      $('head').append('<link rel="stylesheet" href="../static/font-awesome/css/font-awesome.min.css" type="text/css" />');
       $('.footerimg').attr('src','../img/ahfooter.png');
       $('.logoimg').attr('src','../img/ahlogo.png');
       if(department=="LIS"){
         $('link').attr('href','../css/staffcard.css');
         $('.footerimg').attr('src','../img/logosfooter.png');
         $('.logoimg').attr('src','../img/logoslogo.png');
+        $('head').append('<link rel="stylesheet" href="../static/font-awesome/css/font-awesome.min.css" type="text/css" />');
       }
       function getParameterByName(name) {
           name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -133,5 +151,6 @@
     });
 
 </script>
+<link rel="stylesheet" type="text/css" href="../static/font-awesome/css/font-awesome.min.css" />
 
 </html>
