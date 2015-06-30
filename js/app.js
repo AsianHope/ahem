@@ -140,6 +140,7 @@
    });
 
    app.controller('EmployeeListController', function($scope, $http, $filter, $q){
+        $scope.current_pass;
         $scope.password;
         $scope.password = password;
         var keylist="abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$*&";
@@ -351,6 +352,7 @@
                        }
                        else{
                          alert("Password has been reset!");
+                         $scope.current_pass="";
                        }
                        return d.promise;
                 }

@@ -270,8 +270,10 @@
         <div class="form-group">
           <a role="button" target="_blank" class="btn btn-primary btn-lg" href="templates/card.html?name={{elist.curemployee.givenName}} {{elist.curemployee.sn}}&id={{elist.curemployee.employeeNumber}}&title={{elist.curemployee.title}}&department={{elist.curemployee.departmentNumber}}">Print ID card</a>
         </div>
-
-        <reset-password></reset-password>
+        <div class="form-group" >
+          <button class="btn btn-primary btn-lg" id="hide_resetpass">Password Reset</button>
+        </div>
+        <reset-password id="show_resetpass"></reset-password>
     </div>
          <div class="col-md-12" id="debug"> {{elist.curemployee | json}}</div>
 
@@ -291,4 +293,13 @@
                 text-align: center;
               }
           }
+          #show_resetpass{
+            display: none;
+          }
          </style>
+         <script type="text/javascript">
+            $('#hide_resetpass').click(function() {
+              $(this).hide();
+              $("#show_resetpass").show();
+            });
+         </script>
