@@ -347,6 +347,7 @@
                                d.reject('Server error!');
                        });
                        if(type=="youreset"){
+                         alert('Your password has been reset! Please login again.');
                          $scope.user.uname = null;
                          $scope.user.pw = null;
                        }
