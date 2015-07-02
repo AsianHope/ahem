@@ -338,28 +338,32 @@
                         headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                       }).success(function(data, status, headers, config){
                            if(data.result== 'success'){
-                               d.resolve()
+                              if(type=="youreset"){
+                                d.resolve()
+                                alert('Your password has been reset! Plase login again.');
+                                $scope.user.uname = null;
+                                $scope.user.pw = null;
+                              }
+                              else{
+                                d.resolve()
+                                alert("Password has been reset!");
+                                $scope.current_pass="";
+                              }
                            }
-                           else
+                           else{
                                d.resolve("There was an error");
+                               alert('You don\'t have permission to update.');
+                             }
                          }).
                          error(function(data, status, headers, config){
                                d.reject('Server error!');
                        });
-                       if(type=="youreset"){
-                         alert('Your password has been reset! Please login again.');
-                         $scope.user.uname = null;
-                         $scope.user.pw = null;
-                       }
-                       else{
-                         alert("Password has been reset!");
-                         $scope.current_pass="";
-                       }
+                     }
+                     else{
+                       alert('Your current passwords do not match.');
+                     }
                        return d.promise;
-                }
-                else{
-                  alert('Your current passwords do not match.');
-                }
+
 
 
 
