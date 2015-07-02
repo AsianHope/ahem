@@ -129,7 +129,7 @@
 
      $scope.user = {
        uname: null,
-       pw: null,
+       pw: null
      }
 
      $scope.login = function () {
@@ -140,6 +140,7 @@
    });
 
    app.controller('EmployeeListController', function($scope, $http, $filter, $q){
+        $scope.email;
         $scope.current_pass;
         $scope.password;
         $scope.password = password;
@@ -155,19 +156,18 @@
          };
          $scope.tempPassword();
 
-
-            var data = {
-                  username: $scope.user.uname,
-                    pw: $scope.user.pw,
-                    scope:'CURSTAFF'
+          var data = {
+                username: $scope.user.uname,
+                pw: $scope.user.pw,
+                scope:'CURSTAFF'
                 }
-            var uri = encodeURI('cgi-bin/dump.cgi');
-            $http({
+          var uri = encodeURI('cgi-bin/dump.cgi');
+          $http({
                   method  : 'POST',
                   url     : uri,
                   data    : $.param(data),  // pass in data as strings
                   headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
-                 }).success(function(data, status, headers, config) {
+                }).success(function(data, status, headers, config) {
                        if(data.result== 'error'){
                          //pop us back out to the login screen
                          $scope.user.uname = null;
@@ -176,10 +176,10 @@
                        else{
                          $scope.employees = data;
                          }
-                   }).error(function(data, status, headers, config){
+                  }).error(function(data, status, headers, config){
                        $scope.user.uname = null;
                        $scope.user.pw = null;
-                     });
+                  });
 
 
           //no one selected initially
@@ -272,15 +272,15 @@
             this.curemployee=setEmployee;
         };
 
-	this.selectSelf = function(){
-            for(var i=0; i<$scope.employees.length; i++){
-		if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
-      this.selfselect=$scope.employees[i];
-		   break;
+      	this.selectSelf = function(){
+                  for(var i=0; i<$scope.employees.length; i++){
+      		if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
+            this.selfselect=$scope.employees[i];
+      		   break;
 
-		}
-	    }
-	};
+      		}
+      	    }
+      	};
 
         this.shift = function(amount){
             for(var i=0; i<$scope.employees.length; i++){
@@ -327,7 +327,8 @@
                     field: "userPassword",
                     data:encoded_data,
                     username:$scope.user.uname,
-                    pw:$scope.user.pw
+                    pw:$scope.user.pw,
+                    reset_type:type
                     }
                 var uri = encodeURI('cgi-bin/update.cgi');
                 if(confirmpass==$scope.user.pw){

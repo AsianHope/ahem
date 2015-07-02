@@ -4,6 +4,10 @@
 # can access. Access is controlled by normal LDAP ACLs
 # If a user cannot bind to the server, an error is returned.
 
+#email sending stuff
+from subprocess import Popen, PIPE
+from email.mime.text import MIMEText
+
 import ldap
 import ldap.modlist as modlist
 
@@ -54,6 +58,7 @@ def main():
     field = formData.getlist("field")[0]
     data = urllib.unquote(formData.getlist("data")[0])
     uid = formData.getlist("uid")[0]
+    reset_type = formData.getlist("reset_type")[0]
 
     if field!="userPassword":
         logging.debug('%s attempting to modify user %s, field: %s, data: %s', username, uid, field, data)
@@ -102,9 +107,71 @@ def main():
                 data = convertToAppleBirthday(data)
 
             if(field == 'userPassword'):
+                password = data
                 data = convertPassword(data)
                 #userPassword isn't normally returned, so let's trick the below
-                sresult_data[0][1]['userPassword']=data 
+                sresult_data[0][1]['userPassword']=data
+                if(reset_type == 'youreset'):
+
+                    #send email
+                    reset_password= '''
+                    <html>
+                    <head></head>
+                    <body>
+
+                    <p>Hi '''+username+''',</p>
+                    <p>Your AHEM password has been changed.</p>
+
+                    '''
+                    msg = MIMEText(reset_password + '</body></html>','html')
+                    msg['To'] = username+'@asianhope.org'
+                    msg['From'] = 'noreply@asianhope.org'
+                    msg['Subject'] = 'Password changed'
+                    try:
+                        p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
+                        p.communicate(msg.as_string())
+                    except Exception:
+                        pass
+                else:
+                    to_admin_reset_password= '''
+                    <html>
+                    <head></head>
+                    <body>
+
+                    <p>Hi '''+username+''',</p>
+                    <p>'''+uid+''' AHEM password has been changed.</p>
+                    <p>The Temporary Password is : '''+password+'''</p>
+
+                    '''
+                    to_user_reset_password= '''
+                    <html>
+                    <head></head>
+                    <body>
+
+                    <p>Hi '''+uid+''',</p>
+                    <p>Your AHEM password has been changed.</p>
+                    <p>The Temporary Password is : '''+password+'''</p>
+
+                    '''
+                    msg = MIMEText(to_admin_reset_password + '</body></html>','html')
+                    msg['To'] = username+'@asianhope.org'
+                    msg['From'] = 'noreply@asianhope.org'
+                    msg['Subject'] = 'Password changed'
+                    try:
+                        p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
+                        p.communicate(msg.as_string())
+                    except Exception:
+                        pass
+                    msg = MIMEText(to_user_reset_password + '</body></html>','html')
+                    msg['To'] = uid+'@asianhope.org'
+                    msg['From'] = 'noreply@asianhope.org'
+                    msg['Subject'] = 'Password changed'
+                    try:
+                        p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
+                        p.communicate(msg.as_string())
+                    except Exception:
+                        pass
+
 
             #if the field isn't in the result set, we need to do a MOD_ADD
             if(field not in sresult_data[0][1]):
@@ -118,7 +185,7 @@ def main():
 
             #future - add to log file saying who performed what
             slave.modify_s(dn,new)
-            
+
         #if it's an extended field, then we're going to pull the JSON and rewrite it
         else:
                 #if the jsonData hasn't been added to the entry, add it.
@@ -139,7 +206,7 @@ def main():
         logging.info('%s modified user %s, field: %s, data: %s', username, uid, field, data)
 
         #and finally, if it was their mobile number - let them know it was updated!
-        if username == uid and field == 'mobile':    
+        if username == uid and field == 'mobile':
             clickatell = Http(CLICKATELL_CREDENTIALS['username'],CLICKATELL_CREDENTIALS['password'],CLICKATELL_CREDENTIALS['apiID'])
             response = clickatell.sendMessage(data,"This number is now your AH emergency contact number", {'from':'AHALERTS'})
             logging.info('clickatell message sent, response: %s', response)
