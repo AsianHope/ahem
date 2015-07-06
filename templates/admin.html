@@ -13,6 +13,9 @@
          <li ng-class="{ active:this.tab.isSet(4) }">
              <a href ng-click="this.tab.setTab(4)">Log</a>
          </li>
+         <li ng-class="{ active:this.tab.isSet(5) }">
+             <a href ng-click="this.tab.setTab(5)">Reports</a>
+         </li>
      </ul>
 
      <div ng-show="this.tab.isSet(1)">
@@ -27,6 +30,9 @@
      <div ng-show="this.tab.isSet(4)">
          <h1>Log</h1>
          <ahemlog></ahemlog>
+     </div>
+     <div ng-show="this.tab.isSet(5)">
+         <reports></reports>
      </div>
    </div>
 

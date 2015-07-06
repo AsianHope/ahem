@@ -1,0 +1,187 @@
+<div ng-controller="EmployeeListController as elist" >
+  <div ng-repeat="employee in employees | filter:query | orderBy:orderProp" ng-if="employee.l!='KH'" class="reports container col-md-12 well well-sm" style="margin-top:30px;">
+    <!-- Biogrpahical -->
+  <div class="col-md-8">
+      <table>
+        <tr>
+          <td><h5>Name</h5></td>
+          <td><h5>:</h5></td>
+          <td>
+            <h5>
+              <a href="#" title="Click to edit: First Name" editable-text="employee.sn"
+                  onbeforesave="updateUser(employee.employeeNumber,'sn',$data)">
+                  {{employee.sn}}
+              </a>
+              ,
+              <a href="#" title="Click to edit: First Name" editable-text="employee.givenName"
+                  onbeforesave="updateUser(employee.employeeNumber,'givenName',$data)">
+                  {{employee.givenName}}
+              </a>
+            </h5>
+          </td>
+        </tr>
+        <tr>
+          <td><h5>Country</h5></td>
+          <td><h5>:</h5></td>
+          <td>
+            <h5>
+              <a href="#" title="Click to edit: Passport Country" editable-select="employee.c"
+                  e-ng-options="country.value as country.text for country in countries"
+                  onbeforesave="updateUser(employee.employeeNumber,'c',$data)">
+                  {{employee.c || "Passport Country"}}
+              </a>
+            </h5>
+          </td>
+        </tr>
+        <tr>
+          <td><h5>Passport Number</h5></td>
+          <td><h5>:</h5></td>
+          <td><h5>
+            <a href="#" title="Click to edit: Country" editable-text="employee.idnumber"
+                onbeforesave="updateUser(employee.employeeNumber,'idnumber',$data)">
+                {{employee.idnumber || "Not Entered"}}
+            </a>
+              </h5>
+          </td>
+        </tr>
+        <tr>
+          <td><h5>Duration of Contract</h5></td>
+          <td><h5>:</td>
+          <td><h5>
+            <a href="#" title="Click to edit" editable-text="years"
+                onbeforesave="updateUser(employee.employeeNumber,'???',$data)">
+                2 years
+            </a>
+          </h5></td>
+        </tr>
+        <tr>
+          <td><h5>Term</h5></td>
+          <td><h5>:</h5></td>
+          <td><h5>
+            <a href="#" title="Click to edit" editable-date="7/2014"
+            onbeforesave="updateUser(employee.employeeNumber,'???',$data)">
+              7/2014
+            </a>—
+            <a href="#" title="Click to edit" editable-date="7/2016"
+            onbeforesave="updateUser(employee.employeeNumber,'???',$data)">
+              7/2016
+            </a>
+
+          </h5></td>
+        </tr>
+        <tr>
+          <td><h5>Position</h5></td>
+          <td><h5>:</td>
+          <td><h5>
+            <a href="#" title="Click to edit: Country" editable-text="employee.title"
+                onbeforesave="updateUser(employee.employeeNumber,'title',$data)">
+                {{employee.title || "Not Entered"}}
+            </a>
+            </h5>
+          </td>
+        </tr>
+        <tr>
+          <td><h5>Spouse</h5></td>
+          <td><h5>:</h5></td>
+          <td>
+            <table>
+              <tr>
+                <td><h5>Name</h5></td>
+                <td><h5>:</h5></td>
+                <td><h5>
+                  <a href="#" title="Click to edit: Country" editable-text="employee.spouseSn"
+                      onbeforesave="updateUser(employee.employeeNumber,'spouseSn',$data)">
+                      {{employee.spouseSn || "Not Entered"}}
+                  </a>,
+                  <a href="#" title="Click to edit: Country" editable-text="employee.spouseCn"
+                      onbeforesave="updateUser(employee.employeeNumber,'spouseCn',$data)">
+                      {{employee.spouseCn || "Not Entered"}}
+                  </a>
+                  </h5>
+                </td>
+              </tr>
+              <tr>
+                <td><h5>Country</h5></td>
+                <td><h5>:</h5></td>
+                <td><h5>
+                  <a href="#" title="Click to edit: Passport Country" editable-select="employee.spouseC"
+                      e-ng-options="country.value as country.text for country in countries"
+                      onbeforesave="updateUser(employee.employeeNumber,'spouseC',$data)">
+                      {{employee.spouseC || "Passport Country"}}
+                  </a>
+                  </h5>
+                </td>
+              </tr>
+              <tr>
+                <td><h5>Passport Number</h5></td>
+                <td><h5>:</td>
+                <td><h5>
+                  <a href="#" title="Click to edit: Country" editable-text="employee.spouseidnumber"
+                      onbeforesave="updateUser(employee.employeeNumber,'spouseidnumber',$data)">
+                      {{employee.spouseidnumber || "Not Entered" }}
+                  </a>
+
+                </h5></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td ng-if="employee.children!=null"><h5>Children</h5></td>
+          <td ng-if="employee.children!=null"><h5>:</h5></td>
+          <td ng-if="employee.children!=null">
+            <table  ng-repeat="a in range(employee.children) track by $index">
+              <tr>
+                <td><h5>Children {{$index+1}} Name</h5></td>
+                <td><h5>:</h5></td>
+                <td><h5>
+                  <a id="lastname" href="#" title="Click to edit: Surname" editable-text="employee.child{{$index}}Sn"
+                      onbeforesave="updateUser(employee.employeeNumber,'child'+ $index+'Sn',$data)">
+                      {{employee.child$indexSn || "Not Entered"}}
+                  </a>,
+                  <a href="#" title="Click to edit: Surname" editable-text="employee.child{{$index}}Cn"
+                      onbeforesave="updateUser(employee.employeeNumber,'child'+ $index+'Cn',$data)">
+                      {{employee.child$indexCn || "Not Entered"}}
+                  </a>
+                  </h5>
+                </td>
+              </tr>
+              <tr>
+                <td><h5>Country</h5></h5></td>
+                <td><h5>:</h5></h5></td>
+                <td><h5>
+                  <a href="#" title="Click to edit: Passport Country" editable-select="employee.child{{$index}}C"
+                      e-ng-options="country.value as country.text for country in countries"
+                      onbeforesave="updateUser(employee.employeeNumber,'child'+ $index+'C',$data)">
+                      {{employee.child$indexC || "Not Entered"}}
+                  </a>
+                  </h5>
+                </td>
+              </tr>
+              <tr>
+                <td><h5>Passport Number</h5></td>
+                <td><h5>:</h5></td>
+                <td><h5>
+                  <a id="lastname" href="#" title="Click to edit: Surname" editable-text="employee.child{{$index}}idnumber"
+                      onbeforesave="updateUser(employee.employeeNumber,'child'+ $index+'idnumber',$data)">
+                      {{employee.child$indexidnumber || "Not Entered"}}
+                  </a>
+                  </h5>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+  </div>
+    <div class="col-md-4">
+        <img src="../files/{{employee.employeeNumber}}.jpg" style="width:236px; margin-top:30px;"></img>
+    </div>
+</div>
+</div>
+<style>
+  .reports td{
+    padding: 0 5px 0 5px;
+    color: #428bca;
+  }
+</style>

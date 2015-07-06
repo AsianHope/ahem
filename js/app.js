@@ -87,18 +87,23 @@
     //---------------
 
    app.directive('ahemlog', function(){
-	return {
-		restrict: 'E',
-		templateUrl: 'templates/ahem-log.html',
-	};
+    	return {
+    		restrict: 'E',
+    		templateUrl: 'templates/ahem-log.html',
+    	};
     });
     app.directive('staffStatus', function(){
-  return {
-    restrict: 'E',
-    templateUrl: 'templates/status.html',
-  };
+      return {
+        restrict: 'E',
+        templateUrl: 'templates/status.html',
+      };
     });
-
+    app.directive('reports', function(){
+      return {
+        restrict: 'E',
+        templateUrl: 'templates/reports.html',
+      };
+    });
    app.controller('TabController', function(){
         this.tab=3;
         this.isSet = function(checkTab){
@@ -109,21 +114,6 @@
             this.tab = setTab;
         };
     });
-
-    //---------------
-    app.controller('TabControllerProfile', function(){
-        //  this.tab=3;
-         this.isSet = function(checkTab){
-             return this.tab === checkTab;
-         };
-
-         this.setTab = function(setTab){
-             this.tab = setTab;
-         };
-     });
-
-
-    //----------------
 
    app.controller('LoginController', function($scope, $http){
 
@@ -181,7 +171,9 @@
                        $scope.user.pw = null;
                   });
 
-
+            $scope.range = function(n) {
+                return new Array(n);
+            };
           //no one selected initially
           this.curemployee=null;
 

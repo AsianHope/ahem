@@ -34,8 +34,8 @@
         </table>
     </div>
 
-    <div ng-show="elist.curemployee">
-        <h1 id="goback"><a href ng-click="elist.clearEmployee()">Go back?</a> </h1>
+    <div ng-show="elist.curemployee" ng-controller="TabController as tab">
+        <h1 id="goback"><a href ng-click="elist.clearEmployee(); this.tab.setTab(3)">Go back?</a> </h1>
         <view-staff></view-staff>
     </div>
 </div>
