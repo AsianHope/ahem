@@ -7,12 +7,13 @@
 from credentials import LDAP_CREDENTIALS
 from credentials import SERVER
 
+from credentials import OPTIONS
 import ldap
 import ldap.modlist as modlist
 import cgi
 #better errors, disable in production
-#import cgitb
-#cgitb.enable()
+import cgitb
+cgitb.enable()
 
 import os,sys
 import json
@@ -23,6 +24,14 @@ def main():
     print "Content-type: application/json; charset=utf-8"
     #print "Content-type: text/html; charset=utf-8"
     print
+
+    #if we're in offline mode, just print and exit.
+    if(OPTIONS['OFFLINE_MODE']):
+        f = open(OPTIONS['OFFLINE_FILE'],'r')
+        for line in f:
+            print line,
+        sys.exit(0)
+    
     formData = cgi.FieldStorage()
     username = formData.getlist("username")[0]
     pw = formData.getlist("pw")[0]
