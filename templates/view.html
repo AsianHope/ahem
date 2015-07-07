@@ -19,23 +19,22 @@
                      {{document.text}}
                 </li>
                </ul>
-
          </div>
-
       </div>
       <div class="container col-md-6">
         <section>
-          <ul class = "nav nav-tabs">
-              <li ng-class="{ active:this.tab.isSet(3)}">
-                  <a href ng-click="this.tab.setTab(3)">Emplyee</a>
-              </li>
-              <li ng-if="elist.curemployee.maritalstatus!=null && elist.curemployee.maritalstatus!='Not Entered' && elist.curemployee.maritalstatus!='Single' && elist.curemployee.l!='KH'" ng-class="{ active:this.tab.isSet(4) }">
-                  <a href ng-click="this.tab.setTab(4)">Family</a>
-              </li>
-          </ul>
-          <div ng-show="this.tab.isSet(3)">
+          <div class="col-md-12">
+            <ul class = "nav nav-tabs">
+                <li ng-class="{ active:this.tab.isSet(3)}">
+                    <a href ng-click="this.tab.setTab(3)">Employee</a>
+                </li>
+                <li ng-if="elist.curemployee.maritalstatus!=null && elist.curemployee.maritalstatus!='Not Entered' && elist.curemployee.maritalstatus!='Single' && elist.curemployee.c!='KH'" ng-class="{ active:this.tab.isSet(4) }">
+                    <a href ng-click="this.tab.setTab(4)">Family</a>
+                </li>
+            </ul>
+          </div>
             <!-- Biogrpahical -->
-              <div class="col-md-12">
+              <div class="col-md-12" ng-show="this.tab.isSet(3)">
                 <div class="well well-sm">
                   <fieldset>
                   <!-- Name, Sex, Dept, Employee Number -->
@@ -274,10 +273,8 @@
                   </div>
                 </div>
               </div>
-          </div>
-          <div ng-show="this.tab.isSet(4)">
             <!-- spouse infor -->
-            <div class="col-md-12 nonldap well well-sm" style="border-bottom: 1px solid #e5e5e5;">
+            <div ng-show="this.tab.isSet(4)" class="col-md-12 nonldap well well-sm" style="border-bottom: 1px solid #e5e5e5;">
                  <div class="col-md-6">
                      <h4>Spouse Name:
                          <small>
@@ -317,49 +314,50 @@
                          </small>
                      </h4>
                  </div>
-              <div ng-if="employee.children!=null" class="col-md-6" ng-repeat="a in range(elist.curemployee.children) track by $index">
-                  <h4>children {{$index+1}} Name:
-                      <small>
-                        <a href="#" title="Click to edit: Surname" editable-text="elist.curemployee.child{{$index}}Sn"
-                            onbeforesave="updateUser(elist.curemployee.uid,'child'+ $index+'Sn',$data)">
-                            {{elist.curemployee.child$indexSn || "N/A"}}
-                        </a>,
-                        <a href="#" title="Click to edit: First Name" editable-text="elist.curemployee.child{{$index}}Cn"
-                            onbeforesave="updateUser(elist.curemployee.uid,'child'+ $index+'Cn',$data)">
-                            {{elist.curemployee.child$indexCn || "N/A"}}
-                        </a>
-                      </small>
-                  </h4>
-                  <h4>Passport Number:
-                      <small>
-                        <a href="#" title="Click to edit" editable-text="elist.curemployee.chlid{{$index}}idnumber"
-                        onbeforesave="updateUser(elist.curemployee.uid,'chlid'+$index+'idnumber',$data)">
-                          {{elist.curemployee.chlid$indexIdnumber || "Not Entered"}}
-                        </a>
-                      </small>
-                  </h4>
-              </div>
-              <div class="col-md-6 nonldap">
-                  <h4>Passport Country:
-                      <small>
-                        <a href="#" title="Click to edit: Passport Country" editable-select="elist.curemployee.chlid{{$index}}C"
-                            e-ng-options="country.value as country.text for country in countries"
-                            onbeforesave="updateUser(elist.curemployee.uid,'chlid'+$index+'C',$data)">
-                            {{elist.curemployee.chlid$indexC || "Not Entered"}}
-                        </a>
-                      </small>
-                  </h4>
-                  <h4>Visa Expire:
-                      <small>
-                        <a href="#" title="Click to edit" editable-date="elist.curemployee.child{{$index}}VisaExpiry"
-                        onbeforesave="updateUser(elist.curemployee.uid,'child'+ $index+'VisaExpiry',$data)">
-                          {{elist.curemployee.child$indexVisaExpiry || "Not Entered"}}
-                        </a>
-                      </small>
-                  </h4>
-              </div>
+                 <div ng-if="elist.curemployee.children!=null" ng-repeat="a in range(elist.curemployee.children) track by $index">
+                   <div class="col-md-6" >
+                       <h4>children {{$index+1}} Name:
+                           <small>
+                             <a href="#" title="Click to edit: Surname" editable-text="elist.curemployee.child{{$index}}Sn"
+                                 onbeforesave="updateUser(elist.curemployee.uid,'child'+ $index+'Sn',$data)">
+                                 {{elist.curemployee.child$indexSn || "N/A"}}
+                             </a>,
+                             <a href="#" title="Click to edit: First Name" editable-text="elist.curemployee.child{{$index}}Cn"
+                                 onbeforesave="updateUser(elist.curemployee.uid,'child'+ $index+'Cn',$data)">
+                                 {{elist.curemployee.child$indexCn || "N/A"}}
+                             </a>
+                           </small>
+                       </h4>
+                       <h4>Passport Number:
+                           <small>
+                             <a href="#" title="Click to edit" editable-text="elist.curemployee.chlid{{$index}}idnumber"
+                             onbeforesave="updateUser(elist.curemployee.uid,'chlid'+$index+'idnumber',$data)">
+                               {{elist.curemployee.chlid$indexIdnumber || "Not Entered"}}
+                             </a>
+                           </small>
+                       </h4>
+                   </div>
+                   <div class="col-md-6 nonldap">
+                       <h4>Passport Country:
+                           <small>
+                             <a href="#" title="Click to edit: Passport Country" editable-select="elist.curemployee.chlid{{$index}}C"
+                                 e-ng-options="country.value as country.text for country in countries"
+                                 onbeforesave="updateUser(elist.curemployee.uid,'chlid'+$index+'C',$data)">
+                                 {{elist.curemployee.chlid$indexC || "Not Entered"}}
+                             </a>
+                           </small>
+                       </h4>
+                       <h4>Visa Expire:
+                           <small>
+                             <a href="#" title="Click to edit" editable-date="elist.curemployee.child{{$index}}VisaExpiry"
+                             onbeforesave="updateUser(elist.curemployee.uid,'child'+ $index+'VisaExpiry',$data)">
+                               {{elist.curemployee.child$indexVisaExpiry || "Not Entered"}}
+                             </a>
+                           </small>
+                       </h4>
+                   </div>
+                 </div>
             </div>
-          </div>
         </section>
       </div>
       <div class="text-center col-md-3">
