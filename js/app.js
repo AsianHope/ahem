@@ -172,7 +172,8 @@
                   });
 
             $scope.range = function(n) {
-                return new Array(n);
+               n.trim();
+              return new Array(parseInt(n));
             };
           //no one selected initially
           this.curemployee=null;
@@ -259,7 +260,6 @@
         this.clearEmployee = function(){
             this.curemployee=null;
         };
-
         this.setEmployee = function(setEmployee){
             this.curemployee=setEmployee;
         };
