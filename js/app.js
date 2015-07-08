@@ -35,6 +35,10 @@
       when('/admin', {
         templateUrl: 'templates/admin.html'
       }).
+      when('/admin/staff/:id', {
+        templateUrl: 'templates/ViewStaffProfile.html',
+        controller:'EmployeeListController'
+      }).
       otherwise({
         templateUrl: 'templates/simpleuser.html'
       });
@@ -129,7 +133,10 @@
 
    });
 
-   app.controller('EmployeeListController', function($scope, $http, $filter, $q){
+
+   app.controller('EmployeeListController', function($scope, $http, $filter, $q,$routeParams){
+        $scope.cid = $routeParams.id;
+        $scope.curemployee=null;
         $scope.email;
         $scope.current_pass;
         $scope.password;
@@ -145,7 +152,6 @@
              $scope.password = temp;
          };
          $scope.tempPassword();
-
           var data = {
                 username: $scope.user.uname,
                 pw: $scope.user.pw,
@@ -165,19 +171,30 @@
                        }
                        else{
                          $scope.employees = data;
+                         //--------route pass by id--------
+                         for(var i=0; i<$scope.employees.length; i++){
+                           if($scope.employees[i].employeeNumber.localeCompare($scope.cid ) == 0){
+                             $scope.curemployee=$scope.employees[i];
+                              break;
+                           }
+                         }
+                         //----------
                          }
                   }).error(function(data, status, headers, config){
                        $scope.user.uname = null;
                        $scope.user.pw = null;
                   });
-
             $scope.range = function(n) {
                n.trim();
               return new Array(parseInt(n));
             };
           //no one selected initially
-          this.curemployee=null;
-
+          this.clearEmployee = function(){
+            this.curemployee=null;
+          };
+          this.setEmployee = function(setEmployee){
+            this.curemployee=setEmployee;
+          };
           //begin internal functions
           this.refreshEmployeeData = function(){
             $scope.employees = [];
@@ -257,23 +274,14 @@
 
           return 'approximately '+years+' year(s), '+months+' month(s), '+days+' day(s)';
         };
-        this.clearEmployee = function(){
-            this.curemployee=null;
-        };
-        this.setEmployee = function(setEmployee){
-            this.curemployee=setEmployee;
-        };
-
       	this.selectSelf = function(){
-                  for(var i=0; i<$scope.employees.length; i++){
-      		if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
-            this.selfselect=$scope.employees[i];
-      		   break;
-
-      		}
-      	    }
+          for(var i=0; i<$scope.employees.length; i++){
+        		if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
+              this.selfselect=$scope.employees[i];
+        		   break;
+        		}
+      	  }
       	};
-
         this.shift = function(amount){
             for(var i=0; i<$scope.employees.length; i++){
                 if($scope.employees[i].employeeNumber === this.curemployee.employeeNumber){

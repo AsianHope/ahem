@@ -1,5 +1,5 @@
 <div ng-controller="EmployeeListController as elist">
-    <div ng-show="!elist.curemployee">
+    <div>
         <div class="form-inline" style="margin: 5px;">
             <label>Search:</label>
             <input class="form-control" ng-model="query"/>
@@ -17,25 +17,19 @@
               <a href ng-click="elist.showRequestedAccounts()" alt = "Show requested accounts"><i class="fa fa-cogs"></i></a>
               <a href ng-click="elist.showDisabledAccounts()" alt = "Show disabled accounts"><i class="fa fa-question-circle"></i></a>
           </h1>
-
     </div>
-
         <table class="table table-striped table-hover">
             <tr><th>T</th><th>Dept</th><th>ID</th><th>First Name</th><th>Surname</th><th>Phone</th><th>Email</th></tr>
             <tr ng-repeat="employee in employees | filter:query | orderBy:orderProp">
+              {{employee}}chert chert
                 <td style="width: 1em;">{{employee.employeeType}}</a></td>
                 <td style="width: 1em;">{{employee.departmentNumber}}</a></td>
-                <td style="width: 8em;"><a href ng-click="this.elist.setEmployee(employee)">{{employee.employeeNumber}}</a></td>
+                <td style="width: 8em;"><a href="#/admin/staff/{{employee.employeeNumber}}" ng-click="this.elist.setEmployee(employee)">{{employee.employeeNumber}}</a></td>
                 <td style="width: 10em;">{{employee.givenName}}</td>
                 <td style="width: 10em;">{{employee.sn}}</td>
                 <td style="width: 10em;">{{employee.mobile}}</td>
                 <td style="width: 10em;"><a href="mailto:{{employee.mail}}" target="_blank">{{employee.mail}}</a></td>
             </tr>
         </table>
-    </div>
-
-    <div ng-show="elist.curemployee" ng-controller="TabController as tab">
-        <h1 id="goback"><a href ng-click="elist.clearEmployee(); this.tab.setTab(3)">Go back?</a> </h1>
-        <view-staff></view-staff>
     </div>
 </div>
