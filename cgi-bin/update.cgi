@@ -58,7 +58,12 @@ def main():
     field = formData.getlist("field")[0]
     data = urllib.unquote(formData.getlist("data")[0])
     uid = formData.getlist("uid")[0]
-    reset_type = formData.getlist("reset_type")[0]
+
+    try:
+        reset_type = formData.getlist("reset_type")[0]
+    except:
+        reset_type = None
+
     password = data
     if field!="userPassword":
         logging.debug('%s attempting to modify user %s, field: %s, data: %s', username, uid, field, data)
