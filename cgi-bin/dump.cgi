@@ -11,19 +11,17 @@ from credentials import OPTIONS
 import ldap
 import ldap.modlist as modlist
 import cgi
+
 #better errors, disable in production
-import cgitb
-cgitb.enable()
+#import cgitb
+#cgitb.enable()
 
 import os,sys
 import json
 import logging
 logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
-def main():
-    print "Content-type: application/json; charset=utf-8"
-    #print "Content-type: text/html; charset=utf-8"
-    print
+def getUsers():
 
     #if we're in offline mode, just print and exit.
     if(OPTIONS['OFFLINE_MODE']):
@@ -47,7 +45,7 @@ def main():
     try:
         slave.simple_bind_s(susername,pw)
     except:
-        print '{"result":"error"}'
+        return '{"result":"error"}'
         logging.warning('Bind failed - aborting')
         sys.exit(1)
 
@@ -78,8 +76,8 @@ def main():
        else:
            users.append(jsonifyUser(sresult_data))
 
-    print json.dumps(users,'utf-8')
     logging.info('dump delivered.')
+    return users
 
 def jsonifyUser(user):
         userjson = dict()
@@ -126,4 +124,9 @@ def getAttribute(user,attribute):
     except:
         return
 
-main()
+if __name__ == "__main__":
+    users = getUsers()
+    print "Content-type: application/json; charset=utf-8"
+    #print "Content-type: text/html; charset=utf-8"
+    print
+    print json.dumps(users,'utf-8')
