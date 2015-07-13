@@ -21,7 +21,6 @@
         <table class="table table-striped table-hover">
             <tr><th>T</th><th>Dept</th><th>ID</th><th>First Name</th><th>Surname</th><th>Phone</th><th>Email</th></tr>
             <tr ng-repeat="employee in employees | filter:query | orderBy:orderProp">
-              {{employee}}chert chert
                 <td style="width: 1em;">{{employee.employeeType}}</a></td>
                 <td style="width: 1em;">{{employee.departmentNumber}}</a></td>
                 <td style="width: 8em;"><a href="#/admin/staff/{{employee.employeeNumber}}" ng-click="this.elist.setEmployee(employee)">{{employee.employeeNumber}}</a></td>
@@ -30,6 +29,3 @@
                 <td style="width: 10em;">{{employee.mobile}}</td>
                 <td style="width: 10em;"><a href="mailto:{{employee.mail}}" target="_blank">{{employee.mail}}</a></td>
             </tr>
-        </table>
-    </div>
-</div>

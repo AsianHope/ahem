@@ -134,9 +134,10 @@
    });
 
 
-   app.controller('EmployeeListController', function($scope, $http, $filter, $q,$routeParams){
+   app.controller('EmployeeListController', function($scope, $http, $filter, $q,$routeParams,$location){
         $scope.cid = $routeParams.id;
         $scope.curemployee=null;
+        $scope.employees = [];
         $scope.email;
         $scope.current_pass;
         $scope.password;
@@ -173,7 +174,7 @@
                          $scope.employees = data;
                          //--------route pass by id--------
                          for(var i=0; i<$scope.employees.length; i++){
-                           if($scope.employees[i].employeeNumber.localeCompare($scope.cid ) == 0){
+                           if($scope.employees[i].employeeNumber==$scope.cid){
                              $scope.curemployee=$scope.employees[i];
                               break;
                            }
@@ -282,10 +283,14 @@
         		}
       	  }
       	};
+        $scope.go = function ( path ) {
+          $location.path( path );
+        };
         this.shift = function(amount){
             for(var i=0; i<$scope.employees.length; i++){
-                if($scope.employees[i].employeeNumber === this.curemployee.employeeNumber){
-                    this.curemployee = $scope.employees[i+amount];
+                if($scope.employees[i].employeeNumber==$scope.cid){
+                    $scope.curemployee = $scope.employees[i+amount];
+                    $location.path("/admin/staff/"+$scope.curemployee.employeeNumber);
                     break;
                 }
             }
