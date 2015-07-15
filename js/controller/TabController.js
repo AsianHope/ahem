@@ -1,6 +1,5 @@
 (function () {
       'use strict';
-      var app = angular.module('employeeList');
       app.controller('TabController',function () {
         this.tab=3;
         this.isSet = function(checkTab){

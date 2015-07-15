@@ -1,6 +1,5 @@
 (function () {
     'use strict';
-    var app= angular.module('employeeList');
           //password match
           app.directive('passwordMatch', [function () {
             return {
@@ -9,7 +8,7 @@
                 require: 'ngModel',
                 link: function (scope, elem , attrs,control) {
                     var checker = function () {
-                      
+
                         //get the value of the first password
                         var e1 = scope.$eval(attrs.ngModel);
 

@@ -1,6 +1,5 @@
 (function () {
     'use strict';
-    var app= angular.module('employeeList');
     app.controller('EmployeeListController',function ($scope, $http, $filter, $q,$routeParams,$location,Employees) {
       $scope.cid = $routeParams.id;
       $scope.curemployee=null;

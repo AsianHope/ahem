@@ -1,7 +1,5 @@
 (function () {
     'use strict';
-
-    var app= angular.module('employeeList');
     app.config(['$routeProvider',
     function($routeProvider) {
     $routeProvider.

@@ -1,5 +1,4 @@
 //globals
-var app =  angular.module('employeelist', ['xeditable','ngRoute']);
     var ah_employeetypes = [
         {value: 'PT', text: 'Part Time'},
         {value: 'FT', text: 'Full Time'},

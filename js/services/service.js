@@ -1,6 +1,5 @@
 (function () {
       'use strict';
-      var app = angular.module('employeeList');
       app.factory('Employees', function($http) {
         return {
           getEmployees : function(username,password) {

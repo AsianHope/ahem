@@ -1,8 +1,6 @@
 (function () {
-    'use strict';
-
-    var app= angular.module('employeeList');
-    app.controller('LoginController',function ($scope,$http) {
+      'use strict';
+      app.controller('LoginController',function ($scope,$http) {
       $scope.user = {
            uname: null,
            pw: null
