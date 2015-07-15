@@ -11,19 +11,17 @@ from credentials import OPTIONS
 import ldap
 import ldap.modlist as modlist
 import cgi
+
 #better errors, disable in production
-import cgitb
-cgitb.enable()
+#import cgitb
+#cgitb.enable()
 
 import os,sys
 import json
 import logging
 logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
-def main():
-    print "Content-type: application/json; charset=utf-8"
-    #print "Content-type: text/html; charset=utf-8"
-    print
+def getUsers():
 
     #if we're in offline mode, just print and exit.
     if(OPTIONS['OFFLINE_MODE']):
@@ -31,7 +29,7 @@ def main():
         for line in f:
             print line,
         sys.exit(0)
-    
+
     formData = cgi.FieldStorage()
     username = formData.getlist("username")[0]
     pw = formData.getlist("pw")[0]
@@ -47,7 +45,7 @@ def main():
     try:
         slave.simple_bind_s(susername,pw)
     except:
-        print '{"result":"error"}'
+        return '{"result":"error"}'
         logging.warning('Bind failed - aborting')
         sys.exit(1)
 
@@ -70,57 +68,65 @@ def main():
 
     ldap_slave_result_id = slave.search(sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
     sresult_set = []
-    print '['
+    users = []
     while 1:
        sresult_type, sresult_data = slave.result(ldap_slave_result_id,0)
        if(sresult_data == []):
            break
        else:
-           printUser(sresult_data)
+           users.append(jsonifyUser(sresult_data))
 
-    print '{}]' #additional silliness to get rid of commas
     logging.info('dump delivered.')
+    return users
 
-def printUser(user):
-        print '{'
-        printAttribute(user,'cn',0)
-        printAttribute(user,'uid',0)
-        printAttribute(user,'displayName',0)
-        printAttribute(user,'givenName',0)
-        printAttribute(user,'givenName',1, 'givenNamekh')
-        printAttribute(user,'sn',0)
-        printAttribute(user,'sn',1,'snkh')
-        printAttribute(user,'departmentNumber',0)
-        printAttribute(user,'mail',0)
-        printAttribute(user,'mail',1,'mailpr')
-        printAttribute(user,'title',0)
-        printAttribute(user,'uidNumber',0)
-        printAttribute(user,'employeeNumber',0)
-        printAttribute(user,'employeeType',0)
-        printAttribute(user,'c',0)
-        printAttribute(user,'l',0)
-        printAttribute(user,'mobile',0)
-        printAttribute(user,'postalAddress',0)
-        printAttribute(user,'apple-birthday',0,'applebirthday')
-        printExtendedAttributes(user)
-        print '"":""},' #this is a silly hack to fake out the last attributes comma
+def jsonifyUser(user):
+        userjson = dict()
+        ldapfields = [
+            'cn',
+            'uid',
+            'displayName',
+            'cn',
+            'givenName',
+            'sn',
+            'departmentNumber',
+            'mail',
+            'title',
+            'uidNumber',
+            'employeeNumber',
+            'employeeType',
+            'c',
+            'l',
+            'mobile'
+            'postalAddress'
+        ]
 
-def printAttribute(user,attribute,index,attrname=None):
-    if attrname is None:
-            attrname=attribute
+        #assign values for all fields with something in them
+        for field in ldapfields:
+            attr = getAttribute(user,field)
+            if attr is not None:
+                userjson[field] = attr
+
+        #special birthdays...
+        attr = getAttribute(user,'apple-birthday')
+        if attr is not None:
+            userjson['applebirthday'] = attr
+
+        #special JSON
+        attr = getAttribute(user,'jsonData')
+        if attr is not None:
+            userjson.update(json.loads(attr,'utf-8'))
+
+        return userjson
+
+def getAttribute(user,attribute):
     try:
-        print '"'+attrname+'": "'+user[0][1][attribute][index]+'",'
+        return user[0][1][attribute][0]
     except:
         return
 
-def printExtendedAttributes(user):
-    try:
-        extattrs = json.loads(user[0][1]['jsonData'][0],'utf-8')
-        for key, attr in extattrs.iteritems():
-            print '"'+key+'": "',
-            print attr.encode('unicode_escape'),
-            print '",'
-    except KeyError:
-        return
-
-main()
+if __name__ == "__main__":
+    users = getUsers()
+    print "Content-type: application/json; charset=utf-8"
+    #print "Content-type: text/html; charset=utf-8"
+    print
+    print json.dumps(users,'utf-8')
