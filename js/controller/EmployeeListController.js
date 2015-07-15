@@ -1,0 +1,260 @@
+(function () {
+    'use strict';
+    var app= angular.module('employeeList');
+    app.controller('EmployeeListController',function ($scope, $http, $filter, $q,$routeParams,$location,Employees) {
+      $scope.cid = $routeParams.id;
+      $scope.curemployee=null;
+      $scope.employees = [];
+      $scope.email;
+      $scope.current_pass;
+      $scope.password;
+      $scope.password = password;
+      var keylist="abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$*&";
+      var temp='';
+      var plength=8;
+       // taken from http://www.javascriptkit.com/script/script2/passwordgenerate.shtml
+       $scope.tempPassword = function(){
+           temp='';
+           for (var i=0;i<plength;i++)
+             temp+=keylist.charAt(Math.floor(Math.random()*keylist.length));
+           $scope.password = temp;
+       };
+       $scope.tempPassword();
+       Employees.getEmployees($scope.user.uname,$scope.user.pw)
+           .success(function(data, status, headers, config) {
+             if(data.result== 'error'){
+                           //pop us back out to the login screen
+                           $scope.user.uname = null;
+                           $scope.user.pw = null;
+                         }
+                         else{
+                           $scope.employees = data;
+                           //--------route pass by id--------
+                           for(var i=0; i<$scope.employees.length; i++){
+                             if($scope.employees[i].employeeNumber==$scope.cid){
+                               $scope.curemployee=$scope.employees[i];
+                                break;
+                             }
+                           }
+                           //----------
+                           }
+           })
+           .error(function(data, status, headers, config){
+                        $scope.user.uname = null;
+                        $scope.user.pw = null;
+                   });
+          $scope.range = function(n) {
+             n.trim();
+            return new Array(parseInt(n));
+          };
+        //no one selected initially
+        this.clearEmployee = function(){
+          this.curemployee=null;
+        };
+        this.setEmployee = function(setEmployee){
+          this.curemployee=setEmployee;
+        };
+        //begin internal functions
+        this.refreshEmployeeData = function(){
+          $scope.employees = [];
+          this.curemployee=null;
+            Employees.getEmployees($scope.user.uname,$scope.user.pw)
+                .success(function(data, status, headers, config) {
+                  $scope.employees = data;
+                });
+        };
+
+        this.showRequestedAccounts = function(){
+          $scope.employees = [];
+          this.curemployee=null;
+          Employees.getEmployees($scope.user.uname,$scope.user.pw)
+              .success(function(data, status, headers, config) {
+                $scope.employees = data;
+              });
+          };
+
+        this.showDisabledAccounts = function(){
+          $scope.employees = [];
+          this.curemployee=null;
+          Employees.getEmployees($scope.user.uname,$scope.user.pw)
+              .success(function(data, status, headers, config) {
+                $scope.employees = data;
+              });
+        };
+
+      //rough approximation
+      this.timeBetween = function(startDate, endDate){
+        if (endDate === 'present') endDate=new Date();
+        if (!startDate) return ('Please enter a start date');
+        var start = new Date(startDate);
+        var end = new Date(endDate);
+        var diff = (end - start);
+
+        //1000ms/s * 60s/min * 60m/hr * 24 hrs/day
+        var day = 1000 * 60 * 60 * 24;
+
+        var years = Math.floor(diff/(365*day));
+        if (years>=1) diff -= 365*years*day;
+
+        var months = Math.floor(diff/(31*day));
+        if(months>=1) diff-=31*months*day;
+
+        var days= Math.floor(diff/day);
+
+        return 'approximately '+years+' year(s), '+months+' month(s), '+days+' day(s)';
+      };
+      this.selectSelf = function(){
+        for(var i=0; i<$scope.employees.length; i++){
+          if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
+            this.selfselect=$scope.employees[i];
+             break;
+          }
+        }
+      };
+      $scope.go = function ( path ) {
+        $location.path( path );
+      };
+      this.shift = function(amount){
+          for(var i=0; i<$scope.employees.length; i++){
+              if($scope.employees[i].employeeNumber==$scope.cid){
+                  $scope.curemployee = $scope.employees[i+amount];
+                  $location.path("/admin/staff/"+$scope.curemployee.employeeNumber);
+                  break;
+              }
+          }
+      };
+      $scope.updateUser = function(uid, field, data){
+              var d = $q.defer();
+              Employees.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw)
+                  .success(function(data, status, headers, config) {
+                    $scope.employees = data;
+                  })
+                  .success(function(data, status, headers, config){
+                       if(data.result== 'success'){
+                           d.resolve()
+                       }
+                       else
+                           d.resolve("There was an error");
+                     }).
+                     error(function(data, status, headers, config){
+                           d.reject('Server error!');
+                   });
+                   return d.promise;
+      }
+
+      $scope.resetPassword = function(uid,data,type,confirmpass){
+              var d = $q.defer();
+              if(confirmpass==$scope.user.pw){
+                Employees.resetPassword(uid,data,$scope.user.uname,$scope.user.pw,type)
+                  .success(function(data, status, headers, config){
+                         if(data.result== 'success'){
+                            if(type=="youreset"){
+                              d.resolve()
+                              alert('Your password has been reset! Plase login again.');
+                              $scope.user.uname = null;
+                              $scope.user.pw = null;
+                            }
+                            else{
+                              d.resolve()
+                              alert("Password has been reset!");
+                              $scope.current_pass="";
+                            }
+                         }
+                         else{
+                             d.resolve("There was an error");
+                             alert('You don\'t have permission to update.');
+                           }
+                       }).
+                       error(function(data, status, headers, config){
+                             d.reject('Server error!');
+                     });
+                   }
+                   else{
+                     alert('Your current passwords do not match.');
+                   }
+                     return d.promise;
+      }
+      $scope.decodeAppleBirthday = function(applebirthday){
+        if(applebirthday == null) return 'DOB'
+        else{
+            //if they replace the dob the data stored locally will have dashes in it.
+            applebirthday=applebirthday.replace(/-/g,'')
+
+            year = applebirthday.substr(0,4)
+            month = applebirthday.substr(4,2)
+            day = applebirthday.substr(6,2)
+            return year+'-'+month+'-'+day
+        }
+
+
+      }
+      var staff=$scope.staff;
+
+      $scope.genders = [
+          {value: 'M', text: 'M'},
+          {value: 'F', text: 'F'}
+      ];
+
+      $scope.departments= ah_departments;
+
+      $scope.employeetypes= ah_employeetypes;
+
+      //pull these from a database or API -
+      //BUG WARNING: if value doesn't match index in array things will get wonky
+      $scope.documentType=[
+        {value: '0', text: 'Photo', required_by: 'all'},
+        {value: '1', text: 'CV/Resume', required_by: 'all'},
+        {value: '2', text: 'Statement of Faith', required_by: 'all'},
+        {value: '3', text: 'Letter of Reference', required_by: 'all'},
+        {value: '4', text: 'Child Protection Policy', required_by: 'all'},
+        {value: '5', text: 'Background Check', required_by: 'all'},
+        {value: '6', text: 'Offer Letter', required_by: 'all'},
+        {value: '7', text: 'Employee Handbook Receipt', required_by: 'all'},
+        {value: '8', text: 'Position Description', required_by: 'all'},
+        {value: '9', text: 'Physical Examination Report', required_by: 'all'},
+        {value: '10', text: 'Copy of Passport', required_by: 'all'},
+        {value: '11', text: 'Copy of Visa', required_by: 'all'},
+        {value: '12', text: 'Copy of ID', required_by: 'all'},
+        {value: '13', text: 'W4', required_by: 'all'},
+        {value: '14', text: 'Code of Ethics', required_by: 'all'},
+        {value: '15', text: 'Employee Status Form', required_by: 'all'},
+        {value: '16', text: 'Other Supporting Documentation', required_by: ''},
+      ];
+
+      $scope.showMissingDocs = function(doclist, required_docs){
+        var tempid;
+        var reqdocs = required_docs.slice();
+        var missingdocs=[];
+        if(!doclist) return required_docs;
+
+        //get rid of all docs they have
+        for(var i=0; i<doclist.length; i++){
+          tempid=doclist[i].documentID;
+          delete reqdocs[tempid];
+        }
+
+        for(var i=0; i<required_docs.length; i++){
+          if(reqdocs[i]) missingdocs.push(reqdocs[i]);
+        }
+
+        return missingdocs;
+      };
+      $scope.maritalstatuses= [
+          {value: 'Married', text: 'Married'},
+          {value: 'Single', text: 'Single'}
+      ];
+
+      $scope.religions= [
+          {value: 'Buddhist', text: 'Buddhist'},
+          {value: 'Christian', text: 'Christian'},
+          {value: 'Undeclared', text: 'Undeclared'},
+      ];
+
+      $scope.ahcountries = [
+        {value: 'KH', text: 'Cambodia'},
+        {value: 'US', text: 'USA'},
+      ];
+
+      $scope.countries = world_countries;
+    });
+}());

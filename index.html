@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="employeelist">
+<html ng-app="employeeList">
     <head>
         <link rel ="stylesheet" type="text/css"
           href="bootstrap/css/bootstrap.min.css" />
@@ -14,13 +14,13 @@
                 <h1>*AHEM*<small> - Asian Hope Employee Management</small></h1>
            </div>
             <!-- If logged in !-->
-
-
+            <div ng-controller="EmployeeListController as elist">
             <section ng-if="user.uname != null" ng-controller="TabController as tab">
                 <div ng-view>
 
                 </div>
             </section>
+            </div>
               <!-- If not logged in !-->
               <section ng-show="user.uname == null">
                 <form name="form" ng-submit="login()" role="form">
@@ -43,16 +43,20 @@
                 </form>
               </section>
         </div>
-
         <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="js/angular.min.js"></script>
-        <script type="text/javascript" src="js/app.js"></script>
         <script type="text/javascript" src="js/xeditable.js"></script>
         <script type="text/javascript" src="js/angular-route.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
+        <script type="text/javascript" src="js/config/route.js"></script>
+        <script type="text/javascript" src="js/controller/LoginController.js"></script>
+        <script type="text/javascript" src="js/services/service.js"></script>
+        <script type="text/javascript" src="js/constants/constants.js"></script>
+        <script type="text/javascript" src="js/controller/EmployeeListController.js"></script>
+        <script type="text/javascript" src="js/controller/EmployeeRegistrationController.js"></script>
+        <script type="text/javascript" src="js/controller/TabController.js"></script>
+        <script type="text/javascript" src="js/directives/directive.js"></script>
         <link href="css/xeditable.css" rel="stylesheet"/>
         <!-- Contact Form - END -->
-
-
-
     </body>
 </html>
