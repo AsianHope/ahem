@@ -1,6 +1,23 @@
 (function () {
       'use strict';
-      app.factory('Employees', function($http) {
+      app.factory('storageService', function ($rootScope) {
+        return {
+
+            get: function (key) {
+               return localStorage.getItem(key);
+            },
+            save: function (key, data) {
+               localStorage.setItem(key, JSON.stringify(data));
+            },
+            remove: function (key) {
+                localStorage.removeItem(key);
+            },
+            clearAll : function () {
+                localStorage.clear();
+            }
+        };
+    });
+      app.factory('EmployeesService', function($http) {
         return {
           getEmployees : function(username,password) {
                 // return $http.get('/api/todos');

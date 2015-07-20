@@ -15,10 +15,15 @@
     </div>
         <table class="table table-striped table-hover">
             <tr><th>T</th><th>Dept</th><th>ID</th><th>First Name</th><th>Surname</th><th>Phone</th><th>Email</th></tr>
-            <tr ng-repeat="employee in employees | filter:query | orderBy:orderProp">
+            <tr ng-show="!checkStorage()" ng-hide="local_data">
+              <td colspan="7" style="text-align:center;">
+                 <img src="../img/loading.GIF" alt="loading image"/>
+              </td>
+            </tr>
+            <tr ng-hide="!local_data" ng-repeat="employee in local_data | filter:query | orderBy:orderProp">
                 <td style="width: 1em;">{{employee.employeeType}}</a></td>
                 <td style="width: 1em;">{{employee.departmentNumber}}</a></td>
-            <td style="width: 8em;">{{employee.employeeNumber}}</td>
+                <td style="width: 8em;">{{employee.employeeNumber}}</td>
                 <td style="width: 10em;">{{employee.givenName}}</td>
                 <td style="width: 10em;">{{employee.sn}}</td>
                 <td style="width: 10em;">{{employee.mobile}}</td>

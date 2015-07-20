@@ -1,6 +1,6 @@
 (function () {
       'use strict';
-      app.controller('LoginController',function ($scope,$http) {
+      app.controller('LoginController',function ($scope,$http,storageService) {
       $scope.user = {
            uname: null,
            pw: null
@@ -10,5 +10,4 @@
               $scope.user.pw = $scope.password;
          };
     });
-
 }());

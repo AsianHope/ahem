@@ -1,6 +1,6 @@
 (function () {
       'use strict';
-      app.controller('EmployeeRegistrationController',function($scope, $http) {
+      app.controller('EmployeeRegistrationController',function($scope, $http,EmployeesService) {
         $scope.password;
         $scope.countries = world_countries;
         $scope.departments = ah_departments;
@@ -31,7 +31,7 @@
          $scope.registerAccount = function(){
                  var d = $q.defer();
                  $scope.formdata['userPassword']=$scope.password;
-                 Employees.addEmployee($scope.formdata)
+                 EmployeesService.addEmployee($scope.formdata)
                    .success(function(data, status, headers, config){
                      if(data.result== 'success'){
                          $scope.success_message = "Success!";
@@ -45,7 +45,6 @@
                     });
                  return d.promise;
          };
-
          $scope.resetRequestForm = function(){
            $scope.success_message = null;
            $scope.formdata = {'l':'KH'};

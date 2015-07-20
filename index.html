@@ -12,14 +12,14 @@
 
             <div class="page-header noprint">
                 <h1>*AHEM*<small> - Asian Hope Employee Management</small></h1>
-           </div>
+            </div>
             <!-- If logged in !-->
             <div ng-controller="EmployeeListController as elist">
-            <section ng-if="user.uname != null" ng-controller="TabController as tab">
-                <div ng-view>
+              <section ng-if="user.uname != null" ng-controller="TabController as tab">
+                  <div ng-view>
 
-                </div>
-            </section>
+                  </div>
+              </section>
             </div>
               <!-- If not logged in !-->
               <section ng-show="user.uname == null">

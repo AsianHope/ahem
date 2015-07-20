@@ -1,6 +1,7 @@
 (function () {
     'use strict';
-    app.controller('EmployeeListController',function ($scope, $http, $filter, $q,$routeParams,$location,Employees) {
+    app.controller('EmployeeListController',function ($scope, $http, $filter, $q,$routeParams,$location,EmployeesService,storageService) {
+      $scope.local_data=[];
       $scope.cid = $routeParams.id;
       $scope.curemployee=null;
       $scope.employees = [];
@@ -11,6 +12,10 @@
       var keylist="abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$*&";
       var temp='';
       var plength=8;
+      $scope.checkStorage = function ()
+      {
+        return localStorage.getItem('employees_local_data') !== null;
+      }
        // taken from http://www.javascriptkit.com/script/script2/passwordgenerate.shtml
        $scope.tempPassword = function(){
            temp='';
@@ -19,29 +24,56 @@
            $scope.password = temp;
        };
        $scope.tempPassword();
-       Employees.getEmployees($scope.user.uname,$scope.user.pw)
+       EmployeesService.getEmployees($scope.user.uname,$scope.user.pw)
            .success(function(data, status, headers, config) {
-             if(data.result== 'error'){
-                           //pop us back out to the login screen
-                           $scope.user.uname = null;
-                           $scope.user.pw = null;
-                         }
-                         else{
-                           $scope.employees = data;
-                           //--------route pass by id--------
-                           for(var i=0; i<$scope.employees.length; i++){
-                             if($scope.employees[i].employeeNumber==$scope.cid){
-                               $scope.curemployee=$scope.employees[i];
-                                break;
-                             }
-                           }
-                           //----------
-                           }
+              if(data.result=='error'){
+                 //pop us back out to the login screen
+                $scope.user.uname = null;
+                $scope.user.pw = null;
+              }
+              else{
+                $scope.employees_local_data=[];
+                $scope.employees = data;
+                  for(var i=0; i<$scope.employees.length; i++){
+                    var emplyeeobj = {};
+                    emplyeeobj['employeeType'] = $scope.employees[i].employeeType;
+                    emplyeeobj['departmentNumber'] = $scope.employees[i].departmentNumber;
+                    emplyeeobj['employeeNumber'] = $scope.employees[i].employeeNumber;
+                    emplyeeobj['givenName'] = $scope.employees[i].givenName;
+                    emplyeeobj['sn'] = $scope.employees[i].sn;
+                    emplyeeobj['mobile'] = $scope.employees[i].mobile;
+                    emplyeeobj['mail'] = $scope.employees[i].mail;
+                    $scope.employees_local_data.push(emplyeeobj);
+                    // set localStorage data
+                    storageService.save('employees_local_data',$scope.employees_local_data);
+                    if(localStorage.getItem('employees_local_data') == null){
+                      $scope.local_data= $scope.employees;
+                    }
+                    else{
+                      $scope.local_data= JSON.parse(storageService.get('employees_local_data'));
+                    }
+                }
+                   //--------route pass by id--------
+                for(var i=0; i<$scope.employees.length; i++){
+                    if($scope.employees[i].employeeNumber==$scope.cid){
+                      $scope.curemployee=$scope.employees[i];
+                      break;
+                    }
+                }
+              }
            })
            .error(function(data, status, headers, config){
                         $scope.user.uname = null;
                         $scope.user.pw = null;
-                   });
+            });
+            // storageService.clearAll();
+            if(localStorage.getItem('employees_local_data') !== null){
+              // get localStorage data
+                $scope.local_data= JSON.parse(storageService.get('employees_local_data'));
+            }
+            else{
+                $scope.local_data=  $scope.employees;
+            }
           $scope.range = function(n) {
              n.trim();
             return new Array(parseInt(n));
@@ -57,7 +89,7 @@
         this.refreshEmployeeData = function(){
           $scope.employees = [];
           this.curemployee=null;
-            Employees.getEmployees($scope.user.uname,$scope.user.pw)
+          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw)
                 .success(function(data, status, headers, config) {
                   $scope.employees = data;
                 });
@@ -66,7 +98,7 @@
         this.showRequestedAccounts = function(){
           $scope.employees = [];
           this.curemployee=null;
-          Employees.getEmployees($scope.user.uname,$scope.user.pw)
+          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw)
               .success(function(data, status, headers, config) {
                 $scope.employees = data;
               });
@@ -75,7 +107,7 @@
         this.showDisabledAccounts = function(){
           $scope.employees = [];
           this.curemployee=null;
-          Employees.getEmployees($scope.user.uname,$scope.user.pw)
+          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw)
               .success(function(data, status, headers, config) {
                 $scope.employees = data;
               });
@@ -124,7 +156,7 @@
       };
       $scope.updateUser = function(uid, field, data){
               var d = $q.defer();
-              Employees.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw)
+              EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw)
                   .success(function(data, status, headers, config) {
                     $scope.employees = data;
                   })
@@ -144,7 +176,7 @@
       $scope.resetPassword = function(uid,data,type,confirmpass){
               var d = $q.defer();
               if(confirmpass==$scope.user.pw){
-                Employees.resetPassword(uid,data,$scope.user.uname,$scope.user.pw,type)
+                EmployeesService.resetPassword(uid,data,$scope.user.uname,$scope.user.pw,type)
                   .success(function(data, status, headers, config){
                          if(data.result== 'success'){
                             if(type=="youreset"){
