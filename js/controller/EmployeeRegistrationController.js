@@ -1,6 +1,6 @@
 (function () {
       'use strict';
-      app.controller('EmployeeRegistrationController',function($scope, $http,EmployeesService) {
+      app.controller('EmployeeRegistrationController',function($scope,$http,$q,EmployeesService) {
         $scope.password;
         $scope.countries = world_countries;
         $scope.departments = ah_departments;

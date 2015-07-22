@@ -143,8 +143,8 @@ attrs['title'] = title #Their title is their title!
 
 attrs['mail'] = mail
 attrs['apple-birthday'] = dob
-#attrs['userPassword'] = ldap_md5.encrypt(password)
-attrs['userPassword'] = userPassword #plaintext is fine for unapproved accounts. We can recover and display until they change it
+attrs['userPassword'] = ldap_md5.encrypt(userPassword)
+#attrs['userPassword'] = userPassword #plaintext is fine for unapproved accounts. We can recover and display until they change it
 
 json_attrs = {'snkh':snkh, 'givenNamekh':givenNamekh,'mailpr':mailpr,'startdate':startdate}
 attrs['jsonData'] = json.dumps(json_attrs)
