@@ -1,34 +1,40 @@
-<div ng-controller="EmployeeListController as elist">
-    <div ng-show="!elist.curemployee">
-        <div class="form-inline" style="margin: 5px;">
-            <label>Search:</label>
-            <input class="form-control" ng-model="query"/>
-            <label>Sort By:</label>
-            <select class="form-control" ng-model="orderProp">
-                <option value="departmentNumber">Department</option>
-                <option value="employeeType">Employee Type</option>
-                <option value="sn">Alphabetical (Last Name)</option>
-                <option value="-sn">Reverse Alphabetical (Last Name)</option>
-                <option value="uidNumber">Employee Number: Low to High</option>
-                <option value="-uidNumber">Employee: High to Low</option>
-            </select>
-    </div>
-        <table class="table table-striped table-hover">
-            <tr><th>T</th><th>Dept</th><th>ID</th><th>First Name</th><th>Surname</th><th>Phone</th><th>Email</th></tr>
+<table style="width:100%;" class="employeelist mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+          <thead>
+            <tr id="table_th" style="background:#488FCC;">
+            <th class="mdl-data-table__cell--non-numeric">T</th>
+            <th>Dept</th><th>ID</th><th>First Name</th><th>Surname</th><th>Phone</th><th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
             <tr ng-show="!checkStorage()" ng-hide="local_data">
               <td colspan="7" style="text-align:center;">
                  <img src="../img/loading.GIF" alt="loading image"/>
               </td>
             </tr>
+            <!-- <tr>
+              <td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>
+              <td>25</td>
+              <td>$2.90</td>
+            </tr> -->
             <tr ng-hide="!local_data" ng-repeat="employee in local_data | filter:query | orderBy:orderProp">
-                <td style="width: 1em;">{{employee.employeeType}}</a></td>
-                <td style="width: 1em;">{{employee.departmentNumber}}</a></td>
-                <td style="width: 8em;">{{employee.employeeNumber}}</td>
-                <td style="width: 10em;">{{employee.givenName}}</td>
-                <td style="width: 10em;">{{employee.sn}}</td>
-                <td style="width: 10em;">{{employee.mobile}}</td>
-                <td style="width: 10em;"><a href="mailto:{{employee.mail}}" target="_blank">{{employee.mail}}</a></td>
+                <td class="mdl-data-table__cell--non-numeric">{{employee.employeeType}}</a></td>
+                <td>{{employee.departmentNumber}}</a></td>
+                <td>{{employee.employeeNumber}}</td>
+                <td>{{employee.givenName}}</td>
+                <td>{{employee.sn}}</td>
+                <td>{{employee.mobile}}</td>
+                <td><a href="mailto:{{employee.mail}}" target="_blank">{{employee.mail}}</a></td>
             </tr>
-        </table>
-    </div>
-</div>
+          </tbody>
+</table>
+        <style>
+          .employeelist tr td{
+            text-align: left;
+          }
+          .employeelist tr th{
+            text-align: left;
+            color: white;
+          }
+        </style>
+    <!-- </div>
+</div> -->

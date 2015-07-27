@@ -1,18 +1,264 @@
+<div ng-controller="EmployeeListController as elist">
+    <div class="demo-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+          <div id="demo-ribbon"></div>
+          <main class="demo-main mdl-layout__content">
+            <div class="demo-container mdl-grid">
+              <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+              <div class="demo-content1 mdl-color--white  content mdl-cell mdl-cell--10-col">
+                <div class="row" id="demo-header">
+                  <div class="col-xs-6 col-md-6" style="color:white;">
+                    <div style="font-size:85px; margin-top:45px; font-weight:bold;">AHEM</div>
+                    <div style="margin-top:20px;"><p style="font-size: 17px;">Asian Hope Management System</p></div>
+                    <span style="font-size:17px;color:white"></span>
+                  </div>
+                  <div class="col-xs-6 col-md-6">
+                    <input id="search" ng-keypress="keyPress();" placeholder="Hit / to Search"ng-model="query" class="form-control" autofocus="true" type="text" style="font-size:25px; font-style:italic; color:gray; width:60%;height:80px; float:right; margin-top:20px;"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="demo-container mdl-grid">
+              <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+              <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--10-col">
+                <div  class="demo-grid-1 mdl-grid">
+                  <stafflist-simpleuser style="width:100%;" ng-show="showlist==true"></stafflist-simpleuser>
+                    <div  ng-show="showlist==false" style="color:#488FCC;" class="center_div mdl-cell mdl-cell--7-col">
+                      <table class="table_view">
+                        <tr>
+                          <td style="font-size:30px; font-weight:bold;">
+                            <strong>
+                              <a id="lastname" href="#" title="Click to edit: Surname" editable-text="selfselect.sn"
+                                  onbeforesave="updateUser(selfselect.uid,'sn',$data)">
+                                  {{selfselect.sn +', '}}
+                              </a>
+                              <a href="#" title="Click to edit: First Name" editable-text="selfselect.givenName"
+                                  onbeforesave="updateUser(selfselect.uid,'givenName',$data)">
+                                  {{selfselect.givenName}}
+                              </a>
+                            </strong>
+                          </td>
+                          <td style="font-size:30px; font-weight:bold;">
+                            <strong>
+                              {{selfselect.employeeNumber}}
+                            </strong>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                              <a href="#" title="Click to edit: Khmer Surname" editable-text="selfselect.snkh"
+                                  onbeforesave="updateUser(selfselect.uid,'snkh',$data)">
+                                  {{selfselect.snkh || "នាមត្រកូល"}}
+                              </a> &nbsp;
+                              <a href="#" title="Click to edit: Khmer First Name" editable-text="selfselect.givenNamekh"
+                                onbeforesave="updateUser(selfselect.uid,'givenNamekh',$data)">
+                                  {{selfselect.givenNamekh || "នាមខ្លួន"}}
+                              </a>
+                          </td>
+                          <td>
+                                  {{selfselect.employeeType|| "empty"}}
+                               -
+                                  {{selfselect.departmentNumber || "empty"}}
+                          </td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #e5e5e5;">
+                          <td>
+                                  {{selfselect.title || "Staff"}}
+                          </td>
+                          <td>
 
-     <div ng-controller="EmployeeListController as elist">
-     <ul class = "nav nav-tabs">
-         <li ng-class="{ active:this.tab.isSet(1)}">
-             <a href ng-click="this.tab.setTab(1);elist.selectSelf()">My Profile</a>
-         </li>
-         <li ng-class="{ active:this.tab.isSet(3) }">
-             <a href ng-click="this.tab.setTab(3)">Browse staff info</a>
-         </li>
-     </ul>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <a href="mailto:{{selfselect.mail}}" target="_blank"> <i class="fa fa-envelope-o"></i> {{selfselect.mail}}</a>
+                          </td>
+                          <td>
+                            <a href="#" title="Click to edit: Phone Number" editable-text="selfselect.mobile"
+                                onbeforesave="updateUser(selfselect.uid,'mobile',$data)">
+                                {{selfselect.mobile || "Phone"}}
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <a href="mailto:{{selfselect.mailpr}}" target="_blank"><i class="fa fa-envelope-o"></i></a>
+                            <a href="#" title="Click to edit: Personal Email Address" editable-email="selfselect.mailpr"
+                              onbeforesave="updateUser(selfselect.uid,'mailpr',$data)">
+                                {{selfselect.mailpr || "Personal Email"}}
+                            </a>
+                          </td>
+                          <td>
+                            <a href="#" title="Click to edit: Address" editable-text="selfselect.postalAddress"
+                                onbeforesave="updateUser(selfselect.uid,'postalAddress',$data)">
+                                {{selfselect.postalAddress || "Home Address"}}
+                            </a>
+                          </td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #e5e5e5;">
+                          <td>
+                            <a href="#" title="Click to edit: Birthday" editable-date="selfselect.applebirthday"
+                                onbeforesave="updateUser(selfselect.uid,'apple-birthday',$data)"> <!-- note the field change to apple-birthday here -->
+                                {{decodeAppleBirthday(selfselect.applebirthday) || "DOB"}}
+                            </a>
+                          </td>
+                          <td>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="hidechangepass" colspan="2">
+                                <form name="form" ng-submit="resetPassword(selfselect.uid,new_password,'youreset',current_password)" role="form">
+                                    <table style="margin:0;">
+                                      <tr>
+                                        <td>Current password<td>
+                                      </tr>
+                                      <tr>
+                                        <td><input type="password"  name="current_password" id="current_password" class="form-control" ng-model="current_password" required />
+                                        <span ng-show="form.current_password.$dirty && form.current_password.$error.required" class="help-block">Current password is required</span><td>
+                                      </tr>
+                                      <tr>
+                                        <td>New password<td>
+                                      </tr>
+                                      <tr>
+                                        <td>  <input type="password" name="new_password" id="new_password" class="form-control" ng-model="new_password" required />
+                                          <span ng-show="form.new_password.$dirty && form.new_password.$error.required" class="help-block">New password is required</span><td>
+                                      </tr>
+                                      <tr>
+                                        <td>Comfirm new password<td>
+                                      </tr>
+                                      <tr>
+                                        <td><input type="password" password-match="new_password" name="confirm_password" id="confirm_password" class="form-control" ng-model="confirm_password" required />
+                                          <span  ng-show="form.confirm_password.$dirty && form.confirm_password.$error.required" class="help-block">confirm password is required</span>
+                                          <span class="help-block" ng-show="form.confirm_password.$error.unique">
+                                            Passwords do not match.
+                                         </span>
+                                          <span ng-show="form.confirm_password.$error.noMatch">Passwords do not match.</span><td>
+                                      </tr>
+                                      <tr>
+                                        <td><button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">Save</button><td>
+                                      </tr>
+                                      <tr>
+                                    </table>
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+                    </div>
+                    <!-- profile pic -->
+                    <div ng-show="showlist==false" class="center_div mdl-cell mdl-cell--5-col">
+                      <div class="demo-grid-1 mdl-grid ">
+                        <div style="width: 330px;; height: 330px; background-position: center center; background-size: cover; background-image: url('files/{{selfselect.employeeNumber}}.jpg');"></div>
+                      </div>
+                      <div class="demo-grid-1 mdl-grid" style="margin-top: 12px;">
+                          <div class="mdl-cell mdl-cell--6-col">
+                            <button style="background:#488FCC; color:white;" id="btn_print_card" class="button center_div btn">
+                                <strong>Print Business Card<strong>
+                            </button>
 
-     <div ng-show="this.tab.isSet(1)">
-       <view-self></view-self>
-     </div>
-     <div ng-show="this.tab.isSet(3)">
-         <stafflist-simpleuser></stafflist-simpleuser>
-     </div>
-   </div>
+                          </div>
+                          <div class="mdl-cell mdl-cell--6-col">
+                            <button style="background:#488FCC; color:white;" id="btn_print_change" class="button showchpass center_div btn">
+                                <strong>Change Password</strong>
+                            </button>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+          </main>
+        </div>
+        <button ng-click="keyclickshide();" id="btn_profile" style="width:100px; height:100px; background:#488FCC;" class="view-profile  mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--accent">
+          <i style="font-size:57px; color:white; margin-left:-17px;"class="material-icons">perm_identity</i>
+        </button>
+  </div>
+  <script type="text/javascript">
+      $('.showchpass').click(function() {
+         $(this).hide();
+         $('.hidechangepass').slideDown('slow');
+     });
+  </script>
+  <style>
+      @media (max-width:989px) {
+        .login-form{
+          margin-left:auto;
+          margin-right:auto;
+        }
+      }
+      .button{
+        padding:15px;
+        font-size: 15px;
+        font-weight:bold;
+        /*background:#488FCC;*/
+        border-radius:0 !important;
+      }
+      .center_div{
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .hidechangepass{
+        display: none;
+      }
+      .hidechangepass table tr td{
+        padding: 2px;
+      }
+      .table_view tr td{
+        padding-top:5px;
+        padding-bottom: 5px;
+        font-size: 20px;
+        word-wrap: break-word;
+      }
+      .table_view{
+        width: 100%;
+        table-layout: fixed;
+      }
+      .table_view table{
+        margin-left: 25px;
+
+      }
+      .table_view td:first-child {
+        padding-right: 5px;
+      }
+      #demo-ribbon {
+       width: 100%;
+       height: 225px;
+       background-color: #488FCC;
+       -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+       }
+
+      .demo-main {
+         margin-top: -220px;
+        -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+      }
+      #demo-header{
+        background-color:#488FCC;
+      }
+
+      .demo-container {
+        max-width: 1800px;
+        width: calc(100% - 16px);
+        margin: 0 auto;
+      }
+      .demo-content {
+        border-radius: 2px;
+        margin-bottom: 80px;
+      }
+      .demo-content1 {
+        border-radius: 2px;
+      }
+      .demo-layout.is-small-screen .demo-content {
+        padding: 40px 28px;
+      }
+      .view-profile {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 10px;
+        margin-bottom: 40px;
+        z-index: 900;
+      }
+  </style>

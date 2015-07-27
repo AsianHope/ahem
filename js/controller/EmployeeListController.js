@@ -1,6 +1,15 @@
 (function () {
     'use strict';
     app.controller('EmployeeListController',function ($scope, $http, $filter, $q,$routeParams,$location,EmployeesService,storageService) {
+      $scope.showlist=false;
+      $scope.keyPress = function(){
+        $scope.showlist=true;
+      }
+      $scope.keyclickshide = function(){
+        $scope.showlist=false;
+        document.getElementById("search").value = "";
+        document.getElementById("search").focus();
+      }
       $scope.local_data=[];
       $scope.cid = $routeParams.id;
       $scope.curemployee=null;
@@ -55,8 +64,49 @@
                 }
                    //--------route pass by id--------
                 for(var i=0; i<$scope.employees.length; i++){
+                  //view profile
+                  if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
+                    $scope.selfselect=$scope.employees[i];
+                    if($scope.selfselect.departmentNumber=="LIS"){
+                      document.getElementById("table_th").style.backgroundColor = "#488FCC";
+                      document.getElementById("demo-ribbon").style.backgroundColor = "#488FCC";
+                      document.getElementById("demo-header").style.backgroundColor = "#488FCC";
+                      document.getElementById("btn_profile").style.backgroundColor = "#488FCC";
+                      document.getElementById("btn_print_card").style.backgroundColor = "#488FCC";
+                      document.getElementById("btn_print_change").style.backgroundColor = "#488FCC";
+                      document.body.style.background = "#488FCC";
+                    }
+                    else if ($scope.selfselect.departmentNumber=="AHIS") {
+                      document.getElementById("table_th").style.backgroundColor = "#26AF5F";
+                      document.getElementById("demo-ribbon").style.backgroundColor = "#26AF5F";
+                      document.getElementById("demo-header").style.backgroundColor = "#26AF5F";
+                      document.getElementById("btn_profile").style.backgroundColor = "#26AF5F";
+                      document.getElementById("btn_print_card").style.backgroundColor = "#26AF5F";
+                      document.getElementById("btn_print_change").style.backgroundColor = "#26AF5F";
+                      document.body.style.background = "#26AF5F";
+                  }
+                      break;
+                  }
                     if($scope.employees[i].employeeNumber==$scope.cid){
                       $scope.curemployee=$scope.employees[i];
+                      if($scope.curemployee.departmentNumber=="LIS"){
+                        document.getElementById("demo-ribbon").style.backgroundColor = "#488FCC";
+                        document.getElementById("demo-header").style.backgroundColor = "#488FCC";
+                        document.getElementById("btn_profile").style.backgroundColor = "#488FCC";
+                        document.getElementById("btn_print_card").style.backgroundColor = "#488FCC";
+                        document.getElementById("btn_print_change").style.backgroundColor = "#488FCC";
+                        document.body.style.background = "#488FCC";
+                      }
+                      else if ($scope.curemployee.departmentNumber=="AHIS") {
+                        document.getElementById("demo-ribbon").style.backgroundColor = "#26AF5F";
+                        document.getElementById("demo-header").style.backgroundColor = "#26AF5F";
+                        document.getElementById("btn_profile").style.backgroundColor = "#26AF5F";
+                        document.getElementById("btn_print_card").style.backgroundColor = "#26AF5F";
+                        document.getElementById("btn_print_change").style.backgroundColor = "#26AF5F";
+                        document.body.style.background = "#26AF5F";
+                    }
+
+
                       break;
                     }
                 }
