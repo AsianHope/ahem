@@ -96,7 +96,7 @@ def jsonifyUser(user):
             'employeeType',
             'c',
             'l',
-            'mobile'
+            'mobile',
             'postalAddress'
         ]
 
