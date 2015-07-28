@@ -5844,7 +5844,7 @@ fieldset[disabled] .navbar-inverse .navbar-btn.active {
 .login-icon > img {
   display: block;
   height: 91px;
-  width: 173px;
+  /*width: 173px;*/
   }
 .login-icon > h4 {
   font-size: 20px;

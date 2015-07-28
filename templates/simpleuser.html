@@ -26,31 +26,29 @@
                     <div  ng-show="showlist==false" style="color:#488FCC;" class="center_div mdl-cell mdl-cell--7-col">
                       <table class="table_view">
                         <tr>
-                          <td style="font-size:30px; font-weight:bold;">
+                          <td style="font-size:30px;">
                             <strong>
-                              <a id="lastname" href="#" title="Click to edit: Surname" editable-text="selfselect.sn"
+                              <a style="font-weight:bold;" id="lastname" href="#" title="Click to edit: Surname" editable-text="selfselect.sn"
                                   onbeforesave="updateUser(selfselect.uid,'sn',$data)">
                                   {{selfselect.sn +', '}}
                               </a>
-                              <a href="#" title="Click to edit: First Name" editable-text="selfselect.givenName"
+                              <a style="font-weight:bold;" href="#" title="Click to edit: First Name" editable-text="selfselect.givenName"
                                   onbeforesave="updateUser(selfselect.uid,'givenName',$data)">
                                   {{selfselect.givenName}}
                               </a>
                             </strong>
                           </td>
-                          <td style="font-size:30px; font-weight:bold;">
-                            <strong>
+                          <td style="font-size:30px;">
                               {{selfselect.employeeNumber}}
-                            </strong>
                           </td>
                         </tr>
                         <tr>
-                          <td>
-                              <a href="#" title="Click to edit: Khmer Surname" editable-text="selfselect.snkh"
+                          <td style="font-family:Bayon;">
+                              <a style="font-style:normal;" href="#" title="Click to edit: Khmer Surname" editable-text="selfselect.snkh"
                                   onbeforesave="updateUser(selfselect.uid,'snkh',$data)">
                                   {{selfselect.snkh || "នាមត្រកូល"}}
                               </a> &nbsp;
-                              <a href="#" title="Click to edit: Khmer First Name" editable-text="selfselect.givenNamekh"
+                              <a style="font-style:normal;" href="#" title="Click to edit: Khmer First Name" editable-text="selfselect.givenNamekh"
                                 onbeforesave="updateUser(selfselect.uid,'givenNamekh',$data)">
                                   {{selfselect.givenNamekh || "នាមខ្លួន"}}
                               </a>
@@ -193,6 +191,7 @@
         }
       }
       .button{
+        font-family: 'Roboto', sans-serif;
         padding:15px;
         font-size: 15px;
         font-weight:bold;
@@ -216,6 +215,7 @@
         word-wrap: break-word;
       }
       .table_view{
+        font-family: 'Roboto', sans-serif;
         width: 100%;
         table-layout: fixed;
       }

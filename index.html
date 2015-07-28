@@ -2,7 +2,8 @@
 <html ng-app="employeeList">
     <head>
       <meta charset="utf-8"/>
-      <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+      <link href='http://fonts.googleapis.com/css?family=Bayon|Roboto:300,700,300italic' rel='stylesheet' type='text/css'>
       <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
       <link rel="stylesheet" type="text/css" href="dist/css/flat-ui.css" />
       <link rel ="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
@@ -25,7 +26,6 @@
         }
         body{
           background: #f5f5f5;
-          font-family: 'Roboto', sans-serif;
         }
         @media only screen
         and (min-device-width: 320px)
@@ -53,6 +53,21 @@
             margin-top: -45px;
           }
         }
+        @media (min-width:1366px) {
+          .demo-content{
+            margin-left: auto;
+            margin-right: auto;
+            width: 1041px;
+          }
+          .demo-content1{
+            margin-left: auto;
+            margin-right: auto;
+            width: 1041px;
+          }
+          .mdl-cell--hide-tablet ,.mdl-cell--hide-phone{
+            display: none;
+          }
+        }
       </style>
     </head>
     <body>
@@ -69,13 +84,13 @@
             <div class="login_content" ng-show="user.uname == null">
             <div style="top:30px;" class="col-md-8 col-md-offset-2" >
                 <div class="col-md-12" style="padding:30px;">
-                  <div class="col-md-3" style="padding:0;">
+                  <div class="col-md-4">
                     <div class="login-icon">
                       <img src="img/ahemlogo.png" alt="AHEM logo" />
                       <!-- <h4><strong>AHEM</strong></h4> -->
                     </div>
                   </div>
-                  <div class="col-md-9">
+                  <div class="col-md-8">
                     <div class="login-form">
                       <form name="form" ng-submit="login()" role="form">
                         <div class="form-group">
