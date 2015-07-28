@@ -5829,17 +5829,22 @@ fieldset[disabled] .navbar-inverse .navbar-btn.active {
   background-color: #468FCC;
   }
 .login-icon {
-  display: block;
+  /*display: block;*/
   margin-left: auto;
   margin-right: auto;
   text-align: center;
   color: white;
-  width: 96px;
+  width: 193px;
+  height: 210px;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+
   }
 .login-icon > img {
   display: block;
-  width: 100%;
-  margin-bottom: 6px;
+  height: 91px;
+  width: 173px;
   }
 .login-icon > h4 {
   font-size: 20px;
