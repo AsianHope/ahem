@@ -44,7 +44,8 @@ ldapfields = [
     'postalAddress',
     'apple-birthday',
     'jsonData',
-    'userPassword'
+    'userPassword',
+    'postalAddress'
 ]
 
 def main():

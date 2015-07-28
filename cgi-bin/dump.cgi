@@ -45,10 +45,8 @@ def getUsers():
     try:
         slave.simple_bind_s(susername,pw)
     except:
-        return '{"result":"error"}'
         logging.warning('Bind failed - aborting')
-        sys.exit(1)
-
+        return None
 
     logging.info('%s logged in.', username)
 
@@ -96,7 +94,7 @@ def jsonifyUser(user):
             'employeeType',
             'c',
             'l',
-            'mobile'
+            'mobile',
             'postalAddress'
         ]
 
@@ -129,4 +127,7 @@ if __name__ == "__main__":
     print "Content-type: application/json; charset=utf-8"
     #print "Content-type: text/html; charset=utf-8"
     print
-    print json.dumps(users,'utf-8')
+    if users is not None:
+        print json.dumps(users,'utf-8')
+    else:
+        print '{"result":"error"}'

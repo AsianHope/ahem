@@ -260,10 +260,9 @@
         else{
             //if they replace the dob the data stored locally will have dashes in it.
             applebirthday=applebirthday.replace(/-/g,'')
-
-            year = applebirthday.substr(0,4)
-            month = applebirthday.substr(4,2)
-            day = applebirthday.substr(6,2)
+            var year = applebirthday.substr(0,4)
+            var month = applebirthday.substr(4,2)
+            var day = applebirthday.substr(6,2)
             return year+'-'+month+'-'+day
         }
 
