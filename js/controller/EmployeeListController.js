@@ -53,6 +53,7 @@
                     emplyeeobj['sn'] = $scope.employees[i].sn;
                     emplyeeobj['mobile'] = $scope.employees[i].mobile;
                     emplyeeobj['mail'] = $scope.employees[i].mail;
+                    emplyeeobj['title'] = $scope.employees[i].title;
                     $scope.employees_local_data.push(emplyeeobj);
                     // set localStorage data
                     storageService.save('employees_local_data',$scope.employees_local_data);
