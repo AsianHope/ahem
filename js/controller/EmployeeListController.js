@@ -10,6 +10,7 @@
         document.getElementById("search").value = "";
         document.getElementById("search").focus();
       }
+      $scope.loading = true;
       $scope.local_data=[];
       $scope.cid = $routeParams.id;
       $scope.curemployee=null;
@@ -111,7 +112,11 @@
            .error(function(data, status, headers, config){
                         $scope.user.uname = null;
                         $scope.user.pw = null;
-            });
+            })
+            .finally(function() {
+            // called no matter success or failure
+            $scope.loading = false;
+          });
             // storageService.clearAll();
             if(localStorage.getItem('employees_local_data') !== null){
               // get localStorage data

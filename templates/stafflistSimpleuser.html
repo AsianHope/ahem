@@ -6,16 +6,6 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-show="!checkStorage()" ng-hide="local_data">
-              <td colspan="7" style="text-align:center;">
-                 <img src="../img/loading.GIF" alt="loading image"/>
-              </td>
-            </tr>
-            <!-- <tr>
-              <td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>
-              <td>25</td>
-              <td>$2.90</td>
-            </tr> -->
             <tr ng-hide="!local_data" ng-repeat="employee in local_data | filter:query | orderBy:orderProp">
                 <td class="mdl-data-table__cell--non-numeric">{{employee.employeeType}}</a></td>
                 <td>{{employee.departmentNumber}}</a></td>
