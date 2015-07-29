@@ -75,14 +75,32 @@
                       document.getElementById("btn_profile").style.backgroundColor = "#488FCC";
                       document.getElementById("btn_print_card").style.backgroundColor = "#488FCC";
                       document.getElementById("btn_print_change").style.backgroundColor = "#488FCC";
+                      document.getElementById("search").style.border = "1px solid #488FCC";
+                      $('#change_text_color').css('color', '#488FCC');
+                      $('#change_text_color a').css('color', '#488FCC');
+                      $scope.style_anchor = function() {
+                        return { "color": "#488FCC" };
+                      }
                     }
                     else if ($scope.selfselect.departmentNumber=="AHIS") {
+                      $scope.style_anchor = function() {
+                        return { "color": "#26AF5F" };
+                      }
+                      $('.mail').css('color', '#26AF5F');
                       document.getElementById("table_th").style.backgroundColor = "#26AF5F";
                       document.getElementById("demo-ribbon").style.backgroundColor = "#26AF5F";
                       document.getElementById("demo-header").style.backgroundColor = "#26AF5F";
                       document.getElementById("btn_profile").style.backgroundColor = "#26AF5F";
                       document.getElementById("btn_print_card").style.backgroundColor = "#26AF5F";
                       document.getElementById("btn_print_change").style.backgroundColor = "#26AF5F";
+                      document.getElementById("search").style.border = "1px solid #26AF5F";
+                      $('#change_text_color').css('color', '#26AF5F');
+                      $('#change_text_color a').css('color', '#26AF5F');
+                  }
+                  else {
+                    $scope.style_anchor = function() {
+                      return { "color": "#488FCC" };
+                    }
                   }
                       break;
                   }
@@ -102,8 +120,6 @@
                         document.getElementById("btn_print_card").style.backgroundColor = "#26AF5F";
                         document.getElementById("btn_print_change").style.backgroundColor = "#26AF5F";
                     }
-
-
                       break;
                     }
                 }
@@ -135,6 +151,7 @@
         };
         this.setEmployee = function(setEmployee){
           this.curemployee=setEmployee;
+          $location.path("/admin/staff/"+this.curemployee.employeeNumber);
         };
         //begin internal functions
         this.refreshEmployeeData = function(){
