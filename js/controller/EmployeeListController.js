@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    app.controller('EmployeeListController',function ($scope, $http, $filter, $q,$routeParams,$location,EmployeesService,storageService) {
+    app.controller('EmployeeListController',function ($scope, $http, $filter, $q,$location,EmployeesService,storageService) {
       $scope.showlist=false;
       $scope.keyPress = function(){
         $scope.showlist=true;
@@ -12,7 +12,6 @@
       }
       $scope.loading = true;
       $scope.local_data=[];
-      $scope.cid = $routeParams.id;
       $scope.curemployee=null;
       $scope.employees = [];
       $scope.email;
@@ -105,24 +104,6 @@
                   }
                       break;
                   }
-                    if($scope.employees[i].employeeNumber==$scope.cid){
-                      $scope.curemployee=$scope.employees[i];
-                      if($scope.curemployee.departmentNumber=="LIS"){
-                        document.getElementById("demo-ribbon").style.backgroundColor = "#488FCC";
-                        document.getElementById("demo-header").style.backgroundColor = "#488FCC";
-                        document.getElementById("btn_profile").style.backgroundColor = "#488FCC";
-                        document.getElementById("btn_print_card").style.backgroundColor = "#488FCC";
-                        document.getElementById("btn_print_change").style.backgroundColor = "#488FCC";
-                      }
-                      else if ($scope.curemployee.departmentNumber=="AHIS") {
-                        document.getElementById("demo-ribbon").style.backgroundColor = "#26AF5F";
-                        document.getElementById("demo-header").style.backgroundColor = "#26AF5F";
-                        document.getElementById("btn_profile").style.backgroundColor = "#26AF5F";
-                        document.getElementById("btn_print_card").style.backgroundColor = "#26AF5F";
-                        document.getElementById("btn_print_change").style.backgroundColor = "#26AF5F";
-                    }
-                      break;
-                    }
                 }
               }
            })
@@ -147,12 +128,8 @@
             return new Array(parseInt(n));
           };
         //no one selected initially
-        this.clearEmployee = function(){
-          this.curemployee=null;
-        };
-        this.setEmployee = function(setEmployee){
-          this.curemployee=setEmployee;
-          $location.path("/admin/staff/"+this.curemployee.employeeNumber);
+        $scope.setEmployee = function(setEmployee){
+          $scope.curemployee=setEmployee;
         };
         //begin internal functions
         this.refreshEmployeeData = function(){
@@ -214,21 +191,9 @@
       $scope.go = function ( path ) {
         $location.path( path );
       };
-      this.shift = function(amount){
-          for(var i=0; i<$scope.employees.length; i++){
-              if($scope.employees[i].employeeNumber==$scope.cid){
-                  $scope.curemployee = $scope.employees[i+amount];
-                  $location.path("/admin/staff/"+$scope.curemployee.employeeNumber);
-                  break;
-              }
-          }
-      };
       $scope.updateUser = function(uid, field, data){
               var d = $q.defer();
               EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw)
-                  .success(function(data, status, headers, config) {
-                    $scope.employees = data;
-                  })
                   .success(function(data, status, headers, config){
                        if(data.result== 'success'){
                            d.resolve()

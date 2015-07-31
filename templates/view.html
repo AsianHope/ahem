@@ -1,3 +1,4 @@
+<h1 id="goback"><a ui-sref="admin">Go back?</a> </h1>
 <div id="imagePreview" class="col-md-3 well well-sm" style="width:236px;">
          <div class="form-group">
            <div class="col-md-12 text-center" style="height:348px; background-position: center center; background-size: cover; background-image: url('files/{{curemployee.employeeNumber}}.jpg');">
@@ -88,9 +89,9 @@
                                 </a>
                             </h3>
                             <h3 class="right">
-                                <small><a href ng-click="elist.shift(-1)"><i class="fa fa-arrow-left"></i></a></small>
+                                <small><a href ng-click="shift(-1)"><i class="fa fa-arrow-left"></i></a></small>
                                 {{curemployee.employeeNumber}}
-                                <small><a href ng-click="elist.shift(+1)"><i class="fa fa-arrow-right"></i></a></small>
+                                <small><a href ng-click="shift(+1)"><i class="fa fa-arrow-right"></i></a></small>
                             </h3>
                         </div>
                    </div>

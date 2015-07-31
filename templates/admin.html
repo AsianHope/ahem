@@ -1,3 +1,4 @@
+<div class="container">
     <div class="page-header noprint">
         <h1>*AHEM*<small> - Asian Hope Employee Management</small></h1>
     </div>
@@ -28,7 +29,14 @@
          <new-staff></new-staff>
      </div>
      <div ng-show="this.tab.isSet(3)">
-         <staff-list></staff-list>
+       <div ng-show="loading">
+         <img style="display:block; margin-left:auto; margin-right:auto;" src="../img/load.GIF" alt="loading image"/>
+       </div>
+       <div ng-if="showInclude" ng-hide="loading">
+         <div ui-view >
+         </div>
+       </div>
+       <staff-list ng-if="!showInclude" ng-hide="loading"></staff-list>
      </div>
      <div ng-show="this.tab.isSet(4)">
          <h1>Log</h1>
@@ -40,3 +48,4 @@
    </div>
 
  <!-- If not logged in !-->
+</div>

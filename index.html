@@ -10,9 +10,10 @@
       <link rel ="stylesheet" type="text/css"href="css/ahem.css" />
       <link rel="stylesheet" type="text/css" href="static/font-awesome/css/font-awesome.min.css" />
       <link rel="stylesheet" href="../css/material.min.css">
-    <script src="../js/material.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.indigo-deep_purple.min.css" />
+      <script src="../js/material.min.js"></script>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.indigo-deep_purple.min.css" />
+      <link href="css/xeditable.css" rel="stylesheet"/>
       <style>
         .login_content{
           width: 100%;
@@ -74,9 +75,7 @@
         <div ng-controller="LoginController as loginctrl">
             <div ng-controller="EmployeeListController as elist">
               <section ng-if="user.uname != null" ng-controller="TabController as tab">
-                  <div ng-view>
-
-                  </div>
+                  <div ui-view></div>
               </section>
             </div>
 
@@ -116,15 +115,16 @@
         <script type="text/javascript" src="js/angular.min.js"></script>
         <script type="text/javascript" src="js/xeditable.js"></script>
         <script type="text/javascript" src="js/angular-route.js"></script>
+        <script type="text/javascript"  src="js/angular-ui-router.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
         <script type="text/javascript" src="js/config/route.js"></script>
         <script type="text/javascript" src="js/controller/LoginController.js"></script>
         <script type="text/javascript" src="js/services/service.js"></script>
         <script type="text/javascript" src="js/constants/constants.js"></script>
+        <script type="text/javascript" src="js/directives/directive.js"></script>
         <script type="text/javascript" src="js/controller/EmployeeListController.js"></script>
         <script type="text/javascript" src="js/controller/EmployeeRegistrationController.js"></script>
         <script type="text/javascript" src="js/controller/TabController.js"></script>
-        <script type="text/javascript" src="js/directives/directive.js"></script>
-        <link href="css/xeditable.css" rel="stylesheet"/>
+        <script type="text/javascript" src="js/controller/CuremployeeController.js"></script>
     </body>
 </html>
