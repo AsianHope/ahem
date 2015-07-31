@@ -1,174 +1,152 @@
-<div id="imagePreview" class="col-md-4 well well-sm" style="width:236px; margin-top:30px;">
- <div class="form-group">
-   <div class="col-md-12 text-center"  style="height:348px; background-position: center center; background-size: cover; background-image: url('files/{{elist.selfselect.employeeNumber}}.jpg');">
-     <form class="form-horizontal" method="POST" enctype= "multipart/form-data" action="cgi-bin/upload.cgi">
-       <!--input id="uploadFile" size=40 name="image" type="file" class="form-control"-->
-       <input type="hidden" name="uidNumber" value="{{elist.selfselect.uidNumber}}">
-       <!--button type="submit" class="btn btn-primary btn-lg">Submit</button -->
-     </form>
-   </div>
-   <div class="col-md-12 text-center">
-     <h2 style="color: #2a6496;" class="text-center nonldap" ng-hide="elist.selfselect.c=='KH'">Visa Expires:
-                            {{elist.selfselect.visaExpires || "Not Entered"}}
-    </h2>
-   </div>
+<div id="change_text_color" style="color:#488FCC;" class="center_div col-md-7 col-xs-7">
+  <table class="table_view">
+    <tr>
+      <td style="font-size:30px;">
+        <strong>
+          <a style="font-weight:bold;" id="lastname" href="#" title="Click to edit: Surname" editable-text="selfselect.sn"
+              onbeforesave="updateUser(selfselect.uid,'sn',$data)">
+              {{selfselect.sn +', '}}
+          </a>
+          <a style="font-weight:bold;" href="#" title="Click to edit: First Name" editable-text="selfselect.givenName"
+              onbeforesave="updateUser(selfselect.uid,'givenName',$data)">
+              {{selfselect.givenName}}
+          </a>
+        </strong>
+      </td>
+      <td style="font-size:30px;">
+          {{selfselect.employeeNumber}}
+      </td>
+    </tr>
+    <tr>
+      <td style="font-family:Bayon;">
+          <a style="font-style:normal;" href="#" title="Click to edit: Khmer Surname" editable-text="selfselect.snkh"
+              onbeforesave="updateUser(selfselect.uid,'snkh',$data)">
+              {{selfselect.snkh || "នាមត្រកូល"}}
+          </a> &nbsp;
+          <a style="font-style:normal;" href="#" title="Click to edit: Khmer First Name" editable-text="selfselect.givenNamekh"
+            onbeforesave="updateUser(selfselect.uid,'givenNamekh',$data)">
+              {{selfselect.givenNamekh || "នាមខ្លួន"}}
+          </a>
+      </td>
+      <td>
+              {{selfselect.employeeType|| "empty"}}
+           -
+              {{selfselect.departmentNumber || "empty"}}
+      </td>
+    </tr>
+    <tr style="border-bottom:1px solid #e5e5e5;">
+      <td>
+              {{selfselect.title || "Staff"}}
+      </td>
+      <td>
 
- </div>
-
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="mailto:{{selfselect.mail}}" target="_blank"> <i class="fa fa-envelope-o"></i> {{selfselect.mail}}</a>
+      </td>
+      <td>
+        <a href="#" title="Click to edit: Phone Number" editable-text="selfselect.mobile"
+            onbeforesave="updateUser(selfselect.uid,'mobile',$data)">
+            {{selfselect.mobile || "Phone"}}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="mailto:{{selfselect.mailpr}}" target="_blank"><i class="fa fa-envelope-o"></i></a>
+        <a href="#" title="Click to edit: Personal Email Address" editable-email="selfselect.mailpr"
+          onbeforesave="updateUser(selfselect.uid,'mailpr',$data)">
+            {{selfselect.mailpr || "Personal Email"}}
+        </a>
+      </td>
+      <td>
+        <a href="#" title="Click to edit: Address" editable-text="selfselect.postalAddress"
+            onbeforesave="updateUser(selfselect.uid,'postalAddress',$data)">
+            {{selfselect.postalAddress || "Home Address"}}
+        </a>
+      </td>
+    </tr>
+    <tr style="border-bottom:1px solid #e5e5e5;">
+      <td>
+        <a href="#" title="Click to edit: Birthday" editable-date="selfselect.applebirthday"
+            onbeforesave="updateUser(selfselect.uid,'apple-birthday',$data)"> <!-- note the field change to apple-birthday here -->
+            {{decodeAppleBirthday(selfselect.applebirthday) || "DOB"}}
+        </a>
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td class="hidechangepass" colspan="2">
+            <form name="form" ng-submit="resetPassword(selfselect.uid,new_password,'youreset',current_password)" role="form">
+                <table style="margin:0;">
+                  <tr>
+                    <td>Current password<td>
+                  </tr>
+                  <tr>
+                    <td><input type="password"  name="current_password" id="current_password" class="form-control" ng-model="current_password" required />
+                    <span ng-show="form.current_password.$dirty && form.current_password.$error.required" class="help-block">Current password is required</span><td>
+                  </tr>
+                  <tr>
+                    <td>New password<td>
+                  </tr>
+                  <tr>
+                    <td>  <input type="password" name="new_password" id="new_password" class="form-control" ng-model="new_password" required />
+                      <span ng-show="form.new_password.$dirty && form.new_password.$error.required" class="help-block">New password is required</span><td>
+                  </tr>
+                  <tr>
+                    <td>Comfirm new password<td>
+                  </tr>
+                  <tr>
+                    <td><input type="password" password-match="new_password" name="confirm_password" id="confirm_password" class="form-control" ng-model="confirm_password" required />
+                      <span  ng-show="form.confirm_password.$dirty && form.confirm_password.$error.required" class="help-block">confirm password is required</span>
+                      <span class="help-block" ng-show="form.confirm_password.$error.unique">
+                        Passwords do not match.
+                     </span>
+                      <span ng-show="form.confirm_password.$error.noMatch">Passwords do not match.</span><td>
+                  </tr>
+                  <tr>
+                    <td><button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">Save</button><td>
+                  </tr>
+                  <tr>
+                </table>
+            </form>
+        </td>
+    </tr>
+</table>
 </div>
-<div class="container col-md-8" style="margin-top:30px;">
-
-    <!-- Biogrpahical -->
-  <div class="col-md-12">
-    <div class="well well-sm">
-      <fieldset>
-
-      <!-- Name, Sex, Dept, Employee Number -->
-      <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
-            <div class="col-md-6">
-                <h3 class="text-left">
-                    <a href="#" title="Click to edit: Surname" editable-text="elist.selfselect.sn"
-                        onbeforesave="updateUser(elist.selfselect.uid,'sn',$data)">
-                        {{elist.selfselect.sn +', '}}
-                    </a>
-                    <a href="#" title="Click to edit: First Name" editable-text="elist.selfselect.givenName"
-                        onbeforesave="updateUser(elist.selfselect.uid,'givenName',$data)">
-                        {{elist.selfselect.givenName}}
-                    </a>
-                    <a href="#" title="Click to edit: Gender" editable-select="elist.selfselect.gender"
-                        e-ng-options="gender.value as gender.text for gender in genders"
-                        onbeforesave="updateUser(elist.selfselect.uid,'gender',$data)">
-                        <small>({{elist.selfselect.gender}})</small>
-                    </a>
-                </h3>
-                <h4 class="text-left">
-                    <a href="#" title="Click to edit: Khmer Surname" editable-text="elist.selfselect.snkh"
-                        onbeforesave="updateUser(elist.selfselect.uid,'snkh',$data)">
-                        {{elist.selfselect.snkh || "Khmer Surname"}}
-                    </a> &nbsp;
-                    <a href="#" title="Click to edit: Khmer First Name" editable-text="elist.selfselect.givenNamekh"
-                      onbeforesave="updateUser(elist.selfselect.uid,'givenNamekh',$data)">
-                        {{elist.selfselect.givenNamekh || "Name"}}
-                    </a>
-                </h4>
-                <h4 style="color: #2a6496;" class="text-left">
-                        {{elist.selfselect.title || "Staff"}}
-                </h4>
-            </div>
-            <div class="col-md-6">
-                <h3 style="color: #2a6496;" class="right">
-                        {{elist.selfselect.employeeType|| "empty"}}
-                     -
-                        {{elist.selfselect.departmentNumber || "empty"}}
-                </h3>
-                <h3 style="color: #2a6496;" class="right">
-                    <small><i class="fa fa-arrow-left"></i></small>
-                    {{elist.selfselect.employeeNumber}}
-                    <small><i class="fa fa-arrow-right"></i></small>
-                </h3>
-            </div>
-       </div>
-
-       <!-- Quick Info -->
-       <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
-            <div class="col-md-6">
-              <h4 class="text-left"><a href="mailto:{{elist.selfselect.mail}}" target="_blank"> <i class="fa fa-envelope-o"></i> {{elist.selfselect.mail}}</a></h4>
-
-              <h4 class="text-left">
-                <a href="mailto:{{elist.selfselect.mailpr}}" target="_blank"><i class="fa fa-envelope-o"></i></a>
-                <a href="#" title="Click to edit: Personal Email Address" editable-email="elist.selfselect.mailpr"
-                  onbeforesave="updateUser(elist.selfselect.uid,'mailpr',$data)">
-                    {{elist.selfselect.mailpr || "Personal Email"}}
-                </a>
-              </h4>
-
-                <h4 class="text-left">
-                    <a href="#" title="Click to edit: Birthday" editable-date="elist.selfselect.applebirthday"
-                        onbeforesave="updateUser(elist.selfselect.uid,'apple-birthday',$data)"> <!-- note the field change to apple-birthday here -->
-                        {{decodeAppleBirthday(elist.selfselect.applebirthday) || "DOB"}}
-                    </a>
-                </h4>
-            </div>
-            <div class="col-md-6">
-                <h4 class="right">
-                    <a href="#" title="Click to edit: Phone Number" editable-text="elist.selfselect.mobile"
-                        onbeforesave="updateUser(elist.selfselect.uid,'mobile',$data)">
-                        {{elist.selfselect.mobile || "Phone"}}
-                    </a>
-                </h4>
-                <h4 class="right">
-                    <a href="#" title="Click to edit: Address" editable-text="elist.selfselect.postalAddress"
-                        onbeforesave="updateUser(elist.selfselect.uid,'postalAddress',$data)">
-                        {{elist.selfselect.postalAddress || "Home Address"}}
-                    </a>
-                </h4>
-            </div>
-       </div>
-       <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
-         <section style="color:#2a6496;"class="hidechangepass">
-             <form name="form" ng-submit="resetPassword(elist.selfselect.uid,new_password,'youreset',current_password)" role="form">
-                 <div class="form-group">
-                     <label for="current_password">Current password</label>
-                     <input type="password"  name="current_password" id="current_password" class="form-control" ng-model="current_password" required />
-                     <span ng-show="form.current_password.$dirty && form.current_password.$error.required" class="help-block">Current password is required</span>
-                 </div>
-                 <div class="form-group">
-                     <label for="new_password">New password</label>
-                     <input type="password" name="new_password" id="new_password" class="form-control" ng-model="new_password" required />
-                     <span ng-show="form.new_password.$dirty && form.new_password.$error.required" class="help-block">New password is required</span>
-                 </div>
-                 <div class="form-group">
-                     <label for="confirm_password">Comfirm new password</label>
-                     <input type="password" password-match="new_password" name="confirm_password" id="confirm_password" class="form-control" ng-model="confirm_password" required />
-                     <span  ng-show="form.confirm_password.$dirty && form.confirm_password.$error.required" class="help-block">confirm password is required</span>
-                     <span class="help-block" ng-show="form.confirm_password.$error.unique">
-                       Passwords do not match.
-                    </span>
-                     <span ng-show="form.confirm_password.$error.noMatch">Passwords do not match.</span>
-                 </div>
-                <div class="form-actions">
-                     <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">Save</button>
-                </div>
-             </form>
-
-           </section>
-           <button class="btn btn-warning showchpass">Change password</button>
+<!-- profile pic -->
+<div class="center_div col-md-5 col-xs-5">
+  <div class="col-md-12 col-xs-12 ">
+    <div style="width: 330px; height: 411px; background-position: center center; background-size: cover; background-image: url('files/{{selfselect.employeeNumber}}.jpg');"></div>
+  </div>
+  <div class="col-md-12 col-xs-12" style="position:relative;left: -6px;" >
+      <div class="col-md-6 col-xs-6">
+        <button style="background:#488FCC; color:white;" id="btn_print_card" class="button center_div btn">
+            <strong>Print Business Card<strong>
+        </button>
 
       </div>
-    </div>
+      <div class="col-md-6 col-xs-6">
+        <button style="background:#488FCC; color:white;" id="btn_print_change" class="button showchpass center_div btn">
+            <strong>Change Password</strong>
+        </button>
+      </div>
+  </div>
 </div>
- <div class="col-md-12" id="debug"> {{elist.selfselect | json}}
-   <style>
-      .cpass{
-        margin: 20px 0 20px 0;
-      }
-      .cpass tr td{
-        padding: 0 5px 0 5px;
-        text-align: left;
-        color: #2a6496;
-        font-style: italic;
-      }
-      .right{
-        text-align: right;
-      }
 
-      @media screen and (max-width: 800px) {
-        .right{
-          text-align: left;
-        }
-        #imagePreview{
-          margin-left: 25%;
-        }
+<script type="text/javascript">
+  $(document).keydown(function(e) {
+    if (e.keyCode===191) {
+      e.preventDefault();
+      $("#search").focus();
+      return;
     }
-    .hidechangepass{
-      display: none;
-    }
-   </style>
-   <script type="text/javascript">
-
-   $('.showchpass').click(function() {
-      $(this).hide();
-      $('.hidechangepass').slideDown('slow');
   });
-
-   </script>
+    $('.showchpass').click(function() {
+       $(this).hide();
+       $('.hidechangepass').slideDown('slow');
+   });
+</script>

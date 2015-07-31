@@ -6,3 +6,143 @@
 .documents{
   display:none;
 }
+@media (max-width:989px) {
+  .login-form{
+    margin-left:auto;
+    margin-right:auto;
+  }
+}
+.button{
+  font-family: 'Roboto', sans-serif;
+  padding:15px;
+  font-size: 15px;
+  font-weight:bold;
+  /*background:#488FCC;*/
+  border-radius:0 !important;
+}
+.center_div{
+  margin-left: auto;
+  margin-right: auto;
+}
+.hidechangepass{
+  display: none;
+}
+.hidechangepass table tr td{
+  padding: 2px;
+}
+.table_view tr td{
+  padding-top:5px;
+  padding-bottom: 5px;
+  font-size: 20px;
+  word-wrap: break-word;
+}
+.table_view{
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  table-layout: fixed;
+}
+.table_view table{
+  margin-left: 25px;
+
+}
+.table_view td:first-child {
+  padding-right: 5px;
+}
+#demo-ribbon {
+ width: 100%;
+ height: 225px;
+ background-color: #488FCC;
+ -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+ }
+
+.demo-main {
+   margin-top: -220px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+#demo-header{
+  background-color:#488FCC;
+}
+
+.demo-container {
+  max-width: 1800px;
+  width: calc(100% - 16px);
+  margin: 0 auto;
+}
+.demo-content {
+  border-radius: 2px;
+  margin-bottom: 80px;
+}
+.demo-content1 {
+  border-radius: 2px;
+}
+.demo-layout.is-small-screen .demo-content {
+  padding: 40px 28px;
+}
+.view-profile {
+  position: fixed !important;
+  display: block;
+  right: 0;
+  bottom: 0;
+  margin-right: 10px !important;
+  margin-bottom: 40px !important;
+  z-index: 900;
+}
+/*index*/
+.login_content{
+  width: 100%;
+  position:fixed !important;
+  height: 100%;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background: #488FCC;
+}
+body{
+  background: #f5f5f5;
+}
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 480px)
+and (-webkit-min-device-pixel-ratio: 2) {
+  .login-screen{
+    padding:0px;
+  }
+  .col-md-offset-2{
+    margin-left: 0;
+  }
+  .login-form{
+    margin-left:auto;
+    margin-right:auto;
+  }
+}
+@media (max-width:989px) {
+  .login-form{
+    margin-left:auto;
+    margin-right:auto;
+  }
+}
+@media (max-width:641px) {
+  .demo-main{
+    margin-top: -45px;
+  }
+}
+@media (min-width:1366px) {
+  .demo-content{
+    margin-left: auto;
+    margin-right: auto;
+    width: 1041px;
+  }
+  .demo-content1{
+    margin-left: auto;
+    margin-right: auto;
+    width: 1041px;
+  }
+  .mdl-cell--hide-tablet ,.mdl-cell--hide-phone{
+    display: none;
+  }
+}
