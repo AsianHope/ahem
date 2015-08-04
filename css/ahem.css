@@ -219,3 +219,6 @@ and (-webkit-min-device-pixel-ratio: 2) {
   border: 1px solid #3e587b;
   border-radius: 10px;
 }
+.btn_bgcolor{
+  background: rebeccapurple !important;
+}

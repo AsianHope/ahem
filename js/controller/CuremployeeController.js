@@ -3,7 +3,7 @@
     app.controller('CuremployeeCtrl',function ($scope,$http,$stateParams,$location,EmployeesService){
       $scope.id =$stateParams.instanceID;
       if($scope.employees.length==0){
-        EmployeesService.getEmployees($scope.user.uname,$scope.user.pw)
+        EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"CURSTAFF")
             .success(function(data, status, headers, config) {
                if(data.result=='error'){
                   //pop us back out to the login screen

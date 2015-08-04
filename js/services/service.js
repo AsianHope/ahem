@@ -19,12 +19,13 @@
     });
       app.factory('EmployeesService', function($http) {
         return {
-          getEmployees : function(username,password) {
+          getEmployees : function(username,password,scope) {
                 // return $http.get('/api/todos');
                 var data = {
                       username: username,
                       pw: password,
-                      scope:'CURSTAFF'
+                      // scope:'CURSTAFF'
+                      scope:scope
                       }
                 var uri = encodeURI('cgi-bin/dump.cgi');
                 return $http({

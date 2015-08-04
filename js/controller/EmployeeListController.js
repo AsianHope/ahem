@@ -5,8 +5,16 @@
       $scope.keyPress = function(){
         $scope.showlist=true;
       }
+      $scope.keyPressBack = function(){
+        console.log("saray");
+        $location.path("/admin");
+      }
       $scope.keyclickshide = function(){
         $scope.showlist=false;
+        document.getElementById("search").value = "";
+        document.getElementById("search").focus();
+      }
+      $scope.clearform = function() {
         document.getElementById("search").value = "";
         document.getElementById("search").focus();
       }
@@ -33,7 +41,7 @@
            $scope.password = temp;
        };
        $scope.tempPassword();
-       EmployeesService.getEmployees($scope.user.uname,$scope.user.pw)
+       EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"CURSTAFF")
            .success(function(data, status, headers, config) {
               if(data.result=='error'){
                  //pop us back out to the login screen
@@ -124,7 +132,7 @@
                 $scope.local_data=  $scope.employees;
             }
           $scope.range = function(n) {
-             n.trim();
+            //  n.trim();
             return new Array(parseInt(n));
           };
         //no one selected initially
@@ -132,33 +140,36 @@
           $scope.curemployee=setEmployee;
         };
         //begin internal functions
-        this.refreshEmployeeData = function(){
+        $scope.refreshEmployeeData = function(){
           $scope.employees = [];
-          this.curemployee=null;
-          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw)
+          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"ALL")
                 .success(function(data, status, headers, config) {
                   $scope.employees = data;
                 });
         };
 
-        this.showRequestedAccounts = function(){
+        $scope.showRequestedAccounts = function(){
           $scope.employees = [];
-          this.curemployee=null;
-          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw)
+          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"REQUESTS")
               .success(function(data, status, headers, config) {
                 $scope.employees = data;
               });
           };
 
-        this.showDisabledAccounts = function(){
+        $scope.showDisabledAccounts = function(){
           $scope.employees = [];
-          this.curemployee=null;
-          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw)
+          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"DISABLED")
               .success(function(data, status, headers, config) {
                 $scope.employees = data;
               });
         };
-
+        $scope.showInactiveAccounts = function(){
+          $scope.employees = [];
+          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
+              .success(function(data, status, headers, config) {
+                $scope.employees = data;
+              });
+        };
       //rough approximation
       this.timeBetween = function(startDate, endDate){
         if (endDate === 'present') endDate=new Date();
