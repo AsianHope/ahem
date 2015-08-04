@@ -1,6 +1,4 @@
-<div ng-controller="EmployeeListController as elist">
-    <div>
-        <div class="form-inline" style="margin: 5px;">
+<!-- <div class="form-inline" style="margin: 5px;">
             <label>Search:</label>
             <input class="form-control" ng-model="query"/>
             <label>Sort By:</label>
@@ -17,8 +15,13 @@
               <a href ng-click="elist.showRequestedAccounts()" alt = "Show requested accounts"><i class="fa fa-cogs"></i></a>
               <a href ng-click="elist.showDisabledAccounts()" alt = "Show disabled accounts"><i class="fa fa-question-circle"></i></a>
           </h1>
-    </div>
-        <table class="table table-striped table-hover">
+</div> -->
+<h1>
+    <a href ng-click="elist.refreshEmployeeData()" alt="Show current employees"><i class="fa fa-group"></i></a>
+    <a href ng-click="elist.showRequestedAccounts()" alt = "Show requested accounts"><i class="fa fa-cogs"></i></a>
+    <a href ng-click="elist.showDisabledAccounts()" alt = "Show disabled accounts"><i class="fa fa-question-circle"></i></a>
+</h1>
+        <table style="width:100%;" class="employeelist mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
             <tr><th>T</th><th>Dept</th><th>ID</th><th>First Name</th><th>Surname</th><th>Phone</th><th>Email</th></tr>
             <tr ng-show="!checkStorage()" ng-hide="local_data">
               <td colspan="7" style="text-align:center;">

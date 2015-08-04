@@ -17,6 +17,7 @@
       <style>
 
       </style>
+
     </head>
     <body>
         <div ng-controller="LoginController as loginctrl">
@@ -73,5 +74,14 @@
         <script type="text/javascript" src="js/controller/EmployeeRegistrationController.js"></script>
         <script type="text/javascript" src="js/controller/TabController.js"></script>
         <script type="text/javascript" src="js/controller/CuremployeeController.js"></script>
+        <script type="text/javascript">
+          $(document).keydown(function(e) {
+            if (e.keyCode===191) {
+              e.preventDefault();
+              $("#search").focus();
+              return;
+            }
+          });
+        </script>
     </body>
 </html>

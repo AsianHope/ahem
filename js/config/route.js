@@ -37,6 +37,18 @@
           url: '/staff/:instanceID',
           controller:'CuremployeeCtrl',
           templateUrl: "templates/view.html"
+        })
+        .state('admin.profile', {
+          url: '/profile/',
+          templateUrl: "templates/viewSelf.html"
+        })
+        .state('admin.register', {
+          url: '/register/',
+          templateUrl: "templates/register.html"
+        })
+        .state('admin.reports', {
+          url: '/reports/',
+          templateUrl: "templates/reports.html"
         });
 
     });

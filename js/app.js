@@ -8,6 +8,15 @@ var app =  angular.module('employeeList',['xeditable','ui.router']);
             if($state.current.name === 'admin.staff') {
                 $rootScope.showInclude = true;
             }
+            else if($state.current.name === 'admin.profile') {
+                $rootScope.showInclude = true;
+            }
+            else if($state.current.name === 'admin.reports') {
+                $rootScope.showInclude = true;
+            }
+            else if($state.current.name === 'admin.register') {
+                $rootScope.showInclude = true;
+            }
         });
     });
 })();

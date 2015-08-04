@@ -1,51 +1,66 @@
-<div class="container">
-    <div class="page-header noprint">
-        <h1>*AHEM*<small> - Asian Hope Employee Management</small></h1>
-    </div>
-<!-- If logged in !-->
-     <div ng-controller="EmployeeListController as elist">
-     <ul class = "nav nav-tabs noprint">
-         <li ng-class="{ active:this.tab.isSet(1)}">
-             <a href ng-click="this.tab.setTab(1);elist.selectSelf()">My Profile</a>
-         </li>
-         <li ng-class="{ active:this.tab.isSet(2) }">
-             <a href ng-click="this.tab.setTab(2)">Register a new account</a>
-         </li>
-         <li ng-class="{ active:this.tab.isSet(3) }">
-             <a href ng-click="this.tab.setTab(3)">Browse staff info</a>
-         </li>
-         <li ng-class="{ active:this.tab.isSet(4) }">
-             <a href ng-click="this.tab.setTab(4)">Log</a>
-         </li>
-         <li ng-class="{ active:this.tab.isSet(5) }">
-             <a href ng-click="this.tab.setTab(5)">Reports</a>
-         </li>
-     </ul>
+<div ng-controller="EmployeeListController as elist">
+    <div class="demo-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+      <div class="menu">
+        <div >
+          <img  style="" id="menu_image"  src="img/Menu-50.png"/>
+        </div>
+        <ul id="dropdown_menu">
+          <li><a ui-sref="admin.profile">My Profile</a></li>
+          <!-- <li><a ui-sref="admin.staff">Browse staff info</a></li> -->
+          <li><a ui-sref="admin.register">Register</a></li>
+          <li><a ui-sref="admin.reports">Reports</a></li>
+        </ul>
+      </div>
+      <div id="demo-ribbon"></div>
+          <main class="demo-main mdl-layout__content">
+            <div class="demo-container mdl-grid">
+              <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+              <div class="demo-content1 mdl-color--white  content mdl-cell mdl-cell--10-col">
 
-     <div ng-show="this.tab.isSet(1)">
-       <view-self> </view-self>
-     </div>
-     <div ng-show="this.tab.isSet(2)">
-         <new-staff></new-staff>
-     </div>
-     <div ng-show="this.tab.isSet(3)">
-       <div ng-show="loading">
-         <img style="display:block; margin-left:auto; margin-right:auto;" src="../img/load.GIF" alt="loading image"/>
-       </div>
-       <div ng-if="showInclude" ng-hide="loading">
-         <div ui-view >
-         </div>
-       </div>
-       <staff-list ng-if="!showInclude" ng-hide="loading"></staff-list>
-     </div>
-     <div ng-show="this.tab.isSet(4)">
-         <h1>Log</h1>
-         <ahemlog></ahemlog>
-     </div>
-     <div ng-show="this.tab.isSet(5)">
-         <reports></reports>
-     </div>
-   </div>
-
- <!-- If not logged in !-->
-</div>
+                <div class="row" id="demo-header">
+                  <div class="col-xs-6 col-md-6" style="color:white;">
+                    <div style="font-size:85px; margin-top:45px; font-weight:bold;">AHEM</div>
+                    <div style="margin-top:20px;"><p style="font-size: 15px;">Asian Hope Employee Management</p></div>
+                    <span style="font-size:17px;color:white"></span>
+                  </div>
+                  <div class="col-xs-6 col-md-6">
+                    <input id="search" ng-keypress="keyPressBack();" placeholder="Hit / to Search"ng-model="query" class="form-control" autofocus="true" type="text" style="font-size:25px; font-style:italic; color:gray; width:60%;height:80px; float:right; margin-top:20px;"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="demo-container mdl-grid">
+              <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+              <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--10-col">
+                <img ng-show="loading" style="display:block; margin-left:auto; margin-right:auto;" src="../img/load.GIF" alt="loading image"/>
+                <div ng-hide="loading" class="col-xs-12 col-md-12" style="  margin: 20px 0;">
+                  <div ng-if="showInclude">
+                    <div ui-view>
+                    </div>
+                  </div>
+                  <staff-list style="width:100%;"  ng-if="!showInclude"></staff-list>
+                  <!-- <view-self ng-show="showlist==false"> </view-self> -->
+                </div>
+            </div>
+            </div>
+          </main>
+        </div>
+        <a ui-sref="admin.register">
+          <button id="btn_register" style="width:100px; height:100px; background:#488FCC;" class=" mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--accent">
+            <i style="font-size:57px; color:white; margin-left:-17px;"class="material-icons">add</i>
+          </button>
+        </a>
+        <a ui-sref="admin">
+          <button ng-if="showInclude" ng-click="clearform(); this.tab.setTab(3)" id="back" style="width:100px; height:100px; background:#488FCC;" class="back_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--accent">
+            <i style="font-size:57px; color:white; margin-left:-17px;" class="material-icons">arrow_back</i>
+          </button>
+        </a>
+  </div>
+  <script>
+  $(document).ready(function(){
+        $("#menu_image").click(function()
+        {
+          $('#dropdown_menu').slideToggle("slow");
+        });
+    });
+  </script>

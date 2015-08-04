@@ -6,6 +6,14 @@
 .documents{
   display:none;
 }
+.tab_active{
+  color: #555;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+  border-bottom-color: transparent;
+  cursor: default;
+  border-bottom: 2px solid #488FCC;
+}
 @media (max-width:989px) {
   .login-form{
     margin-left:auto;
@@ -91,7 +99,16 @@
   margin-bottom: 40px !important;
   z-index: 900;
 }
-/*index*/
+#btn_register{
+  position: fixed !important;
+  display: block;
+  right: 0;
+  bottom: 0;
+  margin-right: 10px !important;
+  margin-bottom: 40px !important;
+  z-index: 900;
+}
+
 .login_content{
   width: 100%;
   position:fixed !important;
@@ -104,6 +121,9 @@
 }
 body{
   background: #f5f5f5;
+}
+body h5{
+  font-size: 15px !important;
 }
 @media only screen
 and (min-device-width: 320px)
@@ -145,4 +165,57 @@ and (-webkit-min-device-pixel-ratio: 2) {
   .mdl-cell--hide-tablet ,.mdl-cell--hide-phone{
     display: none;
   }
+}
+.employeelist tr th{
+  color: white;
+  background: #488FCC;
+
+}
+.back_button{
+  position: fixed !important;
+  display: block;
+  right: 0;
+  bottom: 0;
+  margin-right: 10px !important;
+  margin-bottom: 150px !important;
+  z-index: 900;
+}
+.menu{
+  z-index: 999;
+    position: absolute;
+    height: auto;
+    top: 46px;
+}
+#dropdown_menu{
+  top: 5px;
+  padding: 0;
+  display: none;
+  width: auto !important;
+  margin: 0 auto !important;
+  overflow: hidden;
+  list-style: none;
+  position: relative;
+}
+#dropdown_menu li{
+  line-height: 19px;
+}
+#dropdown_menu li a{
+  color: white;
+  display: block;
+  background-color: rebeccapurple;
+  text-align: center;
+  padding: 10px 30px 10px 30px;
+  border-bottom: 1px solid #FFFFFF;
+  border-top: 1px solid #6883a6;
+  text-shadow: 1px 1px 1px #333333;
+}
+#menu_image{
+  background-color: rebeccapurple;
+  height: 50px;
+  width: 55px;
+  padding: 10px;
+  cursor: pointer;
+  /* padding: 0px 7px 0px 7px; */
+  border: 1px solid #3e587b;
+  border-radius: 10px;
 }

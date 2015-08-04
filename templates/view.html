@@ -1,376 +1,344 @@
-<h1 id="goback"><a ui-sref="admin">Go back?</a> </h1>
-<div id="imagePreview" class="col-md-3 well well-sm" style="width:236px;">
-         <div class="form-group">
-           <div class="col-md-12 text-center" style="height:348px; background-position: center center; background-size: cover; background-image: url('files/{{curemployee.employeeNumber}}.jpg');">
-             <form class="form-horizontal" method="POST" enctype= "multipart/form-data" action="cgi-bin/upload.cgi">
-               <!--input id="uploadFile" size=40 name="image" type="file" class="form-control"-->
-               <input type="hidden" name="uidNumber" value="{{curemployee.uidNumber}}">
-               <!--button type="submit" class="btn btn-primary btn-lg">Submit</button -->
-             </form>
-           </div>
-             <h2 class="text-center nonldap" ng-hide="curemployee.c=='KH'">Visa Expires:
-                <a href="#" title="Click to edit: Visa Expiry" editable-date="curemployee.visaExpires"
-                  onbeforesave="updateUser(curemployee.uid,'visaExpires',$data)">
-                  {{curemployee.visaExpires || "Not Entered"}}
+<div class="col-md-12 col-xs-12" style="margin-bottom:20px;">
+  <ul class = "nav nav-tabs" style="border-bottom:none !important;">
+      <li ng-class="{ tab_active:this.tab.isSet(3)}">
+          <a href ng-click="this.tab.setTab(3)">Employee</a>
+      </li>
+      <li ng-class="{ tab_active:this.tab.isSet(4) }" ng-if="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.maritalstatus.trim()!='Single' && curemployee.c!='KH'">
+          <a href ng-click="this.tab.setTab(4)">Family</a>
+      </li>
+  </ul>
+</div>
+<div class="col-md-12 col-xs-12">
+
+
+<div id="change_text_color" style="color:#488FCC;" class="center_div col-md-7 col-xs-7">
+  <div class="col-md-12" ng-show="this.tab.isSet(3)" style="padding-left:0 !important;">
+      <table class="table_view">
+        <tr>
+          <td style="font-size:30px;">
+            <strong>
+              <a id="lastname" href="#" title="Click to edit: Surname" editable-text="curemployee.sn"
+                  onbeforesave="updateUser(curemployee.uid,'sn',$data)">
+                  {{curemployee.sn +', '}}
+              </a>
+              <a href="#" title="Click to edit: First Name" editable-text="curemployee.givenName"
+                  onbeforesave="updateUser(curemployee.uid,'givenName',$data)">
+                  {{curemployee.givenName}}
+              </a>
+            </strong>
+          </td>
+          <td style="font-size:30px;">
+            <a href ng-click="shift(-1)"><i class="fa fa-arrow-left"></i></a>
+              {{curemployee.employeeNumber}}
+            <a href ng-click="shift(+1)"><i class="fa fa-arrow-right"></i></a>
+          </td>
+        </tr>
+        <tr>
+          <td style="font-family:Bayon;">
+            <a href="#" title="Click to edit: Khmer Surname" editable-text="curemployee.snkh"
+                onbeforesave="updateUser(curemployee.uid,'snkh',$data)">
+                {{curemployee.snkh || "នាមត្រកូល"}}
+            </a> &nbsp;
+            <a href="#" title="Click to edit: Khmer First Name" editable-text="curemployee.givenNamekh"
+              onbeforesave="updateUser(curemployee.uid,'givenNamekh',$data)">
+                {{curemployee.givenNamekh || "នាមខ្លួន" }}
+            </a>
+          </td>
+          <td>
+            <a href="#" title ="Click to edit: Employee Status" editable-select="curemployee.employeeType"
+                e-ng-options="employeetype.value as employeetype.text for employeetype in employeetypes"
+                onbeforesave="updateUser(curemployee.uid,'employeeType',$data)">
+                {{curemployee.employeeType|| "empty"}}
+            </a> -
+            <a href="#" title ="Click to edit: Department" editable-select="curemployee.departmentNumber"
+                e-ng-options="department.value as department.text for department in departments"
+                onbeforesave="updateUser(curemployee.uid,'departmentNumber',$data)">
+                {{curemployee.departmentNumber || "empty"}}
+            </a>
+          </td>
+        </tr>
+        <tr style="border-bottom:1px solid #e5e5e5;">
+          <td>
+            <a href="#" title="Click to edit: Title" editable-text="curemployee.title"
+                onbeforesave="updateUser(curemployee.uid,'title',$data)">
+                {{curemployee.title || "Staff"}}
+            </a>
+          </td>
+          <td>
+
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="mailto:{{curemployee.mail}}" target="_blank"> <i class="fa fa-envelope-o"></i> {{curemployee.mail}}</a>
+          </td>
+          <td>
+            <a href="#" title="Click to edit: Phone Number" editable-text="curemployee.mobile"
+                onbeforesave="updateUser(curemployee.uid,'mobile',$data)">
+                {{curemployee.mobile || "Phone"}}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="mailto:{{selfselect.mailpr}}" target="_blank"><i class="fa fa-envelope-o"></i></a>
+            <a href="#" title="Click to edit: Personal Email Address" editable-email="curemployee.mailpr"
+              onbeforesave="updateUser(curemployee.uid,'mailpr',$data)">
+                {{curemployee.mailpr || "Personal Email"}}
+            </a>
+          </td>
+          <td>
+            <a href="#" title="Click to edit: Address" editable-text="curemployee.postalAddress"
+                onbeforesave="updateUser(curemployee.uid,'postalAddress',$data)">
+                {{curemployee.postalAddress || "Home Address"}}
+            </a>
+          </td>
+        </tr>
+        <tr style="border-bottom:1px solid #e5e5e5;">
+          <td>
+            <a href="#" title="Click to edit: Birthday" editable-date="curemployee.applebirthday"
+                onbeforesave="updateUser(curemployee.uid,'apple-birthday',$data)"> <!-- note the field change to apple-birthday here -->
+                {{decodeAppleBirthday(curemployee.applebirthday) || "DOB"}}
+            </a>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <a href="#" title="Click to edit" editable-text="curemployee.idnumber"
+              onbeforesave="updateUser(curemployee.uid,'idnumber',$data)">
+                {{curemployee.idnumber || "Passport/ID Card:"}}
+            </a>
+          </td>
+          <td>
+            <a href="#" title="Click to edit: Passport Country" editable-select="curemployee.c"
+                e-ng-options="country.value as country.text for country in countries"
+                onbeforesave="updateUser(curemployee.uid,'c',$data)">
+                {{curemployee.c || "Nationality"}}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="#" title="Click to edit" editable-text="curemployee.nssf"
+              onbeforesave="updateUser(curemployee.uid,'nssf',$data)">
+                {{curemployee.nssf || "NSSF #"}}
+            </a>
+          </td>
+          <td>
+            <a href="#" title="Click to edit" editable-select="curemployee.maritalstatus"
+                    e-ng-options="maritalstatus.value as maritalstatus.text for maritalstatus in maritalstatuses"
+                    onbeforesave="updateUser(curemployee.uid,'maritalstatus',$data)">
+                    {{curemployee.maritalstatus|| "Marital Status"}}
+            </a>
+          </td>
+        </tr>
+          <tr>
+            <td>
+              <a href="#" title="Click to edit" editable-select="curemployee.faith"
+                  e-ng-options="religion.value as religion.text for religion in religions"
+                  onbeforesave="updateUser(curemployee.uid,'faith',$data)">
+                  {{curemployee.faith || "Religion"}}
+              </a>
+            </td>
+            <td>
+              <a href="#" title="Click to edit" editable-number="curemployee.children"
+              onbeforesave="updateUser(curemployee.uid,'children',$data)">
+                {{curemployee.children|| "Children"}}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="#" title="Click to edit" editable-text="curemployee.insurance"
+                    onbeforesave="updateUser(curemployee.uid,'insurance',$data)">
+                      {{curemployee.insurance || "Insurance Provider"}}
+              </a>
+            </td>
+            <td>
+              <a href="#" title="Click to edit" editable-text="curemployee.insuranceNumber"
+                onbeforesave="updateUser(curemployee.uid,'insuranceNumber',$data)">
+                  {{curemployee.insuranceNumber || "Insurance ID #"}}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="#" title="Click to edit" editable-text="curemployee.degree"
+                onbeforesave="updateUser(curemployee.uid,'degree',$data)">
+                  {{curemployee.degree || "Degree"}}
+              </a>
+            </td>
+            <td>
+              <a href="#" title="Click to edit" editable-text="curemployee.degreeArea"
+                onbeforesave="updateUser(curemployee.uid,'degreeArea',$data)">
+                  {{curemployee.degreeArea || "Specialization"}}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="#" title="Click to edit" editable-date="curemployee.enteredCambodia"
+                  onbeforesave="updateUser(curemployee.uid,'enteredCambodia',$data)">
+                    {{curemployee.enteredCambodia || "Entrance Date"}}
+              </a>
+            </td>
+            <td >
+              <a href="#" title="Click to edit: Visa Expiry" editable-date="curemployee.visaExpires"
+                onbeforesave="updateUser(curemployee.uid,'visaExpires',$data)">
+                {{curemployee.visaExpires || "Visa Expires"}}
+              </a>
+            </td>
+          </tr>
+          <tr style="border-bottom:1px solid #e5e5e5; vertical-align: top;">
+            <td>
+              Employed from:
+            </td>
+            <td>
+                  <a href="#" title="Click to edit: Employment Start Date" editable-date="curemployee.startdate"
+                  onbeforesave="updateUser(curemployee.uid,'startdate',$data)">
+                      {{curemployee.startdate || "unknown"}}
+                  </a> to
+                  <a href="#" title="Click to edit: Employment End Date" editable-date="curemployee.enddate"
+                  onbeforesave="updateUser(curemployee.uid,'enddate',$data)">
+                      {{curemployee.enddate|| "present"}}
+                  </a>
+              <p><small>
+                {{elist.timeBetween(curemployee.startdate, curemployee.enddate|| 'present')}}
+              </small></p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Notes:
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <a href="#" editable-textarea="curemployee.notes"
+                e-rows="7" e-cols="60"
+                onbeforesave="updateUser(curemployee.uid,'notes',$data)">
+                  <pre>{{curemployee.notes || 'no notes entered'}}</pre>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <reset-password id="show_resetpass" style="text-align:center;"></reset-password>
+            </td>
+        </tr>
+    </table>
+  </div>
+  <!-- family tab -->
+
+  <div class="col-md-12"  ng-show="this.tab.isSet(4)" style="padding-left:0 !important;">
+      <table class="table_view">
+        <tr>
+          <td style="font-size:30px;">
+            <strong>
+                    <a id="lastname" href="#" title="Click to edit: Surname" editable-text="curemployee.spouseSn"
+                        onbeforesave="updateUser(curemployee.uid,'spouseSn',$data)">
+                        {{curemployee.spouseSn || "Spouse name"}}
+                    </a>,
+                    <a href="#" title="Click to edit: First Name" editable-text="curemployee.spouseCn"
+                        onbeforesave="updateUser(curemployee.uid,'spouseCn',$data)">
+                        {{curemployee.spouseCn || ""}}
+                    </a>
+
+            </strong>
+          </td>
+          <td>
+            <a href="#" title="Click to edit: Passport Country" editable-select="curemployee.spouseC"
+                e-ng-options="country.value as country.text for country in countries"
+                onbeforesave="updateUser(curemployee.uid,'spouseC',$data)">
+                {{curemployee.spouseC || "Nationality"}}
+            </a>
+          </td>
+        </tr>
+        <tr style="border-bottom:1px solid #e5e5e5;">
+          <td>
+            <a href="#" title="Click to edit" editable-text="curemployee.spouseIdnumber"
+              onbeforesave="updateUser(curemployee.uid,'spouseIdnumber',$data)">
+                {{curemployee.spouseidnumber || "Passport #"}}
+            </a>
+          </td>
+          <td>
+                <small>
+                  <a href="#" title="Click to edit: Visa Expiry" editable-date="curemployee.spouseVisaExpires"
+                    onbeforesave="updateUser(curemployee.uid,'spouseVisaExpires',$data)">
+                    {{curemployee.spouseVisaExpires || "Visa Expires"}}
+                  </a>
+                </small>
+          </td>
+        </tr>
+        <tbody ng-if="curemployee.children!=null" ng-repeat="a in range(curemployee.children) track by $index">
+          <tr >
+              <td>
+                <a href="#" title="Click to edit: Surname" editable-text="curemployee.child{{$index}}Sn"
+                    onbeforesave="updateUser(curemployee.uid,'child'+ $index+'Sn',$data)">
+                    {{curemployee.child$indexSn || "Children name"}}
+                </a>,
+                <a href="#" title="Click to edit: First Name" editable-text="curemployee.child{{$index}}Cn"
+                    onbeforesave="updateUser(curemployee.uid,'child'+ $index+'Cn',$data)">
+                    {{curemployee.child$indexCn || "N/A"}}
                 </a>
-            </h2>
-            <h2 class="text-center documents" style="color: red;">Missing Documents:</h2>
-               <ul class="documents">
-                 <li ng-repeat="document in showMissingDocs(curemployee.extended.documents, documentType)">
-                     {{document.text}}
-                </li>
-               </ul>
-         </div>
+              </td>
+              <td>
+                <a href="#" title="Click to edit" editable-text="curemployee.chlid{{$index}}idnumber"
+                onbeforesave="updateUser(curemployee.uid,'chlid'+$index+'idnumber',$data)">
+                  {{curemployee.chlid$indexIdnumber || "Passport #"}}
+                </a>
+              </td>
+          </tr>
+          <tr style="border-bottom:1px solid #e5e5e5;">
+              <td>
+                <a href="#" title="Click to edit: Passport Country" editable-select="curemployee.chlid{{$index}}C"
+                    e-ng-options="country.value as country.text for country in countries"
+                    onbeforesave="updateUser(curemployee.uid,'chlid'+$index+'C',$data)">
+                    {{curemployee.chlid$indexC || "Nationality"}}
+                </a>
+              </td>
+              <td>
+                <a href="#" title="Click to edit" editable-date="curemployee.child{{$index}}VisaExpiry"
+                onbeforesave="updateUser(curemployee.uid,'child'+ $index+'VisaExpiry',$data)">
+                  {{curemployee.child$indexVisaExpiry || "Visa Expires"}}
+                </a>
+              </td>
+          </tr>
+        </tbody>
+    </table>
+  </div>
+
+</div>
+
+
+<!-- profile pic -->
+<div class="center_div col-md-5 col-xs-5">
+  <div class="col-md-12 col-xs-12 ">
+    <div style="width: 330px; height: 411px; background-position: center center; background-size: cover; background-image: url('files/{{curemployee.employeeNumber}}.jpg');"></div>
+  </div>
+  <div class="col-md-12 col-xs-12" style="margin-top:30px; position:relative;left: -6px;" >
+      <div class="col-md-6 col-xs-6">
+        <a target="_blank" href="templates/card.html?name={{curemployee.givenName}} {{curemployee.sn}}&id={{curemployee.employeeNumber}}&title={{curemployee.title}}&department={{curemployee.departmentNumber}}">
+          <button  style="background:#488FCC; color:white;" id="btn_print_card" class="button center_div btn">
+            Print ID card
+          </button>
+        </a>
+
       </div>
-      <div class="container col-md-6">
-        <section>
-          <div class="col-md-12">
-            <ul class = "nav nav-tabs">
-                <li ng-class="{ active:this.tab.isSet(3)}">
-                    <a href ng-click="this.tab.setTab(3)">Employee</a>
-                </li>
-                <li ng-if="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.maritalstatus.trim()!='Single' && curemployee.c!='KH'" ng-class="{ active:this.tab.isSet(4) }">
-                    <a href ng-click="this.tab.setTab(4)">Family</a>
-                </li>
-            </ul>
-          </div>
-            <!-- Biogrpahical -->
-              <div class="col-md-12" ng-show="this.tab.isSet(3)">
-                <div class="well well-sm">
-                  <fieldset>
-                  <!-- Name, Sex, Dept, Employee Number -->
-                  <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
-                        <div class="col-md-6">
-                            <h3 class="text-left">
-                                <a id="lastname" href="#" title="Click to edit: Surname" editable-text="curemployee.sn"
-                                    onbeforesave="updateUser(curemployee.uid,'sn',$data)">
-                                    {{curemployee.sn +', '}}
-                                </a>
-                                <a href="#" title="Click to edit: First Name" editable-text="curemployee.givenName"
-                                    onbeforesave="updateUser(curemployee.uid,'givenName',$data)">
-                                    {{curemployee.givenName}}
-                                </a>
-                                <a href="#" title="Click to edit: Gender" editable-select="curemployee.gender"
-                                    e-ng-options="gender.value as gender.text for gender in genders"
-                                    onbeforesave="updateUser(curemployee.uid,'gender',$data)">
-                                    <small>({{curemployee.gender}})</small>
-                                </a>
-                            </h3>
-                            <h4 class="text-left">
-                                <a href="#" title="Click to edit: Khmer Surname" editable-text="curemployee.snkh"
-                                    onbeforesave="updateUser(curemployee.uid,'snkh',$data)">
-                                    {{curemployee.snkh || "Khmer Surname"}}
-                                </a> &nbsp;
-                                <a href="#" title="Click to edit: Khmer First Name" editable-text="curemployee.givenNamekh"
-                                  onbeforesave="updateUser(curemployee.uid,'givenNamekh',$data)">
-                                    {{curemployee.givenNamekh || "Name"}}
-                                </a>
-                            </h4>
-                            <h4 class="text-left">
-                                <a href="#" title="Click to edit: Title" editable-text="curemployee.title"
-                                    onbeforesave="updateUser(curemployee.uid,'title',$data)">
-                                    {{curemployee.title || "Staff"}}
-                                </a>
-                            </h4>
-
-
-                        </div>
-                        <div class="col-md-6">
-                            <h3 class="right">
-                                <a href="#" title ="Click to edit: Employee Status" editable-select="curemployee.employeeType"
-                                    e-ng-options="employeetype.value as employeetype.text for employeetype in employeetypes"
-                                    onbeforesave="updateUser(curemployee.uid,'employeeType',$data)">
-                                    {{curemployee.employeeType|| "empty"}}
-                                </a> -
-                                <a href="#" title ="Click to edit: Department" editable-select="curemployee.departmentNumber"
-                                    e-ng-options="department.value as department.text for department in departments"
-                                    onbeforesave="updateUser(curemployee.uid,'departmentNumber',$data)">
-                                    {{curemployee.departmentNumber || "empty"}}
-                                </a>
-                            </h3>
-                            <h3 class="right">
-                                <small><a href ng-click="shift(-1)"><i class="fa fa-arrow-left"></i></a></small>
-                                {{curemployee.employeeNumber}}
-                                <small><a href ng-click="shift(+1)"><i class="fa fa-arrow-right"></i></a></small>
-                            </h3>
-                        </div>
-                   </div>
-
-                   <!-- Quick Info -->
-                   <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
-                        <div class="col-md-6">
-                          <h4 class="text-left"><a href="mailto:{{curemployee.mail}}" target="_blank"> <i class="fa fa-envelope-o"></i> {{curemployee.mail}}</a></h4>
-
-                          <h4 class="text-left">
-                            <a href="mailto:{{curemployee.mailpr}}" target="_blank"><i class="fa fa-envelope-o"></i></a>
-                            <a href="#" title="Click to edit: Personal Email Address" editable-email="curemployee.mailpr"
-                              onbeforesave="updateUser(curemployee.uid,'mailpr',$data)">
-                                {{curemployee.mailpr || "Personal Email"}}
-                            </a>
-                          </h4>
-
-                            <h4 class="text-left">
-                                <a href="#" title="Click to edit: Birthday" editable-date="curemployee.applebirthday"
-                                    onbeforesave="updateUser(curemployee.uid,'apple-birthday',$data)"> <!-- note the field change to apple-birthday here -->
-                                    {{decodeAppleBirthday(curemployee.applebirthday) || "DOB"}}
-                                </a>
-                            </h4>
-                            <h4 class="text-left">
-                                <a href="#" title="Click to edit: Passport Country" editable-select="curemployee.c"
-                                    e-ng-options="country.value as country.text for country in countries"
-                                    onbeforesave="updateUser(curemployee.uid,'c',$data)">
-                                    {{curemployee.c || "Passport Country"}}
-                                </a>
-                            </h4>
-
-
-
-                        </div>
-                        <div class="col-md-6">
-                            <h4 class="right">
-                                <a href="#" title="Click to edit: Phone Number" editable-text="curemployee.mobile"
-                                    onbeforesave="updateUser(curemployee.uid,'mobile',$data)">
-                                    {{curemployee.mobile || "Phone"}}
-                                </a>
-                            </h4>
-                            <h4 class="right">
-                                <a href="#" title="Click to edit: Address" editable-text="curemployee.postalAddress"
-                                    onbeforesave="updateUser(curemployee.uid,'postalAddress',$data)">
-                                    {{curemployee.postalAddress || "Home Address"}}
-                                </a>
-                            </h4>
-                            <h4 class="right">
-                                <a href="#" title="Click to edit: Country of Residence" editable-select="curemployee.l"
-                                    e-ng-options="country.value as country.text for country in ahcountries"
-                                    onbeforesave="updateUser(curemployee.uid,'l',$data)">
-                                    {{curemployee.l || "Country"}}
-                                </a>
-                            </h4>
-                        </div>
-                   </div>
-
-                   <!-- Statuses -->
-                   <div class="col-md-12 nonldap" style="border-bottom: 1px solid #e5e5e5;">
-                        <div class="col-md-6">
-                            <h4>Passport/ID Card:
-                                <small><a href="#" title="Click to edit" editable-text="curemployee.idnumber"
-                                  onbeforesave="updateUser(curemployee.uid,'idnumber',$data)">
-                                    {{curemployee.idnumber || "Not Entered"}}
-                                </a></small>
-                            </h4>
-                            <h4>NSSF Number:
-                                <small><a href="#" title="Click to edit" editable-text="curemployee.nssf"
-                                  onbeforesave="updateUser(curemployee.uid,'nssf',$data)">
-                                    {{curemployee.nssf || "Not Entered"}}
-                                </a></small>
-                            </h4>
-                            <h4>Religion:
-                                <small><a href="#" title="Click to edit" editable-select="curemployee.faith"
-                                    e-ng-options="religion.value as religion.text for religion in religions"
-                                    onbeforesave="updateUser(curemployee.uid,'faith',$data)">
-                                    {{curemployee.faith || "Not Entered"}}
-                                </a></small>
-                            </h4>
-                            <h4>Marital Status:
-                                <small><a href="#" title="Click to edit" editable-select="curemployee.maritalstatus"
-                                    e-ng-options="maritalstatus.value as maritalstatus.text for maritalstatus in maritalstatuses"
-                                    onbeforesave="updateUser(curemployee.uid,'maritalstatus',$data)">
-                                    {{curemployee.maritalstatus|| "Not Entered"}}
-                                </a></small>
-                            </h4>
-                            <h4>Children:
-                                <small>
-                                  <a href="#" title="Click to edit" editable-number="curemployee.children"
-                                  onbeforesave="updateUser(curemployee.uid,'children',$data)">
-                                    {{curemployee.children|| "Not Entered"}}
-                                  </a>
-                                </small>
-                            </h4>
-
-                        </div>
-                        <div class="col-md-6 nonldap">
-                            <h4>Educational Degree:
-                                <small><a href="#" title="Click to edit" editable-text="curemployee.degree"
-                                  onbeforesave="updateUser(curemployee.uid,'degree',$data)">
-                                    {{curemployee.degree || "Not Entered"}}
-                                </a></small>
-                            </h4>
-                            <h4>Specialization:
-                                <small><a href="#" title="Click to edit" editable-text="curemployee.degreeArea"
-                                  onbeforesave="updateUser(curemployee.uid,'degreeArea',$data)">
-                                    {{curemployee.degreeArea || "Not Entered"}}
-                                </a></small>
-                            </h4>
-                            <h4 ng-hide="curemployee.c=='KH'">Date Entered Cambodia:
-                                <small><a href="#" title="Click to edit" editable-date="curemployee.enteredCambodia"
-                                  onbeforesave="updateUser(curemployee.uid,'enteredCambodia',$data)">
-                                    {{curemployee.enteredCambodia || "Not Entered"}}
-                                </a></small>
-                            </h4>
-                            <h4>Insurance Provider:
-                                <small><a href="#" title="Click to edit" editable-text="curemployee.insurance"
-                                  onbeforesave="updateUser(curemployee.uid,'insurance',$data)">
-                                    {{curemployee.insurance || "Not Entered"}}
-                                </a></small>
-                            </h4>
-                            <h4>Insurance ID Number:
-                                <small><a href="#" title="Click to edit" editable-text="curemployee.insuranceNumber"
-                                  onbeforesave="updateUser(curemployee.uid,'insuranceNumber',$data)">
-                                    {{curemployee.insuranceNumber || "Not Entered"}}
-                                </a></small>
-                            </h4>
-                        </div>
-                   </div>
-
-                   <!-- Documents Section -->
-                     <div class="col-md-12" style="border-bottom: 1px solid #e5e5e5;">
-                          <div class="col-md-12 documents">
-                              <h3>Documenation <small><a href="#" editable-select="curemployee.documents"
-                                  e-ng-options="document.value as document.text for document in documentType">add a new document?</a></h3>
-
-                              <!--if there is no description, show the default description -->
-                              <h4 class = "text-left" ng-repeat="document in curemployee.extended.documents" ng-hide="document.description">
-                                <img src="static/drive_icon.png"> <a href="{{document.url}}" target="_blank">
-                                {{documentType[document.documentID].text}}</a>
-                                <small><a href=""><i class="fa fa-upload"></i></a>
-                                       <a href=""><i class="fa fa-remove"></i></a>
-                                </small>
-
-                              </h4>
-                              <h4 ng-repeat="document in curemployee.extended.documents" ng-show="document.description">
-                                <img src="static/drive_icon.png"> <a href="{{document.url}}">
-                                {{document.description}}
-                                <small><a href=""><i class="fa fa-upload"></i></a>
-                                         <a href=""><i class="fa fa-remove"></i></a>
-                                </small>
-                              </h4>
-                          </div>
-                         <!-- Employment Information -->
-                         <div class="col-md-12 extended" style="border-bottom: 1px solid #e5e5e5;">
-                             <h3 class="text-center">Employed from
-                                 <a href="#" title="Click to edit: Employment Start Date" editable-date="curemployee.startdate"
-                                 onbeforesave="updateUser(curemployee.uid,'startdate',$data)">
-                                     {{curemployee.startdate || "unknown"}}
-                                 </a> to
-                                 <a href="#" title="Click to edit: Employment End Date" editable-date="curemployee.enddate"
-                                 onbeforesave="updateUser(curemployee.uid,'enddate',$data)">
-                                     {{curemployee.enddate|| "present"}}
-                                 </a>
-                             </h3>
-                             <h4 class="text-center"><small>
-                               {{elist.timeBetween(curemployee.startdate, curemployee.enddate|| 'present')}}
-                             </small></h4>
-                         </div>
-
-                        <!-- Notes Section -->
-                        <div class="col-md-12 extended" >
-                            <h4>Notes</h4>
-                            <a href="#" editable-textarea="curemployee.notes"
-                              e-rows="7" e-cols="60"
-                              onbeforesave="updateUser(curemployee.uid,'notes',$data)">
-                                <pre>{{curemployee.notes || 'no notes entered'}}</pre>
-                            </a>
-                        </div>
-                  </div>
-                </div>
-              </div>
-            <!-- spouse infor -->
-            <div ng-show="this.tab.isSet(4)" class="col-md-12 nonldap well well-sm" style="border-bottom: 1px solid #e5e5e5;">
-                 <div class="col-md-6">
-                     <h4>Spouse Name:
-                         <small>
-                           <a id="lastname" href="#" title="Click to edit: Surname" editable-text="curemployee.spouseSn"
-                               onbeforesave="updateUser(curemployee.uid,'spouseSn',$data)">
-                               {{curemployee.spouseSn || "N/A"}}
-                           </a>,
-                           <a href="#" title="Click to edit: First Name" editable-text="curemployee.spouseCn"
-                               onbeforesave="updateUser(curemployee.uid,'spouseCn',$data)">
-                               {{curemployee.spouseCn || "N/A"}}
-                           </a>
-                         </small>
-                     </h4>
-                     <h4>Passport Number:
-                         <small><a href="#" title="Click to edit" editable-text="curemployee.spouseIdnumber"
-                           onbeforesave="updateUser(curemployee.uid,'spouseIdnumber',$data)">
-                             {{curemployee.spouseidnumber || "Not Entered"}}
-                         </a></small>
-                     </h4>
-                 </div>
-                 <div class="col-md-6 nonldap">
-                     <h4>Passport Country:
-                         <small>
-                           <a href="#" title="Click to edit: Passport Country" editable-select="curemployee.spouseC"
-                               e-ng-options="country.value as country.text for country in countries"
-                               onbeforesave="updateUser(curemployee.uid,'spouseC',$data)">
-                               {{curemployee.spouseC || "Not Entered"}}
-                           </a>
-                         </small>
-                     </h4>
-                     <h4>Visa Expire:
-                         <small>
-                           <a href="#" title="Click to edit: Visa Expiry" editable-date="curemployee.spouseVisaExpires"
-                             onbeforesave="updateUser(curemployee.uid,'spouseVisaExpires',$data)">
-                             {{curemployee.spouseVisaExpires || "Not Entered"}}
-                           </a>
-                         </small>
-                     </h4>
-                 </div>
-                 <div ng-if="curemployee.children!=null" ng-repeat="a in range(curemployee.children) track by $index">
-                   <div class="col-md-6" >
-                       <h4>children {{$index+1}} Name:
-                           <small>
-                             <a href="#" title="Click to edit: Surname" editable-text="curemployee.child{{$index}}Sn"
-                                 onbeforesave="updateUser(curemployee.uid,'child'+ $index+'Sn',$data)">
-                                 {{curemployee.child$indexSn || "N/A"}}
-                             </a>,
-                             <a href="#" title="Click to edit: First Name" editable-text="curemployee.child{{$index}}Cn"
-                                 onbeforesave="updateUser(curemployee.uid,'child'+ $index+'Cn',$data)">
-                                 {{curemployee.child$indexCn || "N/A"}}
-                             </a>
-                           </small>
-                       </h4>
-                       <h4>Passport Number:
-                           <small>
-                             <a href="#" title="Click to edit" editable-text="curemployee.chlid{{$index}}idnumber"
-                             onbeforesave="updateUser(curemployee.uid,'chlid'+$index+'idnumber',$data)">
-                               {{curemployee.chlid$indexIdnumber || "Not Entered"}}
-                             </a>
-                           </small>
-                       </h4>
-                   </div>
-                   <div class="col-md-6 nonldap">
-                       <h4>Passport Country:
-                           <small>
-                             <a href="#" title="Click to edit: Passport Country" editable-select="curemployee.chlid{{$index}}C"
-                                 e-ng-options="country.value as country.text for country in countries"
-                                 onbeforesave="updateUser(curemployee.uid,'chlid'+$index+'C',$data)">
-                                 {{curemployee.chlid$indexC || "Not Entered"}}
-                             </a>
-                           </small>
-                       </h4>
-                       <h4>Visa Expire:
-                           <small>
-                             <a href="#" title="Click to edit" editable-date="curemployee.child{{$index}}VisaExpiry"
-                             onbeforesave="updateUser(curemployee.uid,'child'+ $index+'VisaExpiry',$data)">
-                               {{curemployee.child$indexVisaExpiry || "Not Entered"}}
-                             </a>
-                           </small>
-                       </h4>
-                   </div>
-                 </div>
-            </div>
-        </section>
+      <div class="col-md-6 col-xs-6">
+        <button style="background:#488FCC; color:white;" id="hide_resetpass" class="button showchpass center_div btn">
+            <strong>Password Reset</strong>
+        </button>
       </div>
-      <div class="text-center col-md-3">
-        <div class="form-group">
-          <a role="button" target="_blank" class="btn btn-primary btn-lg" href="templates/card.html?name={{curemployee.givenName}} {{curemployee.sn}}&id={{curemployee.employeeNumber}}&title={{curemployee.title}}&department={{curemployee.departmentNumber}}">Print ID card</a>
-        </div>
-        <div class="form-group" >
-          <button class="btn btn-primary btn-lg" id="hide_resetpass">Password Reset</button>
-        </div>
-        <reset-password id="show_resetpass"></reset-password>
-    </div>
-         <div class="col-md-12" id="debug"> {{curemployee | json}}</div>
+  </div>
+  <!-- <div class="col-md-12 col-xs-12" style="margin-top:30px; position:relative;left: -6px;" >
+
+  </div> -->
+</div>
+
+</div>
+
 
          <style>
             @media screen and (max-width: 800px) {

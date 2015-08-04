@@ -122,7 +122,7 @@
   <div class="col-md-12 col-xs-12 ">
     <div style="width: 330px; height: 411px; background-position: center center; background-size: cover; background-image: url('files/{{selfselect.employeeNumber}}.jpg');"></div>
   </div>
-  <div class="col-md-12 col-xs-12" style="position:relative;left: -6px;" >
+  <div class="col-md-12 col-xs-12" style="margin-top:30px; osition:relative;left: -6px;" >
       <div class="col-md-6 col-xs-6">
         <button style="background:#488FCC; color:white;" id="btn_print_card" class="button center_div btn">
             <strong>Print Business Card<strong>
@@ -136,17 +136,9 @@
       </div>
   </div>
 </div>
-
 <script type="text/javascript">
-  $(document).keydown(function(e) {
-    if (e.keyCode===191) {
-      e.preventDefault();
-      $("#search").focus();
-      return;
-    }
-  });
     $('.showchpass').click(function() {
        $(this).hide();
        $('.hidechangepass').slideDown('slow');
-   });
+    });
 </script>
