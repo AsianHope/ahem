@@ -6,7 +6,6 @@
         $scope.showlist=true;
       }
       $scope.keyPressBack = function(){
-        console.log("saray");
         $location.path("/admin");
       }
       $scope.keyclickshide = function(){
@@ -41,88 +40,91 @@
            $scope.password = temp;
        };
        $scope.tempPassword();
-       EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"CURSTAFF")
-           .success(function(data, status, headers, config) {
-              if(data.result=='error'){
-                 //pop us back out to the login screen
-                $scope.user.uname = null;
-                $scope.user.pw = null;
-              }
-              else{
-                $scope.employees_local_data=[];
-                $scope.employees = data;
-                  for(var i=0; i<$scope.employees.length; i++){
-                    var emplyeeobj = {};
-                    emplyeeobj['employeeType'] = $scope.employees[i].employeeType;
-                    emplyeeobj['departmentNumber'] = $scope.employees[i].departmentNumber;
-                    emplyeeobj['employeeNumber'] = $scope.employees[i].employeeNumber;
-                    emplyeeobj['givenName'] = $scope.employees[i].givenName;
-                    emplyeeobj['sn'] = $scope.employees[i].sn;
-                    emplyeeobj['mobile'] = $scope.employees[i].mobile;
-                    emplyeeobj['mail'] = $scope.employees[i].mail;
-                    emplyeeobj['title'] = $scope.employees[i].title;
-                    $scope.employees_local_data.push(emplyeeobj);
-                    // set localStorage data
-                    storageService.save('employees_local_data',$scope.employees_local_data);
-                    if(localStorage.getItem('employees_local_data') == null){
-                      $scope.local_data= $scope.employees;
+       /*---check if username and password = null don't run factory*/
+       if($scope.user.uname!=null && $scope.user.pw!=null ){
+           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"CURSTAFF")
+               .success(function(data, status, headers, config) {
+                  if(data.result=='error'){
+                     //pop us back out to the login screen
+                    $scope.user.uname = null;
+                    $scope.user.pw = null;
+                  }
+                  else{
+                    $scope.employees_local_data=[];
+                    $scope.employees = data;
+                      for(var i=0; i<$scope.employees.length; i++){
+                        var emplyeeobj = {};
+                        emplyeeobj['employeeType'] = $scope.employees[i].employeeType;
+                        emplyeeobj['departmentNumber'] = $scope.employees[i].departmentNumber;
+                        emplyeeobj['employeeNumber'] = $scope.employees[i].employeeNumber;
+                        emplyeeobj['givenName'] = $scope.employees[i].givenName;
+                        emplyeeobj['sn'] = $scope.employees[i].sn;
+                        emplyeeobj['mobile'] = $scope.employees[i].mobile;
+                        emplyeeobj['mail'] = $scope.employees[i].mail;
+                        emplyeeobj['title'] = $scope.employees[i].title;
+                        $scope.employees_local_data.push(emplyeeobj);
+                        // set localStorage data
+                        storageService.save('employees_local_data',$scope.employees_local_data);
+                        if(localStorage.getItem('employees_local_data') == null){
+                          $scope.local_data= $scope.employees;
+                        }
+                        else{
+                          $scope.local_data= JSON.parse(storageService.get('employees_local_data'));
+                        }
                     }
-                    else{
-                      $scope.local_data= JSON.parse(storageService.get('employees_local_data'));
-                    }
-                }
-                   //--------route pass by id--------
-                for(var i=0; i<$scope.employees.length; i++){
-                  //view profile
-                  if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
-                    $scope.selfselect=$scope.employees[i];
-                    if($scope.selfselect.departmentNumber=="LIS"){
-                      document.getElementById("table_th").style.backgroundColor = "#488FCC";
-                      document.getElementById("demo-ribbon").style.backgroundColor = "#488FCC";
-                      document.getElementById("demo-header").style.backgroundColor = "#488FCC";
-                      document.getElementById("btn_profile").style.backgroundColor = "#488FCC";
-                      document.getElementById("btn_print_card").style.backgroundColor = "#488FCC";
-                      document.getElementById("btn_print_change").style.backgroundColor = "#488FCC";
-                      document.getElementById("search").style.border = "1px solid #488FCC";
-                      $('#change_text_color').css('color', '#488FCC');
-                      $('#change_text_color a').css('color', '#488FCC');
-                      $scope.style_anchor = function() {
-                        return { "color": "#488FCC" };
+                       //--------route pass by id--------
+                    for(var i=0; i<$scope.employees.length; i++){
+                      //view profile
+                      if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
+                        $scope.selfselect=$scope.employees[i];
+                        if($scope.selfselect.departmentNumber=="LIS"){
+                          document.getElementById("table_th").style.backgroundColor = "#488FCC";
+                          document.getElementById("demo-ribbon").style.backgroundColor = "#488FCC";
+                          document.getElementById("demo-header").style.backgroundColor = "#488FCC";
+                          document.getElementById("btn_profile").style.backgroundColor = "#488FCC";
+                          document.getElementById("btn_print_card").style.backgroundColor = "#488FCC";
+                          document.getElementById("btn_print_change").style.backgroundColor = "#488FCC";
+                          document.getElementById("search").style.border = "1px solid #488FCC";
+                          $('#change_text_color').css('color', '#488FCC');
+                          $('#change_text_color a').css('color', '#488FCC');
+                          $scope.style_anchor = function() {
+                            return { "color": "#488FCC" };
+                          }
+                        }
+                        else if ($scope.selfselect.departmentNumber=="AHIS") {
+                          $scope.style_anchor = function() {
+                            return { "color": "#26AF5F" };
+                          }
+                          $('.mail').css('color', '#26AF5F');
+                          document.getElementById("table_th").style.backgroundColor = "#26AF5F";
+                          document.getElementById("demo-ribbon").style.backgroundColor = "#26AF5F";
+                          document.getElementById("demo-header").style.backgroundColor = "#26AF5F";
+                          document.getElementById("btn_profile").style.backgroundColor = "#26AF5F";
+                          document.getElementById("btn_print_card").style.backgroundColor = "#26AF5F";
+                          document.getElementById("btn_print_change").style.backgroundColor = "#26AF5F";
+                          document.getElementById("search").style.border = "1px solid #26AF5F";
+                          $('#change_text_color').css('color', '#26AF5F');
+                          $('#change_text_color a').css('color', '#26AF5F');
+                      }
+                      else {
+                        $scope.style_anchor = function() {
+                          return { "color": "#488FCC" };
+                        }
+                      }
+                          break;
                       }
                     }
-                    else if ($scope.selfselect.departmentNumber=="AHIS") {
-                      $scope.style_anchor = function() {
-                        return { "color": "#26AF5F" };
-                      }
-                      $('.mail').css('color', '#26AF5F');
-                      document.getElementById("table_th").style.backgroundColor = "#26AF5F";
-                      document.getElementById("demo-ribbon").style.backgroundColor = "#26AF5F";
-                      document.getElementById("demo-header").style.backgroundColor = "#26AF5F";
-                      document.getElementById("btn_profile").style.backgroundColor = "#26AF5F";
-                      document.getElementById("btn_print_card").style.backgroundColor = "#26AF5F";
-                      document.getElementById("btn_print_change").style.backgroundColor = "#26AF5F";
-                      document.getElementById("search").style.border = "1px solid #26AF5F";
-                      $('#change_text_color').css('color', '#26AF5F');
-                      $('#change_text_color a').css('color', '#26AF5F');
                   }
-                  else {
-                    $scope.style_anchor = function() {
-                      return { "color": "#488FCC" };
-                    }
-                  }
-                      break;
-                  }
-                }
-              }
-           })
-           .error(function(data, status, headers, config){
-                        $scope.user.uname = null;
-                        $scope.user.pw = null;
-            })
-            .finally(function() {
-            // called no matter success or failure
-            $scope.loading = false;
-          });
+               })
+               .error(function(data, status, headers, config){
+                            $scope.user.uname = null;
+                            $scope.user.pw = null;
+                })
+                .finally(function() {
+                // called no matter success or failure
+                $scope.loading = false;
+              });
+        }
             // storageService.clearAll();
             if(localStorage.getItem('employees_local_data') !== null){
               // get localStorage data
