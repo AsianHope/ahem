@@ -3,7 +3,7 @@
       <li ng-class="{ tab_active:this.tab.isSet(3)}">
           <a href ng-click="this.tab.setTab(3)">Employee</a>
       </li>
-      <li ng-class="{ tab_active:this.tab.isSet(4) }" ng-if="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.maritalstatus.trim()!='Single' && curemployee.c!='KH'">
+      <li ng-class="{ tab_active:this.tab.isSet(4)}" ng-if="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.maritalstatus.trim()!='Single' && curemployee.c!='KH'">
           <a href ng-click="this.tab.setTab(4)">Family</a>
       </li>
   </ul>
@@ -105,13 +105,13 @@
         </tr>
         <tr>
           <td>
-            <a href="#" title="Click to edit" editable-text="curemployee.idnumber"
+            <a href="#" title="Click to edit: Passport/ID Card" editable-text="curemployee.idnumber"
               onbeforesave="updateUser(curemployee.uid,'idnumber',$data)">
                 {{curemployee.idnumber || "Passport/ID Card:"}}
             </a>
           </td>
           <td>
-            <a href="#" title="Click to edit: Passport Country" editable-select="curemployee.c"
+            <a href="#" title="Click to edit: Nationality" editable-select="curemployee.c"
                 e-ng-options="country.value as country.text for country in countries"
                 onbeforesave="updateUser(curemployee.uid,'c',$data)">
                 {{curemployee.c || "Nationality"}}
@@ -120,13 +120,13 @@
         </tr>
         <tr>
           <td>
-            <a href="#" title="Click to edit" editable-text="curemployee.nssf"
+            <a href="#" title="Click to edit: NSSF Number" editable-text="curemployee.nssf"
               onbeforesave="updateUser(curemployee.uid,'nssf',$data)">
                 {{curemployee.nssf || "NSSF #"}}
             </a>
           </td>
           <td>
-            <a href="#" title="Click to edit" editable-select="curemployee.maritalstatus"
+            <a href="#" title="Click to edit: Marital Status" editable-select="curemployee.maritalstatus"
                     e-ng-options="maritalstatus.value as maritalstatus.text for maritalstatus in maritalstatuses"
                     onbeforesave="updateUser(curemployee.uid,'maritalstatus',$data)">
                     {{curemployee.maritalstatus|| "Marital Status"}}
@@ -135,14 +135,14 @@
         </tr>
           <tr>
             <td>
-              <a href="#" title="Click to edit" editable-select="curemployee.faith"
+              <a href="#" title="Click to edit: Religion" editable-select="curemployee.faith"
                   e-ng-options="religion.value as religion.text for religion in religions"
                   onbeforesave="updateUser(curemployee.uid,'faith',$data)">
                   {{curemployee.faith || "Religion"}}
               </a>
             </td>
             <td>
-              <a href="#" title="Click to edit" editable-number="curemployee.children"
+              <a href="#" title="Click to edit: Children" editable-number="curemployee.children"
               onbeforesave="updateUser(curemployee.uid,'children',$data)">
                 {{curemployee.children|| "Children"}}
               </a>
@@ -150,13 +150,13 @@
           </tr>
           <tr>
             <td>
-              <a href="#" title="Click to edit" editable-text="curemployee.insurance"
+              <a href="#" title="Click to edit: Insurance Provider" editable-text="curemployee.insurance"
                     onbeforesave="updateUser(curemployee.uid,'insurance',$data)">
                       {{curemployee.insurance || "Insurance Provider"}}
               </a>
             </td>
             <td>
-              <a href="#" title="Click to edit" editable-text="curemployee.insuranceNumber"
+              <a href="#" title="Click to edit: Insurance ID Number" editable-text="curemployee.insuranceNumber"
                 onbeforesave="updateUser(curemployee.uid,'insuranceNumber',$data)">
                   {{curemployee.insuranceNumber || "Insurance ID #"}}
               </a>
@@ -164,13 +164,13 @@
           </tr>
           <tr>
             <td>
-              <a href="#" title="Click to edit" editable-text="curemployee.degree"
+              <a href="#" title="Click to edit: Degree" editable-text="curemployee.degree"
                 onbeforesave="updateUser(curemployee.uid,'degree',$data)">
                   {{curemployee.degree || "Degree"}}
               </a>
             </td>
             <td>
-              <a href="#" title="Click to edit" editable-text="curemployee.degreeArea"
+              <a href="#" title="Click to edit: Specialization" editable-text="curemployee.degreeArea"
                 onbeforesave="updateUser(curemployee.uid,'degreeArea',$data)">
                   {{curemployee.degreeArea || "Specialization"}}
               </a>
@@ -178,13 +178,13 @@
           </tr>
           <tr>
             <td>
-              <a href="#" title="Click to edit" editable-date="curemployee.enteredCambodia"
+              <a href="#" title="Click to edit: Entrance Date" editable-date="curemployee.enteredCambodia"
                   onbeforesave="updateUser(curemployee.uid,'enteredCambodia',$data)">
                     {{curemployee.enteredCambodia || "Entrance Date"}}
               </a>
             </td>
             <td >
-              <a href="#" title="Click to edit: Visa Expiry" editable-date="curemployee.visaExpires"
+              <a href="#" title="Click to edit: Visa Expires" editable-date="curemployee.visaExpires"
                 onbeforesave="updateUser(curemployee.uid,'visaExpires',$data)">
                 {{curemployee.visaExpires || "Visa Expires"}}
               </a>
@@ -215,7 +215,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              <a href="#" editable-textarea="curemployee.notes"
+              <a href="#" title="Click to edit: Notes"editable-textarea="curemployee.notes"
                 e-rows="7" e-cols="60"
                 onbeforesave="updateUser(curemployee.uid,'notes',$data)">
                   <pre>{{curemployee.notes || 'no notes entered'}}</pre>
@@ -236,19 +236,19 @@
         <tr>
           <td style="font-size:30px;">
             <strong>
-                    <a id="lastname" href="#" title="Click to edit: Surname" editable-text="curemployee.spouseSn"
+                    <a id="lastname" href="#" title="Click to edit: Spouse Surname" editable-text="curemployee.spouseSn"
                         onbeforesave="updateUser(curemployee.uid,'spouseSn',$data)">
                         {{curemployee.spouseSn || "Spouse name"}}
                     </a>,
-                    <a href="#" title="Click to edit: First Name" editable-text="curemployee.spouseCn"
+                    <a href="#" title="Click to edit: Spouse First Name" editable-text="curemployee.spouseCn"
                         onbeforesave="updateUser(curemployee.uid,'spouseCn',$data)">
-                        {{curemployee.spouseCn || ""}}
+                        {{curemployee.spouseCn || "N/A"}}
                     </a>
 
             </strong>
           </td>
           <td>
-            <a href="#" title="Click to edit: Passport Country" editable-select="curemployee.spouseC"
+            <a href="#" title="Click to edit: Nationality" editable-select="curemployee.spouseC"
                 e-ng-options="country.value as country.text for country in countries"
                 onbeforesave="updateUser(curemployee.uid,'spouseC',$data)">
                 {{curemployee.spouseC || "Nationality"}}
@@ -257,34 +257,35 @@
         </tr>
         <tr style="border-bottom:1px solid #e5e5e5;">
           <td>
-            <a href="#" title="Click to edit" editable-text="curemployee.spouseIdnumber"
+            <a href="#" title="Click to edit: Passport Number" editable-text="curemployee.spouseIdnumber"
               onbeforesave="updateUser(curemployee.uid,'spouseIdnumber',$data)">
                 {{curemployee.spouseidnumber || "Passport #"}}
             </a>
           </td>
           <td>
                 <small>
-                  <a href="#" title="Click to edit: Visa Expiry" editable-date="curemployee.spouseVisaExpires"
+                  <a href="#" title="Click to edit: Visa Expires" editable-date="curemployee.spouseVisaExpires"
                     onbeforesave="updateUser(curemployee.uid,'spouseVisaExpires',$data)">
                     {{curemployee.spouseVisaExpires || "Visa Expires"}}
                   </a>
                 </small>
           </td>
         </tr>
-        <tbody ng-if="curemployee.children!=null" ng-repeat="a in range(curemployee.children) track by $index">
+        <!-- "  -->
+        <tbody ng-repeat="a in range(curemployee.children) track by $index" ng-if="curemployee.children!=null">
           <tr >
               <td>
-                <a href="#" title="Click to edit: Surname" editable-text="curemployee.child{{$index}}Sn"
+                <a href="#" title="Click to edit: Children Surname" editable-text="curemployee.child{{$index}}Sn"
                     onbeforesave="updateUser(curemployee.uid,'child'+ $index+'Sn',$data)">
                     {{curemployee.child$indexSn || "Children name"}}
                 </a>,
-                <a href="#" title="Click to edit: First Name" editable-text="curemployee.child{{$index}}Cn"
+                <a href="#" title="Click to edit: Children First Name" editable-text="curemployee.child{{$index}}Cn"
                     onbeforesave="updateUser(curemployee.uid,'child'+ $index+'Cn',$data)">
                     {{curemployee.child$indexCn || "N/A"}}
                 </a>
               </td>
               <td>
-                <a href="#" title="Click to edit" editable-text="curemployee.chlid{{$index}}idnumber"
+                <a href="#" title="Click to edit: Passport Number" editable-text="curemployee.chlid{{$index}}idnumber"
                 onbeforesave="updateUser(curemployee.uid,'chlid'+$index+'idnumber',$data)">
                   {{curemployee.chlid$indexIdnumber || "Passport #"}}
                 </a>
@@ -292,14 +293,14 @@
           </tr>
           <tr style="border-bottom:1px solid #e5e5e5;">
               <td>
-                <a href="#" title="Click to edit: Passport Country" editable-select="curemployee.chlid{{$index}}C"
+                <a href="#" title="Click to edit: Nationality" editable-select="curemployee.chlid{{$index}}C"
                     e-ng-options="country.value as country.text for country in countries"
                     onbeforesave="updateUser(curemployee.uid,'chlid'+$index+'C',$data)">
                     {{curemployee.chlid$indexC || "Nationality"}}
                 </a>
               </td>
               <td>
-                <a href="#" title="Click to edit" editable-date="curemployee.child{{$index}}VisaExpiry"
+                <a href="#" title="Click to edit: Visa Expires" editable-date="curemployee.child{{$index}}VisaExpiry"
                 onbeforesave="updateUser(curemployee.uid,'child'+ $index+'VisaExpiry',$data)">
                   {{curemployee.child$indexVisaExpiry || "Visa Expires"}}
                 </a>
