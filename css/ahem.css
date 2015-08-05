@@ -215,10 +215,17 @@ and (-webkit-min-device-pixel-ratio: 2) {
   width: 55px;
   padding: 10px;
   cursor: pointer;
-  /* padding: 0px 7px 0px 7px; */
   border: 1px solid #3e587b;
   border-radius: 10px;
 }
 .btn_bgcolor{
   background: rebeccapurple !important;
+}
+/*reports*/
+.reports td{
+  padding: 0 5px 0 5px;
+  color: #428bca;
+}
+.toprint{
+  display: none;
 }

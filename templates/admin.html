@@ -1,6 +1,6 @@
 <div ng-controller="EmployeeListController as elist">
     <div class="demo-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
-      <div class="menu">
+      <div class="menu noprint">
         <div >
           <img  style="" id="menu_image"  src="img/Menu-50.png"/>
         </div>
@@ -11,13 +11,13 @@
           <li><a ui-sref="admin.reports">Reports</a></li>
         </ul>
       </div>
-      <div id="demo-ribbon"></div>
+      <div id="demo-ribbon" class="noprint"></div>
           <main class="demo-main mdl-layout__content">
             <div class="demo-container mdl-grid">
               <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
               <div class="demo-content1 mdl-color--white  content mdl-cell mdl-cell--10-col">
 
-                <div class="row" id="demo-header">
+                <div class="row noprint" id="demo-header">
                   <div class="col-xs-6 col-md-6" style="color:white;">
                     <div style="font-size:85px; margin-top:45px; font-weight:bold;">AHEM</div>
                     <div style="margin-top:20px;"><p style="font-size: 15px;">Asian Hope Employee Management</p></div>
@@ -45,12 +45,12 @@
             </div>
           </main>
         </div>
-        <a ui-sref="admin.register">
+        <a ui-sref="admin.register" class="noprint">
           <button id="btn_register" style="width:100px; height:100px; background:#488FCC;" class=" mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--accent">
             <i style="font-size:57px; color:white; margin-left:-17px;"class="material-icons">add</i>
           </button>
         </a>
-        <a ui-sref="admin">
+        <a ui-sref="admin" class="noprint">
           <button ng-if="showInclude" ng-click="clearform(); this.tab.setTab(3)" id="back" style="width:100px; height:100px; background:#488FCC;" class="back_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--accent">
             <i style="font-size:57px; color:white; margin-left:-17px;" class="material-icons">arrow_back</i>
           </button>

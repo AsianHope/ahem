@@ -1,9 +1,8 @@
-<div >
   <div class="col-xs-12 toprint">
     <h1>Expat Staff List</h1>
   </div>
-  <div class="reports  " style="margin-top:30px;" ng-repeat="employee in employees | filter:query | orderBy:orderProp" ng-if="employee.l=='KH' && employee.c!='KH'">
-  <div class="page-break well well-sm container col-xs-12">
+  <div class="reports" style="margin-top:30px; position:relative;" ng-repeat="employee in employees | filter:query | orderBy:orderProp" ng-if="employee.l=='KH' && employee.c!='KH'">
+  <div id="" class="page_break well well-sm container col-xs-12" style="position:relative;">
     <!-- Biogrpahical -->
   <div class="col-xs-8">
       <table>
@@ -123,18 +122,14 @@
     </div>
 </div>
 </div>
-</div>
-<style>
-  .reports td{
-    padding: 0 5px 0 5px;
-    color: #428bca;
+<script type="text/javascript">
+  $('.page_break').each(
+  function() {
+    $(this).css("page-break-inside", "avoid");
   }
-  @media screen {
-    .toprint{
-      display: none;
-    }
-  }
-
+  );
+</script>
+<style media="print">
   @media print {
     .noprint{
       display: none;
@@ -143,9 +138,8 @@
       display: block;
       text-align: center;
     }
-    .page-break{
-      /*page-break-after: always;
-      page-break-before: auto;*/
+    .page_break{
+      float: none;
       page-break-inside:avoid;
     }
   }
