@@ -6,9 +6,9 @@
         </div>
         <div class="collape">
           <ul id="dropdown_menu">
-            <li><a ui-sref="admin.profile">My Profile</a></li>
-            <li><a ui-sref="admin.register">Register</a></li>
-            <li><a ui-sref="admin.reports">Reports</a></li>
+            <li><a ng-class="{active_menu: $state.includes('admin.profile')}" ui-sref="admin.profile">My Profile</a></li>
+            <li><a ng-class="{active_menu: $state.includes('admin.register')}" ui-sref="admin.register">Register</a></li>
+            <li><a ng-class="{active_menu: $state.includes('admin.reports')}" ui-sref="admin.reports">Reports</a></li>
           </ul>
         </div>
       </div>
@@ -20,9 +20,11 @@
 
                 <div class="row noprint" id="demo-header">
                   <div class="col-xs-6 col-md-6" style="color:white;">
-                    <div style="font-size:85px; margin-top:45px; font-weight:bold;">AHEM</div>
+                    <a style="color:white !important; text-decoration: none;"href ui-sref="admin">
+                      <div style="font-size:85px; margin-top:45px; font-weight:bold;">AHEM</div>
+                    </a>
                     <div style="margin-top:20px;"><p style="font-size: 15px;">Asian Hope Employee Management</p></div>
-                    <span style="font-size:17px;color:white"></span>
+
                   </div>
                   <div class="col-xs-6 col-md-6">
                     <input id="search" ng-keypress="keyPressBack();" placeholder="Hit / to Search"ng-model="query" class="form-control" autofocus="true" type="text" style="font-size:25px; font-style:italic; color:gray; width:60%;height:80px; float:right; margin-top:20px;"/>
@@ -30,12 +32,33 @@
                 </div>
               </div>
             </div>
+            <div ng-hide="showInclude"style="padding:0; position:relative; margin-top:-28px;" class="demo-container mdl-grid">
+              <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+              <ul class = "stafflist_tab nav nav-tabs" style="border-bottom:none !important;">
+                  <li>
+                      <a style="border-bottom:none !important;" onmouseover="this.style.background='#488FCC'; this.style.border='none';">YOU ARE SEARCHING :</a>
+                  </li>
+                  <li>
+                      <a href ng-click="refreshEmployeeData()">ALL STAFF</a>
+                  </li>
+                  <li>
+                      <a href ng-click="showRequestedAccounts()">REQUESTS</a>
+                  </li>
+                  <li>
+                      <a href ng-click="showDisabledAccounts()">DISABLE</a>
+                  </li>
+                  <li>
+                      <a href ng-click="showInactiveAccounts()">INACTIVE</a>
+                  </li>
+              </ul>
+            </div>
+
             <div class="demo-container mdl-grid">
               <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
               <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--10-col">
                 <img ng-show="loading" style="display:block; margin-left:auto; margin-right:auto;" src="../img/load.GIF" alt="loading image"/>
-                <div ng-hide="loading" class="col-xs-12 col-md-12" style="  margin: 20px 0;">
-                  <div ng-if="showInclude">
+                <div ng-hide="loading" class="col-xs-12 col-md-12" style="  margin-bottom: 15px;">
+                  <div ng-if="showInclude" style="margin-top:20px;">
                     <div ui-view>
                     </div>
                   </div>
@@ -59,7 +82,17 @@
   </div>
   <style type="text/css">
     .active_menu{
-      border-bottom: 2px solid white;
+      border-bottom: 3px solid white;
+    }
+    .stafflist_tab_active{
+      border-bottom: 2px solid white !important;
+    }
+    .stafflist_tab li a{
+      color: white;
+      padding-bottom: 0 !important;
+    }
+    .stafflist_tab li a:hover{
+      color: grey;
     }
   </style>
   <script>
@@ -78,26 +111,26 @@
         $(".collape").mouseleave(function(){
           $('.collape').animate({"margin-left": '-125'});
         });
-
-        ///
-        $("a").click(function() {
-          console.log("clicked");
-          $("a").removeClass("active_menu");
+        $(".collape li a").click(function() {
+          $(".collape li a").removeClass("active_menu");
           $(this).addClass("active_menu");
         });
-
-        $(window).scroll(function() {
-          console.log($(this).scrollTop());
-          if ($(this).scrollTop() >260) {
-              $(".menu").css("position", "fixed");
-              $(".menu").css("top", "0px");
-              $("#menu_image").css("background", "#488FCC");
-          }
-          else {
-              $(".menu").css("position", "absolute");
-              $(".menu").css("top", "174px");
-          }
-          });
-
+        $(".stafflist_tab li a").click(function() {
+          console.log("clicked");
+          $(".stafflist_tab  li a").removeClass("stafflist_tab_active");
+          $(this).addClass("stafflist_tab_active");
+        });
+        // $(window).scroll(function() {
+        //   console.log($(this).scrollTop());
+        //   if ($(this).scrollTop() >260) {
+        //       $(".menu").css("position", "fixed");
+        //       $(".menu").css("top", "0px");
+        //       $("#menu_image").css("background", "#488FCC");
+        //   }
+        //   else {
+        //       $(".menu").css("position", "absolute");
+        //       $(".menu").css("top", "174px");
+        //   }
+        //   });
     });
   </script>

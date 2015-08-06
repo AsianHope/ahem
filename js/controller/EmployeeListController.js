@@ -143,34 +143,54 @@
         };
         //begin internal functions
         $scope.refreshEmployeeData = function(){
+          $scope.loading = true;
           $scope.employees = [];
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"ALL")
                 .success(function(data, status, headers, config) {
                   $scope.employees = data;
-                });
+                })
+                .finally(function() {
+                // called no matter success or failure
+                $scope.loading = false;
+              });
         };
 
         $scope.showRequestedAccounts = function(){
+          $scope.loading = true;
           $scope.employees = [];
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"REQUESTS")
               .success(function(data, status, headers, config) {
                 $scope.employees = data;
-              });
+              })
+              .finally(function() {
+              // called no matter success or failure
+              $scope.loading = false;
+            });
           };
 
         $scope.showDisabledAccounts = function(){
+          $scope.loading = true;
           $scope.employees = [];
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"DISABLED")
               .success(function(data, status, headers, config) {
                 $scope.employees = data;
-              });
+              })
+              .finally(function() {
+              // called no matter success or failure
+              $scope.loading = false;
+            });
         };
         $scope.showInactiveAccounts = function(){
+          $scope.loading = true;
           $scope.employees = [];
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
               .success(function(data, status, headers, config) {
                 $scope.employees = data;
-              });
+              })
+              .finally(function() {
+              // called no matter success or failure
+              $scope.loading = false;
+            });
         };
       //rough approximation
       this.timeBetween = function(startDate, endDate){
