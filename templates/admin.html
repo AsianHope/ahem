@@ -1,19 +1,20 @@
 <div ng-controller="EmployeeListController as elist">
     <div class="demo-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
       <div class="menu noprint">
-        <div >
-          <img  style="" id="menu_image"  src="img/Menu-50.png"/>
+        <div>
+          <img title="Main Menu" style="" id="menu_image"  src="img/Menu-50.png"/>
         </div>
-        <ul id="dropdown_menu">
-          <li><a ui-sref="admin.profile">My Profile</a></li>
-          <!-- <li><a ui-sref="admin.staff">Browse staff info</a></li> -->
-          <li><a ui-sref="admin.register">Register</a></li>
-          <li><a ui-sref="admin.reports">Reports</a></li>
-        </ul>
+        <div class="collape">
+          <ul id="dropdown_menu">
+            <li><a ui-sref="admin.profile">My Profile</a></li>
+            <li><a ui-sref="admin.register">Register</a></li>
+            <li><a ui-sref="admin.reports">Reports</a></li>
+          </ul>
+        </div>
       </div>
       <div id="demo-ribbon" class="noprint"></div>
           <main class="demo-main mdl-layout__content">
-            <div class="demo-container mdl-grid">
+            <div id="header" class="demo-container mdl-grid">
               <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
               <div class="demo-content1 mdl-color--white  content mdl-cell mdl-cell--10-col">
 
@@ -56,11 +57,47 @@
           </button>
         </a>
   </div>
+  <style type="text/css">
+    .active_menu{
+      border-bottom: 2px solid white;
+    }
+  </style>
   <script>
   $(document).ready(function(){
         $("#menu_image").click(function()
         {
-          $('#dropdown_menu').slideToggle("slow");
+          if($(".collape").css("margin-left") == "-125px")
+          {
+            $('.collape').animate({"margin-left": '+=125'});
+          }
+          else
+          {
+            $('.collape').animate({"margin-left": '-125'});
+          }
         });
+        $(".collape").mouseleave(function(){
+          $('.collape').animate({"margin-left": '-125'});
+        });
+
+        ///
+        $("a").click(function() {
+          console.log("clicked");
+          $("a").removeClass("active_menu");
+          $(this).addClass("active_menu");
+        });
+
+        $(window).scroll(function() {
+          console.log($(this).scrollTop());
+          if ($(this).scrollTop() >260) {
+              $(".menu").css("position", "fixed");
+              $(".menu").css("top", "0px");
+              $("#menu_image").css("background", "#488FCC");
+          }
+          else {
+              $(".menu").css("position", "absolute");
+              $(".menu").css("top", "174px");
+          }
+          });
+
     });
   </script>
