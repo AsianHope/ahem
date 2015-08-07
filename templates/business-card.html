@@ -1,0 +1,61 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+  <div class="card_container_front" style="display:block;">
+      <div class="card_body">
+        <div class="business-card-text">
+            <div id="name" class="name">SANG SOLIDA</div>
+            <div id="title">Software Developer</div>
+            <div id="email">ssang@ashipe.org</div>
+            <div id="mobile">069915060</div>
+            <div>WWW.ASIANHOPE.ORG</div>
+        </div>
+      </div>
+  </div>
+  <div class="card_container_back" style="display:block;">
+      <div class="card_body">
+      </div>
+  </div>
+<style type="text/css">
+
+
+
+</style>
+<script type='text/javascript'>
+  $(function() {
+
+      var department = getParameterByName('department').toUpperCase();
+      // var department = "AHIS";
+      var name = getParameterByName('name').toUpperCase();
+      var title = getParameterByName('title').toUpperCase();
+      var email = getParameterByName('email');
+      var mobile = getParameterByName('mobile').toUpperCase();
+
+      document.getElementById("name").innerHTML = name;
+      document.getElementById("title").innerHTML = title;
+      document.getElementById("email").innerHTML=email;
+      document.getElementById("mobile").innerHTML=mobile;
+      if(department=="LIS"){
+        $('head').append('<link rel="stylesheet" href="../css/logos-business-card.css" type="text/css" />');
+      }
+      else if (department=="AHIS") {
+        $('head').append('<link rel="stylesheet" href="../css/ahis-business-card.css"/>');
+      }
+      else{
+        $('head').append('<link rel="stylesheet" href="../css/admin-business-card.css"/>');
+      }
+      function getParameterByName(name) {
+          var name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+          var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+              results = regex.exec(location.search);
+          return results === null ? "" : decodeURIComponent(results[1]);
+      }
+    });
+
+</script>
+</html>

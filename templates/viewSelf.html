@@ -124,10 +124,11 @@
   </div>
   <div class="col-md-12 col-xs-12" style="margin-top:30px; osition:relative;left: -6px;" >
       <div class="col-md-6 col-xs-6">
-        <button style="background:#488FCC; color:white;" id="btn_print_card" class="button center_div btn">
+        <a target="_blank" href="templates/business-card.html?department={{selfselect.departmentNumber}}&name={{selfselect.givenName}} {{selfselect.sn}}&title={{selfselect.title}}&email={{selfselect.mail}}&mobile={{selfselect.mobile}}">
+          <button style="background:#488FCC; color:white;" id="btn_print_card" class="button center_div btn">
             <strong>Print Business Card<strong>
-        </button>
-
+          </button>
+        </a>
       </div>
       <div class="col-md-6 col-xs-6">
         <button style="background:#488FCC; color:white;" id="btn_print_change" class="button showchpass center_div btn">
