@@ -114,7 +114,11 @@ def jsonifyUser(user):
         #special JSON
         attr = getAttribute(user,'jsonData')
         if attr is not None:
-            userjson.update(json.loads(attr,'utf-8'))
+	   try:
+              userjson.update(json.loads(attr,'utf-8'))
+	   except ValueError:
+    	      logging.debug('issue processing %s: %s',userjson['uid'],attr )
+	      pass
 
         return userjson
 

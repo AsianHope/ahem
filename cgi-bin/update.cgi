@@ -133,12 +133,17 @@ def main():
         else:
                 #if the jsonData hasn't been added to the entry, add it.
                 if('jsonData' not in sresult_data[0][1]):
+		    #this breaks with family_data, but you can't see family data unless you have a spouse
                     new = [(ldap.MOD_ADD,'jsonData','{"'+field+'":"'+data+'"}')]
                     logging.debug('update.cgi field %s not found, adding it', field)
                 #otherwise do a modify
                 else:
                     original = json.loads(sresult_data[0][1]['jsonData'][0])
-                    original[field]=data
+		    #first try to load the incoming data as json
+                    try:
+                    	original[field]=json.loads(data)
+		    except ValueError: #if that doesn't work, it's probably a single value
+			original[field]=data
                     modified = json.dumps(original)
                     new = [(ldap.MOD_REPLACE,'jsonData',modified)]
                     logging.debug('update.cgi field %s found, modifying it', field)
