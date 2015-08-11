@@ -10,10 +10,12 @@
 </div>
 <div class="col-md-12 col-xs-12">
 
-
 <div id="change_text_color" style="color:#488FCC;" class="center_div col-md-7 col-xs-7">
   <div class="col-md-12" ng-show="this.tab.isSet(3)" style="padding-left:0 !important;">
       <table class="table_view">
+        <!-- <tr>
+          <td>{{curemployee}}</td>
+        </tr> -->
         <tr>
           <td style="font-size:30px;">
             <strong>
@@ -233,7 +235,7 @@
 
   <div class="col-md-12"  ng-show="this.tab.isSet(4)" style="padding-left:0 !important;">
       <table class="table_view">
-        <tr>
+        <!-- <tr>
           <td style="font-size:30px;">
             <strong>
                     <a id="lastname" href="#" title="Click to edit: Spouse Surname" editable-text="curemployee.spouseSn"
@@ -254,8 +256,8 @@
                 {{curemployee.spouseC || "Nationality"}}
             </a>
           </td>
-        </tr>
-        <tr style="border-bottom:1px solid #e5e5e5;">
+        </tr> -->
+        <!-- <tr style="border-bottom:1px solid #e5e5e5;">
           <td>
             <a href="#" title="Click to edit: Passport Number" editable-text="curemployee.spouseIdnumber"
               onbeforesave="updateUser(curemployee.uid,'spouseIdnumber',$data)">
@@ -270,39 +272,41 @@
                   </a>
                 </small>
           </td>
-        </tr>
+        </tr> -->
         <!-- "  -->
-        <tbody ng-repeat="a in range(curemployee.children) track by $index" ng-if="curemployee.children!=null">
-          <tr >
+        <!-- <tbody ng-repeat="a in range(curemployee.children) track by $index" ng-if="curemployee.children!=null"> -->
+        <!-- <div ng-repeat="(key, value) in myObj"> -->
+        <tbody ng-repeat="family_data in family_data">
+          <tr>
               <td>
-                <a href="#" title="Click to edit: Children Surname" editable-text="curemployee.child{{$index}}Sn"
-                    onbeforesave="updateUser(curemployee.uid,'child'+ $index+'Sn',$data)">
-                    {{curemployee.child$indexSn || "Children name"}}
-                </a>,
-                <a href="#" title="Click to edit: Children First Name" editable-text="curemployee.child{{$index}}Cn"
-                    onbeforesave="updateUser(curemployee.uid,'child'+ $index+'Cn',$data)">
-                    {{curemployee.child$indexCn || "N/A"}}
+                <a href="#" title="Click to edit: {{family_data.relationship}} Surname" editable-text="family_data.sn"
+                    onbeforesave="updateUser(curemployee.uid,'family_data',updateFamilyData($data,family_data.id,'sn'))">
+                    {{family_data.sn || "N/A"}},
+                </a>
+                <a href="#" title="Click to edit: {{family_data.relationship}} First Name" editable-text="family_data.givenName"
+                    onbeforesave="updateUser(curemployee.uid,'family_data',updateFamilyData($data,family_data.id,'givenName'))">
+                    {{family_data.givenName || "N/A"}}
                 </a>
               </td>
               <td>
-                <a href="#" title="Click to edit: Passport Number" editable-text="curemployee.chlid{{$index}}idnumber"
-                onbeforesave="updateUser(curemployee.uid,'chlid'+$index+'idnumber',$data)">
-                  {{curemployee.chlid$indexIdnumber || "Passport #"}}
+                <a href="#" title="Click to edit: {{family_data.relationship}} Passport Number" editable-text="family_data.idnumber"
+                onbeforesave="updateUser(curemployee.uid,'family_data',updateFamilyData($data,family_data.id,'idnumber'))">
+                  {{family_data.idnumber || "Passport #"}}
                 </a>
               </td>
           </tr>
           <tr style="border-bottom:1px solid #e5e5e5;">
               <td>
-                <a href="#" title="Click to edit: Nationality" editable-select="curemployee.chlid{{$index}}C"
+                <a href="#" title="Click to edit: {{family_data.relationship}} Nationality" editable-select="family_data.C"
                     e-ng-options="country.value as country.text for country in countries"
-                    onbeforesave="updateUser(curemployee.uid,'chlid'+$index+'C',$data)">
-                    {{curemployee.chlid$indexC || "Nationality"}}
+                    onbeforesave="updateUser(curemployee.uid,'family_data',updateFamilyData($data,family_data.id,'C'))">
+                    {{family_data.C || "Nationality"}}
                 </a>
               </td>
               <td>
-                <a href="#" title="Click to edit: Visa Expires" editable-date="curemployee.child{{$index}}VisaExpiry"
-                onbeforesave="updateUser(curemployee.uid,'child'+ $index+'VisaExpiry',$data)">
-                  {{curemployee.child$indexVisaExpiry || "Visa Expires"}}
+                <a href="#" title="Click to edit: {{family_data.relationship}} Visa Expires" editable-date="family_data.v"
+                onbeforesave="updateUser(curemployee.uid,'family_data',updateFamilyData($data,family_data.id,'VisaExpires'))">
+                  {{family_data.VisaExpires || "Visa Expires"}}
                 </a>
               </td>
           </tr>

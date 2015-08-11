@@ -44,7 +44,6 @@
 @media print{
   .card_container_front{
       min-height: 100%;
-      background: green;
       left: 0;
       top: 0;
       margin:0;
