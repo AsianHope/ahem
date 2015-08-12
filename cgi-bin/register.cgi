@@ -14,6 +14,7 @@ from email.mime.text import MIMEText
 import ldap
 import ldap.modlist as modlist
 from passlib.hash import ldap_md5
+import hashlib
 
 import json
 import HTMLParser #unicode names are coming in in HTML Decimal - may need to push this to update.cgi
@@ -143,8 +144,15 @@ attrs['title'] = title #Their title is their title!
 
 attrs['mail'] = mail
 attrs['apple-birthday'] = dob
-#attrs['userPassword'] = ldap_md5.encrypt(password)
-attrs['userPassword'] = userPassword #plaintext is fine for unapproved accounts. We can recover and display until they change it
+attrs['userPassword'] = ldap_md5.encrypt(userPassword)
+#attrs['userPassword'] = userPassword #plaintext is fine for unapproved accounts. We can recover and display until they change it
+
+#generateNTPassword and other stuff for shares to work
+attrs['sambaAcctFlags'] = '[U          ]'
+attrs['sambaNTPassword'] = hashlib.new('md4', userPassword.encode('utf-16le')).digest().encode('hex').upper()
+attrs['sambaLMPassword'] = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+attrs['sambaPasswordHistory'] = '0000000000000000000000000000000000000000000000000000000000000000'
+attrs['sambaPwdLastSet'] = '1427421912'
 
 json_attrs = {'snkh':snkh, 'givenNamekh':givenNamekh,'mailpr':mailpr,'startdate':startdate}
 attrs['jsonData'] = json.dumps(json_attrs)
