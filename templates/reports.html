@@ -1,7 +1,7 @@
   <div class="col-xs-12 toprint">
     <h1>Expat Staff List</h1>
   </div>
-  <div class="reports" style="margin-top:30px; position:relative;" ng-repeat="employee in employees | filter:query | orderBy:orderProp" ng-if="employee.l=='KH' && employee.c!='KH'">
+  <div class="reports" style="margin-top:30px; position:relative;" ng-repeat="employee in employees | filter:query | orderBy:orderProp" ng-if="employee.l=='KH' && employee.c!='KH' && employee.c!=null && employee.c!=undefined"
   <div id="" class="page_break well well-sm container col-xs-12" style="position:relative;">
     <!-- Biogrpahical -->
   <div class="col-xs-8">
@@ -35,12 +35,12 @@
         <tr>
           <td><h5><strong>Duration of Contract</strong></h5></td>
           <td><h5><strong>:</strong></td>
-          <td><h5>2 years</h5></td>
+          <td><h5>{{duration(employee.startdate,employee.enddate || "present")}}</h5></td>
         </tr>
         <tr>
           <td><h5><strong>Term</strong></h5></td>
           <td><h5><strong>:</strong></h5></td>
-          <td><h5>7/2014—7/2016</h5></td>
+          <td><h5>{{employee.startdate || "Unknow"}}—{{employee.enddate || "Present"}}</h5></td>
         </tr>
         <tr>
           <td><h5><strong>Position</strong></h5></td>
@@ -56,14 +56,18 @@
               <tr>
                 <td><h5><strong>Name</strong></h5></td>
                 <td><h5><strong>:</strong></h5></td>
-                <td><h5>{{employee.spouseSn || "Not Entered"}}, {{employee.spouseCn}}</h5></td>
+                <td>
+                  <h5>
+                    {{employee.family_data[0].sn  || "Not Entered"}}, {{employee.family_data[0].givenName}}
+                  </h5>
+                </td>
               </tr>
               <tr>
                 <td><h5><strong>Country</strong></h5></td>
                 <td><h5><strong>:</strong></h5></td>
                 <td>
                   <h5>
-                      {{employee.spouseC || "Passport Country"}}
+                      {{employee.family_data[0].C || "Passport Country"}}
                   </h5>
                 </td>
               </tr>
@@ -72,7 +76,7 @@
                 <td><h5><strong>:</strong></td>
                 <td>
                   <h5>
-                      {{employee.spouseidnumber || "Not Entered" }}
+                      {{employee.family_data[0].idnumber || "Not Entered" }}
                   </h5>
                 </td>
               </tr>
@@ -89,8 +93,8 @@
                 <td><h5><strong>:</strong></h5></td>
                 <td>
                   <h5>
-                      {{employee.child$indexCn || "Not Entered"}},
-                      {{employee.child$indexSn}}
+                      {{employee.family_data[$index+1].sn || "Not Entered"}},
+                      {{employee.family_data[$index+1].givenName}}
                   </h5>
                 </td>
               </tr>
@@ -99,7 +103,7 @@
                 <td><h5><strong>:</strong></h5></h5></td>
                 <td>
                   <h5>
-                      {{employee.child$indexC || "Not Entered"}}
+                      {{employee.family_data[$index+1].C || "Not Entered"}}
                   </h5>
                 </td>
               </tr>
@@ -108,7 +112,7 @@
                 <td><h5><strong>:</strong></h5></td>
                 <td>
                   <h5>
-                      {{employee.child$indexidnumber || "Not Entered"}}
+                      {{employee.family_data[$index+1].idnumber || "Not Entered"}}
                   </h5>
                 </td>
               </tr>

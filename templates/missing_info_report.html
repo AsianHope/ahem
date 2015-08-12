@@ -1,0 +1,80 @@
+<div class="col-xs-12 ">
+  <!-- {{employees}} -->
+</div>
+<div class="reports" style="margin-top:30px; position:relative;" >
+    <label>Search Employee:</label><input style="margin: 0px 0 20px 10px; padding: 6px;" type="text" ng-model="search"/>
+    <table style="width:100%;" class="missing_data mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+      <!-- {{employees}} -->
+      <tr>
+        <th>
+          <h5>
+            <strong>
+            Employee
+            </strong>
+          </h5>
+        </th>
+        <th>
+          <h5>
+            <strong>Missing Information</strong>
+          </h5>
+        </th>
+      </tr>
+      <tr ng-repeat="employee in employees | filter:search | orderBy:orderProp">
+        <td><a ui-sref="admin.staff({instanceID:employee.employeeNumber})"><h5><strong>{{employee.sn}}, {{employee.givenName}}</strong></h5></a></td>
+        <td>
+          <h5 ng-if="!employee.sn">Surname</h5>
+          <h5 ng-if="!employee.cn">First Name</h5>
+          <h5 ng-if="!employee.gender">Gender</h5>
+          <h5 ng-if="!employee.c">Nationality</h5>
+          <h5 ng-if="!employee.departmentNumber">Department</h5>
+          <h5 ng-if="!employee.employeeType">Employee Type</h5>
+          <h5 ng-if="!employee.l">Work Site</h5>
+          <h5 ng-if="!employee.mail">Email</h5>
+          <h5 ng-if="!employee.mailpr">Personal Email</h5>
+          <h5 ng-if="!employee.mobile">Mobile</h5>
+          <h5 ng-if="!employee.applebirthday">Birthday</h5>
+          <h5 ng-if="!employee.maritalstatus">Marital Status</h5>
+          <h5 ng-if="!employee.title">Title</h5>
+          <h5 ng-if="!employee.nssf">NSSF Number</h5>
+          <h5 ng-if="!employee.degreeArea">Specialization</h5>
+          <h5 ng-if="!employee.degree">Degree</h5>
+          <h5 ng-if="!employee.postalAddress">Address</h5>
+          <h5 ng-if="!employee.faith">religions</h5>
+          <h5 ng-if="!employee.notes">Notes</h5>
+          <h5 ng-if="!employee.insurance">Insurance Provider</h5>
+          <h5 ng-if="!employee.insuranceNumber">Insurance Number</h5>
+          <h5 ng-if="!employee.startdate">Employment Start Date</h5>
+          <h5 ng-if="!employee.enddate">Employment End Date</h5>
+          <!-- khmer staff -->
+          <h5 ng-if="!employee.snkh && employee.c =='KH' ">Khmer Surname</h5>
+          <h5 ng-if="!employee.givenNamekh && employee.c =='KH'">Khmer Firstname</h5>
+          <!-- foreign staff -->
+          <h5 ng-if="!employee.enteredCambodia  && employee.c !='KH'">Entered Cambodia Date</h5>
+          <h5 ng-if="!employee.idnumber && employee.c !='KH'">Passport Number</h5>
+          <h5 ng-if="!employee.visaExpires  && employee.c !='KH'">Visa Expires</h5>
+          <!-- Married -->
+          <h5 ng-if="!employee.children && employee.maritalstatus=='Married'">Number of children</h5>
+          <h5 ng-if="!employee.family_data && employee.maritalstatus=='Married'">Family data (spouse , child)</h5>
+        </td>
+      </tr>
+    </table>
+</div>
+<script type="text/javascript">
+  $('.page_break').each(
+  function() {
+    $(this).css("page-break-inside", "avoid");
+  }
+);
+</script>
+<style media="screen">
+  .missing_data tr th, .missing_data tr td{
+    text-align: left !important;
+  }
+  .missing_data tr td h5{
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+  }
+  .missing_data tr td{
+    padding-bottom: 10px;
+  }
+</style>

@@ -49,6 +49,10 @@
         .state('admin.reports', {
           url: '/reports/',
           templateUrl: "templates/reports.html"
+        })
+        .state('admin.MissingInfo', {
+          url: '/MissingInfo/',
+          templateUrl: "templates/missing_info_report.html"
         });
 
     });

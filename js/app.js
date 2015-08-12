@@ -18,6 +18,10 @@ var app =  angular.module('employeeList',['xeditable','ui.router']);
             else if($state.current.name === 'admin.register') {
                 $rootScope.showInclude = true;
             }
+            else if($state.current.name === 'admin.MissingInfo') {
+                $rootScope.showInclude = true;
+            }
         });
+
     });
 })();

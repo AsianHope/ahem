@@ -17,6 +17,10 @@
                 for(var i=0; i<$scope.employees.length; i++){
                     if($scope.employees[i].employeeNumber==$scope.id){
                       $scope.curemployee=$scope.employees[i];
+                      console.log($scope.curemployee);
+                      if($scope.curemployee.C=="i"){
+                        console.log("yes");
+                      }
                       if($scope.curemployee.family_data==undefined){
                         $scope.family_data=[];
                         if($scope.curemployee.maritalstatus =='Married'){
@@ -50,7 +54,7 @@
                           var count_add = $scope.curemployee.children-(($scope.family_data.length-1));
                           for(var j=0; j<count_add; j++){
                              var family_child_obj = {};
-                             family_child_obj['id'] = j+1;
+                             family_child_obj['id'] = $scope.family_data[$scope.family_data.length-1]['id']+1;
                              family_child_obj['relationship'] = "child";
                              family_child_obj['sn'] ="" ;
                              family_child_obj['givenName'] = "";
@@ -123,7 +127,7 @@
                  var count_add = $scope.curemployee.children-(($scope.family_data.length-1));
                  for(var j=0; j<count_add; j++){
                     var family_child_obj = {};
-                    family_child_obj['id'] = j+1;
+                    family_child_obj['id'] = $scope.family_data[$scope.family_data.length-1]['id']+1;;
                     family_child_obj['relationship'] = "child";
                     family_child_obj['sn'] ="" ;
                     family_child_obj['givenName'] = "";
@@ -185,7 +189,7 @@
                       var count_add = $scope.curemployee.children-(($scope.family_data.length-1));
                       for(var j=0; j<count_add; j++){
                          var family_child_obj = {};
-                         family_child_obj['id'] = j+1;
+                         family_child_obj['id'] = $scope.family_data[$scope.family_data.length-1]['id']+1;;
                          family_child_obj['relationship'] = "child";
                          family_child_obj['sn'] ="" ;
                          family_child_obj['givenName'] = "";

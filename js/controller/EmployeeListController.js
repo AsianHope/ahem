@@ -213,6 +213,25 @@
 
         return 'approximately '+years+' year(s), '+months+' month(s), '+days+' day(s)';
       };
+      $scope.duration = function(startDate, endDate){
+        if (endDate === 'present') endDate=new Date();
+        var start = new Date(startDate);
+        var end = new Date(endDate);
+        var diff = (end - start);
+
+        //1000ms/s * 60s/min * 60m/hr * 24 hrs/day
+        var day = 1000 * 60 * 60 * 24;
+
+        var years = Math.floor(diff/(365*day));
+        if (years>=1) diff -= 365*years*day;
+
+        var months = Math.floor(diff/(31*day));
+        if(months>=1) diff-=31*months*day;
+
+        var days= Math.floor(diff/day);
+
+        return +years+' year(s), '+months+' month(s)';
+      };
       this.selectSelf = function(){
         for(var i=0; i<$scope.employees.length; i++){
           if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
@@ -309,7 +328,7 @@
         {value: '7', text: 'Employee Handbook Receipt', required_by: 'all'},
         {value: '8', text: 'Position Description', required_by: 'all'},
         {value: '9', text: 'Physical Examination Report', required_by: 'all'},
-        {value: '10', text: 'Copy of Passport', required_by: 'all'},
+        {value: '10', text: 'Copy of Pleaseassport', required_by: 'all'},
         {value: '11', text: 'Copy of Visa', required_by: 'all'},
         {value: '12', text: 'Copy of ID', required_by: 'all'},
         {value: '13', text: 'W4', required_by: 'all'},
