@@ -70,7 +70,11 @@
             </a>
           </td>
           <td>
-
+            <a href="#" title="Click to edit: Gender" editable-select="curemployee.gender"
+                e-ng-options="gender.value as gender.text for gender in genders"
+                onbeforesave="updateUser(curemployee.uid,'gender',$data)">
+                {{curemployee.gender || "Gender"}}
+            </a>
           </td>
         </tr>
         <tr>

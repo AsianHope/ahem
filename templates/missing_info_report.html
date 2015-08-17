@@ -22,39 +22,207 @@
       <tr ng-repeat="employee in employees | filter:search | orderBy:orderProp">
         <td><a ui-sref="admin.staff({instanceID:employee.employeeNumber})"><h5><strong>{{employee.sn}}, {{employee.givenName}}</strong></h5></a></td>
         <td>
-          <h5 ng-if="!employee.sn">Surname</h5>
-          <h5 ng-if="!employee.cn">First Name</h5>
-          <h5 ng-if="!employee.gender">Gender</h5>
-          <h5 ng-if="!employee.c">Nationality</h5>
-          <h5 ng-if="!employee.departmentNumber">Department</h5>
-          <h5 ng-if="!employee.employeeType">Employee Type</h5>
-          <h5 ng-if="!employee.l">Work Site</h5>
-          <h5 ng-if="!employee.mail">Email</h5>
-          <h5 ng-if="!employee.mailpr">Personal Email</h5>
-          <h5 ng-if="!employee.mobile">Mobile</h5>
-          <h5 ng-if="!employee.applebirthday">Birthday</h5>
-          <h5 ng-if="!employee.maritalstatus">Marital Status</h5>
-          <h5 ng-if="!employee.title">Title</h5>
-          <h5 ng-if="!employee.nssf">NSSF Number</h5>
-          <h5 ng-if="!employee.degreeArea">Specialization</h5>
-          <h5 ng-if="!employee.degree">Degree</h5>
-          <h5 ng-if="!employee.postalAddress">Address</h5>
-          <h5 ng-if="!employee.faith">religions</h5>
-          <h5 ng-if="!employee.notes">Notes</h5>
-          <h5 ng-if="!employee.insurance">Insurance Provider</h5>
-          <h5 ng-if="!employee.insuranceNumber">Insurance Number</h5>
-          <h5 ng-if="!employee.startdate">Employment Start Date</h5>
-          <h5 ng-if="!employee.enddate">Employment End Date</h5>
+          <h5 ng-if="!employee.sn">
+            <a  href="#" title="Click to edit: Surname" editable-text="employee.sn"
+                onbeforesave="updateUser(employee.uid,'sn',$data)">
+                Surname
+            </a>
+          </h5>
+          <h5 ng-if="!employee.cn">
+            <a href="#" title="Click to edit: First Name" editable-text="employee.givenName"
+                onbeforesave="updateUser(employee.uid,'givenName',$data)">
+                First Name
+            </a>
+
+          </h5>
+
+          <h5 ng-if="!employee.gender">
+            <a href="#" title="Click to edit: Nationality" editable-select="employee.gender"
+                e-ng-options="gender.value as gender.text for gender in genders"
+                onbeforesave="updateUser(employee.uid,'gender',$data)">
+                Gender
+            </a>
+          </h5>
+          <h5 ng-if="!employee.c">
+            <a href="#" title="Click to edit: Nationality" editable-select="employee.c"
+                e-ng-options="country.value as country.text for country in countries"
+                onbeforesave="updateUser(employee.uid,'c',$data)">
+                Nationality
+            </a>
+
+          </h5>
+          <h5 ng-if="!employee.departmentNumber">
+            <a href="#" title ="Click to edit: Department" editable-select="employee.departmentNumber"
+                e-ng-options="department.value as department.text for department in departments"
+                onbeforesave="updateUser(employee.uid,'departmentNumber',$data)">
+                Department
+            </a>
+
+          </h5>
+          <h5 ng-if="!employee.employeeType">
+            <a href="#" title ="Click to edit: Employee Type" editable-select="employee.employeeType"
+                e-ng-options="employeetype.value as employeetype.text for employeetype in employeetypes"
+                onbeforesave="updateUser(employee.uid,'employeeType',$data)">
+                Employee Type
+            </a>
+
+          </h5>
+          <h5 ng-if="!employee.l">
+            <a href="#" title="Click to edit: Work Site" editable-select="employee.l"
+                e-ng-options="ahcountry.value as ahcountry.text for ahcountry in ahcountries"
+                onbeforesave="updateUser(employee.uid,'l',$data)">
+                Work Site
+            </a>
+          </h5>
+          <h5 ng-if="!employee.mail">
+            <a href="#" title="Click to edit: Personal Email Address" editable-email="employee.mailpr"
+              onbeforesave="updateUser(employee.uid,'mail',$data)">
+              Email
+            </a>
+
+          </h5>
+          <h5 ng-if="!employee.mailpr">
+            <a href="#" title="Click to edit: Personal Email Address" editable-email="employee.mailpr"
+              onbeforesave="updateUser(employee.uid,'mailpr',$data)">
+              Personal Email
+            </a>
+          </h5>
+          <h5 ng-if="!employee.mobile">
+            <a href="#" title="Click to edit: Phone Number" editable-text="employee.mobile"
+                onbeforesave="updateUser(employee.uid,'mobile',$data)">
+                Mobile
+            </a>
+          </h5>
+          <h5 ng-if="!employee.applebirthday">
+            <a href="#" title="Click to edit: Birthday" editable-date="employee.applebirthday"
+                onbeforesave="updateUser(employee.uid,'apple-birthday',$data)"> <!-- note the field change to apple-birthday here -->
+                Birthday
+            </a>
+          </h5>
+          <h5 ng-if="!employee.maritalstatus">
+            <a href="#" title="Click to edit: Marital Status" editable-select="employee.maritalstatus"
+                    e-ng-options="maritalstatus.value as maritalstatus.text for maritalstatus in maritalstatuses"
+                    onbeforesave="updateUser(employee.uid,'maritalstatus',$data)">
+                    Marital Status
+            </a>
+          </h5>
+          <h5 ng-if="!employee.title">
+            <a href="#" title="Click to edit: Title" editable-text="employee.title"
+                onbeforesave="updateUser(employee.uid,'title',$data)">
+                Title
+            </a>
+          </h5>
+          <h5 ng-if="!employee.nssf">
+            <a href="#" title="Click to edit: NSSF Number" editable-text="employee.nssf"
+              onbeforesave="updateUser(employee.uid,'nssf',$data)">
+              NSSF Number
+            </a>
+          </h5>
+          <h5 ng-if="!employee.degreeArea">
+            <a href="#" title="Click to edit: Specialization" editable-text="employee.degreeArea"
+              onbeforesave="updateUser(employee.uid,'degreeArea',$data)">
+              Specialization
+            </a>
+          </h5>
+          <h5 ng-if="!employee.degree">
+            <a href="#" title="Click to edit: Degree" editable-text="employee.degree"
+              onbeforesave="updateUser(employee.uid,'degree',$data)">
+              Degree
+            </a>
+          </h5>
+          <h5 ng-if="!employee.postalAddress">
+            <a href="#" title="Click to edit: Address" editable-text="employee.postalAddress"
+              onbeforesave="updateUser(employee.uid,'postalAddress',$data)">
+              Home Address
+            </a>
+          </h5>
+          <h5 ng-if="!employee.faith">
+            <a href="#" title="Click to edit: Religion" editable-select="employee.faith"
+                e-ng-options="religion.value as religion.text for religion in religions"
+                onbeforesave="updateUser(employee.uid,'faith',$data)">
+                Religions
+            </a>
+          </h5>
+          <h5 ng-if="!employee.notes">
+            <a href="#" title="Click to edit: Notes"editable-textarea="employee.notes"
+              e-rows="7" e-cols="60"
+              onbeforesave="updateUser(employee.uid,'notes',$data)">
+              Notes
+            </a>
+          </h5>
+          <h5 ng-if="!employee.insurance">
+            <a href="#" title="Click to edit: Insurance Provider" editable-text="employee.insurance"
+                onbeforesave="updateUser(employee.uid,'insurance',$data)">
+                Insurance Provider
+            </a>
+          </h5>
+          <h5 ng-if="!employee.insuranceNumber">
+            <a href="#" title="Click to edit: Insurance ID Number" editable-text="employee.insuranceNumber"
+              onbeforesave="updateUser(employee.uid,'insuranceNumber',$data)">
+              Insurance Number
+            </a>
+          </h5>
+          <h5 ng-if="!employee.startdate">
+            <a href="#" title="Click to edit: Employment Start Date" editable-date="employee.startdate"
+            onbeforesave="updateUser(employee.uid,'startdate',$data)">
+              Employment Start Date
+            </a>
+          </h5>
+          <h5 ng-if="!employee.enddate">
+            <a href="#" title="Click to edit: Employment End Date" editable-date="employee.enddate"
+              onbeforesave="updateUser(employee.uid,'enddate',$data)">
+              Employment End Date
+            </a>
+          </h5>
           <!-- khmer staff -->
-          <h5 ng-if="!employee.snkh && employee.c =='KH' ">Khmer Surname</h5>
-          <h5 ng-if="!employee.givenNamekh && employee.c =='KH'">Khmer Firstname</h5>
+          <h5 ng-if="!employee.snkh && employee.c =='KH' ">
+            <a href="#" title="Click to edit: Khmer Surname" editable-text="employee.snkh"
+                onbeforesave="updateUser(employee.uid,'snkh',$data)">
+                Khmer Surname
+            </a>
+          </h5>
+          <h5 ng-if="!employee.givenNamekh && employee.c =='KH'">
+            <a href="#" title="Click to edit: Khmer First Name" editable-text="employee.givenNamekh"
+              onbeforesave="updateUser(employee.uid,'givenNamekh',$data)">
+              Khmer Firstname
+            </a>
+          </h5>
           <!-- foreign staff -->
-          <h5 ng-if="!employee.enteredCambodia  && employee.c !='KH'">Entered Cambodia Date</h5>
-          <h5 ng-if="!employee.idnumber && employee.c !='KH'">Passport Number</h5>
-          <h5 ng-if="!employee.visaExpires  && employee.c !='KH'">Visa Expires</h5>
+          <h5 ng-if="!employee.enteredCambodia  && employee.c !='KH'">
+            <a href="#" title="Click to edit: Entrance Date" editable-date="employee.enteredCambodia"
+                onbeforesave="updateUser(employee.uid,'enteredCambodia',$data)">
+                Entered Cambodia Date
+            </a>
+          </h5>
+          <h5 ng-if="!employee.idnumber && employee.c !='KH'">
+            <a href="#" title="Click to edit: Passport/ID Card" editable-text="employee.idnumber"
+              onbeforesave="updateUser(employee.uid,'idnumber',$data)">
+              Passport Number
+            </a>
+          </h5>
+          <h5 ng-if="!employee.visaExpires  && employee.c !='KH'">
+            <a href="#" title="Click to edit: Visa Expires" editable-date="employee.visaExpires"
+              onbeforesave="updateUser(employee.uid,'visaExpires',$data)">
+              Visa Expires
+            </a>
+          </h5>
           <!-- Married -->
-          <h5 ng-if="!employee.children && employee.maritalstatus=='Married'">Number of children</h5>
-          <h5 ng-if="!employee.family_data && employee.maritalstatus=='Married'">Family data (spouse , child)</h5>
+          <h5 ng-if="!employee.children && employee.maritalstatus=='Married'">
+            <a href="#" title="Click to edit: Children" editable-number="employee.children"
+            onbeforesave="updateUser(employee.uid,'children',$data)">
+              Number of children
+            </a>
+          </h5>
+          <h5 ng-if="!employee.family_data && employee.maritalstatus=='Married'">
+            <a ui-sref="admin.staff({instanceID:employee.employeeNumber})" ng-click="this.tab.setTab(4)">
+              Family data (spouse , child)
+            </a>
+          </h5>
+          <h5 ng-if="!employee.documents">
+            <a ui-sref="admin.staff({instanceID:employee.employeeNumber})" ng-click="this.tab.setTab(5)">
+              Documents
+            </a>
+          </h5>
         </td>
       </tr>
     </table>
