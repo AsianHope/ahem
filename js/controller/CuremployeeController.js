@@ -3,6 +3,7 @@
     app.controller('CuremployeeCtrl',function ($scope,$http,$stateParams,$location,EmployeesService){
       $scope.id =$stateParams.instanceID;
       $scope.family_data=[];
+      $scope.document=[];
       if($scope.employees.length==0){
         EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"CURSTAFF")
             .success(function(data, status, headers, config) {
@@ -17,9 +18,11 @@
                 for(var i=0; i<$scope.employees.length; i++){
                     if($scope.employees[i].employeeNumber==$scope.id){
                       $scope.curemployee=$scope.employees[i];
-                      console.log($scope.curemployee);
-                      if($scope.curemployee.C=="i"){
-                        console.log("yes");
+                      if($scope.curemployee.documents==undefined){
+                        $scope.document =[];
+                      }
+                      else{
+                        $scope.document = $scope.curemployee.documents;
                       }
                       if($scope.curemployee.family_data==undefined){
                         $scope.family_data=[];
@@ -94,6 +97,12 @@
        for(var i=0; i<$scope.employees.length; i++){
            if($scope.employees[i].employeeNumber==$scope.id){
              $scope.curemployee=$scope.employees[i];
+             if($scope.curemployee.documents==undefined){
+               $scope.document = [];
+             }
+             else{
+               $scope.document = $scope.curemployee.documents;
+             }
              if($scope.curemployee.family_data==undefined){
                $scope.family_data=[];
                if($scope.curemployee.maritalstatus =='Married'){
@@ -156,6 +165,12 @@
           for(var i=0; i<$scope.employees.length; i++){
               if($scope.employees[i].employeeNumber==$scope.id){
                   $scope.curemployee = $scope.employees[i+amount];
+                  if($scope.curemployee.documents==undefined){
+                    $scope.document = [];
+                  }
+                  else{
+                    $scope.document = $scope.curemployee.documents;
+                  }
                   if($scope.curemployee.family_data==undefined){
                     $scope.family_data=[];
                     if($scope.curemployee.maritalstatus =='Married'){
@@ -189,7 +204,7 @@
                       var count_add = $scope.curemployee.children-(($scope.family_data.length-1));
                       for(var j=0; j<count_add; j++){
                          var family_child_obj = {};
-                         family_child_obj['id'] = $scope.family_data[$scope.family_data.length-1]['id']+1;;
+                         family_child_obj['id'] = $scope.family_data[$scope.family_data.length-1]['id']+1;
                          family_child_obj['relationship'] = "child";
                          family_child_obj['sn'] ="" ;
                          family_child_obj['givenName'] = "";
@@ -225,5 +240,89 @@
            }
          }
        }
+       //
+        $scope.upload_sms = null;
+        $scope.addImportFile = function() {
+         var f = document.getElementById('file').files[0];
+         var formData = new FormData();
+         var files_exist =false;
+         $scope.Document_exist=[];
+         for (var i = 0; i<$scope.document.length; i++){
+           if($scope.document[i]['DocumentID']==$scope.DocumentData.Documenttype.value){
+             files_exist = true;
+             $scope.Document_exist=$scope.document[i];
+           }
+         }
+         if(files_exist==true){
+          if (confirm("" + $scope.Document_exist.Description + " Document already exist! Do you want to replace it?")){
+              formData.append('file', f);
+              formData.append('uidnumber', $scope.curemployee.uidNumber);
+              formData.append('loginName',$scope.curemployee.uid);
+              formData.append('documentType',$scope.DocumentData.Documenttype.text);
+              formData.append('filename',$scope.Document_exist.data);
+                                 $http({method: 'POST', url: 'cgi-bin/upload.cgi',
+                                  data: formData,
+                                  headers: {'Content-Type': undefined},
+                                  transformRequest: angular.identity})
+                                 .success(function(data, status, headers, config) {
+                                   JSON.stringify(data);
+                                   var fileDirectory = data.file;
+                                   if(data.result=='success'){
+                                      for(var i=0; i<$scope.document.length; i++){
+                                        if($scope.document[i].DocumentID==$scope.Document_exist.DocumentID){
+                                          $scope.document[i]['data']=fileDirectory;
+                                        }
+                                      }
+                                       $scope.updateUser($scope.curemployee.uid,'documents',JSON.stringify($scope.document));
+                                       $scope.upload_sms='Replace file successfully!';
+                                       document.getElementById("formUpload").reset();
+                                   }
+                                   else{
+                                     $scope.upload_sms='Upload file fail!';
+                                   }
+                             })
+                             .error(function(data, status, headers, config) {
+                               $scope.upload_sms='Error!';
+                             });
+            }
+          else{
+            document.getElementById("formUpload").reset();
+
+          }
+         }
+         else{
+           formData.append('file', f);
+           formData.append('uidnumber', $scope.curemployee.uidNumber);
+           formData.append('loginName',$scope.curemployee.uid);
+           formData.append('documentType',$scope.DocumentData.Documenttype.text);
+           formData.append('filename',"");
+                              $http({method: 'POST', url: 'cgi-bin/upload.cgi',
+                               data: formData,
+                               headers: {'Content-Type': undefined},
+                               transformRequest: angular.identity})
+                              .success(function(data, status, headers, config) {
+                                JSON.stringify(data);
+                                var fileDirectory = data.file;
+                                if(data.result=='success'){
+                                  // $scope.document=[];
+                                var document_obj = {};
+                                 document_obj['DocumentID'] = $scope.DocumentData.Documenttype.value;
+                                 document_obj['data'] = fileDirectory;
+                                 document_obj['Description'] =$scope.DocumentData.Documenttype.text;
+                                 $scope.document.push(document_obj);
+
+                                  $scope.updateUser($scope.curemployee.uid,'documents',JSON.stringify($scope.document));
+                                  $scope.upload_sms='Upload file successfully!';
+                                  document.getElementById("formUpload").reset();
+                                }
+                                else{
+                                  $scope.upload_sms='Upload file fail!';
+                                }
+                          })
+                          .error(function(data, status, headers, config) {
+                            $scope.upload_sms='Error!';
+                          });
+         }
+        };
     });
   }());

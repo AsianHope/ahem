@@ -6,6 +6,9 @@
       <li ng-class="{ tab_active:this.tab.isSet(4)}" ng-if="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.maritalstatus.trim()!='Single' && curemployee.c!='KH'">
           <a href ng-click="this.tab.setTab(4)">Family</a>
       </li>
+      <li ng-class="{ tab_active:this.tab.isSet(5)}">
+          <a href ng-click="this.tab.setTab(5)">Documents</a>
+      </li>
   </ul>
 </div>
 <div class="col-md-12 col-xs-12">
@@ -103,7 +106,12 @@
                 {{decodeAppleBirthday(curemployee.applebirthday) || "DOB"}}
             </a>
           </td>
-          <td></td>
+          <td>
+            <a href="#" title="Click to edit: Work Site" editable-select="curemployee.l"
+                e-ng-options="ahcountry.value as ahcountry.text for ahcountry in ahcountries"
+                onbeforesave="updateUser(curemployee.uid,'l',$data)">
+                {{curemployee.l || "Work Site"}}
+            </a>
         </tr>
         <tr>
           <td>
@@ -235,47 +243,6 @@
 
   <div class="col-md-12"  ng-show="this.tab.isSet(4)" style="padding-left:0 !important;">
       <table class="table_view">
-        <!-- <tr>
-          <td style="font-size:30px;">
-            <strong>
-                    <a id="lastname" href="#" title="Click to edit: Spouse Surname" editable-text="curemployee.spouseSn"
-                        onbeforesave="updateUser(curemployee.uid,'spouseSn',$data)">
-                        {{curemployee.spouseSn || "Spouse name"}}
-                    </a>,
-                    <a href="#" title="Click to edit: Spouse First Name" editable-text="curemployee.spouseCn"
-                        onbeforesave="updateUser(curemployee.uid,'spouseCn',$data)">
-                        {{curemployee.spouseCn || "N/A"}}
-                    </a>
-
-            </strong>
-          </td>
-          <td>
-            <a href="#" title="Click to edit: Nationality" editable-select="curemployee.spouseC"
-                e-ng-options="country.value as country.text for country in countries"
-                onbeforesave="updateUser(curemployee.uid,'spouseC',$data)">
-                {{curemployee.spouseC || "Nationality"}}
-            </a>
-          </td>
-        </tr> -->
-        <!-- <tr style="border-bottom:1px solid #e5e5e5;">
-          <td>
-            <a href="#" title="Click to edit: Passport Number" editable-text="curemployee.spouseIdnumber"
-              onbeforesave="updateUser(curemployee.uid,'spouseIdnumber',$data)">
-                {{curemployee.spouseidnumber || "Passport #"}}
-            </a>
-          </td>
-          <td>
-                <small>
-                  <a href="#" title="Click to edit: Visa Expires" editable-date="curemployee.spouseVisaExpires"
-                    onbeforesave="updateUser(curemployee.uid,'spouseVisaExpires',$data)">
-                    {{curemployee.spouseVisaExpires || "Visa Expires"}}
-                  </a>
-                </small>
-          </td>
-        </tr> -->
-        <!-- "  -->
-        <!-- <tbody ng-repeat="a in range(curemployee.children) track by $index" ng-if="curemployee.children!=null"> -->
-        <!-- <div ng-repeat="(key, value) in myObj"> -->
         <tbody ng-repeat="family_data in family_data">
           <tr>
               <td>
@@ -313,7 +280,58 @@
         </tbody>
     </table>
   </div>
+  <!-- document tab -->
+  <div class="col-md-12"  ng-show="this.tab.isSet(5)" style="padding-left:0 !important;">
+      <form ng-submit="addImportFile()" class="form-horizontal" method="POST" enctype= "multipart/form-data" id="formUpload" >
 
+        <table style="width:100%;">
+          <tr>
+            <td style="color:red;" colspan="2" ng-if="upload_sms">
+              {{upload_sms}}
+              <!-- {{curemployee}}{{employees}} -->
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              Document type
+            </td>
+            <td>:</td>
+            <td>
+              <select id="myselect" ng-model="DocumentData.Documenttype" ng-options="documenttype as documenttype.text for documenttype in documentType">
+                <option value="">--Document type--</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Upload
+            </td>
+            <td>:</td>
+            <td>
+              <input type="file" id="file" name="document"/>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input type="submit" value="Upload" name="uploadDoc"/>
+            </td>
+          </tr>
+        </table>
+        <table style="width:100%;">
+          <tr>
+            <th>Documents</th>
+          </tr>
+          <tbody ng-repeat="documents in document track by $index">
+            <tr>
+              <td>
+                <a href="{{documents.data}}" target="_blank">{{documents.Description}}</a>
+              </td>
+            </tr>
+          </tbody>
+      </table>
+    </form>
+  </div>
 </div>
 
 

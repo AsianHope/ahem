@@ -328,7 +328,7 @@
         {value: '7', text: 'Employee Handbook Receipt', required_by: 'all'},
         {value: '8', text: 'Position Description', required_by: 'all'},
         {value: '9', text: 'Physical Examination Report', required_by: 'all'},
-        {value: '10', text: 'Copy of Pleaseassport', required_by: 'all'},
+        {value: '10', text: 'Copy of Passport', required_by: 'all'},
         {value: '11', text: 'Copy of Visa', required_by: 'all'},
         {value: '12', text: 'Copy of ID', required_by: 'all'},
         {value: '13', text: 'W4', required_by: 'all'},
@@ -336,7 +336,11 @@
         {value: '15', text: 'Employee Status Form', required_by: 'all'},
         {value: '16', text: 'Other Supporting Documentation', required_by: ''},
       ];
+      $scope.DocumentData = {
+         'DocumentType':{value: '0', text: 'Photo', required_by: 'all'},
+         'uid':'',
 
+      };
       $scope.showMissingDocs = function(doclist, required_docs){
         var tempid;
         var reqdocs = required_docs.slice();
