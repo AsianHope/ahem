@@ -286,9 +286,9 @@
   </div>
   <!-- document tab -->
   <div class="col-md-12"  ng-show="this.tab.isSet(5)" style="padding-left:0 !important;">
-      <form ng-submit="addImportFile()" class="form-horizontal" method="POST" enctype= "multipart/form-data" id="formUpload" >
+      <form name="uploadDocForm" ng-submit="addImportFile()" class="form-horizontal" method="POST" enctype= "multipart/form-data" id="formUpload" >
 
-        <table style="width:100%;">
+        <table class="tbl_upload" style="width:100%; margin-bottom: 30px;">
           <tr>
             <td style="color:red;" colspan="2" ng-if="upload_sms">
               {{upload_sms}}
@@ -302,23 +302,33 @@
             </td>
             <td>:</td>
             <td>
-              <select id="myselect" ng-model="DocumentData.Documenttype" ng-options="documenttype as documenttype.text for documenttype in documentType">
+              <select id="myselect" name="type" ng-model="DocumentData.Documenttype" ng-options="documenttype as documenttype.text for documenttype in documentType" required>
                 <option value="">--Document type--</option>
               </select>
             </td>
           </tr>
+          <!-- <tr>
+            <td colspan="2">
+              <span style="color:red;" ng-show="uploadDocForm.type.$error.required" class="help-block">Document type is required</span>
+            </td>
+          </tr> -->
           <tr>
             <td>
               Upload
             </td>
             <td>:</td>
             <td>
-              <input type="file" id="file" name="document"/>
+              <input type="file" id="file"  ng-model="filename" valid-file name="userUpload" required/>
             </td>
           </tr>
+          <!-- <tr>
+            <td colspan="2">
+              <span style="color:red;" ng-hide="uploadDocForm.userUpload.$valid" class="help-block">Document is required</span>
+            </td>
+          </tr> -->
           <tr>
             <td>
-              <input type="submit" value="Upload" name="uploadDoc"/>
+              <input ng-disabled="uploadDocForm.$invalid" class="btn btn-primary" type="submit" value="Upload" name="uploadDoc" ng-model="uploadDoc"/>
             </td>
           </tr>
         </table>
@@ -381,6 +391,9 @@
           }
           #show_resetpass{
             display: none;
+          }
+          .tbl_upload tr td{
+            padding: 5px 0 5px 0;
           }
          </style>
          <script type="text/javascript">
