@@ -50,6 +50,10 @@
           url: '/reports/',
           templateUrl: "templates/reports.html"
         })
+        .state('admin.groups', {
+          url: '/groups/',
+          templateUrl: "templates/groups.html"
+        })
         .state('admin.MissingInfo', {
           url: '/MissingInfo/',
           templateUrl: "templates/missing_info_report.html"

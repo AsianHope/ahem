@@ -334,9 +334,6 @@
               <input ng-disabled="uploadDocForm.$invalid" class="btn btn-primary" type="submit" value="Upload" name="uploadDoc" ng-model="uploadDoc"/>
             </td>
           </tr>
-          <tr>
-            <td><a href ng-click="group()">this</a></td>
-          </tr>
         </table>
         <table style="width:100%;">
           <tr>
@@ -354,21 +351,14 @@
   </div>
   <!-- group -->
   <div class="col-md-12"  ng-show="this.tab.isSet(6)" style="padding-left:0 !important;">
-    <!-- {{groups.length}}   {{groups}}lala -->
     <table class="tbl_group ">
       <tr>
         <th>Description</th>
         <th>Mail</th>
       </tr>
-      <tr ng-repeat="curGroup in curGroups">
+      <tr ng-repeat="curGroup in curGroups | orderBy:'cn'">
         <td>{{curGroup.cn}}</td>
-        <td>{{curGroup.mail}}</td>
-        <!-- <td style="text-align:justify;">
-          <span ng-repeat="member in curGroup.memberUid">
-            {{member}},
-          </span>
-
-        </td> -->
+        <td><a href="mailto:{{curGroup.mail}}" target="_blank">{{curGroup.mail}}</a></td>
       </tr>
     </table>
   </div>

@@ -201,7 +201,6 @@
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"GROUPS")
               .success(function(data, status, headers, config) {
                 $scope.groups = data;
-                console.log(JSON.stringify($scope.groups));
                 for(var i=0; i<$scope.groups.length; i++){
                     for(var j=0;j<$scope.groups[i]['memberUid'].length;j++){
                       if($scope.groups[i]['memberUid'][j]==uid){
@@ -211,7 +210,16 @@
                 }
               })
               .finally(function() {
-              // called no matter success or failure
+              $scope.loading = false;
+            });
+        };
+        $scope.showAllGroups = function(){
+          $scope.loading = true;
+          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"GROUPS")
+              .success(function(data, status, headers, config) {
+                $scope.groups = data;
+              })
+              .finally(function() {
               $scope.loading = false;
             });
         };
