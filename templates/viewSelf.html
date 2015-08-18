@@ -1,141 +1,170 @@
-<div id="change_text_color" style="color:#488FCC;" class="center_div col-md-7 col-xs-7">
-  <table class="table_view">
-    <tr>
-      <td style="font-size:30px;">
-        <strong>
-          <a style="font-weight:bold;" id="lastname" href="#" title="Click to edit: Surname" editable-text="selfselect.sn"
-              onbeforesave="updateUser(selfselect.uid,'sn',$data)">
-              {{selfselect.sn +', '}}
-          </a>
-          <a style="font-weight:bold;" href="#" title="Click to edit: First Name" editable-text="selfselect.givenName"
-              onbeforesave="updateUser(selfselect.uid,'givenName',$data)">
-              {{selfselect.givenName}}
-          </a>
-        </strong>
-      </td>
-      <td style="font-size:30px;">
-          {{selfselect.employeeNumber}}
-      </td>
-    </tr>
-    <tr>
-      <td style="font-family:Bayon;">
-          <a style="font-style:normal;" href="#" title="Click to edit: Khmer Surname" editable-text="selfselect.snkh"
-              onbeforesave="updateUser(selfselect.uid,'snkh',$data)">
-              {{selfselect.snkh || "នាមត្រកូល"}}
-          </a> &nbsp;
-          <a style="font-style:normal;" href="#" title="Click to edit: Khmer First Name" editable-text="selfselect.givenNamekh"
-            onbeforesave="updateUser(selfselect.uid,'givenNamekh',$data)">
-              {{selfselect.givenNamekh || "នាមខ្លួន"}}
-          </a>
-      </td>
-      <td>
-              {{selfselect.employeeType|| "empty"}}
-           -
-              {{selfselect.departmentNumber || "empty"}}
-      </td>
-    </tr>
-    <tr style="border-bottom:1px solid #e5e5e5;">
-      <td>
-              {{selfselect.title || "Staff"}}
-      </td>
-      <td>
+<div ng-controller="TabController as tab">
 
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="mailto:{{selfselect.mail}}" target="_blank"> <i class="fa fa-envelope-o"></i> {{selfselect.mail}}</a>
-      </td>
-      <td>
-        <a href="#" title="Click to edit: Phone Number" editable-text="selfselect.mobile"
-            onbeforesave="updateUser(selfselect.uid,'mobile',$data)">
-            {{selfselect.mobile || "Phone"}}
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="mailto:{{selfselect.mailpr}}" target="_blank"><i class="fa fa-envelope-o"></i></a>
-        <a href="#" title="Click to edit: Personal Email Address" editable-email="selfselect.mailpr"
-          onbeforesave="updateUser(selfselect.uid,'mailpr',$data)">
-            {{selfselect.mailpr || "Personal Email"}}
-        </a>
-      </td>
-      <td>
-        <a href="#" title="Click to edit: Address" editable-text="selfselect.postalAddress"
-            onbeforesave="updateUser(selfselect.uid,'postalAddress',$data)">
-            {{selfselect.postalAddress || "Home Address"}}
-        </a>
-      </td>
-    </tr>
-    <tr style="border-bottom:1px solid #e5e5e5;">
-      <td>
-        <a href="#" title="Click to edit: Birthday" editable-date="selfselect.applebirthday"
-            onbeforesave="updateUser(selfselect.uid,'apple-birthday',$data)"> <!-- note the field change to apple-birthday here -->
-            {{decodeAppleBirthday(selfselect.applebirthday) || "DOB"}}
-        </a>
-      </td>
-      <td>
-      </td>
-    </tr>
-    <tr>
-      <td class="hidechangepass" colspan="2">
-            <form name="form" ng-submit="resetPassword(selfselect.uid,new_password,'youreset',current_password)" role="form">
-                <table style="margin:0;">
-                  <tr>
-                    <td>Current password<td>
-                  </tr>
-                  <tr>
-                    <td><input type="password"  name="current_password" id="current_password" class="form-control" ng-model="current_password" required />
-                    <span ng-show="form.current_password.$dirty && form.current_password.$error.required" class="help-block">Current password is required</span><td>
-                  </tr>
-                  <tr>
-                    <td>New password<td>
-                  </tr>
-                  <tr>
-                    <td>  <input type="password" name="new_password" id="new_password" class="form-control" ng-model="new_password" required />
-                      <span ng-show="form.new_password.$dirty && form.new_password.$error.required" class="help-block">New password is required</span><td>
-                  </tr>
-                  <tr>
-                    <td>Comfirm new password<td>
-                  </tr>
-                  <tr>
-                    <td><input type="password" password-match="new_password" name="confirm_password" id="confirm_password" class="form-control" ng-model="confirm_password" required />
-                      <span  ng-show="form.confirm_password.$dirty && form.confirm_password.$error.required" class="help-block">confirm password is required</span>
-                      <span class="help-block" ng-show="form.confirm_password.$error.unique">
-                        Passwords do not match.
-                     </span>
-                      <span ng-show="form.confirm_password.$error.noMatch">Passwords do not match.</span><td>
-                  </tr>
-                  <tr>
-                    <td><button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">Save</button><td>
-                  </tr>
-                  <tr>
-                </table>
-            </form>
-        </td>
-    </tr>
-</table>
-</div>
+
+  <div style="color:#488FCC;" id="change_text_color" class="center_div col-md-7 col-xs-7">
+    <div class="col-md-12 col-xs-12" style="margin-bottom:20px;" >
+      <ul class = "nav nav-tabs" style="border-bottom:none !important;">
+          <li ng-class="{ tab_active:this.tab.isSet(3)}">
+              <a href ng-click="this.tab.setTab(3)">Profile</a>
+          </li>
+          <li ng-class="{ tab_active:this.tab.isSet(4)}">
+              <a href ng-click="this.tab.setTab(4); showGroup(selfselect.uid)">Group</a>
+          </li>
+      </ul>
+    </div>
+    <div class="col-md-12 col-xs-12" ng-show="this.tab.isSet(3)" >
+      <table class="table_view">
+        <tr>
+          <td style="font-size:30px;">
+            <strong>
+              <a style="font-weight:bold;" id="lastname" href="#" title="Click to edit: Surname" editable-text="selfselect.sn"
+                  onbeforesave="updateUser(selfselect.uid,'sn',$data)">
+                  {{selfselect.sn +', '}}
+              </a>
+              <a style="font-weight:bold;" href="#" title="Click to edit: First Name" editable-text="selfselect.givenName"
+                  onbeforesave="updateUser(selfselect.uid,'givenName',$data)">
+                  {{selfselect.givenName}}
+              </a>
+            </strong>
+          </td>
+          <td style="font-size:30px;">
+              {{selfselect.employeeNumber}}
+          </td>
+        </tr>
+        <tr>
+          <td style="font-family:Bayon;">
+              <a style="font-style:normal;" href="#" title="Click to edit: Khmer Surname" editable-text="selfselect.snkh"
+                  onbeforesave="updateUser(selfselect.uid,'snkh',$data)">
+                  {{selfselect.snkh || "នាមត្រកូល"}}
+              </a> &nbsp;
+              <a style="font-style:normal;" href="#" title="Click to edit: Khmer First Name" editable-text="selfselect.givenNamekh"
+                onbeforesave="updateUser(selfselect.uid,'givenNamekh',$data)">
+                  {{selfselect.givenNamekh || "នាមខ្លួន"}}
+              </a>
+          </td>
+          <td>
+                  {{selfselect.employeeType|| "empty"}}
+               -
+                  {{selfselect.departmentNumber || "empty"}}
+          </td>
+        </tr>
+        <tr style="border-bottom:1px solid #e5e5e5;">
+          <td>
+                  {{selfselect.title || "Staff"}}
+          </td>
+          <td>
+
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="mailto:{{selfselect.mail}}" target="_blank"> <i class="fa fa-envelope-o"></i> {{selfselect.mail}}</a>
+          </td>
+          <td>
+            <a href="#" title="Click to edit: Phone Number" editable-text="selfselect.mobile"
+                onbeforesave="updateUser(selfselect.uid,'mobile',$data)">
+                {{selfselect.mobile || "Phone"}}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="mailto:{{selfselect.mailpr}}" target="_blank"><i class="fa fa-envelope-o"></i></a>
+            <a href="#" title="Click to edit: Personal Email Address" editable-email="selfselect.mailpr"
+              onbeforesave="updateUser(selfselect.uid,'mailpr',$data)">
+                {{selfselect.mailpr || "Personal Email"}}
+            </a>
+          </td>
+          <td>
+            <a href="#" title="Click to edit: Address" editable-text="selfselect.postalAddress"
+                onbeforesave="updateUser(selfselect.uid,'postalAddress',$data)">
+                {{selfselect.postalAddress || "Home Address"}}
+            </a>
+          </td>
+        </tr>
+        <tr style="border-bottom:1px solid #e5e5e5;">
+          <td>
+            <a href="#" title="Click to edit: Birthday" editable-date="selfselect.applebirthday"
+                onbeforesave="updateUser(selfselect.uid,'apple-birthday',$data)"> <!-- note the field change to apple-birthday here -->
+                {{decodeAppleBirthday(selfselect.applebirthday) || "DOB"}}
+            </a>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td class="hidechangepass" colspan="2">
+                <form name="form" ng-submit="resetPassword(selfselect.uid,new_password,'youreset',current_password)" role="form">
+                    <table style="margin:0;">
+                      <tr>
+                        <td>Current password<td>
+                      </tr>
+                      <tr>
+                        <td><input type="password"  name="current_password" id="current_password" class="form-control" ng-model="current_password" required />
+                        <span ng-show="form.current_password.$dirty && form.current_password.$error.required" class="help-block">Current password is required</span><td>
+                      </tr>
+                      <tr>
+                        <td>New password<td>
+                      </tr>
+                      <tr>
+                        <td>  <input type="password" name="new_password" id="new_password" class="form-control" ng-model="new_password" required />
+                          <span ng-show="form.new_password.$dirty && form.new_password.$error.required" class="help-block">New password is required</span><td>
+                      </tr>
+                      <tr>
+                        <td>Comfirm new password<td>
+                      </tr>
+                      <tr>
+                        <td><input type="password" password-match="new_password" name="confirm_password" id="confirm_password" class="form-control" ng-model="confirm_password" required />
+                          <span  ng-show="form.confirm_password.$dirty && form.confirm_password.$error.required" class="help-block">confirm password is required</span>
+                          <span class="help-block" ng-show="form.confirm_password.$error.unique">
+                            Passwords do not match.
+                         </span>
+                          <span ng-show="form.confirm_password.$error.noMatch">Passwords do not match.</span><td>
+                      </tr>
+                      <tr>
+                        <td><button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">Save</button><td>
+                      </tr>
+                      <tr>
+                    </table>
+                </form>
+            </td>
+        </tr>
+    </table>
+    </div>
+    <div class="col-md-12 col-xs-12" ng-show="this.tab.isSet(4)">
+      <table class="tbl_group">
+        <tr>
+          <th>Description</th>
+          <th>Mail</th>
+        </tr>
+        <tr ng-repeat="curGroup in curGroups | orderBy:'cn'">
+          <td>{{curGroup.cn}}</td>
+          <td><a href="mailto:{{curGroup.mail}}" target="_blank">{{curGroup.mail}}</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
 <!-- profile pic -->
-<div class="center_div col-md-5 col-xs-5">
-  <div class="col-md-12 col-xs-12 ">
-    <div style="width: 330px; height: 411px; background-position: center center; background-size: cover; background-image: url('files/{{selfselect.employeeNumber}}.jpg');"></div>
-  </div>
-  <div class="col-md-12 col-xs-12" style="margin-top:30px; osition:relative;left: -6px;" >
-      <div class="col-md-6 col-xs-6">
-        <a target="_blank" href="templates/business-card.html?department={{selfselect.departmentNumber}}&name={{selfselect.givenName}} {{selfselect.sn}}&title={{selfselect.title}}&email={{selfselect.mail}}&mobile={{selfselect.mobile}}">
-          <button style="background:#488FCC; color:white;" id="btn_print_card" class="button center_div btn">
-            <strong>Print Business Card<strong>
+  <div class="center_div col-md-5 col-xs-5">
+    <div class="col-md-12 col-xs-12 ">
+      <div style="width: 330px; height: 411px; background-position: center center; background-size: cover; background-image: url('files/{{selfselect.employeeNumber}}.jpg');"></div>
+    </div>
+    <div class="col-md-12 col-xs-12" style="margin-top:30px; osition:relative;left: -6px;" >
+        <div class="col-md-6 col-xs-6">
+          <a target="_blank" href="templates/business-card.html?department={{selfselect.departmentNumber}}&name={{selfselect.givenName}} {{selfselect.sn}}&title={{selfselect.title}}&email={{selfselect.mail}}&mobile={{selfselect.mobile}}">
+            <button style="background:#488FCC; color:white;" id="btn_print_card" class="button center_div btn">
+              <strong>Print Business Card<strong>
+            </button>
+          </a>
+        </div>
+        <div class="col-md-6 col-xs-6">
+          <button style="background:#488FCC; color:white;" id="btn_print_change" class="button showchpass center_div btn">
+              <strong>Change Password</strong>
           </button>
-        </a>
-      </div>
-      <div class="col-md-6 col-xs-6">
-        <button style="background:#488FCC; color:white;" id="btn_print_change" class="button showchpass center_div btn">
-            <strong>Change Password</strong>
-        </button>
-      </div>
+        </div>
+    </div>
   </div>
+</div>
 </div>
 <script type="text/javascript">
     $('.showchpass').click(function() {
