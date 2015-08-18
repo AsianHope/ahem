@@ -52,6 +52,7 @@
                   else{
                     $scope.employees_local_data=[];
                     $scope.employees = data;
+                    // console.log(JSON.stringify($scope.employees));
                       for(var i=0; i<$scope.employees.length; i++){
                         var emplyeeobj = {};
                         emplyeeobj['employeeType'] = $scope.employees[i].employeeType;
@@ -186,6 +187,28 @@
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
               .success(function(data, status, headers, config) {
                 $scope.employees = data;
+              })
+              .finally(function() {
+              // called no matter success or failure
+              $scope.loading = false;
+            });
+        };
+        $scope.groups =[];
+        $scope.curGroups = [];
+        $scope.showGroup = function(uid){
+          $scope.curGroups = [];
+          $scope.loading = true;
+          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"GROUPS")
+              .success(function(data, status, headers, config) {
+                $scope.groups = data;
+                console.log(JSON.stringify($scope.groups));
+                for(var i=0; i<$scope.groups.length; i++){
+                    for(var j=0;j<$scope.groups[i]['memberUid'].length;j++){
+                      if($scope.groups[i]['memberUid'][j]==uid){
+                        $scope.curGroups.push($scope.groups[i]);
+                      }
+                    }
+                }
               })
               .finally(function() {
               // called no matter success or failure

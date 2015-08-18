@@ -66,6 +66,10 @@ def getUsers():
         ssearchFilter = 'mail=*@asianhope.org'
         sbaseDN = "cn=disabled,dc=asianhope,dc=org"
 
+    elif scope=='GROUPS':
+        ssearchFilter = 'mail=*@asianhope.org'
+        sbaseDN = "cn=groups,dc=asianhope,dc=org"
+
     ldap_slave_result_id = slave.search(sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
     sresult_set = []
     users = []
@@ -74,6 +78,7 @@ def getUsers():
        if(sresult_data == []):
            break
        else:
+        #    print sresult_data
            users.append(jsonifyUser(sresult_data))
 
     logging.info('dump delivered.')
@@ -97,7 +102,8 @@ def jsonifyUser(user):
             'c',
             'l',
             'mobile',
-            'postalAddress'
+            'postalAddress',
+            'description'
         ]
 
         #assign values for all fields with something in them
@@ -114,11 +120,18 @@ def jsonifyUser(user):
         #special JSON
         attr = getAttribute(user,'jsonData')
         if attr is not None:
-	   try:
-              userjson.update(json.loads(attr,'utf-8'))
-	   except ValueError:
-    	      logging.debug('issue processing %s: %s',userjson['uid'],attr )
-	      pass
+            try:
+               userjson.update(json.loads(attr,'utf-8'))
+            except:
+    	       logging.debug('issue processing %s: %s',userjson['uid'],attr )
+               pass
+
+        #special memberUid for groups
+        try:
+            attr = user[0][1]['memberUid']
+            userjson['memberUid'] = attr
+        except KeyError:
+            pass
 
         return userjson
 

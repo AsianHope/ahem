@@ -9,6 +9,9 @@
       <li ng-class="{ tab_active:this.tab.isSet(5)}">
           <a href ng-click="this.tab.setTab(5)">Documents</a>
       </li>
+      <li ng-class="{ tab_active:this.tab.isSet(6)}">
+          <a href ng-click="this.tab.setTab(6); showGroup(curemployee.uid)">Group</a>
+      </li>
   </ul>
 </div>
 <div class="col-md-12 col-xs-12">
@@ -331,6 +334,9 @@
               <input ng-disabled="uploadDocForm.$invalid" class="btn btn-primary" type="submit" value="Upload" name="uploadDoc" ng-model="uploadDoc"/>
             </td>
           </tr>
+          <tr>
+            <td><a href ng-click="group()">this</a></td>
+          </tr>
         </table>
         <table style="width:100%;">
           <tr>
@@ -345,6 +351,26 @@
           </tbody>
       </table>
     </form>
+  </div>
+  <!-- group -->
+  <div class="col-md-12"  ng-show="this.tab.isSet(6)" style="padding-left:0 !important;">
+    <!-- {{groups.length}}   {{groups}}lala -->
+    <table class="tbl_group ">
+      <tr>
+        <th>Description</th>
+        <th>Mail</th>
+      </tr>
+      <tr ng-repeat="curGroup in curGroups">
+        <td>{{curGroup.cn}}</td>
+        <td>{{curGroup.mail}}</td>
+        <!-- <td style="text-align:justify;">
+          <span ng-repeat="member in curGroup.memberUid">
+            {{member}},
+          </span>
+
+        </td> -->
+      </tr>
+    </table>
   </div>
 </div>
 
@@ -394,6 +420,12 @@
           }
           .tbl_upload tr td{
             padding: 5px 0 5px 0;
+          }
+          .tbl_group tr td,.tbl_group tr th{
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+
           }
          </style>
          <script type="text/javascript">
