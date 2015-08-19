@@ -3,7 +3,7 @@
       <li ng-class="{ tab_active:this.tab.isSet(3)}">
           <a href ng-click="this.tab.setTab(3)">Employee</a>
       </li>
-      <li ng-class="{ tab_active:this.tab.isSet(4)}" ng-if="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.maritalstatus.trim()!='Single' && curemployee.c!='KH'">
+      <li ng-class="{ tab_active:this.tab.isSet(4)}" ng-if="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.c!='KH' && ((curemployee.maritalstatus.trim()=='Single' && curemployee.children>=0) || curemployee.maritalstatus=='Married')">
           <a href ng-click="this.tab.setTab(4)">Family</a>
       </li>
       <li ng-class="{ tab_active:this.tab.isSet(5)}">

@@ -50,6 +50,21 @@
                              }
                           }
                         }
+                        // if he/single but have children
+                        if($scope.curemployee.children>0 && $scope.curemployee.maritalstatus=='Single'){
+                            for(var j=0; j<$scope.curemployee.children; j++){
+                               var family_child_obj = {};
+                               family_child_obj['id'] = j+1;
+                               family_child_obj['relationship'] = "child";
+                               family_child_obj['sn'] ="" ;
+                               family_child_obj['givenName'] = "";
+                               family_child_obj['C'] = "";
+                               family_child_obj['VisaExpires'] = "";
+                               family_child_obj['idnumber'] = "";
+                               $scope.family_data.push(family_child_obj);
+                             }
+                          }
+
                       }
                       else{
                         $scope.family_data=$scope.curemployee.family_data;
@@ -129,6 +144,20 @@
                     }
                  }
                }
+               // if he/single, but have children
+               if($scope.curemployee.children>0 && $scope.curemployee.maritalstatus=='Single'){
+                   for(var j=0; j<$scope.curemployee.children; j++){
+                      var family_child_obj = {};
+                      family_child_obj['id'] = j+1;
+                      family_child_obj['relationship'] = "child";
+                      family_child_obj['sn'] ="" ;
+                      family_child_obj['givenName'] = "";
+                      family_child_obj['C'] = "";
+                      family_child_obj['VisaExpires'] = "";
+                      family_child_obj['idnumber'] = "";
+                      $scope.family_data.push(family_child_obj);
+                    }
+                 }
              }
              else{
                $scope.family_data=$scope.curemployee.family_data;
@@ -173,6 +202,7 @@
                   }
                   if($scope.curemployee.family_data==undefined){
                     $scope.family_data=[];
+                    // if he/she Married
                     if($scope.curemployee.maritalstatus =='Married'){
                       var family_data_obj = {};
                       family_data_obj['id'] = 0;
@@ -197,6 +227,20 @@
                          }
                       }
                     }
+                    // if he/single, but have children
+                    if($scope.curemployee.children>0 && $scope.curemployee.maritalstatus=='Single'){
+                        for(var j=0; j<$scope.curemployee.children; j++){
+                           var family_child_obj = {};
+                           family_child_obj['id'] = j+1;
+                           family_child_obj['relationship'] = "child";
+                           family_child_obj['sn'] ="" ;
+                           family_child_obj['givenName'] = "";
+                           family_child_obj['C'] = "";
+                           family_child_obj['VisaExpires'] = "";
+                           family_child_obj['idnumber'] = "";
+                           $scope.family_data.push(family_child_obj);
+                         }
+                      }
                   }
                   else{
                     $scope.family_data=$scope.curemployee.family_data;
