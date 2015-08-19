@@ -355,11 +355,32 @@
       <tr>
         <th>Description</th>
         <th>Mail</th>
+        <th>Remove</th>
       </tr>
       <tr ng-repeat="curGroup in curGroups | orderBy:'cn'">
         <td>{{curGroup.cn}}</td>
         <td><a href="mailto:{{curGroup.mail}}" target="_blank">{{curGroup.mail}}</a></td>
-      </tr>
+        <!-- $scope.removeUserFromGroup=function(uid,field,data) -->
+        <td>
+          <a href ng-click="removeUserFromGroup(curemployee.uid,curGroup.cn,curemployee.uid) ; showGroup(curemployee.uid)">
+            <span class="glyphicon glyphicon-trash"></span>
+          </a>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        Group
+      </td>
+      <td>
+        <select id="group" ng-model="group_name" ng-options="group.cn as group.cn for group in groups" required>
+          <option value="">--Choose group--</option>
+        </select>
+      </td>
+      <td><button ng-click="addUserToGroup(curemployee.uid,group_name,curemployee.uid)  ; showGroup(curemployee.uid)" class="btn btn-primary">Add to Group</button></td>
+    </tr>
+    <tr>
+      <td style="color:red;" colspan="3" ng-show="modifyGroupSms">{{modifyGroupSms}}</td>
+    </tr>
     </table>
   </div>
 </div>

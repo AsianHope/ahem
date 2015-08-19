@@ -52,7 +52,6 @@
                   else{
                     $scope.employees_local_data=[];
                     $scope.employees = data;
-                    // console.log(JSON.stringify($scope.employees));
                       for(var i=0; i<$scope.employees.length; i++){
                         var emplyeeobj = {};
                         emplyeeobj['employeeType'] = $scope.employees[i].employeeType;
@@ -202,11 +201,13 @@
               .success(function(data, status, headers, config) {
                 $scope.groups = data;
                 for(var i=0; i<$scope.groups.length; i++){
+                  if($scope.groups[i]['memberUid']!= undefined){
                     for(var j=0;j<$scope.groups[i]['memberUid'].length;j++){
                       if($scope.groups[i]['memberUid'][j]==uid){
                         $scope.curGroups.push($scope.groups[i]);
                       }
                     }
+                  }
                 }
               })
               .finally(function() {
@@ -276,10 +277,10 @@
       };
       $scope.updateUser = function(uid, field, data){
               var d = $q.defer();
-              EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw)
+              EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'users','null')
                   .success(function(data, status, headers, config){
-                       if(data.result== 'success'){
-                           d.resolve()
+                       if(data.result=="success"){
+                           d.resolve();
                        }
                        else
                            d.resolve("There was an error");
@@ -289,7 +290,57 @@
                    });
                    return d.promise;
       }
-
+      $scope.modifyGroupSms=null;
+      $scope.removeUserFromGroup=function(uid,field,data){
+        var d = $q.defer();
+        EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'groups','remove')
+            .success(function(data, status, headers, config){
+                 if(data.result=='success'){
+                    $scope.modifyGroupSms="Remove employee from group success!";
+                    d.resolve()
+                 }
+                 if(data.result=='no_such_attribute'){
+                    $scope.modifyGroupSms="Remove employee Fail! Don't have this emplyee in group.";
+                 }
+                 if(data.result=="error"){
+                    $scope.modifyGroupSms="Fail to remove employee from group!";
+                    d.resolve("There was an error");
+                  }
+               }).
+               error(function(data, status, headers, config){
+                    d.reject('Server error!');
+                  $scope.modifyGroupSms="Fail to remove employee from group!!";
+             });
+             return d.promise;
+      }
+      $scope.group_name=null;
+      $scope.addUserToGroup = function(uid,field,data){
+        var d = $q.defer();
+        if(field!=null){
+          EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'groups','add')
+              .success(function(data, status, headers, config){
+                  if(data.result=="success"){
+                      d.resolve();
+                      $scope.modifyGroupSms="Add employee to group success!";
+                  }
+                  if(data.result=="value_exists"){
+                    $scope.modifyGroupSms="Emplyee already exist in this group!";
+                  }
+                  if(data.result=="error"){
+                       d.resolve("There was an error");
+                       $scope.modifyGroupSms="Fail to add employee to group!";
+                     }
+                 }).
+                 error(function(data, status, headers, config){
+                       d.reject('Server error!');
+                       $scope.modifyGroupSms="Fail to add employee to group!";
+               });
+            }
+          else{
+            $scope.modifyGroupSms="Please choose group!";
+          }
+               return d.promise;
+      }
       $scope.resetPassword = function(uid,data,type,confirmpass){
               var d = $q.defer();
               if(confirmpass==$scope.user.pw){

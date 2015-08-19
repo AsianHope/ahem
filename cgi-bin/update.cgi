@@ -59,7 +59,8 @@ def main():
     field = formData.getlist("field")[0]
     data = urllib.unquote(formData.getlist("data")[0])
     uid = formData.getlist("uid")[0]
-
+    cn = formData.getlist("cn")[0]
+    modifyType = formData.getlist("modifyType")[0];
     try:
         reset_type = formData.getlist("reset_type")[0]
     except:
@@ -83,142 +84,191 @@ def main():
         logging.debug('update.cgi could not bind to server')
         slave.unbind_s()
         sys.exit(1)
+    # update group
+    if(cn=='groups'):
+        # if remove emplyee to group
+        if(modifyType=='remove'):
+            # remove
+            modify = [
+                (ldap.MOD_DELETE,'memberUid',data),
+                (ldap.MOD_DELETE,'member','uid='+uid+',cn=users,dc=asianhope,dc=org')
+            ]
+        # if add emplyee to group
+        if(modifyType=='add'):
+            # add
+            modify = [
+                (ldap.MOD_ADD,'memberUid',data),
+                (ldap.MOD_ADD,'member','uid='+uid+',cn=users,dc=asianhope,dc=org')
+            ]
 
-    sbaseDN = "dc=asianhope,dc=org"
-    ssearchScope = ldap.SCOPE_SUBTREE
-    sretrieveAttributes = ['*']
-    ssearchFilter = "uid="+uid
+        sbaseDN = "cn=groups,dc=asianhope,dc=org"
+        ssearchScope = ldap.SCOPE_SUBTREE
+        sretrieveAttributes = None;
+        ssearchFilter = "cn="+field
 
-    #find user
-    ldap_slave_result_id = slave.search(sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
-    sresult_set = []
+        #find groups
+        ldap_slave_result_id = slave.search(sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
+        sresult_set = []
 
-    #only expecting one result... if we have more than one, you'll have a bad time
-    sresult_type, sresult_data = slave.result(ldap_slave_result_id,0)
+        #only expecting one result... if we have more than one, you'll have a bad time
+        sresult_type, sresult_data = slave.result(ldap_slave_result_id,0)
 
-    if(sresult_data == []):
-        print '{"result":"error"}'
-        logging.debug('update.cgi could not find uid')
-        slave.unbind_s()
-        sys.exit(1)
-    else:
-        #pull the dn from the search result
-        dn=sresult_data[0][0]
-
-        #if it's an ldap field, we should insert it directly
-        if field in ldapfields:
-
-            #unless if it's a birthday, then we should convert it.
-            if(field == 'apple-birthday'):
-                data = convertToAppleBirthday(data)
-
-            if(field == 'userPassword'):
-                data = convertPassword(data)
-                #userPassword isn't normally returned, so let's trick the below
-                sresult_data[0][1]['userPassword']=data
-            #if the field isn't in the result set, we need to do a MOD_ADD
-            if(field not in sresult_data[0][1]):
-                new = [(ldap.MOD_ADD,field,data)]
-                logging.debug('update.cgi field %s not found, adding it', field)
-            #otherwise do a modify
-            else:
-                new = [(ldap.MOD_REPLACE,field,data)]
-                logging.debug('update.cgi field %s found, modifying it', field)
-
-
-            #future - add to log file saying who performed what
-            slave.modify_s(dn,new)
-
-        #if it's an extended field, then we're going to pull the JSON and rewrite it
+        if(sresult_data == []):
+            print '{"result":"error"}'
+            logging.debug('update.cgi could not find cn')
+            slave.unbind_s()
+            sys.exit(1)
         else:
-                #if the jsonData hasn't been added to the entry, add it.
-                if('jsonData' not in sresult_data[0][1]):
-		    #this breaks with family_data, but you can't see family data unless you have a spouse
-                    new = [(ldap.MOD_ADD,'jsonData','{"'+field+'":"'+data+'"}')]
+            #pull the dn from the search result
+            dn=sresult_data[0][0]
+        try:
+            slave.modify_s(dn,modify)
+        # if vaule aleady exist
+        except ldap.TYPE_OR_VALUE_EXISTS:
+            print '{"result":"value_exists"}'
+        # if no value to remove
+        except ldap.NO_SUCH_ATTRIBUTE:
+            print '{"result":"no_such_attribute"}'
+        except Exception:
+            print '{"result":"error"}'
+        else:
+            print '{"result":"success"}'
+        slave.unbind_s()
+    # update user
+    else:
+        sbaseDN = "dc=asianhope,dc=org"
+        ssearchScope = ldap.SCOPE_SUBTREE
+        sretrieveAttributes = ['*']
+        ssearchFilter = "uid="+uid
+
+        #find user
+        ldap_slave_result_id = slave.search(sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
+        sresult_set = []
+
+        #only expecting one result... if we have more than one, you'll have a bad time
+        sresult_type, sresult_data = slave.result(ldap_slave_result_id,0)
+
+        if(sresult_data == []):
+            print '{"result":"error"}'
+            logging.debug('update.cgi could not find uid')
+            slave.unbind_s()
+            sys.exit(1)
+        else:
+            #pull the dn from the search result
+            dn=sresult_data[0][0]
+
+            #if it's an ldap field, we should insert it directly
+            if field in ldapfields:
+
+                #unless if it's a birthday, then we should convert it.
+                if(field == 'apple-birthday'):
+                    data = convertToAppleBirthday(data)
+
+                if(field == 'userPassword'):
+                    data = convertPassword(data)
+                    #userPassword isn't normally returned, so let's trick the below
+                    sresult_data[0][1]['userPassword']=data
+                #if the field isn't in the result set, we need to do a MOD_ADD
+                if(field not in sresult_data[0][1]):
+                    new = [(ldap.MOD_ADD,field,data)]
                     logging.debug('update.cgi field %s not found, adding it', field)
                 #otherwise do a modify
                 else:
-                    original = json.loads(sresult_data[0][1]['jsonData'][0])
-		    #first try to load the incoming data as json
-                    try:
-                    	original[field]=json.loads(data)
-		    except ValueError: #if that doesn't work, it's probably a single value
-			original[field]=data
-                    modified = json.dumps(original)
-                    new = [(ldap.MOD_REPLACE,'jsonData',modified)]
+                    new = [(ldap.MOD_REPLACE,field,data)]
                     logging.debug('update.cgi field %s found, modifying it', field)
+
+
+                #future - add to log file saying who performed what
                 slave.modify_s(dn,new)
-        print '{"result":"success"}'
-        slave.unbind_s()
-        logging.info('%s modified user %s, field: %s, data: %s', username, uid, field, data)
-        ##send email when reset password
-        if(field == 'userPassword'):
-            if(reset_type == 'youreset'):
-                reset_password= '''
-                <html>
-                <head></head>
-                <body>
 
-                <p>Hi '''+username+''',</p>
-                <p>Your AHEM password has been changed.</p>
-
-                '''
-                msg = MIMEText(reset_password + '</body></html>','html')
-                msg['To'] = username+'@asianhope.org'
-                msg['From'] = 'noreply@asianhope.org'
-                msg['Subject'] = 'Password changed'
-                try:
-                    p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
-                    p.communicate(msg.as_string())
-                except Exception:
-                    pass
+            #if it's an extended field, then we're going to pull the JSON and rewrite it
             else:
-                to_admin_reset_password= '''
-                <html>
-                <head></head>
-                <body>
+                    #if the jsonData hasn't been added to the entry, add it.
+                    if('jsonData' not in sresult_data[0][1]):
+                #this breaks with family_data, but you can't see family data unless you have a spouse
+                        new = [(ldap.MOD_ADD,'jsonData','{"'+field+'":"'+data+'"}')]
+                        logging.debug('update.cgi field %s not found, adding it', field)
+                    #otherwise do a modify
+                    else:
+                        original = json.loads(sresult_data[0][1]['jsonData'][0])
+                #first try to load the incoming data as json
+                        try:
+                            original[field]=json.loads(data)
+                        except ValueError: #if that doesn't work, it's probably a single value
+                            original[field]=data
+                        modified = json.dumps(original)
+                        new = [(ldap.MOD_REPLACE,'jsonData',modified)]
+                        logging.debug('update.cgi field %s found, modifying it', field)
+                    slave.modify_s(dn,new)
+                    print '{"result":"success"}'
+            slave.unbind_s()
+            logging.info('%s modified user %s, field: %s, data: %s', username, uid, field, data)
+            ##send email when reset password
+            if(field == 'userPassword'):
+                if(reset_type == 'youreset'):
+                    reset_password= '''
+                    <html>
+                    <head></head>
+                    <body>
 
-                <p>Hi '''+username+''',</p>
-                <p>'''+uid+''' AHEM password has been changed.</p>
-                <p>The Temporary Password is : '''+password+'''</p>
+                    <p>Hi '''+username+''',</p>
+                    <p>Your AHEM password has been changed.</p>
 
-                '''
-                to_user_reset_password= '''
-                <html>
-                <head></head>
-                <body>
+                    '''
+                    msg = MIMEText(reset_password + '</body></html>','html')
+                    msg['To'] = username+'@asianhope.org'
+                    msg['From'] = 'noreply@asianhope.org'
+                    msg['Subject'] = 'Password changed'
+                    try:
+                        p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
+                        p.communicate(msg.as_string())
+                    except Exception:
+                        pass
+                else:
+                    to_admin_reset_password= '''
+                    <html>
+                    <head></head>
+                    <body>
 
-                <p>Hi '''+uid+''',</p>
-                <p>Your AHEM password has been changed.</p>
-                <p>The Temporary Password is : '''+password+'''</p>
+                    <p>Hi '''+username+''',</p>
+                    <p>'''+uid+''' AHEM password has been changed.</p>
+                    <p>The Temporary Password is : '''+password+'''</p>
 
-                '''
-                msg = MIMEText(to_admin_reset_password + '</body></html>','html')
-                msg['To'] = username+'@asianhope.org'
-                msg['From'] = 'noreply@asianhope.org'
-                msg['Subject'] = 'Password changed'
-                try:
-                    p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
-                    p.communicate(msg.as_string())
-                except Exception:
-                    pass
-                msg = MIMEText(to_user_reset_password + '</body></html>','html')
-                msg['To'] = uid+'@asianhope.org'
-                msg['From'] = 'noreply@asianhope.org'
-                msg['Subject'] = 'Password changed'
-                try:
-                    p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
-                    p.communicate(msg.as_string())
-                except Exception:
-                    pass
-        #-----------end send mail-------
-        #and finally, if it was their mobile number - let them know it was updated!
-        if username == uid and field == 'mobile':
-            clickatell = Http(CLICKATELL_CREDENTIALS['username'],CLICKATELL_CREDENTIALS['password'],CLICKATELL_CREDENTIALS['apiID'])
-            response = clickatell.sendMessage(data,"This number is now your AH emergency contact number", {'from':'AHALERTS'})
-            logging.info('clickatell message sent, response: %s', response)
+                    '''
+                    to_user_reset_password= '''
+                    <html>
+                    <head></head>
+                    <body>
 
+                    <p>Hi '''+uid+''',</p>
+                    <p>Your AHEM password has been changed.</p>
+                    <p>The Temporary Password is : '''+password+'''</p>
 
+                    '''
+                    msg = MIMEText(to_admin_reset_password + '</body></html>','html')
+                    msg['To'] = username+'@asianhope.org'
+                    msg['From'] = 'noreply@asianhope.org'
+                    msg['Subject'] = 'Password changed'
+                    try:
+                        p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
+                        p.communicate(msg.as_string())
+                    except Exception:
+                        pass
+                    msg = MIMEText(to_user_reset_password + '</body></html>','html')
+                    msg['To'] = uid+'@asianhope.org'
+                    msg['From'] = 'noreply@asianhope.org'
+                    msg['Subject'] = 'Password changed'
+                    try:
+                        p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
+                        p.communicate(msg.as_string())
+                    except Exception:
+                        pass
+            #-----------end send mail-------
+            #and finally, if it was their mobile number - let them know it was updated!
+            if username == uid and field == 'mobile':
+                clickatell = Http(CLICKATELL_CREDENTIALS['username'],CLICKATELL_CREDENTIALS['password'],CLICKATELL_CREDENTIALS['apiID'])
+                response = clickatell.sendMessage(data,"This number is now your AH emergency contact number", {'from':'AHALERTS'})
+                logging.info('clickatell message sent, response: %s', response)
 
 
 def convertToAppleBirthday(data):

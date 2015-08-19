@@ -35,14 +35,16 @@
                         headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                       });
             },
-            updateEmployees : function(uid,field,data,username,password) {
+            updateEmployees : function(uid,field,data,username,password,cn,modifyType) {
               var encoded_data = encodeURIComponent(data);
               var data = {
                   uid: uid,
                   field: field,
                   data:encoded_data,
                   username:username,
-                  pw:password
+                  pw:password,
+                  cn:cn,
+                  modifyType:modifyType
                   }
               var uri = encodeURI('cgi-bin/update.cgi');
               return $http({
