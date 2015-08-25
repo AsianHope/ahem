@@ -60,7 +60,7 @@ def main():
     data = urllib.unquote(formData.getlist("data")[0])
     uid = formData.getlist("uid")[0]
     cn = formData.getlist("cn")[0]
-    modifyType = formData.getlist("modifyType")[0];
+    modifyType = formData.getlist("modifyType")[0]
     try:
         reset_type = formData.getlist("reset_type")[0]
     except:
@@ -180,7 +180,6 @@ def main():
 
                 #future - add to log file saying who performed what
                 slave.modify_s(dn,new)
-
             #if it's an extended field, then we're going to pull the JSON and rewrite it
             else:
                     #if the jsonData hasn't been added to the entry, add it.
@@ -200,7 +199,7 @@ def main():
                         new = [(ldap.MOD_REPLACE,'jsonData',modified)]
                         logging.debug('update.cgi field %s found, modifying it', field)
                     slave.modify_s(dn,new)
-                    print '{"result":"success"}'
+            print '{"result":"success"}'
             slave.unbind_s()
             logging.info('%s modified user %s, field: %s, data: %s', username, uid, field, data)
             ##send email when reset password

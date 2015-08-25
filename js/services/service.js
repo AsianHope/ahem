@@ -62,7 +62,9 @@
                     data:encoded_data,
                     username:username,
                     pw:password,
-                    reset_type:type
+                    reset_type:type,
+                    cn:'users',
+                    modifyType:'null'
                     }
                 var uri = encodeURI('cgi-bin/update.cgi');
                 return $http({
