@@ -4,8 +4,8 @@
   <div class="reports" style="margin-top:30px; position:relative;" ng-repeat="employee in employees | filter:query | orderBy:orderProp" ng-if="employee.l=='KH' && employee.c!='KH' && employee.c!=null && employee.c!=undefined">
   <div id="" class="page_break well well-sm container col-xs-12" style="position:relative;">
     <!-- Biogrpahical -->
-  <div class="col-xs-8">
-      <table>
+  <div class="table-responsive col-md-8 col-xs-12">
+      <table class="table">
         <tr>
           <td><h5><strong>Name</strong></h5></td>
           <td><h5><strong>:</strong></h5></td>
@@ -121,8 +121,8 @@
         </tr>
       </table>
   </div>
-    <div class="col-xs-4">
-        <img src="../files/{{employee.employeeNumber}}.jpg" style="width:236px; margin-top:30px;"></img>
+    <div class="col-md-4 col-xs-12">
+        <img class="img-responsive" src="../files/{{employee.employeeNumber}}.jpg" style="/*width:236px;*/ margin-top:30px;"></img>
     </div>
 </div>
 </div>

@@ -1,85 +1,78 @@
-<div ng-controller="EmployeeListController as elist">
-    <div class="demo-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
-      <div class="menu noprint">
-        <div>
-          <img title="Main Menu" style="" id="menu_image"  src="img/Menu-50.png"/>
-        </div>
-        <div class="collape">
-          <ul id="dropdown_menu">
-            <li><a ng-class="{active_menu: $state.includes('admin.profile')}" ui-sref="admin.profile">My Profile</a></li>
-            <li><a ng-class="{active_menu: $state.includes('admin.register')}" ui-sref="admin.register">Register</a></li>
-            <li><a ng-class="{active_menu: $state.includes('admin.reports')}" ui-sref="admin.reports">Reports</a></li>
-            <li><a ng-click="showAllGroups()" ng-class="{active_menu: $state.includes('admin.groups')}" ui-sref="admin.groups">Groups</a></li>
-            <li><a ng-class="{active_menu: $state.includes('admin.MissingInfo')}" ui-sref="admin.MissingInfo">Missing Information</a></li>
+<div class="mdl-layout mdl-js-layout mdl-layout--overlay-drawer-button noprint">
+    <div class="mdl-layout-icon"></div>
+    <div style="border:none;"class="mdl-layout__drawer">
+        <nav class="mdl-navigation">
 
-          </ul>
-        </div>
-      </div>
+            <a class="mdl-navigation__link" ui-sref="admin.profile">Profile</a>
+            <a class="mdl-navigation__link" ui-sref="admin.register">Register</a>
+            <a class="mdl-navigation__link" ui-sref="admin.reports">Reports</a>
+            <a class="mdl-navigation__link" ng-click="showAllGroups()" ui-sref="admin.groups">Groups</a>
+            <a class="mdl-navigation__link" ui-sref="admin.MissingInfo">Missing Information</a>
+        </nav>
+    </div>
+
+  </div>
+<div>
+    <div class="demo-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
       <div id="demo-ribbon" class="noprint"></div>
           <main class="demo-main mdl-layout__content">
-            <div id="header" class="demo-container mdl-grid">
-              <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
-              <div class="demo-content1 mdl-color--white  content mdl-cell mdl-cell--10-col">
+           <div class="content1">
+              <div id="header" class="demo-container mdl-grid">
+                <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+                <div class="demo-content1 mdl-color--white  content mdl-cell mdl-cell--10-col">
 
-                <div class="row noprint" id="demo-header">
-                  <div class="col-xs-6 col-md-6" style="color:white;">
-                    <a style="color:white !important; text-decoration: none;"href ui-sref="admin">
-                      <div style="font-size:85px; margin-top:45px; font-weight:bold;">AHEM</div>
-                    </a>
-                    <div style="margin-top:20px;"><p style="font-size: 15px;">Asian Hope Employee Management</p></div>
-
+                  <div class="row noprint" id="demo-header">
+                    <div class="col-xs-6 col-md-6" style="color:white;">
+                      <div class="ahem">AHEM</div>
+                      <div class="ahemtext"><span>Asian Hope Employee Management</span></div>
+                      <span style="font-size:17px;color:white"></span>
                   </div>
-                  <div class="col-xs-6 col-md-6">
-                    <input id="search" ng-keypress="keyPressBack();" placeholder="Hit / to Search"ng-model="query" class="form-control" autofocus="true" type="text" style="font-size:25px; font-style:italic; color:gray; width:60%;height:80px; float:right; margin-top:20px;"/>
+                    <div class="col-xs-6 col-md-6">
+                      <input id="search" ng-keypress="keyPressBack();" placeholder="Hit / to Search" ng-model="query" class="search_box form-control" autofocus="true" type="text" style=""/>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div ng-hide="showInclude"style="padding:0; position:relative; margin-top:-28px;" class="demo-container mdl-grid">
-              <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
-              <ul class = "stafflist_tab nav nav-tabs" style="border-bottom:none !important;">
-                  <li>
-                      <a style="border-bottom:none !important;" onmouseover="this.style.background='#488FCC'; this.style.border='none';">YOU ARE SEARCHING :</a>
-                  </li>
-                  <li>
-                      <a href ng-click="refreshEmployeeData()">ALL STAFF</a>
-                  </li>
-                  <li>
-                      <a href ng-click="showRequestedAccounts()">REQUESTS</a>
-                  </li>
-                  <li>
-                      <a href ng-click="showDisabledAccounts()">DISABLE</a>
-                  </li>
-                  <li>
-                      <a href ng-click="showInactiveAccounts()">INACTIVE</a>
-                  </li>
-              </ul>
-            </div>
+            <div class="content2">
+              <div class="demo-container mdl-grid mdl-tabs mdl-js-tabs" ng-hide="showInclude"style="padding:0; position:relative; margin-top:-15px;" >
+                <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+                <div class="demo-content content mdl-color-text--grey-800 mdl-cell mdl-cell--10-col" style="margin-bottom:0;">
 
-            <div class="demo-container mdl-grid">
-              <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
-              <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--10-col">
-                <img ng-show="loading" style="display:block; margin-left:auto; margin-right:auto;" src="../img/load.GIF" alt="loading image"/>
-                <div ng-hide="loading" class="col-xs-12 col-md-12" style="  margin-bottom: 15px;">
-                  <div ng-if="showInclude" style="margin-top:20px;">
-                    <div ui-view>
-                    </div>
+                  <div class="mdl-tabs__tab-bar" style="border:none;">
+                    <a href ng-click="refreshEmployeeData()" class="mdl-tabs__tab">All STAFF</a>
+                    <a href ng-click="showRequestedAccounts()" class="mdl-tabs__tab">REQUESTS</a>
+                    <a href ng-click="showDisabledAccounts()" class="mdl-tabs__tab">DISABLE</a>
+                    <a href ng-click="showInactiveAccounts()" class="mdl-tabs__tab">INACTIVE</a>
                   </div>
-                  <staff-list style="width:100%;"  ng-if="!showInclude"></staff-list>
-                  <!-- <view-self ng-show="showlist==false"> </view-self> -->
-                </div>
+              </div>
             </div>
-            </div>
+          </div>
+          <div class="content3">
+              <div class="demo-container mdl-grid">
+                <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+                <div style="margin-top:0;"class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--10-col">
+                  <img ng-show="loading" style="display:block; margin-left:auto; margin-right:auto;" src="../img/load.GIF" alt="loading image"/>
+                  <div ng-hide="loading" class="col-xs-12 col-md-12" style="margin-bottom: 15px;">
+                    <div ng-if="showInclude" style="margin-top:20px;">
+                      <div ui-view>
+                      </div>
+                    </div>
+                    <staff-list style="width:100%;"  ng-if="!showInclude"></staff-list>
+                  </div>
+              </div>
+              </div>
+          </div>
           </main>
         </div>
         <a ui-sref="admin.register" class="noprint">
-          <button id="btn_register" style="width:100px; height:100px; background:#488FCC;" class=" mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--accent">
-            <i style="font-size:57px; color:white; margin-left:-17px;"class="material-icons">add</i>
+          <button id="btn_register" style="background:#488FCC;" class=" mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--accent">
+            <i id="icon_float_register" class="material-icons">add</i>
           </button>
         </a>
         <a ui-sref="admin" class="noprint">
-          <button ng-if="showInclude" ng-click="clearform(); this.tab.setTab(3)" id="back" style="width:100px; height:100px; background:#488FCC;" class="back_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--accent">
-            <i style="font-size:57px; color:white; margin-left:-17px;" class="material-icons">arrow_back</i>
+          <button ng-if="showInclude" ng-click="clearform(); this.tab.setTab(3)" id="back" style="background:#488FCC;" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--accent">
+            <i id="icon_float_button_back" class="material-icons">arrow_back</i>
           </button>
         </a>
   </div>

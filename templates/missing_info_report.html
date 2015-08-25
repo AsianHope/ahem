@@ -3,7 +3,8 @@
 </div>
 <div class="reports" style="margin-top:30px; position:relative;" >
     <label>Search Employee:</label><input style="margin: 0px 0 20px 10px; padding: 6px;" type="text" ng-model="search"/>
-    <table style="width:100%;" class="missing_data mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+    <div class="table-responsive">
+    <table style="width:100%;" class="table missing_data mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
       <!-- {{employees}} -->
       <tr>
         <th>
@@ -226,6 +227,7 @@
         </td>
       </tr>
     </table>
+  </div>
 </div>
 <script type="text/javascript">
   $('.page_break').each(

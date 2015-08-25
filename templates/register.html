@@ -1,10 +1,12 @@
 <div class="container col-md-12" style="padding-top: 5px;" ng-controller="EmployeeRegistrationController as ERegCtrl">
   <div ng-show="success_message">{{success_message}} <a href ng-click="resetRequestForm()">Register another?</a></div>
   <div ng-hide="success_message">
-    <div id="imagePreview" class="col-md-4 well well-sm" style="width: 236px; height:355px; background-position: center center; background-size: cover;"></div>
-    <div class="container col-md-8">
+    <div class="col-md-4 col-xs-12">
+      <div id="imagePreview" class=" well well-sm" style="width: 236px; height:355px; background-position: center center; background-size: cover;"></div>
+
+    </div>
+    <div class="col-md-8 col-xs-12">
       <div class="row">
-        <div class="col-md-12">
           <div class="well well-sm">
             <form class="form-horizontal" ng-submit="registerAccount()">
               <fieldset>
@@ -156,7 +158,7 @@
 
                 <div class="form-group">
                   <div class="col-md-12 text-center">
-                    <h1>Temporary Password:</h1>
+                    <h1 class="temp_password">Temporary Password:</h1>
                     <h2 id="pw" class="header" style="font-family: mono;">{{password}}</h2>
                     <input id="password" type="hidden" name="userPassword" value="{{password}}" />
                     <i id="pw-refresh" class="fa fa-refresh bigicon" style="color: gray" ng-click="tempPassword()"></i>
@@ -170,7 +172,6 @@
               </fieldset>
             </form>
           </div>
-        </div>
       </div>
     </div>
 

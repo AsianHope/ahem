@@ -1,32 +1,33 @@
+<div class="table-responsive">
+  <table class="table tbl_group">
+    <tr style="background-color: #488FCC; color:white;">
+      <th>Description</th>
+      <th>Mail</th>
+      <th>Member</th>
+    </tr>
+    <tr ng-repeat="group in groups | orderBy:'cn'">
+      <td style="width:20%;">{{group.cn}}</td>
+      <td style="width:30%;"><a href="mailto:{{group.mail}}" target="_blank">{{group.mail}}</a></td>
+      <td style="text-align:justify; width:50%">
+        <span ng-repeat="member in group.memberUid | orderBy:'toString()'">
+          {{member}},
+        </span>
 
-<table class="tbl_group">
-  <tr style="background-color: #488FCC; color:white;">
-    <th>Description</th>
-    <th>Mail</th>
-    <th>Member</th>
-  </tr>
-  <tr ng-repeat="group in groups | orderBy:'cn'">
-    <td style="width:20%;">{{group.cn}}</td>
-    <td style="width:30%;"><a href="mailto:{{group.mail}}" target="_blank">{{group.mail}}</a></td>
-    <td style="text-align:justify; width:50%">
-      <span ng-repeat="member in group.memberUid | orderBy:'toString()'">
-        {{member}},
-      </span>
-
-    </td>
-  </tr>
-</table>
+      </td>
+    </tr>
+  </table>
+</div>
 <style media="screen">
-.tbl_group tr td,.tbl_group tr th{
-  padding: 10px;
-  text-align: left;
-  vertical-align: top;
-  border-top: 1px solid rgba(0,0,0,.12);
-  border-bottom: 1px solid rgba(0,0,0,.12);
+  .tbl_group tr td,.tbl_group tr th{
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+    border-top: 1px solid rgba(0,0,0,.12);
+    border-bottom: 1px solid rgba(0,0,0,.12);
 
-}
-.tbl_group {
-  width: 100%;
-  border: 1px solid rgba(0,0,0,.12);
-}
+  }
+  .tbl_group {
+    width: 100%;
+    border: 1px solid rgba(0,0,0,.12);
+  }
 </style>

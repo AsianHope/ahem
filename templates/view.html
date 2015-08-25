@@ -1,23 +1,14 @@
-<div class="col-md-12 col-xs-12" style="margin-bottom:20px;">
-  <ul class = "nav nav-tabs" style="border-bottom:none !important;">
-      <li ng-class="{ tab_active:this.tab.isSet(3)}">
-          <a href ng-click="this.tab.setTab(3)">Employee</a>
-      </li>
-      <li ng-class="{ tab_active:this.tab.isSet(4)}" ng-if="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.c!='KH' && ((curemployee.maritalstatus.trim()=='Single' && curemployee.children>=0) || curemployee.maritalstatus=='Married')">
-          <a href ng-click="this.tab.setTab(4)">Family</a>
-      </li>
-      <li ng-class="{ tab_active:this.tab.isSet(5)}">
-          <a href ng-click="this.tab.setTab(5)">Documents</a>
-      </li>
-      <li ng-class="{ tab_active:this.tab.isSet(6)}">
-          <a href ng-click="this.tab.setTab(6); showGroup(curemployee.uid)">Group</a>
-      </li>
-  </ul>
-</div>
-<div class="col-md-12 col-xs-12">
 
 <div id="change_text_color" style="color:#488FCC;" class="center_div col-md-7 col-xs-7">
-  <div class="col-md-12" ng-show="this.tab.isSet(3)" style="padding-left:0 !important;">
+  <div class="row mdl-tabs mdl-js-tabs">
+    <div class="mdl-tabs__tab-bar" style="margin-bottom:20px;">
+      <a href ng-click="this.tab.setTab(3)" class="mdl-tabs__tab">Employee</a>
+      <a href ng-click="this.tab.setTab(4)" class="mdl-tabs__tab" ng-show="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.c!='KH' && ((curemployee.maritalstatus.trim()=='Single' && curemployee.children>=0) || curemployee.maritalstatus=='Married')">Family</a>
+      <a href ng-click="this.tab.setTab(5)" class="mdl-tabs__tab">Document</a>
+      <a href ng-click="this.tab.setTab(6); showGroup(curemployee.uid)" class="mdl-tabs__tab">Group</a>
+  </div>
+  </div>
+  <div class="row wrap_table_view" ng-show="this.tab.isSet(3)" style="padding-left:0 !important;">
       <table class="table_view">
         <!-- <tr>
           <td>{{curemployee}}</td>
@@ -25,7 +16,7 @@
         <tr>
           <td style="font-size:30px;">
             <strong>
-              <a id="lastname" href="#" title="Click to edit: Surname" editable-text="curemployee.sn"
+              <a style="line-height:2;" id="lastname" href="#" title="Click to edit: Surname" editable-text="curemployee.sn"
                   onbeforesave="updateUser(curemployee.uid,'sn',$data)">
                   {{curemployee.sn +', '}}
               </a>
@@ -248,7 +239,7 @@
   </div>
   <!-- family tab -->
 
-  <div class="col-md-12"  ng-show="this.tab.isSet(4)" style="padding-left:0 !important;">
+  <div class="row wrap_table_view"  ng-show="this.tab.isSet(4)" style="padding-left:0 !important;">
       <table class="table_view">
         <tbody ng-repeat="family_data in family_data">
           <tr>
@@ -288,7 +279,7 @@
     </table>
   </div>
   <!-- document tab -->
-  <div class="col-md-12"  ng-show="this.tab.isSet(5)" style="padding-left:0 !important;">
+  <div class="row"  ng-show="this.tab.isSet(5)" style="padding-left:0 !important;">
       <form name="uploadDocForm" ng-submit="addImportFile()" class="form-horizontal" method="POST" enctype= "multipart/form-data" id="formUpload" >
 
         <table class="tbl_upload" style="width:100%; margin-bottom: 30px;">
@@ -297,38 +288,25 @@
               {{upload_sms}}
               <!-- {{curemployee}}{{employees}} -->
             </td>
-            <td></td>
           </tr>
           <tr>
             <td>
-              Document type
+              Document type :
             </td>
-            <td>:</td>
             <td>
-              <select id="myselect" name="type" ng-model="DocumentData.Documenttype" ng-options="documenttype as documenttype.text for documenttype in documentType" required>
+              <select style="width:150px;" id="myselect" name="type" ng-model="DocumentData.Documenttype" ng-options="documenttype as documenttype.text for documenttype in documentType" required>
                 <option value="">--Document type--</option>
               </select>
             </td>
           </tr>
-          <!-- <tr>
-            <td colspan="2">
-              <span style="color:red;" ng-show="uploadDocForm.type.$error.required" class="help-block">Document type is required</span>
-            </td>
-          </tr> -->
           <tr>
             <td>
-              Upload
+              Upload :
             </td>
-            <td>:</td>
             <td>
               <input type="file" id="file"  ng-model="filename" valid-file name="userUpload" required/>
             </td>
           </tr>
-          <!-- <tr>
-            <td colspan="2">
-              <span style="color:red;" ng-hide="uploadDocForm.userUpload.$valid" class="help-block">Document is required</span>
-            </td>
-          </tr> -->
           <tr>
             <td>
               <input ng-disabled="uploadDocForm.$invalid" class="btn btn-primary" type="submit" value="Upload" name="uploadDoc" ng-model="uploadDoc"/>
@@ -350,67 +328,65 @@
     </form>
   </div>
   <!-- group -->
-  <div class="col-md-12"  ng-show="this.tab.isSet(6)" style="padding-left:0 !important;">
-    <table class="tbl_group ">
-      <tr>
-        <th>Description</th>
-        <th>Mail</th>
-        <th>Remove</th>
+  <div class="row"  ng-show="this.tab.isSet(6)" style="padding-left:0 !important;">
+    <div class="table-responsive">
+      <table class="table tbl_group ">
+        <tr>
+          <th>Description</th>
+          <th>Mail</th>
+          <th>Remove</th>
+        </tr>
+        <tr ng-repeat="curGroup in curGroups | orderBy:'cn'">
+          <td>{{curGroup.cn}}</td>
+          <td><a href="mailto:{{curGroup.mail}}" target="_blank">{{curGroup.mail}}</a></td>
+          <!-- $scope.removeUserFromGroup=function(uid,field,data) -->
+          <td>
+            <a title="Click to : Remove employee from {{curGroup.cn}}" href ng-click="removeUserFromGroup(curemployee.uid,curGroup.cn,curemployee.uid) ; showGroup(curemployee.uid)">
+              <span class="glyphicon glyphicon-trash"></span>
+            </a>
+          </td>
       </tr>
-      <tr ng-repeat="curGroup in curGroups | orderBy:'cn'">
-        <td>{{curGroup.cn}}</td>
-        <td><a href="mailto:{{curGroup.mail}}" target="_blank">{{curGroup.mail}}</a></td>
-        <!-- $scope.removeUserFromGroup=function(uid,field,data) -->
+      <tr>
         <td>
-          <a title="Click to : Remove employee from {{curGroup.cn}}" href ng-click="removeUserFromGroup(curemployee.uid,curGroup.cn,curemployee.uid) ; showGroup(curemployee.uid)">
-            <span class="glyphicon glyphicon-trash"></span>
-          </a>
+          Group
         </td>
-    </tr>
-    <tr>
-      <td>
-        Group
-      </td>
-      <td>
-        <select id="group" ng-model="group_name" ng-options="group.cn as group.cn for group in groups" required>
-          <option value="">--Choose group--</option>
-        </select>
-      </td>
-      <td><button ng-disabled="!group_name" ng-click="addUserToGroup(curemployee.uid,group_name,curemployee.uid)  ; showGroup(curemployee.uid)" class="btn btn-primary">Add to Group</button></td>
-    </tr>
-    <tr>
-      <td style="color:red;" colspan="3" ng-show="modifyGroupSms">{{modifyGroupSms}}</td>
-    </tr>
-    </table>
+        <td>
+          <select id="group" ng-model="group_name" ng-options="group.cn as group.cn for group in groups" required>
+            <option value="">--Choose group--</option>
+          </select>
+        </td>
+        <td><button ng-disabled="!group_name" ng-click="addUserToGroup(curemployee.uid,group_name,curemployee.uid)  ; showGroup(curemployee.uid)" class="btn btn-primary">Add to Group</button></td>
+      </tr>
+      <tr>
+        <td style="color:red;" colspan="3" ng-show="modifyGroupSms">{{modifyGroupSms}}</td>
+      </tr>
+      </table>
+    </div>
   </div>
 </div>
 
 
 <!-- profile pic -->
 <div class="center_div col-md-5 col-xs-5">
-  <div class="col-md-12 col-xs-12 ">
-    <div style="width: 330px; height: 411px; background-position: center center; background-size: cover; background-image: url('files/{{curemployee.employeeNumber}}.jpg');"></div>
+  <div class="row">
+    <div class="center_div profile_pic" style="background-image: url('files/{{curemployee.employeeNumber}}.jpg');"></div>
+    <!-- <div class="profile_pic" style="background-repeat:no-repeat; width: auto; height: 411px; background-position: center center; background-size: 100% auto; background-image: url('files/{{curemployee.employeeNumber}}.jpg');"></div> -->
   </div>
-  <div class="col-md-12 col-xs-12" style="margin-top:30px; position:relative;left: -6px;" >
-      <div class="col-md-6 col-xs-6">
+  <div class="row" style="margin-top:30px; position:relative;left: -6px;" >
+      <div class="text-center col-md-6 col-xs-12 col-sm-6">
         <a target="_blank" href="templates/card.html?name={{curemployee.givenName}} {{curemployee.sn}}&id={{curemployee.employeeNumber}}&title={{curemployee.title}}&department={{curemployee.departmentNumber}}">
           <button  style="background:#488FCC; color:white;" id="btn_print_card" class="button center_div btn">
             Print ID card
           </button>
         </a>
-
+        <br/><br/>
       </div>
-      <div class="col-md-6 col-xs-6">
+      <div class="text-center col-md-6 col-xs-12 col-sm-6">
         <button style="background:#488FCC; color:white;" id="hide_resetpass" class="button showchpass center_div btn">
             <strong>Password Reset</strong>
         </button>
       </div>
   </div>
-  <!-- <div class="col-md-12 col-xs-12" style="margin-top:30px; position:relative;left: -6px;" >
-
-  </div> -->
-</div>
-
 </div>
 
 

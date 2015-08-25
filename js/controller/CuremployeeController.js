@@ -1,6 +1,9 @@
 (function () {
     'use strict';
     app.controller('CuremployeeCtrl',function ($scope,$http,$stateParams,$location,EmployeesService){
+      $scope.$watch('$viewContentLoaded', function(){
+            componentHandler.upgradeAllRegistered();
+      });
       $scope.id =$stateParams.instanceID;
       $scope.family_data=[];
       $scope.document=[];

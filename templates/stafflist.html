@@ -1,11 +1,11 @@
-
-        <table style="width:100%; margin-top:10px;" class="employeelist mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+  <div class="table-responsive">
+        <table style="width:100%; margin-top:10px;" class="table employeelist_admin mdl-data-table mdl-js-data-table mdl-shadow--2dp">
             <tr><th>T</th><th>Dept</th><th>ID</th><th>First Name</th><th>Surname</th><th>Phone</th><th>Email</th></tr>
-            <tr ng-show="!checkStorage()" ng-hide="local_data">
+            <!-- <tr ng-show="!checkStorage()" ng-hide="local_data">
               <td colspan="7" style="text-align:center;">
                  <img src="../img/loading.GIF" alt="loading image"/>
               </td>
-            </tr>
+            </tr> -->
             <tr ng-repeat="employee in employees | filter:query | orderBy:orderProp">
                 <td style="width: 1em;">{{employee.employeeType}}</a></td>
                 <td style="width: 1em;">{{employee.departmentNumber}}</a></td>
@@ -16,3 +16,4 @@
                 <td style="width: 10em;"><a href="mailto:{{employee.mail}}" target="_blank">{{employee.mail}}</a></td>
             </tr>
           </table>
+  </div>

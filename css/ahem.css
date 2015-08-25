@@ -3,22 +3,8 @@
 #debug{
   display:none;
 }
-.documents{
-  display:none;
-}
 .tab_active{
-  color: #555;
-  background-color: #fff;
-  border-right: 1px solid #ddd;
-  border-bottom-color: transparent;
-  cursor: default;
-  border-bottom: 2px solid #488FCC;
-}
-@media (max-width:989px) {
-  .login-form{
-    margin-left:auto;
-    margin-right:auto;
-  }
+  border-bottom: 2px solid #488FCC !important;
 }
 .button{
   font-family: 'Roboto', sans-serif;
@@ -43,6 +29,8 @@
   padding-bottom: 5px;
   font-size: 20px;
   word-wrap: break-word;
+  min-width: 160px;
+  max-width: 160px;
 }
 .table_view{
   font-family: 'Roboto', sans-serif;
@@ -87,28 +75,6 @@
 .demo-content1 {
   border-radius: 2px;
 }
-.demo-layout.is-small-screen .demo-content {
-  padding: 40px 28px;
-}
-.view-profile {
-  position: fixed !important;
-  display: block;
-  right: 0;
-  bottom: 0;
-  margin-right: 10px !important;
-  margin-bottom: 40px !important;
-  z-index: 900;
-}
-#btn_register{
-  position: fixed !important;
-  display: block;
-  right: 0;
-  bottom: 0;
-  margin-right: 10px !important;
-  margin-bottom: 40px !important;
-  z-index: 900;
-}
-
 .login_content{
   width: 100%;
   position:fixed !important;
@@ -125,6 +91,20 @@ body{
 body h5{
   font-size: 15px !important;
 }
+/*profile pic*/
+.profile_pic{
+  width: 330px;
+  height: 411px;
+  background-position: center center;
+  background-size: cover;
+}
+/*media reponsive*/
+@media (max-width:989px) {
+  .login-form{
+    margin-left:auto;
+    margin-right:auto;
+  }
+}
 @media only screen
 and (min-device-width: 320px)
 and (max-device-width: 480px)
@@ -139,6 +119,30 @@ and (-webkit-min-device-pixel-ratio: 2) {
     margin-left:auto;
     margin-right:auto;
   }
+
+}
+/*profile picture responsive*/
+@media (max-width:415px) {
+  .profile_pic{
+    width: auto;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    height: 411px;
+    background-position: center center;
+  }
+}
+/*table view profile  + document*/
+@media (max-width:500px) {
+  table.table_view, table.table_view tr, table.table_view th, table.table_view td{
+    display: block;
+  }
+  table.tbl_upload, table.tbl_upload tr, table.tbl_upload th, table.tbl_upload td{
+    display: block;
+  }
+  /*tab*/
+  .remove_float{
+    float: none !important;
+  }
 }
 @media (max-width:989px) {
   .login-form{
@@ -148,8 +152,72 @@ and (-webkit-min-device-pixel-ratio: 2) {
 }
 @media (max-width:641px) {
   .demo-main{
-    margin-top: -45px;
+    margin-top: -215px;
   }
+}
+@media (max-width:905px) {
+  .col-md-5{
+    width: 100% !important;
+  }
+  .col-md-7{
+    width: 100% !important;
+  }
+}
+@media (max-width:840px) {
+  body{
+    background: green;
+  }
+  .content2{
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  .content3{
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  /*.demo-main{
+    padding-left: 30px;
+    padding-right: 30px;
+  }*/
+  .demo-container{
+    padding: 0  !important;
+    width: 100%;
+    }
+  /*floating button back*/
+  #back{
+    height: 50px !important;
+    min-width: 50px !important;
+    width: 40px !important;
+    margin-right: 0px !important;
+    margin-bottom: 100px !important;
+  }
+  #icon_float_button_back {
+    font-size: 26px !important;
+    margin-left: 0 !important;
+  }
+  /*button register*/
+  #btn_register{
+    height: 50px !important;
+    min-width: 50px !important;
+    width: 40px !important;
+    margin-right: 0px !important;
+  }
+  #icon_float_register{
+    font-size: 26px !important;
+    margin-left: 0 !important;
+  }
+  /*back button go to profile*/
+  #btn_profile{
+    height: 50px !important;
+    min-width: 50px !important;
+    width: 40px !important;
+    margin-right: 0px !important;
+  }
+  #icon_profile{
+    font-size: 26px !important;
+    margin-left: 0 !important;
+  }
+
 }
 @media (min-width:1366px) {
   .demo-content{
@@ -166,22 +234,151 @@ and (-webkit-min-device-pixel-ratio: 2) {
     display: none;
   }
 }
-.employeelist tr th{
+/*header for simple user view*/
+@media (max-width:635px) {
+  .ahem{
+    font-size:65px !important;
+    margin-top:45px
+  }
+  .ahemtext{
+    margin-top:20px;
+  }
+  .ahemtext span{
+    font-size: 12px !important;
+  }
+  .search_box{
+    height: 70px !important;
+    margin-top:30px !important;
+  }
+
+}
+@media (max-width:375px) {
+  .ahem{
+    font-size:50px !important;
+  }
+  .ahemtext{
+    margin-top:5px !important;
+  }
+  .ahemtext span{
+    font-size: 9px !important;
+  }
+  .search_box{
+    height: 52px !important;
+    margin-top:35px !important;
+  }
+
+}
+@media (max-width:380px) {
+  .demo-main {
+   padding-left: 0 !important;
+   padding-right: 0  !important;
+   /*background: red;*/
+  }
+.demo-container{
+  padding: 0  !important;
+  width: 100%;
+  }
+  .demo-layout.is-small-screen .demo-content {
+    padding: 0 !important;
+  }
+  .wrap_table_view{
+    padding: 0 !important;
+  }
+  .view_info{
+    padding: 0!important;
+  }
+}
+@media (max-width:355px) {
+  .login-icon > img{
+    width: 160px;
+  }
+}
+@media (max-width:450px) {
+  .temp_password{
+    font-size: 40px;
+  }
+}
+/*end media screen*/
+/*header*/
+.ahem{
+  font-size:85px;
+  margin-top:45px;
+  font-weight:bold;
+}
+.ahemtext{
+  white-space: nowrap;
+  margin-top:20px;
+}
+.ahemtext span{
+  font-size: 15px;
+}
+.search_box{
+  font-size:25px;
+  font-style:italic;
+  color:gray;
+  width:60%;
+  height:80px;
+  float:right;
+   margin-top:20px;
+}
+.employeelist_admin tr th{
   color: white;
   background: #488FCC;
 
 }
-.back_button{
+/*button go back to profile*/
+#btn_profile {
+  width:100px;
+  height:100px;
   position: fixed !important;
   display: block;
   right: 0;
   bottom: 0;
-  margin-right: 10px !important;
-  margin-bottom: 150px !important;
-  z-index: 900;
+  margin-right: 10px;
+  margin-bottom: 150px;
+  z-index: 3;
+}
+#icon_profile{
+  font-size:57px;
+   color:white;
+   margin-left:-17px;
+}
+/*back button*/
+#back{
+  width:100px;
+  height:100px;
+  position: fixed !important;
+  display: block;
+  right: 0;
+  bottom: 0;
+  margin-right: 10px;
+  margin-bottom: 150px;
+  z-index: 3;
+}
+#icon_float_button_back{
+  font-size:57px;
+   color:white;
+   margin-left:-17px;
+}
+/*register button*/
+#btn_register{
+  width:100px;
+  height:100px;
+  position: fixed !important;
+  display: block;
+  right: 0;
+  bottom: 0;
+  margin-right: 15px;
+  margin-bottom: 40px !important;
+  z-index: 3;
+}
+#icon_float_register{
+  font-size:57px;
+  color:white;
+  margin-left:-17px;
 }
 .menu{
-    z-index: 999;
+    z-index: 3;
     position: absolute;
     height: auto;
     top: 174px;
@@ -212,7 +409,6 @@ and (-webkit-min-device-pixel-ratio: 2) {
   margin-left: -125px;
   width: 126px;
   height: auto;
-  background: red;
 }
 .btn_bgcolor{
   background: rebeccapurple !important;
@@ -236,3 +432,24 @@ and (-webkit-min-device-pixel-ratio: 2) {
   vertical-align: top;
 
 }
+.table-responsive{
+  overflow-x: auto !important;
+}
+/*.row{
+  margin: 0 !important;
+}*/
+/*modify border reponsive table*/
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td{
+   border:none !important;
+ }
+ .mdl-layout__drawer-button{
+   color: white !important;
+ }
+ .mdl-layout__drawer-button .material-icons {
+   color: #fff;
+ }

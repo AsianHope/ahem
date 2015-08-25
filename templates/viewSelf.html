@@ -1,23 +1,27 @@
 <div ng-controller="TabController as tab">
 
 
-  <div style="color:#488FCC;" id="change_text_color" class="center_div col-md-7 col-xs-7">
-    <div class="col-md-12 col-xs-12" style="margin-bottom:20px;" >
-      <ul class = "nav nav-tabs" style="border-bottom:none !important;">
-          <li ng-class="{ tab_active:this.tab.isSet(3)}">
-              <a href ng-click="this.tab.setTab(3)">Profile</a>
-          </li>
-          <li ng-class="{ tab_active:this.tab.isSet(4)}">
-              <a href ng-click="this.tab.setTab(4); showGroup(selfselect.uid)">Group</a>
-          </li>
-      </ul>
+  <div style="color:#488FCC;" id="change_text_color" class="center_div view_info col-md-7 col-xs-12">
+    <div class="row mdl-tabs mdl-js-tabs" style="margin-bottom:20px;" >
+      <div class = "mdl-tabs__tab-bar">
+              <a href class="mdl-tabs__tab" ng-click="this.tab.setTab(3)" ng-class="{ tab_active:this.tab.isSet(3)}">Profile</a>
+              <a href class="mdl-tabs__tab" ng-click="this.tab.setTab(4); showGroup(selfselect.uid)" ng-class="{ tab_active:this.tab.isSet(4)}">Group</a>
+      </div>
+      <!-- <div class="row mdl-tabs mdl-js-tabs">
+        <div class="mdl-tabs__tab-bar" style="margin-bottom:20px;">
+          <a href ng-click="this.tab.setTab(3)" class="mdl-tabs__tab">Employee</a>
+          <a href ng-click="this.tab.setTab(4)" class="mdl-tabs__tab" ng-show="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.c!='KH' && ((curemployee.maritalstatus.trim()=='Single' && curemployee.children>=0) || curemployee.maritalstatus=='Married')">Family</a>
+          <a href ng-click="this.tab.setTab(5)" class="mdl-tabs__tab">Document</a>
+          <a href ng-click="this.tab.setTab(6); showGroup(curemployee.uid)" class="mdl-tabs__tab">Group</a>
+      </div>
+      </div> -->
     </div>
-    <div class="col-md-12 col-xs-12" ng-show="this.tab.isSet(3)" >
+    <div class="col-md-12 col-xs-12 wrap_table_view" ng-show="this.tab.isSet(3)" >
       <table class="table_view">
         <tr>
           <td style="font-size:30px;">
             <strong>
-              <a style="font-weight:bold;" id="lastname" href="#" title="Click to edit: Surname" editable-text="selfselect.sn"
+              <a style="line-height:2; font-weight:bold;" id="lastname" href="#" title="Click to edit: Surname" editable-text="selfselect.sn"
                   onbeforesave="updateUser(selfselect.uid,'sn',$data)">
                   {{selfselect.sn +', '}}
               </a>
@@ -132,32 +136,35 @@
     </table>
     </div>
     <div class="col-md-12 col-xs-12" ng-show="this.tab.isSet(4)">
-      <table class="tbl_group">
-        <tr>
-          <th>Description</th>
-          <th>Mail</th>
-        </tr>
-        <tr ng-repeat="curGroup in curGroups | orderBy:'cn'">
-          <td>{{curGroup.cn}}</td>
-          <td><a href="mailto:{{curGroup.mail}}" target="_blank">{{curGroup.mail}}</a></td>
-        </tr>
-      </table>
+      <div class="table-responsive">
+        <table class="table tbl_group">
+          <tr>
+            <th>Description</th>
+            <th>Mail</th>
+          </tr>
+          <tr ng-repeat="curGroup in curGroups | orderBy:'cn'">
+            <td>{{curGroup.cn}}</td>
+            <td><a href="mailto:{{curGroup.mail}}" target="_blank">{{curGroup.mail}}</a></td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 <!-- profile pic -->
-  <div class="center_div col-md-5 col-xs-5">
+  <div class="center_div col-md-5 col-xs-12">
     <div class="col-md-12 col-xs-12 ">
-      <div style="width: 330px; height: 411px; background-position: center center; background-size: cover; background-image: url('files/{{selfselect.employeeNumber}}.jpg');"></div>
+      <div class="center_div profile_pic" style="background-image: url('files/{{selfselect.employeeNumber}}.jpg');"></div>
+      <!-- <div style="width: 330px; height: 411px; background-position: center center; background-size: cover; background-image: url('files/{{selfselect.employeeNumber}}.jpg');"></div> -->
     </div>
-    <div class="col-md-12 col-xs-12" style="margin-top:30px; osition:relative;left: -6px;" >
-        <div class="col-md-6 col-xs-6">
+    <div class="col-md-12" style="margin-top:30px; osition:relative;left: -6px;" >
+        <div class="text-center col-md-6 col-xs-12 col-sm-6">
           <a target="_blank" href="templates/business-card.html?department={{selfselect.departmentNumber}}&name={{selfselect.givenName}} {{selfselect.sn}}&title={{selfselect.title}}&email={{selfselect.mail}}&mobile={{selfselect.mobile}}">
             <button style="background:#488FCC; color:white;" id="btn_print_card" class="button center_div btn">
               <strong>Print Business Card<strong>
             </button>
-          </a>
+          </a><br/><br/>
         </div>
-        <div class="col-md-6 col-xs-6">
+        <div class="text-center col-md-6 col-xs-12 col-sm-6">
           <button style="background:#488FCC; color:white;" id="btn_print_change" class="button showchpass center_div btn">
               <strong>Change Password</strong>
           </button>

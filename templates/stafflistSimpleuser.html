@@ -1,19 +1,21 @@
-<table style="width:100%;" class="employeelist mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-          <thead>
-            <tr id="table_th" style="background:#488FCC;">
-            <th>Dept</th><th>Title</th><th>Name</th><th>Phone</th><th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-hide="!local_data" ng-repeat="employee in local_data | filter:query | orderBy:orderProp">
-                <td>{{employee.departmentNumber}}</a></td>
-                <td>{{employee.title}}</td>
-                <td>{{employee.givenName}} {{employee.sn}}</td>
-                <td>{{employee.mobile}}</td>
-                <td><a ng-style="style_anchor()" href="mailto:{{employee.mail}}" target="_blank">{{employee.mail}}</a></td>
-            </tr>
-          </tbody>
-</table>
+<div class="table-responsive">
+  <table style="width:100%;" class="table employeelist mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+            <thead>
+              <tr id="table_th" style="background:#488FCC;">
+              <th>Dept</th><th>Title</th><th>Name</th><th>Phone</th><th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-hide="!local_data" ng-repeat="employee in local_data | filter:query | orderBy:orderProp">
+                  <td>{{employee.departmentNumber}}</a></td>
+                  <td>{{employee.title}}</td>
+                  <td>{{employee.givenName}} {{employee.sn}}</td>
+                  <td>{{employee.mobile}}</td>
+                  <td><a ng-style="style_anchor()" href="mailto:{{employee.mail}}" target="_blank">{{employee.mail}}</a></td>
+              </tr>
+            </tbody>
+  </table>
+</div>
         <style>
           .employeelist tr td{
             text-align: left;

@@ -1,6 +1,14 @@
 (function () {
     'use strict';
     app.controller('EmployeeListController',function ($scope, $http, $filter, $q,$location,EmployeesService,storageService) {
+      // upgrade with material design lite
+      $scope.$watch('$viewContentLoaded', function(){
+            componentHandler.upgradeAllRegistered();
+      });
+      $scope.user = {
+           uname: null,
+           pw: null
+         }
       $scope.showlist=false;
       $scope.keyPress = function(){
         $scope.showlist=true;
