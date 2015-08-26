@@ -1,15 +1,8 @@
 (function () {
     'use strict';
-    app.controller('EmployeeListController',function ($scope, $http, $filter, $q,$location,EmployeesService,storageService) {
-      // upgrade with material design lite
-      $scope.$watch('$viewContentLoaded', function(){
-            componentHandler.upgradeAllRegistered();
-      });
-      $scope.user = {
-           uname: null,
-           pw: null
-         }
+    app.controller('EmployeeListController',function ($scope, $http,$timeout, $filter, $q,$location,EmployeesService,storageService) {
       $scope.showlist=false;
+
       $scope.keyPress = function(){
         $scope.showlist=true;
       }
@@ -93,8 +86,8 @@
                           document.getElementById("btn_print_card").style.backgroundColor = "#488FCC";
                           document.getElementById("btn_print_change").style.backgroundColor = "#488FCC";
                           document.getElementById("search").style.border = "1px solid #488FCC";
-                          $('#change_text_color').css('color', '#488FCC');
-                          $('#change_text_color a').css('color', '#488FCC');
+                          jQuery('#change_text_color').css('color', '#488FCC');
+                          jQuery('#change_text_color a').css('color', '#488FCC');
                           $scope.style_anchor = function() {
                             return { "color": "#488FCC" };
                           }
@@ -103,7 +96,7 @@
                           $scope.style_anchor = function() {
                             return { "color": "#26AF5F" };
                           }
-                          $('.mail').css('color', '#26AF5F');
+                          jQuery('.mail').css('color', '#26AF5F');
                           document.getElementById("table_th").style.backgroundColor = "#26AF5F";
                           document.getElementById("demo-ribbon").style.backgroundColor = "#26AF5F";
                           document.getElementById("demo-header").style.backgroundColor = "#26AF5F";
@@ -111,8 +104,8 @@
                           document.getElementById("btn_print_card").style.backgroundColor = "#26AF5F";
                           document.getElementById("btn_print_change").style.backgroundColor = "#26AF5F";
                           document.getElementById("search").style.border = "1px solid #26AF5F";
-                          $('#change_text_color').css('color', '#26AF5F');
-                          $('#change_text_color a').css('color', '#26AF5F');
+                          jQuery('#change_text_color').css('color', '#26AF5F');
+                          jQuery('#change_text_color a').css('color', '#26AF5F');
                       }
                       else {
                         $scope.style_anchor = function() {
@@ -179,10 +172,11 @@
         $scope.showDisabledAccounts = function(){
           $scope.loading = true;
           $scope.employees = [];
+          // $scope.abc="ho;"
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"DISABLED")
               .success(function(data, status, headers, config) {
-                $scope.employees = data;
-              })
+                  $scope.employees = data;
+        })
               .finally(function() {
               // called no matter success or failure
               $scope.loading = false;

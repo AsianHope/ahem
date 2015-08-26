@@ -15,17 +15,12 @@
       <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.indigo-deep_purple.min.css" />
       <link href="css/xeditable.css" rel="stylesheet"/>
     </head>
-    <body ng-controller="EmployeeListController as elist">
-        <div ng-controller="LoginController as loginctrl">
-
-            <div id="s" >
-              <section ng-show="user.uname != null" ng-controller="TabController as tab">
-                  <div ui-view>
-                  </div>
-
-              </section>
-            </div>
-
+    <body>
+      <div ng-controller="LoginController as loginctrl">
+          <section ng-if="user.uname != null" ng-controller="TabController as tab">
+              <div ui-view ng-controller="EmployeeListController as elist">
+              </div>
+          </section>
             <!-- If not logged in !-->
             <div class="login_content" ng-show="user.uname == null">
             <div style="top:30px;" class="col-md-8 col-md-offset-2" >
@@ -56,8 +51,7 @@
                   </div>
               </div>
             </div>
-        </div>
-
+      </div>
         <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="js/angular.min.js"></script>
         <script type="text/javascript" src="js/xeditable.js"></script>
@@ -74,18 +68,18 @@
         <script type="text/javascript" src="js/controller/TabController.js"></script>
         <script type="text/javascript" src="js/controller/CuremployeeController.js"></script>
         <script type="text/javascript">
-        angular.element(document).ready(
-              function() {
-                componentHandler.upgradeAllRegistered();
+          angular.element(document).ready(
+                function() {
+                  componentHandler.upgradeAllRegistered();
+              });
+            $(document).keydown(function(e) {
+              if (e.keyCode===191) {
+                e.preventDefault();
+                $("#search").focus();
+                $("#search").select();
+                return;
+              }
             });
-          $(document).keydown(function(e) {
-            if (e.keyCode===191) {
-              e.preventDefault();
-              $("#search").focus();
-              $("#search").select();
-              return;
-            }
-          });
         </script>
     </body>
 </html>

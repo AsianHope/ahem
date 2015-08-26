@@ -4,6 +4,7 @@
       $scope.$watch('$viewContentLoaded', function(){
             componentHandler.upgradeAllRegistered();
       });
+      $scope.loading = true;
       $scope.id =$stateParams.instanceID;
       $scope.family_data=[];
       $scope.document=[];
