@@ -1,4 +1,40 @@
 //globals
+    var genders = [
+        {value: 'M', text: 'M'},
+        {value: 'F', text: 'F'}
+    ];
+    var ahcountries = [
+      {value: 'KH', text: 'Cambodia'},
+      {value: 'US', text: 'USA'},
+    ];
+    var religions= [
+        {value: 'Buddhist', text: 'Buddhist'},
+        {value: 'Christian', text: 'Christian'},
+        {value: 'Undeclared', text: 'Undeclared'},
+    ];
+    var maritalstatuses= [
+        {value: 'Married', text: 'Married'},
+        {value: 'Single', text: 'Single'}
+    ];
+    var documentType=[
+      {value: '0', text: 'Photo', required_by: 'all'},
+      {value: '1', text: 'CV/Resume', required_by: 'all'},
+      {value: '2', text: 'Statement of Faith', required_by: 'all'},
+      {value: '3', text: 'Letter of Reference', required_by: 'all'},
+      {value: '4', text: 'Child Protection Policy', required_by: 'all'},
+      {value: '5', text: 'Background Check', required_by: 'all'},
+      {value: '6', text: 'Offer Letter', required_by: 'all'},
+      {value: '7', text: 'Employee Handbook Receipt', required_by: 'all'},
+      {value: '8', text: 'Position Description', required_by: 'all'},
+      {value: '9', text: 'Physical Examination Report', required_by: 'all'},
+      {value: '10', text: 'Copy of Passport', required_by: 'all'},
+      {value: '11', text: 'Copy of Visa', required_by: 'all'},
+      {value: '12', text: 'Copy of ID', required_by: 'all'},
+      {value: '13', text: 'W4', required_by: 'all'},
+      {value: '14', text: 'Code of Ethics', required_by: 'all'},
+      {value: '15', text: 'Employee Status Form', required_by: 'all'},
+      {value: '16', text: 'Other Supporting Documentation', required_by: ''},
+    ];
     var ah_employeetypes = [
         {value: 'PT', text: 'Part Time'},
         {value: 'FT', text: 'Full Time'},
