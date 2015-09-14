@@ -1,7 +1,25 @@
 (function () {
     'use strict';
-    app.controller('EmployeeListController',function ($scope, $http,$timeout, $filter, $q,$location,EmployeesService,storageService) {
+    app.controller('EmployeeListController',function ($scope, $http, $filter, $q,$location,EmployeesService,storageService) {
       $scope.showlist=false;
+      $scope.loading = true;
+      $scope.local_data=[];
+      $scope.curemployee=null;
+      $scope.employees = [];
+      $scope.current_pass=null;
+      $scope.password;
+      $scope.keylist="abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$*&";
+      $scope.temp='';
+      $scope.plength=8;
+
+      $scope.DocumentData = {
+         'DocumentType':{value: '0', text: 'Photo', required_by: 'all'},
+         'uid':'',
+
+      };
+      $scope.groups =[];
+      $scope.curGroups = [];
+      $scope.modifyGroupSms=null;
 
       $scope.keyPress = function(){
         $scope.showlist=true;
@@ -11,38 +29,29 @@
       }
       $scope.keyclickshide = function(){
         $scope.showlist=false;
-        document.getElementById("search").value = "";
-        document.getElementById("search").focus();
       }
+      // cannot test with dom
       $scope.clearform = function() {
         document.getElementById("search").value = "";
         document.getElementById("search").focus();
       }
-      $scope.loading = true;
-      $scope.local_data=[];
-      $scope.curemployee=null;
-      $scope.employees = [];
-      $scope.email;
-      $scope.current_pass;
-      $scope.password;
-      $scope.password = password;
-      var keylist="abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$*&";
-      var temp='';
-      var plength=8;
+      // not yet test
       $scope.checkStorage = function ()
       {
+        console.log(localStorage.getItem('employees_local_data') !== null);
         return localStorage.getItem('employees_local_data') !== null;
       }
        // taken from http://www.javascriptkit.com/script/script2/passwordgenerate.shtml
        $scope.tempPassword = function(){
-           temp='';
-           for (var i=0;i<plength;i++)
-             temp+=keylist.charAt(Math.floor(Math.random()*keylist.length));
-           $scope.password = temp;
+         $scope.temp='';
+           for (var i=0;i<$scope.plength;i++)
+           $scope.temp+=$scope.keylist.charAt(Math.floor(Math.random()*$scope.keylist.length));
+           $scope.password= $scope.temp;
        };
-       $scope.tempPassword();
+
+      $scope.tempPassword();
        /*---check if username and password = null don't run factory*/
-       if($scope.user.uname!=null && $scope.user.pw!=null ){
+
            EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"CURSTAFF")
                .success(function(data, status, headers, config) {
                   if(data.result=='error'){
@@ -51,6 +60,7 @@
                     $scope.user.pw = null;
                   }
                   else{
+                    console.log(JSON.stringify(data[2]));
                     $scope.employees_local_data=[];
                     $scope.employees = data;
                       for(var i=0; i<$scope.employees.length; i++){
@@ -125,7 +135,7 @@
                 // called no matter success or failure
                 $scope.loading = false;
               });
-        }
+
             // storageService.clearAll();
             if(localStorage.getItem('employees_local_data') !== null){
               // get localStorage data
@@ -135,10 +145,9 @@
                 $scope.local_data=  $scope.employees;
             }
           $scope.range = function(n) {
-            //  n.trim();
             return new Array(parseInt(n));
           };
-        //no one selected initially
+        // no one selected initially
         $scope.setEmployee = function(setEmployee){
           $scope.curemployee=setEmployee;
         };
@@ -155,7 +164,6 @@
                 $scope.loading = false;
               });
         };
-
         $scope.showRequestedAccounts = function(){
           $scope.loading = true;
           $scope.employees = [];
@@ -168,11 +176,9 @@
               $scope.loading = false;
             });
           };
-
         $scope.showDisabledAccounts = function(){
           $scope.loading = true;
           $scope.employees = [];
-          // $scope.abc="ho;"
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"DISABLED")
               .success(function(data, status, headers, config) {
                   $scope.employees = data;
@@ -194,8 +200,6 @@
               $scope.loading = false;
             });
         };
-        $scope.groups =[];
-        $scope.curGroups = [];
         $scope.showGroup = function(uid){
           $scope.curGroups = [];
           $scope.loading = true;
@@ -266,6 +270,7 @@
 
         return +years+' year(s), '+months+' month(s)';
       };
+      // not use
       this.selectSelf = function(){
         for(var i=0; i<$scope.employees.length; i++){
           if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
@@ -273,9 +278,6 @@
              break;
           }
         }
-      };
-      $scope.go = function ( path ) {
-        $location.path( path );
       };
       $scope.updateUser = function(uid, field, data){
               var d = $q.defer();
@@ -292,7 +294,6 @@
                    });
                    return d.promise;
       }
-      $scope.modifyGroupSms=null;
       $scope.removeUserFromGroup=function(uid,field,data){
         var d = $q.defer();
         EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'groups','remove')
@@ -315,7 +316,6 @@
              });
              return d.promise;
       }
-      $scope.group_name=null;
       $scope.addUserToGroup = function(uid,field,data){
         var d = $q.defer();
         if(field!=null){
@@ -375,6 +375,7 @@
                    }
                      return d.promise;
       }
+
       $scope.decodeAppleBirthday = function(applebirthday){
         if(applebirthday == null) return 'DOB'
         else{
@@ -386,45 +387,9 @@
             return year+'-'+month+'-'+day
         }
 
-
       }
-      var staff=$scope.staff;
 
-      $scope.genders = [
-          {value: 'M', text: 'M'},
-          {value: 'F', text: 'F'}
-      ];
-
-      $scope.departments= ah_departments;
-
-      $scope.employeetypes= ah_employeetypes;
-
-      //pull these from a database or API -
-      //BUG WARNING: if value doesn't match index in array things will get wonky
-      $scope.documentType=[
-        {value: '0', text: 'Photo', required_by: 'all'},
-        {value: '1', text: 'CV/Resume', required_by: 'all'},
-        {value: '2', text: 'Statement of Faith', required_by: 'all'},
-        {value: '3', text: 'Letter of Reference', required_by: 'all'},
-        {value: '4', text: 'Child Protection Policy', required_by: 'all'},
-        {value: '5', text: 'Background Check', required_by: 'all'},
-        {value: '6', text: 'Offer Letter', required_by: 'all'},
-        {value: '7', text: 'Employee Handbook Receipt', required_by: 'all'},
-        {value: '8', text: 'Position Description', required_by: 'all'},
-        {value: '9', text: 'Physical Examination Report', required_by: 'all'},
-        {value: '10', text: 'Copy of Passport', required_by: 'all'},
-        {value: '11', text: 'Copy of Visa', required_by: 'all'},
-        {value: '12', text: 'Copy of ID', required_by: 'all'},
-        {value: '13', text: 'W4', required_by: 'all'},
-        {value: '14', text: 'Code of Ethics', required_by: 'all'},
-        {value: '15', text: 'Employee Status Form', required_by: 'all'},
-        {value: '16', text: 'Other Supporting Documentation', required_by: ''},
-      ];
-      $scope.DocumentData = {
-         'DocumentType':{value: '0', text: 'Photo', required_by: 'all'},
-         'uid':'',
-
-      };
+      // not use
       $scope.showMissingDocs = function(doclist, required_docs){
         var tempid;
         var reqdocs = required_docs.slice();
@@ -443,22 +408,25 @@
 
         return missingdocs;
       };
-      $scope.maritalstatuses= [
-          {value: 'Married', text: 'Married'},
-          {value: 'Single', text: 'Single'}
-      ];
 
-      $scope.religions= [
-          {value: 'Buddhist', text: 'Buddhist'},
-          {value: 'Christian', text: 'Christian'},
-          {value: 'Undeclared', text: 'Undeclared'},
-      ];
 
-      $scope.ahcountries = [
-        {value: 'KH', text: 'Cambodia'},
-        {value: 'US', text: 'USA'},
-      ];
+      var staff=$scope.staff;
+
+      $scope.genders = genders;
+
+      $scope.departments= ah_departments;
+
+      $scope.employeetypes= ah_employeetypes;
+      $scope.maritalstatuses=maritalstatuses;
+
+      $scope.religions=religions;
+
+      $scope.ahcountries = ahcountries;
 
       $scope.countries = world_countries;
+      $scope.documentType=documentType;
+      //pull these from a database or API -
+      //BUG WARNING: if value doesn't match index in array things will get wonky
+
     });
 }());
