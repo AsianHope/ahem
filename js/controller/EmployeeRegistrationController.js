@@ -1,15 +1,14 @@
 (function () {
       'use strict';
       app.controller('EmployeeRegistrationController',function($scope, $http, $q,EmployeesService) {
-        $scope.password;
+        $scope.password = null;
         $scope.countries = world_countries;
         $scope.departments = ah_departments;
 
-        $scope.password = password;
 
-        var keylist="abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$*&";
-        var temp='';
-        var plength=8;
+        $scope.keylistRe="abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$*&";
+        $scope.tempRe='';
+        $scope.plengthRe=8;
         //default values
         $scope.formdata = {
            'employeeType':'FT',
@@ -18,16 +17,16 @@
            'apple-birthday':'1970-01-01',
            'departmentNumber':'UNK'
         };
-         // taken from http://www.javascriptkit.com/script/script2/passwordgenerate.shtml
-         $scope.tempPassword = function(){
-             temp='';
-             for (var i=0;i<plength;i++)
-               temp+=keylist.charAt(Math.floor(Math.random()*keylist.length));
-             $scope.password = temp;
+
+        //  taken from http://www.javascriptkit.com/script/script2/passwordgenerate.shtml
+         $scope.tempPasswordRegister= function(){
+            $scope.tempRe='';
+             for (var i=0;i<$scope.plengthRe;i++)
+             $scope.tempRe+=$scope.keylistRe.charAt(Math.floor(Math.random()*$scope.keylistRe.length));
+             $scope.password = $scope.tempRe;
+             console.log($scope.password);
          };
-
-         $scope.tempPassword();
-
+         $scope.tempPasswordRegister();
          $scope.registerAccount = function(){
                  var d = $q.defer();
                  $scope.formdata['userPassword']=$scope.password;
@@ -48,7 +47,7 @@
          $scope.resetRequestForm = function(){
            $scope.success_message = null;
            $scope.formdata = {'l':'KH'};
-           $scope.tempPassword();
+           $scope.tempPasswordRegister();
          };
       });
   }());
