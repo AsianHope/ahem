@@ -1,5 +1,13 @@
 (function () {
       'use strict';
+
+      app.factory('modalDialog', ['$window', function($window) {
+        return {
+            confirm: function(message) {
+                return $window.confirm(message);
+            }
+        }
+      }]);
       app.factory('storageService', function ($rootScope) {
         return {
 
@@ -7,7 +15,7 @@
                return localStorage.getItem(key);
             },
             save: function (key, data) {
-               localStorage.setItem(key, JSON.stringify(data));
+                localStorage.setItem(key, JSON.stringify(data));
             },
             remove: function (key) {
                 localStorage.removeItem(key);
@@ -17,22 +25,22 @@
             }
         };
     });
-      app.factory('EmployeesService', function($http) {
+    angular.module('Service', []).factory('EmployeesService', function($http) {
         return {
           getEmployees : function(username,password,scope) {
                 // return $http.get('/api/todos');
                 var data = {
-                      username: username,
-                      pw: password,
+                      "username": username,
+                      "pw": password,
                       // scope:'CURSTAFF'
-                      scope:scope
+                      "scope":scope
                       }
                 var uri = encodeURI('cgi-bin/dump.cgi');
                 return $http({
-                        method  : 'POST',
-                        url     : uri,
-                        data    : $.param(data),  // pass in data as strings
-                        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                        "method"  : "POST",
+                        "url"     : uri,
+                        "data"    : $.param(data),  // pass in data as strings
+                        "headers" : {"Content-Type": "application/x-www-form-urlencoded" }  // set the headers so angular passing info as form data (not request payload)
                       });
             },
             updateEmployees : function(uid,field,data,username,password,cn,modifyType) {
@@ -82,7 +90,24 @@
                         data    : $.param(formdata),  // pass in data as strings
                         headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                        })
-                  }
+                  },
+                uploadFile : function(file,uidNumber,uid,Document_type,Document_exist) {
+                  var formData = new FormData();
+                  formData.append('file', file);
+                  formData.append('uidnumber',uidNumber);
+                  formData.append('loginName',uid);
+                  formData.append('documentType',Document_type);
+                  formData.append('filename',Document_exist);
+
+                  var uri = encodeURI('cgi-bin/upload.cgi');
+                  return $http({
+                          method  : 'POST',
+                          url     : uri,
+                          data    : formData,  // pass in data as strings
+                          headers: {'Content-Type': undefined},
+                          transformRequest: angular.identity
+                        })
+                  },
         }
       });
   }());
