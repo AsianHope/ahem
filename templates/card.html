@@ -157,6 +157,12 @@
         $('.logoimg').attr('src','../img/logoslogo.png');
         $('head').append('<link rel="stylesheet" href="../static/font-awesome/css/font-awesome.min.css" type="text/css" />');
       }
+      if(department=="AHIS"){
+        $('link').attr('href','../css/ahisstaffcard.css');
+        $('.footerimg').attr('src','../img/ahisfooter.png');
+        $('.logoimg').attr('src','../img/ahislogo.png');
+        $('head').append('<link rel="stylesheet" href="../static/font-awesome/css/font-awesome.min.css" type="text/css" />');
+      }
       function getParameterByName(name) {
           name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
           var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
