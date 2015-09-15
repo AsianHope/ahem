@@ -91,19 +91,20 @@
                         headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                        })
                   },
-                uploadFile : function(file,uidNumber,uid,Document_type,Document_exist) {
+                uploadFile : function(file,uidNumber,uid,Document_type,Document_ID,Document_exist,otherDocDescript) {
                   var formData = new FormData();
                   formData.append('file', file);
                   formData.append('uidnumber',uidNumber);
                   formData.append('loginName',uid);
                   formData.append('documentType',Document_type);
                   formData.append('filename',Document_exist);
-
+                  formData.append('DocumentID',Document_ID);
+                  formData.append('otherDocDescript',otherDocDescript);
                   var uri = encodeURI('cgi-bin/upload.cgi');
                   return $http({
                           method  : 'POST',
                           url     : uri,
-                          data    : formData,  // pass in data as strings
+                          data    : formData,
                           headers: {'Content-Type': undefined},
                           transformRequest: angular.identity
                         })

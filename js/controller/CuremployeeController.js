@@ -4,12 +4,14 @@
       $scope.$watch('$viewContentLoaded', function(){
             componentHandler.upgradeAllRegistered();
       });
+      $scope.otherDoc = {};
       $scope.show_photo=false;
       $scope.loading = true;
       $scope.ID=null;
       $scope.ID =$stateParams.instanceID;
       $scope.family_data=[];
       $scope.document=[];
+      $scope.other_documents=[];
       $scope.upload_sms = null;
       if($scope.employees.length==0){
         EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"CURSTAFF")
@@ -25,18 +27,28 @@
                 for(var i=0; i<$scope.employees.length; i++){
                     if($scope.employees[i].employeeNumber==$scope.ID){
                       $scope.curemployee=$scope.employees[i];
+
+                      // get documents
                       if($scope.curemployee.documents==undefined){
                         $scope.document =[];
                       }
                       else{
                         $scope.document = $scope.curemployee.documents;
                       }
+
+                      // get other documents
+                      if($scope.curemployee.OtherDocuments==undefined){
+                        $scope.other_documents =[];
+                      }
+                      else{
+                        $scope.other_documents = $scope.curemployee.OtherDocuments;
+                      }
+
                       for (var i = 0; i<$scope.document.length; i++){
                         if($scope.document[i]['DocumentID']==0){
                           $scope.show_photo = true;
                           break;
                         }
-
                       }
                       if($scope.curemployee.family_data==undefined){
                         $scope.family_data=[];
@@ -127,19 +139,30 @@
        for(var i=0; i<$scope.employees.length; i++){
            if($scope.employees[i].employeeNumber==$scope.ID){
              $scope.curemployee=$scope.employees[i];
+
+            //  get documents
              if($scope.curemployee.documents==undefined){
                $scope.document = [];
              }
              else{
                $scope.document = $scope.curemployee.documents;
              }
+
+             // get other documents
+             if($scope.curemployee.OtherDocuments==undefined){
+               $scope.other_documents =[];
+             }
+             else{
+               $scope.other_documents = $scope.curemployee.OtherDocuments;
+             }
+
              for (var i = 0; i<$scope.document.length; i++){
                if($scope.document[i]['DocumentID']==0){
                  $scope.show_photo = true;
                  break;
                }
-
              }
+
              if($scope.curemployee.family_data==undefined){
                $scope.family_data=[];
                if($scope.curemployee.maritalstatus =='Married'){
@@ -224,6 +247,15 @@
                   else{
                     $scope.document = $scope.curemployee.documents;
                   }
+
+                  // get other documents
+                  if($scope.curemployee.OtherDocuments==undefined){
+                    $scope.other_documents =[];
+                  }
+                  else{
+                    $scope.other_documents = $scope.curemployee.OtherDocuments;
+                  }
+
                   for (var i = 0; i<$scope.document.length; i++){
                     if($scope.document[i]['DocumentID']==0){
                       $scope.show_photo = true;
@@ -317,18 +349,28 @@
        }
         $scope.addImportFile = function() {
          var f = document.getElementById('file').files[0];
-         var formData = new FormData();
          var files_exist =false;
          $scope.Document_exist=[];
          for (var i = 0; i<$scope.document.length; i++){
-           if($scope.document[i]['DocumentID']==$scope.DocumentData.Documenttype.value){
+           if($scope.document[i]['DocumentID']==$scope.DocumentData.Documenttype.value && $scope.DocumentData.Documenttype.value!=16){
              files_exist = true;
              $scope.Document_exist=$scope.document[i];
            }
          }
-         if(files_exist==true){
+         if($scope.DocumentData.Documenttype.value==16 || $scope.DocumentData.Documenttype=='16'){
+           for (var i = 0; i<$scope.other_documents.length; i++){
+             if($scope.other_documents[i]['Description']==$scope.otherDoc.otherDocDescript){
+               files_exist = "duplicate";
+             }
+           }
+         }
+         if(files_exist=='duplicate'){
+           alert("Other Documents Description Already Exist! Please Change Description.");
+           jQuery("#otherDoc").select();
+        }
+         else if(files_exist==true){
           if (modalDialog.confirm("" + $scope.Document_exist.Description + " Document already exist! Do you want to replace it?")==true){
-              EmployeesService.uploadFile(f, $scope.curemployee.uidNumber,$scope.curemployee.uid,$scope.DocumentData.Documenttype.text,$scope.Document_exist.data)
+              EmployeesService.uploadFile(f, $scope.curemployee.uidNumber,$scope.curemployee.uid,$scope.DocumentData.Documenttype.text,$scope.DocumentData.Documenttype.value,$scope.Document_exist.data,"")
                 .success(function(data, status, headers, config) {
                   JSON.stringify(data);
                   var fileDirectory = data.file;
@@ -361,27 +403,41 @@
           }
          }
          else{
-           EmployeesService.uploadFile(f, $scope.curemployee.uidNumber,$scope.curemployee.uid,$scope.DocumentData.Documenttype.text,"")
+           EmployeesService.uploadFile(f, $scope.curemployee.uidNumber,$scope.curemployee.uid,$scope.DocumentData.Documenttype.text,$scope.DocumentData.Documenttype.value,"",$scope.otherDoc.otherDocDescript)
            .success(function(data, status, headers, config) {
                    JSON.stringify(data);
                    var fileDirectory = data.file;
                    if(data.result=='success'){
-                     // $scope.document=[];
-                   var document_obj = {};
-                    document_obj['DocumentID'] = $scope.DocumentData.Documenttype.value;
-                    document_obj['data'] = fileDirectory;
-                    document_obj['Description'] =$scope.DocumentData.Documenttype.text;
-                    $scope.document.push(document_obj);
-
-                     $scope.updateUser($scope.curemployee.uid,'documents',JSON.stringify($scope.document));
-                     $scope.upload_sms='Upload file successfully!';
+                    //  add other documents
+                    if($scope.DocumentData.Documenttype.value==16){
+                      var document_obj = {};
+                      if($scope.other_documents.length<1){
+                        document_obj['DocumentID'] = 1;
+                      }
+                      else{
+                        document_obj['DocumentID'] =$scope.other_documents[$scope.other_documents.length-1]['DocumentID']+1;
+                      }
+                      document_obj['data'] = fileDirectory;
+                      document_obj['Description'] =$scope.otherDoc.otherDocDescript;
+                      $scope.other_documents.push(document_obj);
+                      $scope.updateUser($scope.curemployee.uid,'OtherDocuments',JSON.stringify($scope.other_documents));
+                    }
+                    else{
+                       var document_obj = {};
+                        document_obj['DocumentID'] = $scope.DocumentData.Documenttype.value;
+                        document_obj['data'] = fileDirectory;
+                        document_obj['Description'] =$scope.DocumentData.Documenttype.text;
+                        $scope.document.push(document_obj);
+                        $scope.updateUser($scope.curemployee.uid,'documents',JSON.stringify($scope.document));
+                   }
+                    $scope.upload_sms='Upload file successfully!';
                      document.getElementById("formUpload").reset();
+                    //  show profile picture
                      for (var i = 0; i<$scope.document.length; i++){
                        if($scope.document[i]['DocumentID']==0){
                          $scope.show_photo = true;
                          break;
                        }
-
                      }
                    }
                    else{

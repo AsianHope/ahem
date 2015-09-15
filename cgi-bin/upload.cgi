@@ -21,6 +21,8 @@ uidnumber = formData.getlist("uidnumber")[0]
 loginName = formData.getlist("loginName")[0];
 documentType = formData.getlist("documentType")[0];
 replaceFileName = formData.getlist("filename")[0];
+documentID = formData.getlist("DocumentID")[0];
+otherDocDescript = formData.getlist("otherDocDescript")[0];
 
 if fileitem.filename:
     fn = os.path.basename(fileitem.filename)
@@ -29,13 +31,17 @@ if fileitem.filename:
     # make directory if not exist
     if not os.path.isdir('files/'+str(uidnumber)+''):
         os.makedirs('files/'+str(uidnumber))
+    # other document
+    if documentID == '16':
+        fileDirectory ='files/' + str(uidnumber) + '/' + str(uidnumber)+'-'+str(loginName)+'-'+str(documentType).replace("/", "_")+'-'+otherDocDescript+'.'+extension
+    # simple document
+    else:
+        fileDirectory ='files/' + str(uidnumber) + '/' + str(uidnumber)+'-'+str(loginName)+'-'+str(documentType).replace("/", "_")+'.'+extension
 
-    fileDirectory ='files/' + str(uidnumber) + '/' + str(uidnumber)+'-'+str(loginName)+'-'+str(documentType).replace("/", "_")+'.'+extension
-    #write file to OS
-    # open('files/' +fn, 'wb').write(fileitem.file.read())
+    # remove if file already exist
     if os.path.isfile(replaceFileName):
         os.remove(replaceFileName)
-
+    #write file to OS
     open(fileDirectory, 'wb').write(fileitem.file.read())
     print '{"result":"success","file":"'+fileDirectory+'"}'
 else:
