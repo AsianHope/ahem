@@ -3,7 +3,7 @@
   <div class="row mdl-tabs mdl-js-tabs">
     <div class="mdl-tabs__tab-bar" style="margin-bottom:20px;">
       <a href ng-click="this.tab.setTab(3)" class="mdl-tabs__tab">Employee</a>
-      <a href ng-click="this.tab.setTab(4)" class="mdl-tabs__tab" ng-show="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.c!='KH' && ((curemployee.maritalstatus.trim()=='Single' && curemployee.children>=0) || curemployee.maritalstatus=='Married')">Family</a>
+      <a href ng-click="this.tab.setTab(4)" class="mdl-tabs__tab" ng-show="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.c!='KH' && ((curemployee.maritalstatus.trim()=='Single' && curemployee.children>0) || curemployee.maritalstatus=='Married')">Family</a>
       <a href ng-click="this.tab.setTab(5)" class="mdl-tabs__tab">Document</a>
       <a href ng-click="this.tab.setTab(6); showGroup(curemployee.uid)" class="mdl-tabs__tab">Group</a>
   </div>
