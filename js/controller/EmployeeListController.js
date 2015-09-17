@@ -38,7 +38,6 @@
       // not yet test
       $scope.checkStorage = function ()
       {
-        console.log(localStorage.getItem('employees_local_data') !== null);
         return localStorage.getItem('employees_local_data') !== null;
       }
        // taken from http://www.javascriptkit.com/script/script2/passwordgenerate.shtml
@@ -53,88 +52,91 @@
        /*---check if username and password = null don't run factory*/
 
            EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"CURSTAFF")
-               .success(function(data, status, headers, config) {
-                  if(data.result=='error'){
-                     //pop us back out to the login screen
-                    $scope.user.uname = null;
-                    $scope.user.pw = null;
-                  }
-                  else{
-                    console.log(JSON.stringify(data[2]));
-                    $scope.employees_local_data=[];
-                    $scope.employees = data;
-                      for(var i=0; i<$scope.employees.length; i++){
-                        var emplyeeobj = {};
-                        emplyeeobj['employeeType'] = $scope.employees[i].employeeType;
-                        emplyeeobj['departmentNumber'] = $scope.employees[i].departmentNumber;
-                        emplyeeobj['employeeNumber'] = $scope.employees[i].employeeNumber;
-                        emplyeeobj['givenName'] = $scope.employees[i].givenName;
-                        emplyeeobj['sn'] = $scope.employees[i].sn;
-                        emplyeeobj['mobile'] = $scope.employees[i].mobile;
-                        emplyeeobj['mail'] = $scope.employees[i].mail;
-                        emplyeeobj['title'] = $scope.employees[i].title;
-                        $scope.employees_local_data.push(emplyeeobj);
-                        // set localStorage data
-                        storageService.save('employees_local_data',$scope.employees_local_data);
-                        if(localStorage.getItem('employees_local_data') == null){
-                          $scope.local_data= $scope.employees;
-                        }
-                        else{
-                          $scope.local_data= JSON.parse(storageService.get('employees_local_data'));
-                        }
-                    }
-                       //--------route pass by id--------
-                    for(var i=0; i<$scope.employees.length; i++){
-                      //view profile
-                      if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
-                        $scope.selfselect=$scope.employees[i];
-                        if($scope.selfselect.departmentNumber=="LIS"){
-                          document.getElementById("table_th").style.backgroundColor = "#488FCC";
-                          document.getElementById("demo-ribbon").style.backgroundColor = "#488FCC";
-                          document.getElementById("demo-header").style.backgroundColor = "#488FCC";
-                          document.getElementById("btn_profile").style.backgroundColor = "#488FCC";
-                          document.getElementById("btn_print_card").style.backgroundColor = "#488FCC";
-                          document.getElementById("btn_print_change").style.backgroundColor = "#488FCC";
-                          document.getElementById("search").style.border = "1px solid #488FCC";
-                          jQuery('#change_text_color').css('color', '#488FCC');
-                          jQuery('#change_text_color a').css('color', '#488FCC');
-                          $scope.style_anchor = function() {
-                            return { "color": "#488FCC" };
+                  .then(
+                    // success
+                    function(results) {
+                      if(results.data.result=='error'){
+                            //pop us back out to the login screen
+                           $scope.user.uname = null;
+                           $scope.user.pw = null;
+                      }
+                      else{
+                          $scope.employees_local_data=[];
+                          $scope.employees = results.data;
+                          for(var i=0; i<$scope.employees.length; i++){
+                            var emplyeeobj = {};
+                            emplyeeobj['employeeType'] = $scope.employees[i].employeeType;
+                            emplyeeobj['departmentNumber'] = $scope.employees[i].departmentNumber;
+                            emplyeeobj['employeeNumber'] = $scope.employees[i].employeeNumber;
+                            emplyeeobj['givenName'] = $scope.employees[i].givenName;
+                            emplyeeobj['sn'] = $scope.employees[i].sn;
+                            emplyeeobj['mobile'] = $scope.employees[i].mobile;
+                            emplyeeobj['mail'] = $scope.employees[i].mail;
+                            emplyeeobj['title'] = $scope.employees[i].title;
+                            $scope.employees_local_data.push(emplyeeobj);
+                            // set localStorage data
+                            storageService.save('employees_local_data',$scope.employees_local_data);
+                            if(localStorage.getItem('employees_local_data') == null){
+                              $scope.local_data= $scope.employees;
+                            }
+                            else{
+                              $scope.local_data= JSON.parse(storageService.get('employees_local_data'));
+                            }
+                          }
+                             //--------route pass by id--------
+                          for(var i=0; i<$scope.employees.length; i++){
+                            //view profile
+                            if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
+                              $scope.selfselect=$scope.employees[i];
+                              if($scope.selfselect.departmentNumber=="LIS"){
+                                document.getElementById("table_th").style.backgroundColor = "#488FCC";
+                                document.getElementById("demo-ribbon").style.backgroundColor = "#488FCC";
+                                document.getElementById("demo-header").style.backgroundColor = "#488FCC";
+                                document.getElementById("btn_profile").style.backgroundColor = "#488FCC";
+                                document.getElementById("btn_print_card").style.backgroundColor = "#488FCC";
+                                document.getElementById("btn_print_change").style.backgroundColor = "#488FCC";
+                                document.getElementById("search").style.border = "1px solid #488FCC";
+                                jQuery('#change_text_color').css('color', '#488FCC');
+                                jQuery('#change_text_color a').css('color', '#488FCC');
+                                $scope.style_anchor = function() {
+                                  return { "color": "#488FCC" };
+                                }
+                              }
+                              else if ($scope.selfselect.departmentNumber=="AHIS") {
+                                $scope.style_anchor = function() {
+                                  return { "color": "#26AF5F" };
+                                }
+                                jQuery('.mail').css('color', '#26AF5F');
+                                document.getElementById("table_th").style.backgroundColor = "#26AF5F";
+                                document.getElementById("demo-ribbon").style.backgroundColor = "#26AF5F";
+                                document.getElementById("demo-header").style.backgroundColor = "#26AF5F";
+                                document.getElementById("btn_profile").style.backgroundColor = "#26AF5F";
+                                document.getElementById("btn_print_card").style.backgroundColor = "#26AF5F";
+                                document.getElementById("btn_print_change").style.backgroundColor = "#26AF5F";
+                                document.getElementById("search").style.border = "1px solid #26AF5F";
+                                jQuery('#change_text_color').css('color', '#26AF5F');
+                                jQuery('#change_text_color a').css('color', '#26AF5F');
+                            }
+                            else {
+                              $scope.style_anchor = function() {
+                                return { "color": "#488FCC" };
+                              }
+                            }
+                                break;
+                            }
                           }
                         }
-                        else if ($scope.selfselect.departmentNumber=="AHIS") {
-                          $scope.style_anchor = function() {
-                            return { "color": "#26AF5F" };
-                          }
-                          jQuery('.mail').css('color', '#26AF5F');
-                          document.getElementById("table_th").style.backgroundColor = "#26AF5F";
-                          document.getElementById("demo-ribbon").style.backgroundColor = "#26AF5F";
-                          document.getElementById("demo-header").style.backgroundColor = "#26AF5F";
-                          document.getElementById("btn_profile").style.backgroundColor = "#26AF5F";
-                          document.getElementById("btn_print_card").style.backgroundColor = "#26AF5F";
-                          document.getElementById("btn_print_change").style.backgroundColor = "#26AF5F";
-                          document.getElementById("search").style.border = "1px solid #26AF5F";
-                          jQuery('#change_text_color').css('color', '#26AF5F');
-                          jQuery('#change_text_color a').css('color', '#26AF5F');
-                      }
-                      else {
-                        $scope.style_anchor = function() {
-                          return { "color": "#488FCC" };
-                        }
-                      }
-                          break;
-                      }
+                    },
+                    // error
+                    function(results) {
+                      $scope.user.uname = null;
+                      $scope.user.pw = null;
                     }
-                  }
-               })
-               .error(function(data, status, headers, config){
-                            $scope.user.uname = null;
-                            $scope.user.pw = null;
-                })
+                  )
                 .finally(function() {
-                // called no matter success or failure
-                $scope.loading = false;
-              });
+                  // called no matter success or failure
+                  $scope.loading = false;
+                });
 
             // storageService.clearAll();
             if(localStorage.getItem('employees_local_data') !== null){
@@ -156,21 +158,27 @@
           $scope.loading = true;
           $scope.employees = [];
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"ALL")
-                .success(function(data, status, headers, config) {
-                  $scope.employees = data;
-                })
+                .then(
+                  // success
+                  function(results){
+                    $scope.employees = results.data;
+                  }
+                )
                 .finally(function() {
-                // called no matter success or failure
-                $scope.loading = false;
+                  // called no matter success or failure
+                  $scope.loading = false;
               });
         };
         $scope.showRequestedAccounts = function(){
           $scope.loading = true;
           $scope.employees = [];
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"REQUESTS")
-              .success(function(data, status, headers, config) {
-                $scope.employees = data;
-              })
+              .then(
+                // success
+                function(results){
+                  $scope.employees = results.data;
+                }
+              )
               .finally(function() {
               // called no matter success or failure
               $scope.loading = false;
@@ -180,9 +188,12 @@
           $scope.loading = true;
           $scope.employees = [];
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"DISABLED")
-              .success(function(data, status, headers, config) {
-                  $scope.employees = data;
-        })
+              .then(
+                // success
+                function(results){
+                  $scope.employees = results.data;
+                }
+              )
               .finally(function() {
               // called no matter success or failure
               $scope.loading = false;
@@ -192,9 +203,12 @@
           $scope.loading = true;
           $scope.employees = [];
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
-              .success(function(data, status, headers, config) {
-                $scope.employees = data;
-              })
+              .then(
+                // success
+                function(results){
+                  $scope.employees = results.data;
+                }
+              )
               .finally(function() {
               // called no matter success or failure
               $scope.loading = false;
@@ -204,30 +218,37 @@
           $scope.curGroups = [];
           $scope.loading = true;
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"GROUPS")
-              .success(function(data, status, headers, config) {
-                $scope.groups = data;
-                for(var i=0; i<$scope.groups.length; i++){
-                  if($scope.groups[i]['memberUid']!= undefined){
-                    for(var j=0;j<$scope.groups[i]['memberUid'].length;j++){
-                      if($scope.groups[i]['memberUid'][j]==uid){
-                        $scope.curGroups.push($scope.groups[i]);
+              .then(
+                // success
+                function(results){
+                  $scope.groups = results.data;
+                  for(var i=0; i<$scope.groups.length; i++){
+                    if($scope.groups[i]['memberUid']!= undefined){
+                      for(var j=0;j<$scope.groups[i]['memberUid'].length;j++){
+                        if($scope.groups[i]['memberUid'][j]==uid){
+                          $scope.curGroups.push($scope.groups[i]);
+                        }
                       }
                     }
                   }
+
                 }
-              })
+              )
               .finally(function() {
-              $scope.loading = false;
-            });
+                $scope.loading = false;
+              });
         };
         $scope.showAllGroups = function(){
           $scope.loading = true;
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"GROUPS")
-              .success(function(data, status, headers, config) {
-                $scope.groups = data;
-              })
+              .then(
+                // success
+                function(results){
+                  $scope.groups = results.data;
+                }
+              )
               .finally(function() {
-              $scope.loading = false;
+                $scope.loading = false;
             });
         };
       //rough approximation
@@ -282,94 +303,117 @@
       $scope.updateUser = function(uid, field, data){
               var d = $q.defer();
               EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'users','null')
-                  .success(function(data, status, headers, config){
-                       if(data.result=="success"){
-                           d.resolve();
-                       }
-                       else
-                           d.resolve("There was an error");
-                     }).
-                     error(function(data, status, headers, config){
-                           d.reject('Server error!');
-                   });
+                  .then(
+                      // success
+                      function(results) {
+                        if(results.data.result=='success'){
+                          d.resolve();
+                        }
+                        else{
+                          d.resolve("There was an error");
+                        }
+                      },
+                      // error
+                     function(results){
+                       d.reject('Server error!');
+                     }
+                   );
                    return d.promise;
       }
       $scope.removeUserFromGroup=function(uid,field,data){
         var d = $q.defer();
         EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'groups','remove')
-            .success(function(data, status, headers, config){
-                 if(data.result=='success'){
-                    $scope.modifyGroupSms="Remove employee from group success!";
-                    d.resolve()
-                 }
-                 if(data.result=='no_such_attribute'){
-                    $scope.modifyGroupSms="Remove employee Fail! Don't have this emplyee in group.";
-                 }
-                 if(data.result=="error"){
-                    $scope.modifyGroupSms="Fail to remove employee from group!";
-                    d.resolve("There was an error");
-                  }
-               }).
-               error(function(data, status, headers, config){
-                    d.reject('Server error!');
-                  $scope.modifyGroupSms="Fail to remove employee from group!!";
-             });
+             .then(
+                 // success
+                 function(results) {
+                   if(results.data.result=='success'){
+                     $scope.modifyGroupSms="Remove employee from group success!";
+                     d.resolve()
+                   }
+                   if(results.data.result=='no_such_attribute'){
+                     $scope.modifyGroupSms="Remove employee Fail! Don't have this emplyee in group.";
+                     d.resolve()
+                   }
+                   if(results.data.result=="error"){
+                      $scope.modifyGroupSms="Fail to remove employee from group!";
+                      d.resolve("There was an error");
+                    }
+                 },
+                 // error
+                function(results){
+                  d.reject('Server error!');
+                  $scope.modifyGroupSms="Server error!";
+                }
+              );
              return d.promise;
       }
       $scope.addUserToGroup = function(uid,field,data){
         var d = $q.defer();
         if(field!=null){
           EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'groups','add')
-              .success(function(data, status, headers, config){
-                  if(data.result=="success"){
-                      d.resolve();
+              .then(
+                  // success
+                  function(results) {
+                    if(results.data.result=='success'){
                       $scope.modifyGroupSms="Add employee to group success!";
-                  }
-                  if(data.result=="value_exists"){
-                    $scope.modifyGroupSms="Emplyee already exist in this group!";
-                  }
-                  if(data.result=="error"){
-                       d.resolve("There was an error");
+                      d.resolve();
+                    }
+                    if(results.data.result=='value_exists'){
+                      $scope.modifyGroupSms="Emplyee already exist in this group!";
+                      d.resolve();
+                    }
+                    if(results.data.result=="error"){
+                       d.resolve();
                        $scope.modifyGroupSms="Fail to add employee to group!";
                      }
-                 }).
-                 error(function(data, status, headers, config){
-                       d.reject('Server error!');
-                       $scope.modifyGroupSms="Fail to add employee to group!";
-               });
+                  },
+                  // error
+                 function(results){
+                   d.reject('Server error!');
+                   $scope.modifyGroupSms="Server error!";
+                 }
+               );
             }
           else{
             $scope.modifyGroupSms="Please choose group!";
           }
-               return d.promise;
+          return d.promise;
       }
       $scope.resetPassword = function(uid,data,type,confirmpass){
               var d = $q.defer();
+              // if Password match
               if(confirmpass==$scope.user.pw){
                 EmployeesService.resetPassword(uid,data,$scope.user.uname,$scope.user.pw,type)
-                  .success(function(data, status, headers, config){
-                         if(data.result== 'success'){
-                            if(type=="youreset"){
-                              d.resolve()
-                              alert('Your password has been reset! Plase login again.');
-                              $scope.user.uname = null;
-                              $scope.user.pw = null;
-                            }
-                            else{
-                              d.resolve()
-                              alert("Password has been reset!");
-                              $scope.current_pass="";
-                            }
-                         }
-                         else{
-                             d.resolve("There was an error");
-                             alert('You don\'t have permission to update.');
-                           }
-                       }).
-                       error(function(data, status, headers, config){
-                             d.reject('Server error!');
-                     });
+                  .then(
+                      // success
+                      function(results) {
+                        if(results.data.result=='success'){
+                          if(type=="youreset"){
+                            d.resolve()
+                            alert('Your password has been reset! Plase login again.');
+                            // back to login page
+                            $scope.user.uname = null;
+                            $scope.user.pw = null;
+                          }
+                          else{
+                            d.resolve()
+                            alert("Password has been reset!");
+                            $scope.current_pass="";
+                          }
+                        }
+
+                        else {
+                          d.resolve();
+                          alert('You don\'t have permission to update.');
+                        }
+                      },
+                      // error
+                       function(results){
+                         d.reject('Server error!');
+                       }
+                   );
                    }
+                  //  if password not match
                    else{
                      alert('Your current passwords do not match.');
                    }
