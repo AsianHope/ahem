@@ -40,7 +40,7 @@ ldapfields = [
     'employeeType',
     'c',
     'l',
-    'mobile'
+    'mobile',
     'postalAddress',
     'apple-birthday',
     'jsonData',
@@ -53,16 +53,16 @@ def main():
     print "Content-type: text/html; charset=utf-8"
     print
     formData = cgi.FieldStorage()
-    username = formData.getlist("username")[0]
-    pw = formData.getlist("pw")[0]
+    username = formData.getvalue("username",None)
+    pw = formData.getvalue("pw",None)
 
-    field = formData.getlist("field")[0]
-    data = urllib.unquote(formData.getlist("data")[0])
-    uid = formData.getlist("uid")[0]
-    cn = formData.getlist("cn")[0]
-    modifyType = formData.getlist("modifyType")[0]
+    field = formData.getvalue("field",None)
+    data = urllib.unquote(formData.getvalue("data",None))
+    uid = formData.getvalue("uid",None)
+    cn = formData.getvalue("cn",None)
+    modifyType = formData.getvalue("modifyType",None)
     try:
-        reset_type = formData.getlist("reset_type")[0]
+        reset_type = formData.getvalue("reset_type",None)
     except:
         reset_type = None
 
