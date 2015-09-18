@@ -24,24 +24,28 @@
              for (var i=0;i<$scope.plengthRe;i++)
              $scope.tempRe+=$scope.keylistRe.charAt(Math.floor(Math.random()*$scope.keylistRe.length));
              $scope.password = $scope.tempRe;
-             console.log($scope.password);
          };
          $scope.tempPasswordRegister();
          $scope.registerAccount = function(){
                  var d = $q.defer();
                  $scope.formdata['userPassword']=$scope.password;
                  EmployeesService.addEmployee($scope.formdata)
-                   .success(function(data, status, headers, config){
-                     if(data.result== 'success'){
-                         $scope.success_message = "Success!";
-                         d.resolve()
-                     }
-                     else
-                         d.resolve("There was an error");
-                   })
-                   .error(function(data, status, headers, config){
+                    .then(
+                        // success
+                        function(results) {
+                          if(results.data.result=='success'){
+                            $scope.success_message = "Success!";
+                            d.resolve()
+                          }
+                          else{
+                            d.resolve("There was an error");
+                          }
+                        },
+                        // error
+                       function(results){
                          d.reject('Server error!');
-                    });
+                       }
+                     );
                  return d.promise;
          };
          $scope.resetRequestForm = function(){

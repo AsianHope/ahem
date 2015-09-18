@@ -343,8 +343,7 @@
                 function(results){
                   d.reject('Server error!');
                   $scope.modifyGroupSms="Server error!";
-                }
-              );
+                });
              return d.promise;
       }
       $scope.addUserToGroup = function(uid,field,data){
@@ -409,6 +408,7 @@
                       },
                       // error
                        function(results){
+                         alert('Server error!');
                          d.reject('Server error!');
                        }
                    );
@@ -417,7 +417,7 @@
                    else{
                      alert('Your current passwords do not match.');
                    }
-                     return d.promise;
+                  return d.promise;
       }
 
       $scope.decodeAppleBirthday = function(applebirthday){
