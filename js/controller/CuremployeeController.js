@@ -389,7 +389,7 @@
                         }
                          $scope.updateUser($scope.curemployee.uid,'documents',JSON.stringify($scope.document));
                          $scope.upload_sms='Replace file successfully!';
-                         document.getElementById("formUpload").reset();
+                         $("#formUpload").trigger('reset');
                       }
                       else{
                         $scope.upload_sms='Upload file fail!';
@@ -401,7 +401,7 @@
                    });
             }
             else{
-              document.getElementById("formUpload").reset();
+              $("#formUpload").trigger('reset');
             }
          }
          else{
@@ -434,7 +434,7 @@
                        $scope.updateUser($scope.curemployee.uid,'documents',JSON.stringify($scope.document));
                   }
                    $scope.upload_sms='Upload file successfully!';
-                    document.getElementById("formUpload").reset();
+                    $("#formUpload").trigger('reset');
                    //  show profile picture
                     for (var i = 0; i<$scope.document.length; i++){
                       if($scope.document[i]['DocumentID']==0){
