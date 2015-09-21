@@ -49,8 +49,6 @@
        };
 
       $scope.tempPassword();
-       /*---check if username and password = null don't run factory*/
-
            EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"CURSTAFF")
                   .then(
                     // success
@@ -89,31 +87,31 @@
                             if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
                               $scope.selfselect=$scope.employees[i];
                               if($scope.selfselect.departmentNumber=="LIS"){
-                                document.getElementById("table_th").style.backgroundColor = "#488FCC";
-                                document.getElementById("demo-ribbon").style.backgroundColor = "#488FCC";
-                                document.getElementById("demo-header").style.backgroundColor = "#488FCC";
-                                document.getElementById("btn_profile").style.backgroundColor = "#488FCC";
-                                document.getElementById("btn_print_card").style.backgroundColor = "#488FCC";
-                                document.getElementById("btn_print_change").style.backgroundColor = "#488FCC";
-                                document.getElementById("search").style.border = "1px solid #488FCC";
+                                jQuery("#table_th").css('background-color', '#488FCC');
+                                jQuery("#demo-ribbon").css('background-color', '#488FCC');
+                                jQuery("#demo-header").css('background-color', '#488FCC');
+                                jQuery("#btn_profile").css('background-color', '#488FCC');
+                                jQuery("#btn_print_card").css('background-color', '#488FCC');
+                                jQuery("#btn_print_change").css('background-color', '#488FCC');
+                                jQuery("#search").css('border', '1px solid #488FCC');
                                 jQuery('#change_text_color').css('color', '#488FCC');
                                 jQuery('#change_text_color a').css('color', '#488FCC');
                                 $scope.style_anchor = function() {
                                   return { "color": "#488FCC" };
                                 }
                               }
-                              else if ($scope.selfselect.departmentNumber=="AHIS") {
+                              else if ($scope.selfselect.departmentNumber=="AHIS"){
                                 $scope.style_anchor = function() {
                                   return { "color": "#26AF5F" };
                                 }
                                 jQuery('.mail').css('color', '#26AF5F');
-                                document.getElementById("table_th").style.backgroundColor = "#26AF5F";
-                                document.getElementById("demo-ribbon").style.backgroundColor = "#26AF5F";
-                                document.getElementById("demo-header").style.backgroundColor = "#26AF5F";
-                                document.getElementById("btn_profile").style.backgroundColor = "#26AF5F";
-                                document.getElementById("btn_print_card").style.backgroundColor = "#26AF5F";
-                                document.getElementById("btn_print_change").style.backgroundColor = "#26AF5F";
-                                document.getElementById("search").style.border = "1px solid #26AF5F";
+                                jQuery("#table_th").css('background-color', '#26AF5F');
+                                jQuery("#demo-ribbon").css('background-color', '#26AF5F');
+                                jQuery("#demo-header").css('background-color', '#26AF5F');
+                                jQuery("#btn_profile").css('background-color', '#26AF5F');
+                                jQuery("#btn_print_card").css('background-color', '#26AF5F');
+                                jQuery("#btn_print_change").css('background-color', '#26AF5F');
+                                jQuery("#search").css('border', '1px solid #26AF5F');
                                 jQuery('#change_text_color').css('color', '#26AF5F');
                                 jQuery('#change_text_color a').css('color', '#26AF5F');
                             }
@@ -231,7 +229,6 @@
                       }
                     }
                   }
-
                 }
               )
               .finally(function() {
@@ -433,27 +430,23 @@
 
       }
 
-      // not use
       $scope.showMissingDocs = function(doclist, required_docs){
         var tempid;
         var reqdocs = required_docs.slice();
         var missingdocs=[];
         if(!doclist) return required_docs;
-
         //get rid of all docs they have
         for(var i=0; i<doclist.length; i++){
-          tempid=doclist[i].documentID;
+          tempid=doclist[i].DocumentID;
+          delete reqdocs['16'];
           delete reqdocs[tempid];
         }
 
         for(var i=0; i<required_docs.length; i++){
           if(reqdocs[i]) missingdocs.push(reqdocs[i]);
         }
-
         return missingdocs;
       };
-
-
       var staff=$scope.staff;
 
       $scope.genders = genders;
