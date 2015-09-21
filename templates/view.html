@@ -344,7 +344,22 @@
               </td>
             </tr>
           </tbody>
-      </table>
+        </table>
+        <table>
+          <tr>
+            <th>Missing Documents</th>
+          </tr>
+          <tbody>
+            <tr>
+              <td>
+                <li ng-repeat="document in showMissingDocs(curemployee.documents, documentType)">
+                             {{document.text}}
+                </li>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
     </form>
   </div>
   <!-- group -->
