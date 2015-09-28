@@ -219,10 +219,11 @@
               Family data (spouse , child)
             </a>
           </h5>
-          <h5 ng-if="!employee.documents">
-            <a ui-sref="admin.staff({instanceID:employee.employeeNumber})" ng-click="this.tab.setTab(5)">
-              Documents
-            </a>
+          <h5>
+            Documents
+            <li ng-repeat="document in showMissingDocs(employee.documents,employee.OtherDocuments, documentType)">
+              <a ui-sref="admin.staff({instanceID:employee.employeeNumber})" ng-click="this.tab.setTab(5)">{{document.text}}</a>
+            </li>
           </h5>
         </td>
       </tr>
