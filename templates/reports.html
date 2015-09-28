@@ -48,7 +48,7 @@
           </h5>
           <td><h5>{{employee.title || "Not Entered"}}  </td>
         </tr>
-        <tr>
+        <tr ng-if="employee.maritalstatus=='Married'">
           <td style="vertical-align: top;"><h5><strong>Spouse</strong></h5></td>
           <td style="vertical-align: top;"><h5><strong>:</strong></h5></td>
           <td>
@@ -83,10 +83,10 @@
             </table>
           </td>
         </tr>
-        <tr>
-          <td style="vertical-align: top;" ng-if="employee.children!=null && employee.children>0 && employee.children!='Not Entered'"><h5><strong>Children</strong></h5></td>
-          <td style="vertical-align: top;" ng-if="employee.children!=null && employee.children>0 && employee.children!='Not Entered'"><h5><strong>:</strong></h5></td>
-          <td ng-if="employee.children!=null && employee.children>0 && employee.children!='Not Entered'">
+        <tr ng-if="employee.children!=null && employee.children>0 && employee.children!='Not Entered'">
+          <td style="vertical-align: top;"><h5><strong>Children</strong></h5></td>
+          <td style="vertical-align: top;"><h5><strong>:</strong></h5></td>
+          <td>
             <table  ng-repeat="i in range(employee.children) track by $index">
               <tr>
                 <td><h5><strong>Children {{$index+1}} Name</strong></h5></td>
