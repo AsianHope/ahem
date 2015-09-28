@@ -261,13 +261,17 @@ describe('* EmployeeListController', function() {
       describe('test showMissingDocs() return value',function(){
         it('should return all required documents when documentList is undefined ', function() {
           var documentList= undefined;
+          var other_doc = undefined;
           // documentType get from constants.js
-          expect($scope.showMissingDocs(documentList,documentType)).toEqual(documentType);
+          expect($scope.showMissingDocs(documentList,other_doc,documentType)).toEqual(documentType);
         });
         it('should return some required documents when documentList is defined ', function() {
           var doclist= [
             {"data":"files/1001051/1001051-ssang-Child Protection Policy.jpg","$$hashKey":"012","Description":"Child Protection Policy","DocumentID":"4"},
             {"data":"files/1001051/1001051-ssang-Photo.jpg","$$hashKey":"012","Description":"Photo","DocumentID":"0"}
+          ]
+          var other_doc= [
+            {"data":"files/1001051/1001051-ssang-Other Document-test.jpg","Description":"test","DocumentID":"1"}
           ]
           // documentType get from constants.js
           var required_docs = documentType;
@@ -283,7 +287,7 @@ describe('* EmployeeListController', function() {
           for(var i=0; i<required_docs.length; i++){
             if(reqdocs[i]) missingdocs.push(reqdocs[i]);
           }
-          expect($scope.showMissingDocs(doclist,required_docs)).toEqual(missingdocs);
+          expect($scope.showMissingDocs(doclist,other_doc,required_docs)).toEqual(missingdocs);
         });
       });
 
