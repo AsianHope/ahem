@@ -352,14 +352,13 @@
           <tbody>
             <tr>
               <td>
-                <li ng-repeat="document in showMissingDocs(curemployee.documents, documentType)">
-                             {{document.text}}
+                <li ng-repeat="document in showMissingDocs(document,other_documents, documentType)">
+                  {{document.text}}
                 </li>
               </td>
             </tr>
           </tbody>
         </table>
-
     </form>
   </div>
   <!-- group -->

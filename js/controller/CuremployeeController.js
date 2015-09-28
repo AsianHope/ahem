@@ -32,7 +32,7 @@
                        $scope.curemployee=$scope.employees[i];
 
                        // get documents
-                       if($scope.curemployee.documents==undefined){
+                       if($scope.curemployee.documents===undefined || $scope.curemployee.documents.length==0){
                          $scope.document =[];
                        }
                        else{
@@ -40,7 +40,7 @@
                        }
 
                        // get other documents
-                       if($scope.curemployee.OtherDocuments==undefined){
+                       if($scope.curemployee.OtherDocuments===undefined || $scope.curemployee.OtherDocuments.length==0){
                          $scope.other_documents =[];
                        }
                        else{
@@ -145,7 +145,7 @@
              $scope.curemployee=$scope.employees[i];
 
             //  get documents
-             if($scope.curemployee.documents==undefined){
+             if($scope.curemployee.documents===undefined || $scope.curemployee.documents.length==0){
                $scope.document = [];
              }
              else{
@@ -153,7 +153,7 @@
              }
 
              // get other documents
-             if($scope.curemployee.OtherDocuments==undefined){
+             if($scope.curemployee.OtherDocuments===undefined || $scope.curemployee.OtherDocuments.length==0){
                $scope.other_documents =[];
              }
              else{
@@ -245,7 +245,7 @@
           for(var i=0; i<$scope.employees.length; i++){
               if($scope.employees[i].employeeNumber==$scope.ID){
                   $scope.curemployee = $scope.employees[i+amount];
-                  if($scope.curemployee.documents==undefined){
+                  if($scope.curemployee.documents===undefined || $scope.curemployee.documents.length==0){
                     $scope.document = [];
                   }
                   else{
@@ -253,7 +253,7 @@
                   }
 
                   // get other documents
-                  if($scope.curemployee.OtherDocuments==undefined){
+                  if($scope.curemployee.OtherDocuments===undefined || $scope.curemployee.OtherDocuments.length==0){
                     $scope.other_documents =[];
                   }
                   else{

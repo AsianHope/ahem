@@ -429,20 +429,33 @@
         }
 
       }
-
-      $scope.showMissingDocs = function(doclist, required_docs){
+      $scope.showMissingDocs = function(doclist,other_doc, required_docs){
         var tempid;
         var reqdocs = required_docs.slice();
         var missingdocs=[];
-        if(!doclist) return required_docs;
-        //get rid of all docs they have
-        for(var i=0; i<doclist.length; i++){
-          tempid=doclist[i].DocumentID;
-          delete reqdocs['16'];
-          delete reqdocs[tempid];
+        if(doclist === undefined || doclist.length == 0)
+        {
+          if (other_doc === undefined || other_doc.length == 0) {
+              return required_docs;
+          }
+          else {
+            //get rid of other docs
+            delete reqdocs['16'];
+          }
         }
-
+        else{
+          //get rid of all docs they have
+          for(var i=0; i<doclist.length; i++){
+            tempid=doclist[i].DocumentID;
+            delete reqdocs[tempid];
+          }
+          //get rid of other docs
+          if (other_doc != undefined && other_doc.length > 0) {
+            delete reqdocs['16'];
+          }
+        }
         for(var i=0; i<required_docs.length; i++){
+
           if(reqdocs[i]) missingdocs.push(reqdocs[i]);
         }
         return missingdocs;
