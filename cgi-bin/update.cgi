@@ -47,20 +47,17 @@ ldapfields = [
     'userPassword',
     'postalAddress'
 ]
-
 def main():
-    #print "Content-type: application/json; charset=utf-8"
-    print "Content-type: text/html; charset=utf-8"
-    print
     formData = cgi.FieldStorage()
     username = formData.getvalue("username",None)
     pw = formData.getvalue("pw",None)
 
     field = formData.getvalue("field",None)
-    data = urllib.unquote(formData.getvalue("data",None))
+
     uid = formData.getvalue("uid",None)
     cn = formData.getvalue("cn",None)
     modifyType = formData.getvalue("modifyType",None)
+    data = urllib.unquote(formData.getvalue("data",None))
     try:
         reset_type = formData.getvalue("reset_type",None)
     except:
@@ -80,10 +77,11 @@ def main():
     try:
         slave.simple_bind_s(susername,pw)
     except:
-        print '{"result":"error"}'
+        # print '{"result":"error"}'
         logging.debug('update.cgi could not bind to server')
         slave.unbind_s()
-        sys.exit(1)
+        return '{"result":"error"}'
+        # sys.exit(1)
     # update group
     if(cn=='groups'):
         # if remove emplyee to group
@@ -114,10 +112,11 @@ def main():
         sresult_type, sresult_data = slave.result(ldap_slave_result_id,0)
 
         if(sresult_data == []):
-            print '{"result":"error"}'
+            # print '{"result":"error"}'
+            return '{"result":"error not found"}'
             logging.debug('update.cgi could not find cn')
             slave.unbind_s()
-            sys.exit(1)
+            # sys.exit(1)
         else:
             #pull the dn from the search result
             dn=sresult_data[0][0]
@@ -125,17 +124,21 @@ def main():
             slave.modify_s(dn,modify)
         # if vaule aleady exist
         except ldap.TYPE_OR_VALUE_EXISTS:
-            print '{"result":"value_exists"}'
+            # print '{"result":"value_exists"}'
+            return '{"result":"value_exists"}'
         # if no value to remove
         except ldap.NO_SUCH_ATTRIBUTE:
-            print '{"result":"no_such_attribute"}'
+            # print '{"result":"no_such_attribute"}'
+            return '{"result":"no_such_attribute"}'
         except Exception:
-            print '{"result":"error"}'
+            # print '{"result":"error"}'
+            return '{"result":"error"}'
         else:
-            print '{"result":"success"}'
+            return '{"result":"success"}'
+            # print '{"result":"success"}'
         slave.unbind_s()
     # update user
-    else:
+    if(cn=='users'):
         sbaseDN = "dc=asianhope,dc=org"
         ssearchScope = ldap.SCOPE_SUBTREE
         sretrieveAttributes = ['*']
@@ -149,10 +152,11 @@ def main():
         sresult_type, sresult_data = slave.result(ldap_slave_result_id,0)
 
         if(sresult_data == []):
-            print '{"result":"error"}'
+            # print '{"result":"error"}'
+            return '{"result":"error"}'
             logging.debug('update.cgi could not find uid')
             slave.unbind_s()
-            sys.exit(1)
+            # sys.exit(1)
         else:
             #pull the dn from the search result
             dn=sresult_data[0][0]
@@ -199,7 +203,8 @@ def main():
                         new = [(ldap.MOD_REPLACE,'jsonData',modified)]
                         logging.debug('update.cgi field %s found, modifying it', field)
                     slave.modify_s(dn,new)
-            print '{"result":"success"}'
+            # print '{"result":"success"}'
+            return '{"result":"success"}'
             slave.unbind_s()
             logging.info('%s modified user %s, field: %s, data: %s', username, uid, field, data)
             ##send email when reset password
@@ -269,7 +274,8 @@ def main():
                 response = clickatell.sendMessage(data,"This number is now your AH emergency contact number", {'from':'AHALERTS'})
                 logging.info('clickatell message sent, response: %s', response)
 
-
+    else:
+        return '{"result":"error"}'
 def convertToAppleBirthday(data):
     #strip out - and add the magic time string for UTC Midnight
     return data.replace('-','')+'000000Z'
@@ -295,4 +301,9 @@ def updateName(slave, dn, field, data, previous_data):
     	slave.modify_s(dn,previousentrykh)
     except:
 	logging.debug("No previous Khmer name to add back")
-main()
+
+
+if __name__ == "__main__":
+    print "Content-type: text/html; charset=utf-8"
+    print
+    print main()
