@@ -57,7 +57,10 @@ def main():
     uid = formData.getvalue("uid",None)
     cn = formData.getvalue("cn",None)
     modifyType = formData.getvalue("modifyType",None)
-    data = urllib.unquote(formData.getvalue("data",None))
+    try:
+        data = urllib.unquote(formData.getvalue("data",None))
+    except:
+        data = None
     try:
         reset_type = formData.getvalue("reset_type",None)
     except:
@@ -73,11 +76,13 @@ def main():
 
     slave = ldap.initialize(SERVER)
     slave.protocol_version = ldap.VERSION3
-    susername = "uid="+username+",cn=users,dc=asianhope,dc=org"
+    try:
+        susername = "uid="+username+",cn=users,dc=asianhope,dc=org"
+    except:
+        pass
     try:
         slave.simple_bind_s(susername,pw)
     except:
-        # print '{"result":"error"}'
         logging.debug('update.cgi could not bind to server')
         slave.unbind_s()
         return '{"result":"error"}'
@@ -112,11 +117,10 @@ def main():
         sresult_type, sresult_data = slave.result(ldap_slave_result_id,0)
 
         if(sresult_data == []):
-            # print '{"result":"error"}'
             return '{"result":"error not found"}'
             logging.debug('update.cgi could not find cn')
             slave.unbind_s()
-            # sys.exit(1)
+            sys.exit(1)
         else:
             #pull the dn from the search result
             dn=sresult_data[0][0]
@@ -124,18 +128,14 @@ def main():
             slave.modify_s(dn,modify)
         # if vaule aleady exist
         except ldap.TYPE_OR_VALUE_EXISTS:
-            # print '{"result":"value_exists"}'
             return '{"result":"value_exists"}'
         # if no value to remove
         except ldap.NO_SUCH_ATTRIBUTE:
-            # print '{"result":"no_such_attribute"}'
             return '{"result":"no_such_attribute"}'
         except Exception:
-            # print '{"result":"error"}'
             return '{"result":"error"}'
         else:
             return '{"result":"success"}'
-            # print '{"result":"success"}'
         slave.unbind_s()
     # update user
     if(cn=='users'):
@@ -152,11 +152,10 @@ def main():
         sresult_type, sresult_data = slave.result(ldap_slave_result_id,0)
 
         if(sresult_data == []):
-            # print '{"result":"error"}'
             return '{"result":"error"}'
             logging.debug('update.cgi could not find uid')
             slave.unbind_s()
-            # sys.exit(1)
+            sys.exit(1)
         else:
             #pull the dn from the search result
             dn=sresult_data[0][0]
@@ -203,7 +202,6 @@ def main():
                         new = [(ldap.MOD_REPLACE,'jsonData',modified)]
                         logging.debug('update.cgi field %s found, modifying it', field)
                     slave.modify_s(dn,new)
-            # print '{"result":"success"}'
             return '{"result":"success"}'
             slave.unbind_s()
             logging.info('%s modified user %s, field: %s, data: %s', username, uid, field, data)
@@ -306,4 +304,5 @@ def updateName(slave, dn, field, data, previous_data):
 if __name__ == "__main__":
     print "Content-type: text/html; charset=utf-8"
     print
-    print main()
+    update_result=main()
+    print update_result

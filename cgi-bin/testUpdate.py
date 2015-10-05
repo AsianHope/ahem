@@ -2,13 +2,47 @@ import imp
 import unittest
 from mock import patch
 from credentials import TEST
+from credentials import SERVER
+from credentials import LDAP_CREDENTIALS
 from passlib.hash import ldap_md5
+import ldap.modlist as modlist
+import ldap
 
 import update
 
 @patch('cgi.FieldStorage')
 
 class TestUpdate(unittest.TestCase):
+    def setUp(self):
+        # Open a connection
+        l = ldap.initialize(SERVER)
+
+        lusername = LDAP_CREDENTIALS['dn']
+        lpassword = LDAP_CREDENTIALS['password']
+        # Bind/authenticate with a user with apropriate rights to add objects
+        l.simple_bind_s(lusername,lpassword)
+        #write new user to requests CN
+        dn="cn=testgroup,cn=groups,dc=asianhope,dc=org"
+        attrs={}
+        #Synology LDAP attributes
+        attrs['objectclass'] = ['apple-group','extensibleObject','posixGroup','sambaGroupMapping',
+                                'sambaIdmapEntry','top']
+
+        attrs['gidNumber']='1000009'
+        attrs['sambaGroupType'] = '2'
+        attrs['sambaSID'] = 'S-1-5-21-2406316179-3959501720-2180276475-1000'
+        attrs['cn'] = 'testgroup'
+        attrs['memberUid']=['ssang','lyle']
+        attrs['member']=['uid=ssang,cn=users,dc=asianhope,dc=org','uid=lyle,cn=users,dc=asianhope,dc=org']
+        attrs['displayName'] = 'testgroup'
+        attrs['mail'] ='testgroup@asianhope.org'
+        attrs['description'] = 'testgroup'
+
+        ldif=modlist.addModlist(attrs)
+        try:
+            l.add_s(dn,ldif)
+        except:
+            pass
 
     update_success = {'username':TEST['ADMINUSER'],'pw':TEST['ADMINPASS'],'field':'maritalstatus','data':'Single','uid':'ssang','cn':'users','modifyType':'Null'}
     bad_password = {'username':TEST['ADMINUSER'],'pw':'bad password','field':'maritalstatus','data':'Single','uid':'ssang','cn':'users','modifyType':'Null'}

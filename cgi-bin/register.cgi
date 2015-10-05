@@ -40,7 +40,7 @@ def registerAccount():
     departmentNumber = formData.getfirst("departmentNumber","Not Entered")
     userPassword = formData.getfirst("userPassword","Not Entered")
     message = formData.getfirst("message","Not Entered")
-    employeeType= formData.getvalue("employeeType","FT") #radio buttons are tricky - have to get value
+    employeeType= formData.getvalue("employeeType",'just for test') #radio buttons are tricky - have to get value
     l = formData.getvalue("l","US")
     c = formData.getfirst("c","Not Entered")
     startdate = formData.getfirst("startdate","Not Entered")
@@ -222,7 +222,7 @@ def registerAccount():
         personal email: '''+mailpr+'''
         '''
         msg = MIMEText(account_request + message+'</body></html>','html')
-        msg['To'] = 'ssang@asianhope.org'
+        msg['To'] = 'lyle@asianhope.org'
         msg['From'] = 'noreply@asianhope.org'
         msg['Subject'] = 'New Account Request: ' +departmentNumber+'-'+username
         try:

@@ -36,10 +36,9 @@ class TestDump(unittest.TestCase):
         instance.__contains__= lambda s, key: key in self.unprivileged
         users = dump.getUsers()
         self.assertNotEqual(users,None)
-
         #unprivileged users should NOT have access to special fields
         #this is, perhaps, more of a test of server config than of the code
-        self.assertTrue(hasBirthday(users))
+        self.assertFalse(hasBirthday(users))
 
     def test_badpw(self,MockClass):
         instance = MockClass.return_value
