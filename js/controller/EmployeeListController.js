@@ -87,39 +87,26 @@
                             if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
                               $scope.selfselect=$scope.employees[i];
                               if($scope.selfselect.departmentNumber=="LIS"){
-                                jQuery("#table_th").css('background-color', '#488FCC');
-                                jQuery("#demo-ribbon").css('background-color', '#488FCC');
-                                jQuery("#demo-header").css('background-color', '#488FCC');
-                                jQuery("#btn_profile").css('background-color', '#488FCC');
-                                jQuery("#btn_print_card").css('background-color', '#488FCC');
-                                jQuery("#btn_print_change").css('background-color', '#488FCC');
+                                jQuery("#table_th,#demo-ribbon,#demo-header,#btn_profile,#btn_print_card,#btn_print_change").css('background-color', '#488FCC');
                                 jQuery("#search").css('border', '1px solid #488FCC');
-                                jQuery('#change_text_color').css('color', '#488FCC');
-                                jQuery('#change_text_color a').css('color', '#488FCC');
+                                jQuery('#change_text_color,#change_text_color a').css('color', '#488FCC');
                                 $scope.style_anchor = function() {
                                   return { "color": "#488FCC" };
                                 }
                               }
                               else if ($scope.selfselect.departmentNumber=="AHIS"){
+                                jQuery("#table_th,#demo-ribbon,#demo-header,#btn_profile,#btn_print_card,#btn_print_change").css('background-color', '#26AF5F');
+                                jQuery("#search").css('border', '1px solid #26AF5F');
+                                jQuery('.mail,#change_text_color,#change_text_color a').css('color', '#26AF5F');
                                 $scope.style_anchor = function() {
                                   return { "color": "#26AF5F" };
                                 }
-                                jQuery('.mail').css('color', '#26AF5F');
-                                jQuery("#table_th").css('background-color', '#26AF5F');
-                                jQuery("#demo-ribbon").css('background-color', '#26AF5F');
-                                jQuery("#demo-header").css('background-color', '#26AF5F');
-                                jQuery("#btn_profile").css('background-color', '#26AF5F');
-                                jQuery("#btn_print_card").css('background-color', '#26AF5F');
-                                jQuery("#btn_print_change").css('background-color', '#26AF5F');
-                                jQuery("#search").css('border', '1px solid #26AF5F');
-                                jQuery('#change_text_color').css('color', '#26AF5F');
-                                jQuery('#change_text_color a').css('color', '#26AF5F');
-                            }
-                            else {
-                              $scope.style_anchor = function() {
-                                return { "color": "#488FCC" };
                               }
-                            }
+                              else {
+                                $scope.style_anchor = function() {
+                                  return { "color": "#488FCC" };
+                                }
+                              }
                                 break;
                             }
                           }

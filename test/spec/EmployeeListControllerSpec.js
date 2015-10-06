@@ -5,7 +5,6 @@ describe('* EmployeeListController', function() {
   var $scope,$location,$http,$httpBackend,$window,$q;
   var EmployeesService,storageService;
   var deferred;
-
   // Mock services and spy on method
   beforeEach(inject(function($q, _EmployeesService_) {
     deferred = $q.defer();
@@ -63,8 +62,8 @@ describe('* EmployeeListController', function() {
         expect($scope.loading).toBe(false);
       });
       describe('test get data success',function(){
-        var employees;
-        beforeEach(inject(function(){
+        it('should set employees',function(){
+          var employees;
           $scope.user.uname='nsweet';
           var data= {"data":
               [
@@ -77,6 +76,7 @@ describe('* EmployeeListController', function() {
                 },
                 {
                 "uidNumber":"1000822",
+                "departmentNumber":"LIS",
                 "employeeNumber":"1000822",
                 "employeeType":"PT",
                 "cn": "ssang"
@@ -87,21 +87,93 @@ describe('* EmployeeListController', function() {
           createController();
           $scope.$digest();
           employees = data.data;
-        }));
-        it('should set employees',function(){
           expect($scope.employees).toBe(employees);
           expect($scope.loading).toBe(false);
         });
-        it('should set $scope.selfselect if curemployee match',function(){
-          var curemployee;
-          for (var i = 0; i < employees.length; i++) {
-            if(employees[i].cn.localeCompare($scope.user.uname) == 0){
-              curemployee = employees[i];
-              break;
+        describe('test current employee match',function(){
+          it('should set $scope.selfselect if curemployee match',function(){
+            var employees;
+            $scope.user.uname='nsweet';
+            var data= {"data":
+                [
+                  {
+                  "departmentNumber":"LIS",
+                  "displayName":"nsweet",
+                  "employeeNumber":"1000",
+                  "uid":"nsweet",
+                  "cn": "nsweet"
+                  },
+                  {
+                  "uidNumber":"1000822",
+                  "departmentNumber":"LIS",
+                  "employeeNumber":"1000822",
+                  "employeeType":"PT",
+                  "cn": "ssang"
+                  }
+              ],
+              "status":200};
+            deferred.resolve(data); // Resolve the promise.
+            createController();
+            $scope.$digest();
+            employees = data.data;
+            var curemployee;
+            for (var i = 0; i < employees.length; i++) {
+              if(employees[i].cn.localeCompare($scope.user.uname) == 0){
+                curemployee = employees[i];
+                break;
+              }
             }
-          }
-          expect($scope.selfselect).not.toBe(null);
-          expect($scope.selfselect).toEqual(curemployee);
+            expect($scope.selfselect).not.toBe(null);
+            expect($scope.selfselect).toEqual(curemployee);
+          });
+          describe('test style color',function(){
+            it('should set style color to blue (#488FCC) if departmentNumber is LIS',function(){
+              var spy = spyOn($.fn,'css');
+              var employees;
+              $scope.user.uname='nsweet';
+              var data= {"data":
+                [
+                    {
+                    "departmentNumber":"LIS",
+                    "displayName":"nsweet",
+                    "employeeNumber":"1000",
+                    "uid":"nsweet",
+                    "cn": "nsweet"
+                    }
+                ],
+                "status":200};
+              deferred.resolve(data); // Resolve the promise.
+              createController();
+              $scope.$digest();
+              expect(spy).toHaveBeenCalledWith('border', '1px solid #488FCC');
+              expect(spy).toHaveBeenCalledWith('color', '#488FCC');
+              expect(spy).toHaveBeenCalledWith('background-color', '#488FCC');
+              expect($scope.style_anchor()).toEqual({color: "#488FCC"});
+            });
+            it('should set style color to green (#26AF5F) if departmentNumber is AHIS',function(){
+              var spy = spyOn($.fn,'css');
+              var employees;
+              $scope.user.uname='nsweet';
+              var data= {"data":
+                [
+                    {
+                    "departmentNumber":"AHIS",
+                    "displayName":"nsweet",
+                    "employeeNumber":"1000",
+                    "uid":"nsweet",
+                    "cn": "nsweet"
+                    }
+                ],
+                "status":200};
+              deferred.resolve(data); // Resolve the promise.
+              createController();
+              $scope.$digest();
+              expect(spy).toHaveBeenCalledWith('border', '1px solid #26AF5F');
+              expect(spy).toHaveBeenCalledWith('color', '#26AF5F');
+              expect(spy).toHaveBeenCalledWith('background-color', '#26AF5F');
+              expect($scope.style_anchor()).toEqual({color: "#26AF5F"});
+            });
+          });
         });
       });
       describe('test initialize scope varible',function(){
