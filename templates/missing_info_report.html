@@ -21,7 +21,7 @@
         </th>
       </tr>
       <tr ng-repeat="employee in employees | filter:search | orderBy:orderProp">
-        <td><a ui-sref="admin.staff({instanceID:employee.employeeNumber})"><h5><strong>{{employee.sn}}, {{employee.givenName}}</strong></h5></a></td>
+        <td><a ui-sref="admin.staff({instanceID:employee.employeeNumber})"><h5><strong>{{employee.sn}},{{employee.givenName}}</strong></h5></a></td>
         <td>
           <h5 ng-if="!employee.sn">
             <a  href="#" title="Click to edit: Surname" editable-text="employee.sn"
@@ -221,7 +221,7 @@
           </h5>
           <h5>
             Documents
-            <li ng-repeat="document in showMissingDocs(employee.documents,employee.OtherDocuments, documentType)">
+            <li ng-hide="document.value==19 && employee.c !='KH'" ng-repeat="document in showMissingDocs(employee.documents,employee.OtherDocuments, documentType)">
               <a ui-sref="admin.staff({instanceID:employee.employeeNumber})" ng-click="this.tab.setTab(5)">{{document.text}}</a>
             </li>
           </h5>

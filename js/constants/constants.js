@@ -35,7 +35,8 @@
       {value: '15', text: 'Employee Status Form', required_by: 'all'},
       {value: '16', text: 'Other Supporting Documentation', required_by: ''},
       {value: '17', text: 'Emergency contact information', required_by: ''},
-      {value: '18', text: 'Medical Insurance paperwork / membership number', required_by: ''}
+      {value: '18', text: 'Medical Insurance paperwork / membership number', required_by: ''},
+      {value: '19', text: 'Cambodian Employment Card', required_by:''}
     ];
     var ah_employeetypes = [
         {value: 'PT', text: 'Part Time'},
