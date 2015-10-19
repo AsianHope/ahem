@@ -11,16 +11,28 @@
       $scope.keylist="abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$*&";
       $scope.temp='';
       $scope.plength=8;
-
       $scope.DocumentData = {
          'DocumentType':{value: '0', text: 'Photo', required_by: 'all'},
          'uid':'',
-
       };
+      $scope.years = {
+         'selectedYear':null
+      };
+      $scope.searchoption = {
+         'filter':null,
+         'key':null
+      };
+      // for sort data
+      $scope.orderByField = 'firstName';
+      $scope.reverseSort = true;
+
+      $scope.inactiveEmployees=[];
+      $scope.search = {};
+
       $scope.groups =[];
       $scope.curGroups = [];
       $scope.modifyGroupSms=null;
-
+      
       $scope.keyPress = function(){
         $scope.showlist=true;
       }
@@ -198,6 +210,7 @@
               // called no matter success or failure
               $scope.loading = false;
             });
+
         };
         $scope.showGroup = function(uid){
           $scope.curGroups = [];
@@ -465,5 +478,70 @@
       //pull these from a database or API -
       //BUG WARNING: if value doesn't match index in array things will get wonky
 
+     $scope.setfilter = function() {
+       $scope.search = {};
+       $scope.search[ $scope.searchoption.key ] = $scope.searchoption.filter;
+     };
+     $scope.generateYears = function(){
+       var years = [];
+       var startYear = 2005;
+       var currentYear = new Date().getFullYear();
+       for (var i = 0; i <= currentYear-startYear ; i++){
+           years.push(currentYear-i);
+       }
+       return years;
+     };
+     //-----------------------
+     $scope.filterEmployee = function(){
+       // reset form
+       $("#searchKey").val("");
+       $("#searchValue").val("");
+       // reset search result
+       $scope.search = {};
+       $scope.orderInactiveEmployee="";
+       $scope.curInactiveEmployees = [];
+       if($scope.years.selectedYear==null){
+         $scope.curInactiveEmployees = $scope.inactiveEmployees;
+       }
+       else{
+         for(var i = 0; i < $scope.inactiveEmployees.length;i++){
+           var year = new Date($scope.inactiveEmployees[i].enddate).getFullYear();
+           if($scope.years.selectedYear==year){
+             $scope.curInactiveEmployees.push($scope.inactiveEmployees[i]);
+           }
+         }
+       }
+     };
+     $scope.showInactiveEmployee = function(){
+       // reset form
+       $("#searchKey").val("");
+       $("#searchValue").val("");
+       // reset search result
+       $scope.search = {};
+       // reset short employee
+       $scope.years.selectedYear = null;
+       $("#selecedyear").val("");
+
+       $scope.loading = false;
+       $scope.inactiveEmployees = [];
+       EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
+           .then(
+             // success
+             function(results){
+               $scope.inactiveEmployees = results.data;
+               $scope.curInactiveEmployees = results.data;
+             }
+           )
+           .finally(function() {
+           // called no matter success or failure
+           $scope.loading = false;
+         });
+     };
+     $scope.exportData = function () {
+        var blob = new Blob([document.getElementById('exportable').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, "Inactive Staff Report.xls");
+    };
     });
 }());

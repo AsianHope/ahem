@@ -24,6 +24,9 @@ var app =  angular.module('employeeList',['xeditable','ui.router','Service','ngO
             else if($state.current.name === 'admin.groups') {
                 $rootScope.showInclude = true;
             }
+            else if($state.current.name === 'admin.inactiveStaffReport') {
+                $rootScope.showInclude = true;
+            }
         });
 
     });

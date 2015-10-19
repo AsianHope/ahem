@@ -64,7 +64,7 @@ def getUsers():
 
     elif scope=='INACTIVE':
         ssearchFilter = 'mail=*@asianhope.org'
-        sbaseDN = "cn=disabled,dc=asianhope,dc=org"
+        sbaseDN = "cn=inactive,dc=asianhope,dc=org"
 
     elif scope=='GROUPS':
         ssearchFilter = 'mail=*@asianhope.org'

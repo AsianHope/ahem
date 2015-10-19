@@ -38,6 +38,10 @@
         .state('admin.MissingInfo', {
           url: '/MissingInfo/',
           templateUrl: "templates/missing_info_report.html"
+        })
+        .state('admin.inactiveStaffReport', {
+          url: '/inactiveStaffReport/',
+          templateUrl: "templates/inactive-staff-report.html"
         });
 
     });
