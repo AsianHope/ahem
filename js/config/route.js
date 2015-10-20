@@ -42,6 +42,10 @@
         .state('admin.inactiveStaffReport', {
           url: '/inactiveStaffReport/',
           templateUrl: "templates/inactive-staff-report.html"
+        })
+        .state('admin.documentReport', {
+          url: '/documentReport/',
+          templateUrl: "templates/document-report.html"
         });
 
     });

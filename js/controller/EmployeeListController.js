@@ -32,7 +32,7 @@
       $scope.groups =[];
       $scope.curGroups = [];
       $scope.modifyGroupSms=null;
-      
+
       $scope.keyPress = function(){
         $scope.showlist=true;
       }
@@ -537,11 +537,36 @@
            $scope.loading = false;
          });
      };
-     $scope.exportData = function () {
-        var blob = new Blob([document.getElementById('exportable').innerHTML], {
+     $scope.exportData = function (tableID,fileName) {
+        var blob = new Blob([document.getElementById(tableID).innerHTML], {
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
         });
-        saveAs(blob, "Inactive Staff Report.xls");
+        // saveAs(blob, "Inactive Staff Report.xls");
+        saveAs(blob, fileName+".xls");
+
     };
-    });
+    $scope.documentStatus = function (document,employeeCurrentDocument,country){
+      var document_status;
+      if(document.value=="19" && country!="KH"){
+        document_status = "N/A";
+      }
+      else{
+        if(employeeCurrentDocument!=undefined && employeeCurrentDocument.length>0){
+          for(var i=0; i<employeeCurrentDocument.length; i++){
+             if(document.value == employeeCurrentDocument[i]['DocumentID']){
+               document_status= 'Yes';
+                 break;
+             }
+             else {
+               document_status= 'No';
+             }
+          }
+        }
+        else {
+            document_status= 'No';
+        }
+      }
+      return document_status;
+    };
+  });
 }());

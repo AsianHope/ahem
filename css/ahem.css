@@ -3,6 +3,10 @@
 #debug{
   display:none;
 }
+.sort_icon{
+  width: 20px;
+  height: 20px;
+}
 .tab_active{
   border-bottom: 2px solid #488FCC !important;
 }
