@@ -454,5 +454,24 @@
               });
          }
         };
+        $scope.combinedDocument = function(document,current_document){
+          var document_result;
+          if(current_document!=undefined && current_document.length>0){
+            for(var i=0; i<current_document.length; i++){
+               if(document.value == current_document[i]['DocumentID']){
+                   document_result= "✓ " + document.text;
+                   break;
+               }
+               else {
+                   document_result= "✗ " + document.text;
+               }
+            }
+          }
+            else {
+              document_result= "✗ " + document.text;
+            }
+          return document_result;
+
+        };
     });
   }());

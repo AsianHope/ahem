@@ -294,7 +294,7 @@
               Document type :
             </td>
             <td>
-              <select style="width:150px;" id="myselect" name="type" ng-model="DocumentData.Documenttype"  ng-options-disabled="documenttype.value == 19 && curemployee.c !='KH' for documenttype in documentType" ng-options="documenttype.text for documenttype in documentType" required>
+              <select style="width:150px;" id="myselect" name="type" ng-model="DocumentData.Documenttype"  ng-options-disabled="documenttype.value == 19 && curemployee.c !='KH' for documenttype in documentType" ng-options="combinedDocument(documenttype,curemployee.documents) for documenttype in documentType" required>
                 <option value="">--Document type--</option>
               </select>
             </td>
@@ -406,27 +406,25 @@
       </div>
   </div>
 </div>
-
-
-         <style>
-            @media screen and (max-width: 800px) {
-              .right{
-                text-align: left;
-              }
-              #imagePreview{
-                margin-left: 25%;
-              }
-              #goback{
-                text-align: center;
-              }
-          }
-          #show_resetpass{
-            display: none;
-          }
-         </style>
-         <script type="text/javascript">
-            $('#hide_resetpass').click(function() {
-              $(this).hide();
-              $("#show_resetpass").show();
-            });
-         </script>
+<style>
+   @media screen and (max-width: 800px) {
+     .right{
+       text-align: left;
+     }
+     #imagePreview{
+       margin-left: 25%;
+     }
+     #goback{
+       text-align: center;
+     }
+ }
+ #show_resetpass{
+   display: none;
+ }
+</style>
+<script type="text/javascript">
+   $('#hide_resetpass').click(function() {
+     $(this).hide();
+     $("#show_resetpass").show();
+   });
+</script>
