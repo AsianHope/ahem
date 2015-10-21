@@ -2,7 +2,7 @@
   <!-- {{employees}} -->
 </div>
 <div class="reports" style="margin-top:30px; position:relative;" >
-    <label>Search Employee:</label><input style="margin: 0px 0 20px 10px; padding: 6px;" type="text" ng-model="search"/>
+    <label>Search Employee:</label><input style="margin: 0px 0 20px 10px; padding: 6px;" type="text" ng-model="searchMissingInfor"/>
     <div class="table-responsive">
     <table style="width:100%;" class="table missing_data mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
       <!-- {{employees}} -->
@@ -20,7 +20,7 @@
           </h5>
         </th>
       </tr>
-      <tr ng-repeat="employee in employees | filter:search | orderBy:orderProp">
+      <tr ng-repeat="employee in employees | filter:searchMissingInfor | orderBy:orderProp">
         <td><a ui-sref="admin.staff({instanceID:employee.employeeNumber})"><h5><strong>{{employee.sn}},{{employee.givenName}}</strong></h5></a></td>
         <td>
           <h5 ng-if="!employee.sn">

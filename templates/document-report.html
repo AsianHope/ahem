@@ -5,7 +5,11 @@
       <td>
         <input ng-model="searchEmployeeInDocumentReport" name="search">
       </td>
-      <td><button ng-click="exportData('document_report','Document Report')" class="btn btn-primary">Export</button></td>
+      <td>
+        <button ng-click="exportData('document_report','Document Report')" class="btn btn-info">
+          <span class="glyphicon glyphicon-export"></span> Export
+        </button>
+      </td>
     </tr>
   </table>
   <div id="document_report">
@@ -22,6 +26,16 @@
               <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
             </a>
           </th>
+          <th>
+            Department
+            <a ng-show="orderByField != 'departmentNumber'" ng-click="orderByField='departmentNumber'; reverseSort = !reverseSort" href>
+              <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
+            </a>
+            <a ng-show="orderByField == 'departmentNumber'" ng-click="orderByField='departmentNumber'; reverseSort = !reverseSort">
+              <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
+              <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
+            </a>
+          </th>
           <th ng-repeat="document in documentType">
             {{document.text}}
           </th>
@@ -29,7 +43,10 @@
         <tr ng-repeat="employee in employees | filter:searchEmployeeInDocumentReport | orderBy:orderByField:reverseSort track by $index">
           <td>{{$index+1}}</td>
           <td>
-              {{employee.sn}}  {{employee.givenName}}
+              {{employee.givenName}} {{employee.sn | uppercase}}
+          </td>
+          <td>
+              {{employee.departmentNumber}}
           </td>
           <td ng-repeat="document in documentType">
             <div style="color:blue;" ng-if="documentStatus(document,employee.documents,employee.c)=='Yes'">Yes</div>

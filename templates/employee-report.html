@@ -35,7 +35,7 @@
   </form>
   <div id="employee_report">
     <table  style="width:100%; margin-top:10px;" class="tbl_employee_report table mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-          <th>No</th>
+          <th>ID</th>
           <th>
               First Name
               <a ng-show="orderByField != 'givenName'" ng-click="orderByField='givenName'; reverseSort = !reverseSort" href>
@@ -128,7 +128,7 @@
           </th>
         </tr>
         <tr data-ng-repeat="employee in employees | filter:searchEmployeeReport | orderBy:orderByField:reverseSort track by $index">
-            <td style="width: 10em;">{{$index+1}}</td>
+            <td style="width: 10em;"><a ui-sref="admin.staff({instanceID:employee.employeeNumber})">{{employee.employeeNumber}}</a></td>
             <td style="width: 10em;">{{employee.givenName}}</td>
             <td style="width: 10em;">{{employee.sn | uppercase}}</td>
             <td style="width: 10em;">{{employee.gender || "Not Entered"}}</td>
@@ -163,9 +163,6 @@
   </div>
 </div>
 <style>
-  .tbl_data tr td{
-    padding: 8px;
-  }
   .tbl_employee_report tr th, .tbl_employee_report tr td{
     text-align:left;
   }

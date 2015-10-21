@@ -3,6 +3,9 @@
 #debug{
   display:none;
 }
+.tbl_data tr td{
+  padding: 8px;
+}
 .sort_icon{
   width: 20px;
   height: 20px;

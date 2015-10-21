@@ -11,7 +11,8 @@
           <td>Search Key:</td>
           <td>
             <select id="searchKey" ng-model="searchoption.key"  name="searchKey" required>
-              <option selected value="$">Any</option>
+              <option value="">--Select Key--</option>
+              <option value="$">Any</option>
               <option value="gender">Gender</option>
               <option value="c">Nationality</option>
               <option value="applebirthday">Date of Birth</option>
@@ -25,7 +26,7 @@
       </table>
   </form></div>
   <div class=" col-md-6 col-xs-12" style="padding:0;">
-    <table style="width:100%;">
+    <table style="width:100%; margin-bottom: 20px;">
       <tr>
         <td style="text-align:right;">Select Year:</td>
         <td style="text-align:right;">
@@ -33,23 +34,18 @@
             <option value="">--Choose year--</option>
           </select>
         </td>
-        <td style="text-align:right;"><button id="fileExport" ng-click="exportData('exportable','Inactive Staff Report')" class="btn btn-primary">Export</button></td>
+        <td style="text-align:right;">
+          <button ng-click="exportData('exportable','Inactive Staff Report')" class="btn btn-info">
+            <span class="glyphicon glyphicon-export"></span> Export
+          </button>
+        </td>
       </tr>
     </table>
   </div>
-  <div class="col-md-12" style="padding:0;">
-    <h5>
-      Female <b>{{(curInactiveEmployees | filter:{gender:'F'}).length }}</b>,
-      Male <b>{{(curInactiveEmployees | filter:{gender:'M'}).length }}</b>,
-      <!-- Not Entered {{(curInactiveEmployees.length)-((curInactiveEmployees | filter:{gender:"F"}).length+(curInactiveEmployees | filter:{gender:"M"}).length)}} -->
-    </h5>
-  </div>
   <div id="exportable">
   <table  style="width:100%; margin-top:10px;" class="tbl_inactive table mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-      <tr ng-if="years.selectedYear!=null"><th style="text-align:center;" colspan="10"><h4>Inactive Staff Report In {{years.selectedYear}}</h4></th></tr>
-      <tr ng-if="years.selectedYear==null"><th style="text-align:center;" colspan="10"><h4>Inactive Staff Report</h4></th></tr>
       <tr>
-        <th>No</th>
+        <th>ID</th>
         <th>
             First Name
             <a ng-show="orderByField != 'givenName'" ng-click="orderByField='givenName'; reverseSort = !reverseSort" href>
@@ -142,9 +138,9 @@
         </th>
       </tr>
       <tr data-ng-repeat="inactive_employee in curInactiveEmployees | filter:search | orderBy:orderByField:reverseSort track by $index">
-          <td style="width: 10em;">{{$index+1}}</td>
+          <td style="width: 10em;"><a ui-sref="admin.staff({instanceID:inactive_employee.employeeNumber})">{{inactive_employee.employeeNumber}}</a></td>
           <td style="width: 10em;">{{inactive_employee.givenName}}</td>
-          <td style="width: 10em;">{{inactive_employee.sn}}</td>
+          <td style="width: 10em;">{{inactive_employee.sn | uppercase}}</td>
           <td style="width: 10em;">{{inactive_employee.gender || "Not Entered"}}</td>
           <td style="width: 10em;">{{inactive_employee.c || "Not Entered"}}</td>
           <td style="width: 10em;">{{decodeAppleBirthday(inactive_employee.applebirthday) || "Not Entered"}}</td>
@@ -156,6 +152,26 @@
       <tr ng-if="curInactiveEmployees.length < 1">
         <td>No Employee Selected</td>
       </tr>
+  </table>
+  <table class="tbl_data" style="margin-bottom: 20px;">
+    <tr>
+      <td>Employees :</td>
+      <td>{{ (curInactiveEmployees | filter:search).length }}</td>
+    </tr>
+    <tr>
+      <td>Female :</td>
+      <td>{{ (curInactiveEmployees | filter:{gender:'F'} | filter:search ).length }}</td>
+    </tr>
+    <tr>
+      <td>Male :</td>
+      <td>{{ (curInactiveEmployees | filter:{gender:'M'} | filter:search ).length }}</td>
+    </tr>
+    <tr style="color:red;" ng-if="(curInactiveEmployees | filter:search).length-((curInactiveEmployees | filter:{gender:'F'} | filter:search).length+(curInactiveEmployees | filter:{gender:'M'} | filter:search).length)>0">
+      <td>*Gender Not Entered :</td>
+      <td>
+        {{ (curInactiveEmployees | filter:search).length-((curInactiveEmployees | filter:{gender:"F"} | filter:search).length+(curInactiveEmployees | filter:{gender:"M"} | filter:search).length)}}
+      </td>
+    </tr>
   </table>
 </div>
 </div>
