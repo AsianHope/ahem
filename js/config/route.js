@@ -46,6 +46,10 @@
         .state('admin.documentReport', {
           url: '/documentReport/',
           templateUrl: "templates/document-report.html"
+        })
+        .state('admin.employeeReport', {
+          url: '/employeeReport/',
+          templateUrl: "templates/employee-report.html"
         });
 
     });

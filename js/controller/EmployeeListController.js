@@ -18,16 +18,23 @@
       $scope.years = {
          'selectedYear':null
       };
+      // for search
       $scope.searchoption = {
          'filter':null,
          'key':null
       };
+      $scope.searchoptionEmployeeReport = {
+         'filter':null,
+         'key':null
+      };
+      $scope.searchEmployeeReport = {};
+      $scope.search = {};
+
       // for sort data
       $scope.orderByField = 'firstName';
       $scope.reverseSort = true;
 
       $scope.inactiveEmployees=[];
-      $scope.search = {};
 
       $scope.groups =[];
       $scope.curGroups = [];
@@ -482,6 +489,12 @@
        $scope.search = {};
        $scope.search[ $scope.searchoption.key ] = $scope.searchoption.filter;
      };
+
+     $scope.setfilterEmployeeReport = function() {
+       $scope.searchEmployeeReport = {};
+       $scope.searchEmployeeReport[ $scope.searchoptionEmployeeReport.key ] = $scope.searchoptionEmployeeReport.filter;
+     };
+
      $scope.generateYears = function(){
        var years = [];
        var startYear = 2005;
@@ -568,5 +581,10 @@
       }
       return document_status;
     };
+    $scope.resetEmployeeReport = function(){
+      $("#searchoptionEmployeeReport").val("");
+      $("#searchEmployeeReport").val("");
+      $scope.searchEmployeeReport = {};
+    }
   });
 }());

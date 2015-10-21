@@ -30,6 +30,9 @@ var app =  angular.module('employeeList',['xeditable','ui.router','Service','ngO
             else if($state.current.name === 'admin.documentReport') {
                 $rootScope.showInclude = true;
             }
+            else if($state.current.name === 'admin.employeeReport') {
+                $rootScope.showInclude = true;
+            }
         });
 
     });
