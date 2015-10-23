@@ -1,47 +1,21 @@
 <div class="table-responsive">
-  <table style="width:100%; margin-bottom:20px;">
-    <tr>
-      <td>Search:</td>
-      <td>
-        <input ng-model="searchEmployeeInDocumentReport" name="search">
-      </td>
-      <td>
-        <button ng-click="exportData('document_report','Document Report')" class="btn btn-info">
-          <span class="glyphicon glyphicon-export"></span> Export
-        </button>
-      </td>
-    </tr>
-  </table>
   <div id="document_report">
-      <table style="width:100%;" class="table tbl_document_report mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+      <table style="width:100%;" datatable="ng" dt-options="elist.dtOptions" class="table tbl_document_report mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+        <thead>
         <tr>
-          <th>No</th>
           <th>
             Employee
-            <a ng-show="orderByField != 'sn'" ng-click="orderByField='sn'; reverseSort = !reverseSort" href>
-              <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-            </a>
-            <a ng-show="orderByField == 'sn'" ng-click="orderByField='sn'; reverseSort = !reverseSort">
-              <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-              <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-            </a>
           </th>
           <th>
             Department
-            <a ng-show="orderByField != 'departmentNumber'" ng-click="orderByField='departmentNumber'; reverseSort = !reverseSort" href>
-              <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-            </a>
-            <a ng-show="orderByField == 'departmentNumber'" ng-click="orderByField='departmentNumber'; reverseSort = !reverseSort">
-              <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-              <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-            </a>
           </th>
           <th ng-repeat="document in documentType">
             {{document.text}}
           </th>
         </tr>
+      </thead>
+      <tbody>
         <tr ng-repeat="employee in employees | filter:searchEmployeeInDocumentReport | orderBy:orderByField:reverseSort track by $index">
-          <td>{{$index+1}}</td>
           <td>
               {{employee.givenName}} {{employee.sn | uppercase}}
           </td>
@@ -49,11 +23,12 @@
               {{employee.departmentNumber}}
           </td>
           <td ng-repeat="document in documentType">
-            <div style="color:blue;" ng-if="documentStatus(document,employee.documents,employee.c)=='Yes'">Yes</div>
-            <div style="color:red;" ng-if="documentStatus(document,employee.documents,employee.c)=='No'">No</div>
+            <div style="color:blue;" ng-if="documentStatus(document,employee.documents,employee.c)=='Yes'">Y</div>
+            <div style="color:red;" ng-if="documentStatus(document,employee.documents,employee.c)=='No'">N</div>
             <div style="color:green;" ng-if="documentStatus(document,employee.documents,employee.c)=='N/A'">N/A</div>
           </td>
         </tr>
+      </tbody>
       </table>
   </div>
 </div>

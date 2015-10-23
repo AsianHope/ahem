@@ -1,4 +1,4 @@
-var app =  angular.module('employeeList',['xeditable','ui.router','Service','ngOptionsDisabled']);
+var app =  angular.module('employeeList',['datatables','datatables.tabletools','xeditable','ui.router','Service','ngOptionsDisabled']);
 (function () {
    'use strict';
    app.run(function(editableOptions,$rootScope, $state, $location, $timeout){

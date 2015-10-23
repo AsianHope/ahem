@@ -1,6 +1,17 @@
 (function () {
     'use strict';
-    app.controller('EmployeeListController',function ($scope, $http, $filter, $q,$location,EmployeesService,storageService) {
+    app.controller('EmployeeListController',function (DTOptionsBuilder,$scope, $http, $filter, $q,$location,EmployeesService,storageService) {
+      // export
+      this.dtOptions = DTOptionsBuilder
+          .newOptions()
+          .withTableTools('vendor/datatables-tabletools/swf/copy_csv_xls_pdf.swf')
+          .withTableToolsButtons([
+              {
+                  'sExtends': 'collection',
+                  'sButtonText': 'Save',
+                  'aButtons': ['xls']
+              }
+          ]);
       $scope.showlist=false;
       $scope.loading = true;
       $scope.local_data=[];
