@@ -22,6 +22,12 @@
           </select>
         </td>
         <td>
+          <select ng-model="selectedNationality">
+            <option value="">--Choose nationality--</option>
+            <option value="{{country.value}}" ng-repeat="country in countries">{{country.value}}</option>
+          </select>
+        </td>
+        <td>
           <button ng-disabled="employeeReportsSearchForm.$invalid" class="btn btn-primary" ng-click="setfilterEmployeeReport()" value="Search">Search</button>
         </td>
         <td>
@@ -33,116 +39,242 @@
       </tr>
     </table>
   </form>
-  <div id="employee_report">
-    <table  style="width:100%; margin-top:10px;" class="tbl_employee_report table mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-          <th>ID</th>
-          <th>
-              First Name
-              <a ng-show="orderByField != 'givenName'" ng-click="orderByField='givenName'; reverseSort = !reverseSort" href>
-                <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-              </a>
-              <a ng-show="orderByField == 'givenName'" ng-click="orderByField='givenName'; reverseSort = !reverseSort">
-                <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-                <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-              </a>
+
+  <div>
+    <table style="margin: 15px 0px 15px 0px;" class="tblcheckbox">
+      <tr>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedID"/>
+          ID
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedGivenName"/>
+          First Name
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedSn"/>
+          Surname
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedGivenNamekh"/>
+          Khmer First name
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedSnkh"/>
+          Khmer Surname
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedGender"/>
+          Gender
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedC"/>
+          Nationality
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedAppleBirthday"/>
+          Date of Birth
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedDepartmentNumber"/>
+          Department
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedTitle"/>
+          Position
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedEmployeeType"/>
+          Status
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedL"/>
+          Work Site
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedDegree"/>
+          Education
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedIdnumber"/>
+          Passport / ID #
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedInsurance"/>
+          Insurance Provider
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedVisaExpires"/>
+          Visa Expires
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedPostalAddress"/>
+          Address
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedStartdate"/>
+          Start Date
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedEnddate"/>
+          End Date
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedTerm"/>
+          Term
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedMaritalStatus"/>
+          Marital Status
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedChildren"/>
+          Children
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedFaith"/>
+          Religion
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedMobile"/>
+          Phone
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedMail"/>
+          Email
+        </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedMailpr"/>
+          Personal Email
+        </td>
+      </tr>
+    </table>
+    <table id="employee_report" datatable="ng" dt-options="elist.dtOptionsShortOnly"  style="width:100%; margin-top:10px;" class="tbl_employee_report table mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+      <thead>
+        <tr>
+          <th ng-class="{hideColumn : objCheck.checkedID == false}">
+            ID
           </th>
-          <th>
-              Surname
-              <a ng-show="orderByField != 'sn'" ng-click="orderByField='sn'; reverseSort = !reverseSort" href>
-                <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-              </a>
-              <a ng-show="orderByField == 'sn'" ng-click="orderByField='sn'; reverseSort = !reverseSort">
-                <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-                <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-              </a>
+          <th ng-class="{hideColumn : objCheck.checkedGivenName == false}">
+            First Name
           </th>
-          <th>
-              Gender
-              <a ng-show="orderByField != 'gender'" ng-click="orderByField='gender'; reverseSort = !reverseSort" href>
-                <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-              </a>
-              <a ng-show="orderByField == 'gender'" ng-click="orderByField='gender'; reverseSort = !reverseSort">
-                <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-                <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-              </a>
+          <th ng-class="{hideColumn : objCheck.checkedSn == false}">
+            Surname
           </th>
-          <th>
-              Natinality
-              <a ng-show="orderByField != 'c'" ng-click="orderByField='c'; reverseSort = !reverseSort" href>
-                <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-              </a>
-              <a ng-show="orderByField == 'c'" ng-click="orderByField='c'; reverseSort = !reverseSort">
-                <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-                <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-              </a>
+          <th ng-class="{hideColumn : objCheck.checkedSnkh == false}">
+            Khmer Surname
           </th>
-          <th>
-              Date of Birth
-              <a ng-show="orderByField != 'applebirthday'" ng-click="orderByField='applebirthday'; reverseSort = !reverseSort" href>
-                <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-              </a>
-              <a ng-show="orderByField == 'applebirthday'" ng-click="orderByField='applebirthday'; reverseSort = !reverseSort">
-                <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-                <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-              </a>
+          <th ng-class="{hideColumn : objCheck.checkedGivenNamekh == false}">
+            Khmer First name
           </th>
-          <th>
-              Department
-              <a ng-show="orderByField != 'departmentNumber'" ng-click="orderByField='departmentNumber'; reverseSort = !reverseSort" href>
-                <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-              </a>
-              <a ng-show="orderByField == 'departmentNumber'" ng-click="orderByField='departmentNumber'; reverseSort = !reverseSort">
-                <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-                <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-              </a>
+          <th ng-class="{hideColumn : objCheck.checkedGender == false}">
+            Gender
           </th>
-          <th>
-              Position
-              <a ng-show="orderByField != 'title'" ng-click="orderByField='title'; reverseSort = !reverseSort" href>
-                <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-              </a>
-              <a ng-show="orderByField == 'title'" ng-click="orderByField='title'; reverseSort = !reverseSort">
-                <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-                <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-              </a>
+          <th ng-class="{hideColumn : objCheck.checkedC == false}">
+            Nationality
           </th>
-          <th>
-              Status
-              <a ng-show="orderByField != 'employeeType'" ng-click="orderByField='employeeType'; reverseSort = !reverseSort" href>
-                <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-              </a>
-              <a ng-show="orderByField == 'employeeType'" ng-click="orderByField='employeeType'; reverseSort = !reverseSort">
-                <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-                <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-              </a>
+          <th ng-class="{hideColumn : objCheck.checkedAppleBirthday == false}">
+            Date of Birth
           </th>
-          <th>
-              Education
-              <a ng-show="orderByField != 'degree'" ng-click="orderByField='degree'; reverseSort = !reverseSort" href>
-                <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-              </a>
-              <a ng-show="orderByField == 'degree'" ng-click="orderByField='degree'; reverseSort = !reverseSort">
-                <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-                <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-              </a>
+          <th ng-class="{hideColumn : objCheck.checkedDepartmentNumber == false}">
+            Department
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedTitle == false}">
+            Position
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedEmployeeType == false}">
+            Status
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedL == false}">
+            Work Site
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedDegree == false}">
+            Education
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedIdnumber == false}">
+            Passport / ID #
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedInsurance == false}">
+            Insurance Provider
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedVisaExpires == false}">
+            Visa Expires
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedPostalAddress == false}">
+            Address
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedStartdate == false}">
+            Start Date
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedEnddate == false}">
+            End Date
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedTerm == false}">
+            Term
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedMaritalStatus == false}">
+            Marital Status
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedChildren == false}">
+            Children
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedFaith == false}">
+            Religion
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedMobile == false}">
+            Phone
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedMail == false}">
+            Email
+          </th>
+          <th ng-class="{hideColumn : objCheck.checkedMailpr == false}">
+            Personal Email
           </th>
         </tr>
+      </thead>
+      <tbody>
         <tr data-ng-repeat="employee in employees | filter:searchEmployeeReport | orderBy:orderByField:reverseSort track by $index">
-            <td style="width: 10em;"><a ui-sref="admin.staff({instanceID:employee.employeeNumber})">{{employee.employeeNumber}}</a></td>
-            <td style="width: 10em;">{{employee.givenName}}</td>
-            <td style="width: 10em;">{{employee.sn | uppercase}}</td>
-            <td style="width: 10em;">{{employee.gender || "Not Entered"}}</td>
-            <td style="width: 10em;">{{employee.c || "Not Entered"}}</td>
-            <td style="width: 10em;">{{decodeAppleBirthday(employee.applebirthday) || "Not Entered"}}</td>
-            <td style="width: 1em;">{{employee.departmentNumber || "Not Entered"}}</a></td>
-            <td style="width: 10em;">{{employee.title || "Not Entered"}}</td>
-            <td style="width: 10em;">{{employee.employeeType || "Not Entered"}}</td>
-            <td style="width: 1em;">{{employee.degree || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedID == false}" style="width: 10em;"><a ui-sref="admin.staff({instanceID:employee.employeeNumber})">{{employee.employeeNumber}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedGivenName == false}" style="width: 10em;">{{employee.givenName}}</td>
+            <td ng-class="{hideColumn : objCheck.checkedSn == false}" style="width: 10em;">{{employee.sn | uppercase}}</td>
+            <td ng-class="{hideColumn : objCheck.checkedSnkh == false}" style="width: 10em;">{{employee.snkh}}</td>
+            <td ng-class="{hideColumn : objCheck.checkedGivenNamekh == false}" style="width: 10em;">{{employee.givenNamekh}}</td>
+            <td ng-class="{hideColumn : objCheck.checkedGender == false}" style="width: 10em;">{{employee.gender || "Not Entered"}}</td>
+            <td ng-class="{hideColumn : objCheck.checkedC == false}" style="width: 10em;">{{employee.c || "Not Entered"}}</td>
+            <td ng-class="{hideColumn : objCheck.checkedAppleBirthday == false}" style="width: 10em;">{{decodeAppleBirthday(employee.applebirthday) || "Not Entered"}}</td>
+            <td ng-class="{hideColumn : objCheck.checkedDepartmentNumber == false}" style="width: 1em;">{{employee.departmentNumber || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedTitle == false}" style="width: 10em;">{{employee.title || "Not Entered"}}</td>
+            <td ng-class="{hideColumn : objCheck.checkedEmployeeType == false}" style="width: 10em;">{{employee.employeeType || "Not Entered"}}</td>
+            <td ng-class="{hideColumn : objCheck.checkedL == false}" style="width: 1em;">{{employee.l || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedDegree == false}" style="width: 1em;">{{employee.degree || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedIdnumber == false}" style="width: 1em;">{{employee.idnumber || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedInsurance == false}" style="width: 1em;">{{employee.insurance || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedVisaExpires == false}" style="width: 1em;">{{employee.VisaExpires || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedPostalAddress == false}" style="width: 1em;">{{employee.postalAddress || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedStartdate == false}" style="width: 1em;">{{employee.startdate || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedEnddate == false}" style="width: 1em;">{{employee.enddate || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedTerm == false}" style="width: 1em;">  {{elist.timeBetween(employee.startdate, employee.enddate|| 'present')}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedMaritalStatus == false}" style="width: 1em;">{{employee.maritalstatus || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedChildren == false}" style="width: 1em;">{{employee.Children || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedFaith == false}" style="width: 1em;">{{employee.faith || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedMobile == false}" style="width: 1em;">{{employee.mobile || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedMail == false}" style="width: 1em;">{{employee.mail || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedMailpr == false}" style="width: 1em;">{{employee.mailpr || "Not Entered"}}</a></td>
         </tr>
+      </tbody>
+    </table>
+    <table>
+      <tr><td></td></tr>
     </table>
     <table class="tbl_data" style="margin-bottom: 20px;">
       <tr>
-        <td>Employees :</td>
+        <td><b>Employees :</b></td>
         <td>{{ (employees | filter:searchEmployeeReport).length }}</td>
       </tr>
       <tr>
@@ -158,6 +290,58 @@
         <td>
           {{ (employees | filter:searchEmployeeReport).length-((employees | filter:{gender:"F"} | filter:searchEmployeeReport).length+(employees | filter:{gender:"M"} | filter:searchEmployeeReport).length)}}
         </td>
+      </tr>
+      <tr>
+        <td><b>Cambodian staff:<b></td>
+        <td>
+          {{(employees | filter:{c:"KH"} | filter:searchEmployeeReport).length}}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Female:
+        </td>
+        <td>
+          {{(employees | filter:{c:"KH"} | filter:{gender:"F"} | filter:searchEmployeeReport).length}}
+        </td>
+      </tr>
+      <tr>
+        <td>Male:</td>
+        <td> {{(employees | filter:{c:"KH"} | filter:{gender:"M"} | filter:searchEmployeeReport).length}}</td>
+      </tr>
+      <tr>
+        <td><b>Expat staff:<b></td>
+        <td>
+          {{(employees | filter:{c:"!KH"} | filter:searchEmployeeReport).length}}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Female:
+        </td>
+        <td>
+          {{(employees | filter:{c:"!KH"} | filter:{gender:"F"} | filter:searchEmployeeReport).length}}
+        </td>
+      </tr>
+      <tr>
+        <td>Male:</td>
+        <td> {{(employees | filter:{c:"!KH"} | filter:{gender:"M"} | filter:searchEmployeeReport).length}}</td>
+      </tr>
+      <tr ng-if="selectedNationality && selectedNationality != 'KH'">
+        <td><b>{{selectedNationality}} : <b></td>
+        <td> {{(employees | filter:{c:selectedNationality} |  filter:searchEmployeeReport).length}}</td>
+      </tr>
+      <tr ng-if="selectedNationality && selectedNationality != 'KH'">
+        <td>
+          Female:
+        </td>
+        <td>
+          {{(employees | filter:{c:selectedNationality} | filter:{gender:"F"} | filter:searchEmployeeReport).length}}
+        </td>
+      </tr>
+      <tr ng-if="selectedNationality && selectedNationality != 'KH'">
+        <td>Male:</td>
+        <td> {{(employees | filter:{c:selectedNationality} | filter:{gender:"M"} | filter:searchEmployeeReport).length}}</td>
       </tr>
     </table>
   </div>

@@ -1,5 +1,11 @@
 .nonldap{
 }
+.hideColumn{
+  display: none;
+}
+.tblcheckbox tr td {
+  padding-right: 20px;
+}
 #debug{
   display:none;
 }

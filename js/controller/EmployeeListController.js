@@ -1,17 +1,50 @@
 (function () {
     'use strict';
     app.controller('EmployeeListController',function (DTOptionsBuilder,$scope, $http, $filter, $q,$location,EmployeesService,storageService) {
+      $scope.objCheck = {
+        checkedID : true,
+        checkedGivenName : true,
+        checkedSn : true,
+        checkedGivenNamekh : true,
+        checkedSnkh : true,
+        checkedGender : true,
+        checkedC : true,
+        checkedAppleBirthday : true,
+        checkedDepartmentNumber : true,
+        checkedTitle : true,
+        checkedEmployeeType : true,
+        checkedL : true,
+        checkedDegree : true,
+        checkedIdnumber : true,
+        checkedInsurance : true,
+        checkedVisaExpires : true,
+        checkedPostalAddress : true,
+        checkedStartdate : true,
+        checkedEnddate : true,
+        checkedTerm : true,
+        checkedMaritalStatus : true,
+        checkedChildren : true,
+        checkedFaith : true,
+        checkedMobile : true,
+        checkedMail : true,
+        checkedMailpr : true
+      };
       // export
       this.dtOptions = DTOptionsBuilder
           .newOptions()
-          .withTableTools('vendor/datatables-tabletools/swf/copy_csv_xls_pdf.swf')
+          .withTableTools('../../angular-datatables/vendor/datatables-tabletools/swf/copy_csv_xls_pdf.swf')
           .withTableToolsButtons([
               {
                   'sExtends': 'collection',
                   'sButtonText': 'Save',
                   'aButtons': ['xls']
               }
-          ]);
+          ])
+        this.dtOptionsShortOnly = DTOptionsBuilder
+            .newOptions()
+            .withOption('bFilter', false)
+            .withOption('bPaginate', false)
+            .withOption('bInfo',false)
       $scope.showlist=false;
       $scope.loading = true;
       $scope.local_data=[];
@@ -562,12 +595,43 @@
          });
      };
      $scope.exportData = function (tableID,fileName) {
-        var blob = new Blob([document.getElementById(tableID).innerHTML], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
-        });
-        // saveAs(blob, "Inactive Staff Report.xls");
-        saveAs(blob, fileName+".xls");
+      var $table = $('#'+tableID+'');
+      var $rows = $table.find('tr:has(td),tr:has(th)');
+           // Temporary delimiter characters unlikely to be typed by keyboard
+           // This is to avoid accidentally splitting the actual contents
+      var  tmpColDelim = String.fromCharCode(11); // vertical tab character
+      var  tmpRowDelim = String.fromCharCode(0); // null character
 
+           // actual delimiter characters for CSV format
+      var colDelim = '","';
+      var rowDelim = '"\r\n"';
+
+           // Grab text from table into CSV formatted string
+      var csv = '"' + $rows.map(function (i, row) {
+               var $row = $(row);
+              //  get th and td don't have class '.hideColumn'
+               var $cols = $row.find('td:not(.hideColumn),th:not(.hideColumn)');
+
+               return $cols.map(function (j, col) {
+                 var $col = $(col);
+                 var text = $col.text();
+
+                 return text.replace(/"/g, '""'); // escape double quotes
+
+               }).get().join(tmpColDelim);
+
+           }).get().join(tmpRowDelim)
+               .split(tmpRowDelim).join(rowDelim)
+               .split(tmpColDelim).join(colDelim) + '"';
+
+           // Data URI
+          //  csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+        var blob = new Blob([csv], {
+            type: "text/csv;charset=utf-8",
+            encoding: 'utf-8'
+        });
+        // save to csv file
+        saveAs(blob, fileName+".csv");
     };
     $scope.documentStatus = function (document,employeeCurrentDocument,country){
       var document_status;
