@@ -17,15 +17,17 @@
       <tbody>
         <tr ng-repeat="employee in employees | filter:searchEmployeeInDocumentReport | orderBy:orderByField:reverseSort track by $index">
           <td>
+            <a ui-sref="admin.staff({instanceID:employee.employeeNumber})">
               {{employee.givenName}} {{employee.sn | uppercase}}
+            </a>
           </td>
           <td>
               {{employee.departmentNumber}}
           </td>
           <td ng-repeat="document in documentType">
-            <div style="color:blue;" ng-if="documentStatus(document,employee.documents,employee.c)=='Yes'">Y</div>
-            <div style="color:red;" ng-if="documentStatus(document,employee.documents,employee.c)=='No'">N</div>
-            <div style="color:green;" ng-if="documentStatus(document,employee.documents,employee.c)=='N/A'">N/A</div>
+            <div style="color:blue;" ng-if="documentStatus(document,employee.documents,employee.c,employee.faith)=='Yes'">Y</div>
+            <div style="color:red;" ng-if="documentStatus(document,employee.documents,employee.c,employee.faith)=='No'">N</div>
+            <div style="color:green;" ng-if="documentStatus(document,employee.documents,employee.c,employee.faith)=='N/A'">N/A</div>
           </td>
         </tr>
       </tbody>

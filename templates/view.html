@@ -294,7 +294,10 @@
               Document type :
             </td>
             <td>
-              <select style="width:150px;" id="myselect" name="type" ng-model="DocumentData.Documenttype"  ng-options-disabled="documenttype.value == 19 && curemployee.c !='KH' for documenttype in documentType" ng-options="combinedDocument(documenttype,curemployee.documents) for documenttype in documentType" required>
+              <select style="width:150px;" id="myselect" name="type"
+               ng-model="DocumentData.Documenttype"
+              ng-options-disabled="((documenttype.value == 12 || documenttype.value == 19) && curemployee.c !='KH') || ((documenttype.value == 10 || documenttype.value == 11 || documenttype.value == 13) && curemployee.c =='KH') || (documenttype.value == 2 && curemployee.faith !='Christian') for documenttype in documentType"
+              ng-options="combinedDocument(documenttype,curemployee.documents) for documenttype in documentType" required>
                 <option value="">--Document type--</option>
               </select>
             </td>

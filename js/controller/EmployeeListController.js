@@ -633,9 +633,9 @@
         // save to csv file
         saveAs(blob, fileName+".csv");
     };
-    $scope.documentStatus = function (document,employeeCurrentDocument,country){
+    $scope.documentStatus = function (document,employeeCurrentDocument,country,religion){
       var document_status;
-      if(document.value=="19" && country!="KH"){
+      if( ((document.value=="19" || document.value=="12" ) && country!="KH") || ((document.value=="10" || document.value=="11" || document.value=="13") && country=="KH") || ((document.value=="2") && religion!="Christian") ){
         document_status = "N/A";
       }
       else{
