@@ -112,91 +112,100 @@
        };
 
       $scope.tempPassword();
-           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"CURSTAFF")
-                  .then(
-                    // success
-                    function(results) {
-                      if(results.data.result=='error'){
-                            //pop us back out to the login screen
-                           $scope.user.uname = null;
-                           $scope.user.pw = null;
-                      }
-                      else{
-                          $scope.employees_local_data=[];
-                          $scope.employees = results.data;
-                          for(var i=0; i<$scope.employees.length; i++){
-                            var emplyeeobj = {};
-                            emplyeeobj['employeeType'] = $scope.employees[i].employeeType;
-                            emplyeeobj['departmentNumber'] = $scope.employees[i].departmentNumber;
-                            emplyeeobj['employeeNumber'] = $scope.employees[i].employeeNumber;
-                            emplyeeobj['givenName'] = $scope.employees[i].givenName;
-                            emplyeeobj['sn'] = $scope.employees[i].sn;
-                            emplyeeobj['mobile'] = $scope.employees[i].mobile;
-                            emplyeeobj['mail'] = $scope.employees[i].mail;
-                            emplyeeobj['title'] = $scope.employees[i].title;
-                            $scope.employees_local_data.push(emplyeeobj);
-                            // set localStorage data
-                            storageService.save('employees_local_data',$scope.employees_local_data);
-                            if(localStorage.getItem('employees_local_data') == null){
-                              $scope.local_data= $scope.employees;
-                            }
-                            else{
-                              $scope.local_data= JSON.parse(storageService.get('employees_local_data'));
-                            }
-                          }
-                             //--------route pass by id--------
-                          for(var i=0; i<$scope.employees.length; i++){
-                            //view profile
-                            if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
-                              $scope.selfselect=$scope.employees[i];
-                              if($scope.selfselect.departmentNumber=="LIS"){
-                                jQuery("#table_th,#demo-ribbon,#demo-header,#btn_profile,#btn_print_card,#btn_print_change").css('background-color', '#488FCC');
-                                jQuery("#search").css('border', '1px solid #488FCC');
-                                jQuery('#change_text_color,#change_text_color a').css('color', '#488FCC');
-                                $scope.style_anchor = function() {
-                                  return { "color": "#488FCC" };
-                                }
-                              }
-                              else if ($scope.selfselect.departmentNumber=="AHIS"){
-                                jQuery("#table_th,#demo-ribbon,#demo-header,#btn_profile,#btn_print_card,#btn_print_change").css('background-color', '#26AF5F');
-                                jQuery("#search").css('border', '1px solid #26AF5F');
-                                jQuery('.mail,#change_text_color,#change_text_color a').css('color', '#26AF5F');
-                                $scope.style_anchor = function() {
-                                  return { "color": "#26AF5F" };
-                                }
-                              }
-                              else {
-                                $scope.style_anchor = function() {
-                                  return { "color": "#488FCC" };
-                                }
-                              }
-                                break;
-                            }
-                          }
-                        }
-                    },
-                    // error
-                    function(results) {
-                      $scope.user.uname = null;
-                      $scope.user.pw = null;
+      EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"CURSTAFF")
+        .then(
+            // success
+            function(results) {
+              if(results.data.result=='error'){
+                    //pop us back out to the login screen
+                   $scope.user.uname = null;
+                   $scope.user.pw = null;
+              }
+              else{
+                  $scope.employees_local_data=[];
+                  $scope.employees = results.data;
+                  for(var i=0; i<$scope.employees.length; i++){
+                    var emplyeeobj = {};
+                    emplyeeobj['employeeType'] = $scope.employees[i].employeeType;
+                    emplyeeobj['departmentNumber'] = $scope.employees[i].departmentNumber;
+                    emplyeeobj['employeeNumber'] = $scope.employees[i].employeeNumber;
+                    emplyeeobj['givenName'] = $scope.employees[i].givenName;
+                    emplyeeobj['sn'] = $scope.employees[i].sn;
+                    emplyeeobj['mobile'] = $scope.employees[i].mobile;
+                    emplyeeobj['mail'] = $scope.employees[i].mail;
+                    emplyeeobj['title'] = $scope.employees[i].title;
+                    $scope.employees_local_data.push(emplyeeobj);
+                    // set localStorage data
+                    storageService.save('employees_local_data',$scope.employees_local_data);
+                    if(localStorage.getItem('employees_local_data') == null){
+                      $scope.local_data= $scope.employees;
                     }
-                  )
-                .finally(function() {
-                  // called no matter success or failure
-                  $scope.loading = false;
-                });
-
-            // storageService.clearAll();
-            if(localStorage.getItem('employees_local_data') !== null){
-              // get localStorage data
-                $scope.local_data= JSON.parse(storageService.get('employees_local_data'));
-            }
-            else{
-                $scope.local_data=  $scope.employees;
-            }
-          $scope.range = function(n) {
-            return new Array(parseInt(n));
-          };
+                    else{
+                      $scope.local_data= JSON.parse(storageService.get('employees_local_data'));
+                    }
+                  }
+                     //--------route pass by id--------
+                  for(var i=0; i<$scope.employees.length; i++){
+                    //view profile
+                    if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
+                      $scope.selfselect=$scope.employees[i];
+                      if($scope.selfselect.departmentNumber=="LIS"){
+                        jQuery("#table_th,#demo-ribbon,#demo-header,#btn_profile,#btn_print_card,#btn_print_change").css('background-color', '#488FCC');
+                        jQuery("#search").css('border', '1px solid #488FCC');
+                        jQuery('#change_text_color,#change_text_color a').css('color', '#488FCC');
+                        $scope.style_anchor = function() {
+                          return { "color": "#488FCC" };
+                        }
+                      }
+                      else if ($scope.selfselect.departmentNumber=="AHIS"){
+                        jQuery("#table_th,#demo-ribbon,#demo-header,#btn_profile,#btn_print_card,#btn_print_change").css('background-color', '#26AF5F');
+                        jQuery("#search").css('border', '1px solid #26AF5F');
+                        jQuery('.mail,#change_text_color,#change_text_color a').css('color', '#26AF5F');
+                        $scope.style_anchor = function() {
+                          return { "color": "#26AF5F" };
+                        }
+                      }
+                      else {
+                        $scope.style_anchor = function() {
+                          return { "color": "#488FCC" };
+                        }
+                      }
+                        break;
+                    }
+                  }
+                }
+            },
+            // error
+            function(results) {
+              $scope.user.uname = null;
+              $scope.user.pw = null;
+            })
+        .finally(function() {
+            // called no matter success or failure
+            $scope.loading = false;
+        });
+        EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
+          .then(
+          // success
+          function(results){
+            $scope.inactiveEmployees = results.data;
+            $scope.curInactiveEmployees = $scope.inactiveEmployees;
+          })
+          .finally(function() {
+              // called no matter success or failure
+              $scope.loading = false;
+        });
+        // storageService.clearAll();
+        if(localStorage.getItem('employees_local_data') !== null){
+          // get localStorage data
+          $scope.local_data= JSON.parse(storageService.get('employees_local_data'));
+        }
+        else{
+          $scope.local_data=  $scope.employees;
+        }
+        $scope.range = function(n) {
+          return new Array(parseInt(n));
+        };
         // no one selected initially
         $scope.setEmployee = function(setEmployee){
           $scope.curemployee=setEmployee;
@@ -578,31 +587,31 @@
          }
        }
      };
-     $scope.showInactiveEmployee = function(){
-       // reset form
-       $("#searchKey").val("");
-       $("#searchValue").val("");
-       // reset search result
-       $scope.search = {};
-       // reset short employee
-       $scope.years.selectedYear = null;
-       $("#selecedyear").val("");
-
-       $scope.loading = false;
-       $scope.inactiveEmployees = [];
-       EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
-           .then(
-             // success
-             function(results){
-               $scope.inactiveEmployees = results.data;
-               $scope.curInactiveEmployees = results.data;
-             }
-           )
-           .finally(function() {
-           // called no matter success or failure
-           $scope.loading = false;
-         });
-     };
+    //  $scope.showInactiveEmployee = function(){
+    //    // reset form
+    //    $("#searchKey").val("");
+    //    $("#searchValue").val("");
+    //    // reset search result
+    //    $scope.search = {};
+    //    // reset short employee
+    //    $scope.years.selectedYear = null;
+    //    $("#selecedyear").val("");
+     //
+    //    $scope.loading = false;
+    //    $scope.inactiveEmployees = [];
+    //    EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
+    //        .then(
+    //          // success
+    //          function(results){
+    //            $scope.inactiveEmployees = results.data;
+    //            $scope.curInactiveEmployees = results.data;
+    //          }
+    //        )
+    //        .finally(function() {
+    //        // called no matter success or failure
+    //        $scope.loading = false;
+    //      });
+    //  };
      $scope.exportData = function (tableID,fileName) {
       var $table = $('#'+tableID+'');
       var $rows = $table.find('tr:has(td),tr:has(th)');
