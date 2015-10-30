@@ -569,6 +569,15 @@
          }
        }
      };
+     $scope.filterEmployeeByDateRange = function(startdate,endate){
+       $scope.curInactiveEmployees = [];
+       for(var i = 0; i < $scope.inactiveEmployees.length;i++){
+         var year =$scope.inactiveEmployees[i].enddate;
+         if(year>=startdate && year <= endate){
+           $scope.curInactiveEmployees.push($scope.inactiveEmployees[i]);
+         }
+       }
+     };
      $scope.showInactiveEmployee = function(){
        // reset form
        $("#searchKey").val("");
@@ -660,6 +669,16 @@
       $("#searchoptionEmployeeReport").val("");
       $("#searchEmployeeReport").val("");
       $scope.searchEmployeeReport = {};
+    }
+    $scope.resetInactiveStaffForm = function(){
+      $("#searchKey").val("");
+      $("#searchValue").val("");
+      $("#selecedyear").val("");
+      $("#startDate").val("");
+      $("#endDate").val("");
+      // reset search result
+      $scope.search = {};
+      $scope.curInactiveEmployees = $scope.inactiveEmployees;
     }
   });
 }());

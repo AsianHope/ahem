@@ -1,142 +1,102 @@
-
 <div class="table-responsive">
-  <div class=" col-md-6 col-xs-12" style="padding:0;">
-    <form name="searchForm">
-      <table style="width:100%;">
-        <tr>
-          <td>Search For:</td>
-          <td>
-            <input id="searchValue" ng-model="searchoption.filter" name="searchfor" required>
-          </td>
-          <td>Search Key:</td>
-          <td>
-            <select id="searchKey" ng-model="searchoption.key"  name="searchKey" required>
-              <option value="">--Select Key--</option>
-              <option value="$">Any</option>
-              <option value="gender">Gender</option>
-              <option value="c">Nationality</option>
-              <option value="applebirthday">Date of Birth</option>
-              <option value="departmentNumber">Department</option>
-              <option value="title">Position</option>
-              <option value="degree">Education</option>
-            </select>
-          </td>
-          <td><button ng-disabled="searchForm.$invalid" class="btn btn-primary" ng-click="setfilter()" value="Search">Search</button></td>
-        </tr>
-      </table>
-  </form></div>
-  <div class=" col-md-6 col-xs-12" style="padding:0;">
-    <table style="width:100%; margin-bottom: 20px;">
+  <form id="filterByYearForm" name="filterByYearForm">
+    <table class="formSearchFilter" style="width:100%;">
       <tr>
-        <td style="text-align:right;">Select Year:</td>
-        <td style="text-align:right;">
-          <select id="selecedyear" ng-model="years.selectedYear" ng-options="year for year in generateYears()" ng-change="filterEmployee()">
+        <td>Select Year:</td>
+        <td>
+          <select ng-model="years.selectedYear" ng-options="year for year in generateYears()" ng-change="filterEmployee()" id="selecedyear" class="form-control">
             <option value="">--Choose year--</option>
           </select>
         </td>
-        <td style="text-align:right;">
+        <td>Date Range : </td>
+        <td>
+          <input ng-model="getStartDate" type="date" id="startDate" class="form-control" required>
+        </td>
+        <td>To</td>
+        <td>
+          <input class="form-control" ng-model="getEndDate" type="date" id="endDate" class="form-control" required>
+        </td>
+        <td>
+          <button type="submit" ng-disabled="filterByYearForm.$invalid" ng-click="filterEmployeeByDateRange(getStartDate,getEndDate)" class="btn btn-primary">Search</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+  <form id="searchForm" style="margin-top:15px;" name="searchForm">
+    <table class="formSearchFilter" style="width:100%">
+      <tr>
+        <td>Search For:</td>
+        <td>
+          <input id="searchValue" ng-model="searchoption.filter" placeholder="Search here..." name="searchfor" class="form-control" required>
+        </td>
+        <td>Search Key:</td>
+        <td>
+          <select id="searchKey" ng-model="searchoption.key"  name="searchKey" class="form-control" required>
+            <option value="">--Select Key--</option>
+            <option value="$">Any</option>
+            <option value="gender">Gender</option>
+            <option value="c">Nationality</option>
+            <option value="applebirthday">Date of Birth</option>
+            <option value="departmentNumber">Department</option>
+            <option value="title">Position</option>
+            <option value="degree">Education</option>
+          </select>
+        </td>
+        <td>
+          <select id="selectedNationality" ng-model="selectedNationalityInactive" class="form-control">
+            <option value="">--Choose nationality--</option>
+            <option value="{{country.value}}" ng-repeat="country in countries">{{country.value}}</option>
+          </select>
+        </td>
+        <td><button ng-disabled="searchForm.$invalid" class="btn btn-primary" ng-click="setfilter()" value="Search">Search</button></td>
+        <td>
           <button ng-click="exportData('exportable','Inactive Staff Report')" class="btn btn-info">
             <span class="glyphicon glyphicon-export"></span> Export
           </button>
         </td>
+        <td>
+          <button type="reset" ng-click="resetInactiveStaffForm()" class="btn btn-danger">
+            Reset
+          </button>
+        </td>
       </tr>
     </table>
-  </div>
-  <div id="exportable">
-  <table  style="width:100%; margin-top:10px;" class="tbl_inactive table mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+</form>
+<div>
+  <table id="exportable" datatable="ng" dt-options="elist.dtOptionsShortOnly" style="width:100%; margin-top:10px;" class="tbl_inactive table mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+    <thead>
       <tr>
         <th>ID</th>
         <th>
             First Name
-            <a ng-show="orderByField != 'givenName'" ng-click="orderByField='givenName'; reverseSort = !reverseSort" href>
-              <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-            </a>
-            <a ng-show="orderByField == 'givenName'" ng-click="orderByField='givenName'; reverseSort = !reverseSort">
-              <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-              <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-            </a>
         </th>
         <th>
             Surname
-            <a ng-show="orderByField != 'sn'" ng-click="orderByField='sn'; reverseSort = !reverseSort" href>
-              <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-            </a>
-            <a ng-show="orderByField == 'sn'" ng-click="orderByField='sn'; reverseSort = !reverseSort">
-              <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-              <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-            </a>
         </th>
         <th>
             Gender
-            <a ng-show="orderByField != 'gender'" ng-click="orderByField='gender'; reverseSort = !reverseSort" href>
-              <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-            </a>
-            <a ng-show="orderByField == 'gender'" ng-click="orderByField='gender'; reverseSort = !reverseSort">
-              <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-              <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-            </a>
         </th>
         <th>
             Natinality
-            <a ng-show="orderByField != 'c'" ng-click="orderByField='c'; reverseSort = !reverseSort" href>
-              <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-            </a>
-            <a ng-show="orderByField == 'c'" ng-click="orderByField='c'; reverseSort = !reverseSort">
-              <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-              <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-            </a>
         </th>
         <th>
             Date of Birth
-            <a ng-show="orderByField != 'applebirthday'" ng-click="orderByField='applebirthday'; reverseSort = !reverseSort" href>
-              <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-            </a>
-            <a ng-show="orderByField == 'applebirthday'" ng-click="orderByField='applebirthday'; reverseSort = !reverseSort">
-              <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-              <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-            </a>
         </th>
         <th>
             End Date
-            <a ng-show="orderByField != 'enddate'" ng-click="orderByField='enddate'; reverseSort = !reverseSort" href>
-              <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-            </a>
-            <a ng-show="orderByField == 'enddate'" ng-click="orderByField='enddate'; reverseSort = !reverseSort">
-              <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-              <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-            </a>
         </th>
         <th>
             Department
-            <a ng-show="orderByField != 'departmentNumber'" ng-click="orderByField='departmentNumber'; reverseSort = !reverseSort" href>
-              <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-            </a>
-            <a ng-show="orderByField == 'departmentNumber'" ng-click="orderByField='departmentNumber'; reverseSort = !reverseSort">
-              <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-              <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-            </a>
         </th>
         <th>
             Position
-            <a ng-show="orderByField != 'title'" ng-click="orderByField='title'; reverseSort = !reverseSort" href>
-              <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-            </a>
-            <a ng-show="orderByField == 'title'" ng-click="orderByField='title'; reverseSort = !reverseSort">
-              <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-              <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-            </a>
         </th>
         <th>
             Education
-            <a ng-show="orderByField != 'degree'" ng-click="orderByField='degree'; reverseSort = !reverseSort" href>
-              <span><img src="../img/sort_neutral.png" class="sort_icon"></span>
-            </a>
-            <a ng-show="orderByField == 'degree'" ng-click="orderByField='degree'; reverseSort = !reverseSort">
-              <span ng-show="!reverseSort"><img src="../img/sort_up.png" class="sort_icon"></span>
-              <span ng-show="reverseSort"><img src="../img/sort_down.png" class="sort_icon"></span>
-            </a>
         </th>
       </tr>
+    </thead>
+    <tbody>
       <tr data-ng-repeat="inactive_employee in curInactiveEmployees | filter:search | orderBy:orderByField:reverseSort track by $index">
           <td style="width: 10em;"><a ui-sref="admin.staff({instanceID:inactive_employee.employeeNumber})">{{inactive_employee.employeeNumber}}</a></td>
           <td style="width: 10em;">{{inactive_employee.givenName}}</td>
@@ -149,13 +109,13 @@
           <td style="width: 10em;">{{inactive_employee.title || "Not Entered"}}</td>
           <td style="width: 1em;">{{inactive_employee.degree || "Not Entered"}}</a></td>
       </tr>
-      <tr ng-if="curInactiveEmployees.length < 1">
-        <td>No Employee Selected</td>
-      </tr>
+    </tbody>
   </table>
+</div>
   <table class="tbl_data" style="margin-bottom: 20px;">
+    <tbody>
     <tr>
-      <td>Employees :</td>
+      <td><b>Employees</b> :</td>
       <td>{{ (curInactiveEmployees | filter:search).length }}</td>
     </tr>
     <tr>
@@ -172,8 +132,60 @@
         {{ (curInactiveEmployees | filter:search).length-((curInactiveEmployees | filter:{gender:"F"} | filter:search).length+(curInactiveEmployees | filter:{gender:"M"} | filter:search).length)}}
       </td>
     </tr>
+    <tr>
+      <td><b>Cambodian staff:<b></td>
+      <td>
+        {{(curInactiveEmployees | filter:{c:"KH"} | filter:search).length}}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Female:
+      </td>
+      <td>
+        {{(curInactiveEmployees | filter:{c:"KH"} | filter:{gender:"F"} | filter:search).length}}
+      </td>
+    </tr>
+    <tr>
+      <td>Male:</td>
+      <td> {{(curInactiveEmployees | filter:{c:"KH"} | filter:{gender:"M"} | filter:search).length}}</td>
+    </tr>
+    <tr>
+      <td><b>Expat staff:<b></td>
+      <td>
+        {{(curInactiveEmployees | filter:{c:"!KH"} | filter:search).length}}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Female:
+      </td>
+      <td>
+        {{(curInactiveEmployees | filter:{c:"!KH"} | filter:{gender:"F"} | filter:search).length}}
+      </td>
+    </tr>
+    <tr>
+      <td>Male:</td>
+      <td> {{(curInactiveEmployees | filter:{c:"!KH"} | filter:{gender:"M"} | filter:search).length}}</td>
+    </tr>
+    <tr ng-if="selectedNationalityInactive && selectedNationalityInactive != 'KH'">
+      <td><b>{{selectedNationalityInactive}} : <b></td>
+      <td> {{(curInactiveEmployees | filter:{c:selectedNationalityInactive} |  filter:search).length}}</td>
+    </tr>
+    <tr ng-if="selectedNationalityInactive && selectedNationalityInactive != 'KH'">
+      <td>
+        Female:
+      </td>
+      <td>
+        {{(curInactiveEmployees | filter:{c:selectedNationalityInactive} | filter:{gender:"F"} | filter:search).length}}
+      </td>
+    </tr>
+    <tr ng-if="selectedNationalityInactive && selectedNationalityInactive != 'KH'">
+      <td>Male:</td>
+      <td> {{(curInactiveEmployees | filter:{c:selectedNationalityInactive} | filter:{gender:"M"} | filter:search).length}}</td>
+    </tr>
+  </tbody>
   </table>
-</div>
 </div>
 <style>
   .tbl_inactive tr th, .tbl_inactive tr td{
