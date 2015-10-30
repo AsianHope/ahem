@@ -1,15 +1,15 @@
 
 <div class="table-responsive">
   <form  name="employeeReportsSearchForm">
-    <table style="width:100%;">
+    <table class="formSearchFilter" style="width:100%;">
       <tr>
         <td>Search For:</td>
         <td>
-          <input id="searchEmployeeReport" placeholder="Search here.." ng-model="searchoptionEmployeeReport.filter" name="searchfor" required>
+          <input id="searchEmployeeReport" placeholder="Search here.." ng-model="searchoptionEmployeeReport.filter" class="form-control" name="searchfor" required>
         </td>
         <td>Search Key:</td>
         <td>
-          <select id="searchoptionEmployeeReport" ng-model="searchoptionEmployeeReport.key"  name="searchKey" required>
+          <select id="searchoptionEmployeeReport" ng-model="searchoptionEmployeeReport.key" class="form-control" name="searchKey" required>
             <option value="">--Select key--</option>
             <option value="$">Any</option>
             <option value="gender">Gender</option>
@@ -22,7 +22,7 @@
           </select>
         </td>
         <td>
-          <select ng-model="selectedNationality">
+          <select id="selectedNationality" ng-model="selectedNationality" class="form-control">
             <option value="">--Choose nationality--</option>
             <option value="{{country.value}}" ng-repeat="country in countries">{{country.value}}</option>
           </select>
