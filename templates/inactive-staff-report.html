@@ -62,52 +62,233 @@
       </tr>
     </table>
 </form>
+<table style="margin: 10px 0px 15px 0px;" class="tblcheckbox">
+  <tr>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedID"/>
+      ID
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedGivenName"/>
+      First Name
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedSn"/>
+      Surname
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedGivenNamekh"/>
+      Khmer First name
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedSnkh"/>
+      Khmer Surname
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedGender"/>
+      Gender
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedC"/>
+      Nationality
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedAppleBirthday"/>
+      Date of Birth
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedDepartmentNumber"/>
+      Department
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedTitle"/>
+      Position
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedEmployeeType"/>
+      Status
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedL"/>
+      Work Site
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedDegree"/>
+      Education
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedIdnumber"/>
+      Passport / ID #
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedInsurance"/>
+      Insurance Provider
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedVisaExpires"/>
+      Visa Expires
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedPostalAddress"/>
+      Address
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedStartdate"/>
+      Start Date
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedEnddate"/>
+      End Date
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedTerm"/>
+      Term
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedMaritalStatus"/>
+      Marital Status
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedChildren"/>
+      Children
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedFaith"/>
+      Religion
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedMobile"/>
+      Phone
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedMail"/>
+      Email
+    </td>
+    <td>
+      <input type="checkbox" ng-model="inactiveEmployeesCheck.checkedMailpr"/>
+      Personal Email
+    </td>
+  </tr>
+</table>
 <div>
   <table id="exportable" datatable="ng" dt-options="elist.dtOptionsShortOnly" style="width:100%; margin-top:10px;" class="tbl_inactive table mdl-data-table mdl-js-data-table mdl-shadow--2dp">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>
-            First Name
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedID == false}">
+          ID
         </th>
-        <th>
-            Surname
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedGivenName == false}">
+          First Name
         </th>
-        <th>
-            Gender
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedSn == false}">
+          Surname
         </th>
-        <th>
-            Natinality
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedSnkh == false}">
+          Khmer Surname
         </th>
-        <th>
-            Date of Birth
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedGivenNamekh == false}">
+          Khmer First name
         </th>
-        <th>
-            End Date
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedGender == false}">
+          Gender
         </th>
-        <th>
-            Department
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedC == false}">
+          Nationality
         </th>
-        <th>
-            Position
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedAppleBirthday == false}">
+          Date of Birth
         </th>
-        <th>
-            Education
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedDepartmentNumber == false}">
+          Department
         </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedTitle == false}">
+          Position
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedEmployeeType == false}">
+          Status
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedL == false}">
+          Work Site
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedDegree == false}">
+          Education
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedIdnumber == false}">
+          Passport / ID #
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedInsurance == false}">
+          Insurance Provider
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedVisaExpires == false}">
+          Visa Expires
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedPostalAddress == false}">
+          Address
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedStartdate == false}">
+          Start Date
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedEnddate == false}">
+          End Date
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedTerm == false}">
+          Term
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedMaritalStatus == false}">
+          Marital Status
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedChildren == false}">
+          Children
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedFaith == false}">
+          Religion
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedMobile == false}">
+          Phone
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedMail == false}">
+          Email
+        </th>
+        <th ng-class="{hideColumn : inactiveEmployeesCheck.checkedMailpr == false}">
+          Personal Email
+        </th>
+
       </tr>
     </thead>
     <tbody>
       <tr data-ng-repeat="inactive_employee in curInactiveEmployees | filter:search | orderBy:orderByField:reverseSort track by $index">
-          <td style="width: 10em;"><a ui-sref="admin.staff({instanceID:inactive_employee.employeeNumber})">{{inactive_employee.employeeNumber}}</a></td>
-          <td style="width: 10em;">{{inactive_employee.givenName}}</td>
-          <td style="width: 10em;">{{inactive_employee.sn | uppercase}}</td>
-          <td style="width: 10em;">{{inactive_employee.gender || "Not Entered"}}</td>
-          <td style="width: 10em;">{{inactive_employee.c || "Not Entered"}}</td>
-          <td style="width: 10em;">{{decodeAppleBirthday(inactive_employee.applebirthday) || "Not Entered"}}</td>
-          <td style="width: 10em;">{{inactive_employee.enddate || "Not Entered"}}</td>
-          <td style="width: 1em;">{{inactive_employee.departmentNumber || "Not Entered"}}</a></td>
-          <td style="width: 10em;">{{inactive_employee.title || "Not Entered"}}</td>
-          <td style="width: 1em;">{{inactive_employee.degree || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedID == false}" style="width: 10em;"><a ui-sref="admin.staff({instanceID:inactive_employee.employeeNumber})">{{inactive_employee.employeeNumber}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedGivenName == false}" style="width: 10em;">{{inactive_employee.givenName}}</td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedSn == false}" style="width: 10em;">{{inactive_employee.sn | uppercase}}</td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedSnkh == false}" style="width: 10em;">{{inactive_employee.snkh}}</td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedGivenNamekh == false}" style="width: 10em;">{{inactive_employee.givenNamekh}}</td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedGender == false}" style="width: 10em;">{{inactive_employee.gender || "Not Entered"}}</td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedC == false}" style="width: 10em;">{{inactive_employee.c || "Not Entered"}}</td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedAppleBirthday == false}" style="width: 10em;">{{decodeAppleBirthday(inactive_employee.applebirthday) || "Not Entered"}}</td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedDepartmentNumber == false}" style="width: 1em;">{{inactive_employee.departmentNumber || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedTitle == false}" style="width: 10em;">{{inactive_employee.title || "Not Entered"}}</td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedEmployeeType == false}" style="width: 10em;">{{inactive_employee.employeeType || "Not Entered"}}</td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedL == false}" style="width: 1em;">{{inactive_employee.l || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedDegree == false}" style="width: 1em;">{{inactive_employee.degree || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedIdnumber == false}" style="width: 1em;">{{inactive_employee.idnumber || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedInsurance == false}" style="width: 1em;">{{inactive_employee.insurance || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedVisaExpires == false}" style="width: 1em;">{{inactive_employee.VisaExpires || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedPostalAddress == false}" style="width: 1em;">{{inactive_employee.postalAddress || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedStartdate == false}" style="width: 1em;">{{inactive_employee.startdate || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedEnddate == false}" style="width: 1em;">{{inactive_employee.enddate || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedTerm == false}" style="width: 1em;">  {{inactive_employee.timeBetween(employee.startdate, employee.enddate|| 'present')}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedMaritalStatus == false}" style="width: 1em;">{{inactive_employee.maritalstatus || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedChildren == false}" style="width: 1em;">{{inactive_employee.Children || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedFaith == false}" style="width: 1em;">{{inactive_employee.faith || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedMobile == false}" style="width: 1em;">{{inactive_employee.mobile || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedMail == false}" style="width: 1em;">{{inactive_employee.mail || "Not Entered"}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedMailpr == false}" style="width: 1em;">{{inactive_employee.mailpr || "Not Entered"}}</a></td>
       </tr>
     </tbody>
   </table>

@@ -29,6 +29,34 @@
         checkedMail : true,
         checkedMailpr : true
       };
+      $scope.inactiveEmployeesCheck = {
+        checkedID : true,
+        checkedGivenName : true,
+        checkedSn : true,
+        checkedGivenNamekh : true,
+        checkedSnkh : true,
+        checkedGender : true,
+        checkedC : true,
+        checkedAppleBirthday : true,
+        checkedDepartmentNumber : true,
+        checkedTitle : true,
+        checkedEmployeeType : true,
+        checkedL : true,
+        checkedDegree : true,
+        checkedIdnumber : true,
+        checkedInsurance : true,
+        checkedVisaExpires : true,
+        checkedPostalAddress : true,
+        checkedStartdate : true,
+        checkedEnddate : true,
+        checkedTerm : true,
+        checkedMaritalStatus : true,
+        checkedChildren : true,
+        checkedFaith : true,
+        checkedMobile : true,
+        checkedMail : true,
+        checkedMailpr : true
+      };
       // export
       this.dtOptions = DTOptionsBuilder
           .newOptions()
