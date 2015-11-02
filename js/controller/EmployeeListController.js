@@ -78,6 +78,7 @@
       $scope.local_data=[];
       $scope.curemployee=null;
       $scope.employees = [];
+      $scope.employeesReport = [];
       $scope.current_pass=null;
       $scope.password;
       $scope.keylist="abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$*&";
@@ -88,7 +89,8 @@
          'uid':'',
       };
       $scope.years = {
-         'selectedYear':null
+         'selectedYear':null,
+         'selectedYearEmployeeReport':null
       };
       // for search
       $scope.searchoption = {
@@ -152,6 +154,7 @@
               else{
                   $scope.employees_local_data=[];
                   $scope.employees = results.data;
+                  $scope.employeesReport = $scope.employees;
                   for(var i=0; i<$scope.employees.length; i++){
                     var emplyeeobj = {};
                     emplyeeobj['employeeType'] = $scope.employees[i].employeeType;
@@ -575,10 +578,8 @@
        $scope.searchEmployeeReport = {};
        $scope.searchEmployeeReport[ $scope.searchoptionEmployeeReport.key ] = $scope.searchoptionEmployeeReport.filter;
      };
-
-     $scope.generateYears = function(){
+     $scope.generateYears = function(startYear){
        var years = [];
-       var startYear = 2005;
        var currentYear = new Date().getFullYear();
        for (var i = 0; i <= currentYear-startYear ; i++){
            years.push(currentYear-i);
@@ -606,6 +607,20 @@
          }
        }
      };
+     $scope.filterEmployeeReport = function(){
+       $scope.employeesReport = [];
+       if($scope.years.selectedYearEmployeeReport==null){
+         $scope.employeesReport = $scope.employees;
+       }
+       else{
+         for(var i = 0; i < $scope.employees.length;i++){
+           var year = new Date($scope.employees[i].startdate).getFullYear();
+           if($scope.years.selectedYearEmployeeReport==year){
+             $scope.employeesReport.push($scope.employees[i]);
+           }
+         }
+       }
+     };
      $scope.filterEmployeeByDateRange = function(startdate,endate){
        $scope.curInactiveEmployees = [];
        for(var i = 0; i < $scope.inactiveEmployees.length;i++){
@@ -615,31 +630,15 @@
          }
        }
      };
-    //  $scope.showInactiveEmployee = function(){
-    //    // reset form
-    //    $("#searchKey").val("");
-    //    $("#searchValue").val("");
-    //    // reset search result
-    //    $scope.search = {};
-    //    // reset short employee
-    //    $scope.years.selectedYear = null;
-    //    $("#selecedyear").val("");
-     //
-    //    $scope.loading = false;
-    //    $scope.inactiveEmployees = [];
-    //    EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
-    //        .then(
-    //          // success
-    //          function(results){
-    //            $scope.inactiveEmployees = results.data;
-    //            $scope.curInactiveEmployees = results.data;
-    //          }
-    //        )
-    //        .finally(function() {
-    //        // called no matter success or failure
-    //        $scope.loading = false;
-    //      });
-    //  };
+     $scope.filterEmployeeReportByRangeStartDate = function(From,To){
+       $scope.employeesReport = [];
+       for(var i = 0; i < $scope.employees.length;i++){
+         var year =$scope.employees[i].startdate;
+         if(year>=From && year <= To){
+           $scope.employeesReport.push($scope.employees[i]);
+         }
+       }
+     };
      $scope.exportData = function (tableID,fileName) {
       var $table = $('#'+tableID+'');
       var $rows = $table.find('tr:has(td),tr:has(th)');
@@ -705,7 +704,11 @@
     $scope.resetEmployeeReport = function(){
       $("#searchoptionEmployeeReport").val("");
       $("#searchEmployeeReport").val("");
+      $("#fromStartDate").val("");
+      $("#toStartDate").val("");
+      $("#selecedyearEmployeeReport").val("");
       $scope.searchEmployeeReport = {};
+      $scope.employeesReport = $scope.employees;
     }
     $scope.resetInactiveStaffForm = function(){
       $("#searchKey").val("");

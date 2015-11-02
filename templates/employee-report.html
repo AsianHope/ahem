@@ -1,5 +1,27 @@
-
 <div class="table-responsive">
+  <form name="employeeReportDateRangeForm">
+    <table class="formSearchFilter" style="width:100%;">
+      <tr>
+        <td>Select Year:</td>
+        <td>
+          <select ng-model="years.selectedYearEmployeeReport" ng-options="year for year in generateYears(1997)" ng-change="filterEmployeeReport()" id="selecedyearEmployeeReport" class="form-control">
+            <option value="">--Choose year--</option>
+          </select>
+        </td>
+        <td>Date Range : </td>
+        <td>
+          <input ng-model="fromStartDate" type="date" id="fromStartDate" class="form-control" required>
+        </td>
+        <td>To</td>
+        <td>
+          <input class="form-control" ng-model="toStartDate" type="date" id="toStartDate" class="form-control" required>
+        </td>
+        <td>
+          <button type="submit" ng-disabled="employeeReportDateRangeForm.$invalid" ng-click="filterEmployeeReportByRangeStartDate(fromStartDate,toStartDate)" class="btn btn-primary">Search</button>
+        </td>
+      </tr>
+    </table>
+  </form>
   <form  name="employeeReportsSearchForm">
     <table class="formSearchFilter" style="width:100%;">
       <tr>
@@ -19,6 +41,7 @@
             <option value="title">Position</option>
             <option value="employeeType">Work Status</option>
             <option value="degree">Education</option>
+            <option value="maritalstatus">Marital Status</option>
           </select>
         </td>
         <td>
@@ -31,15 +54,14 @@
           <button ng-disabled="employeeReportsSearchForm.$invalid" class="btn btn-primary" ng-click="setfilterEmployeeReport()" value="Search">Search</button>
         </td>
         <td>
-          <input type="reset" ng-click="resetEmployeeReport()" class="btn btn-danger" value="Reset"></input>
+          <button ng-click="exportData('employee_report','Employee Report')" class="btn btn-info"><span class="glyphicon glyphicon-export"></span> Export</button>
         </td>
         <td>
-          <button ng-click="exportData('employee_report','Employee Report')" class="btn btn-info"><span class="glyphicon glyphicon-export"></span> Export</button>
+          <input type="reset" ng-click="resetEmployeeReport()" class="btn btn-danger" value="Reset"></input>
         </td>
       </tr>
     </table>
   </form>
-
   <div>
     <table style="margin: 15px 0px 15px 0px;" class="tblcheckbox">
       <tr>
@@ -239,7 +261,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr data-ng-repeat="employee in employees | filter:searchEmployeeReport | orderBy:orderByField:reverseSort track by $index">
+        <tr data-ng-repeat="employee in employeesReport | filter:searchEmployeeReport | filter:searchEmployeeReport | orderBy:orderByField:reverseSort track by $index">
             <td ng-class="{hideColumn : objCheck.checkedID == false}" style="width: 10em;"><a ui-sref="admin.staff({instanceID:employee.employeeNumber})">{{employee.employeeNumber}}</a></td>
             <td ng-class="{hideColumn : objCheck.checkedGivenName == false}" style="width: 10em;">{{employee.givenName}}</td>
             <td ng-class="{hideColumn : objCheck.checkedSn == false}" style="width: 10em;">{{employee.sn | uppercase}}</td>
@@ -269,32 +291,31 @@
         </tr>
       </tbody>
     </table>
-    <table>
-      <tr><td></td></tr>
-    </table>
+  </div>
+  <div>
     <table class="tbl_data" style="margin-bottom: 20px;">
       <tr>
         <td><b>Employees :</b></td>
-        <td>{{ (employees | filter:searchEmployeeReport).length }}</td>
+        <td>{{ (employeesReport | filter:searchEmployeeReport).length }}</td>
       </tr>
       <tr>
         <td>Female :</td>
-        <td>{{ (employees | filter:{gender:'F'} | filter:searchEmployeeReport ).length }}</td>
+        <td>{{ (employeesReport | filter:{gender:'F'} | filter:searchEmployeeReport ).length }}</td>
       </tr>
       <tr>
         <td>Male :</td>
-        <td>{{ (employees | filter:{gender:'M'} | filter:searchEmployeeReport ).length }}</td>
+        <td>{{ (employeesReport | filter:{gender:'M'} | filter:searchEmployeeReport ).length }}</td>
       </tr>
-      <tr style="color:red;" ng-if="(employees | filter:searchEmployeeReport).length-((employees | filter:{gender:'F'} | filter:searchEmployeeReport).length+(employees | filter:{gender:'M'} | filter:searchEmployeeReport).length)>0">
+      <tr style="color:red;" ng-if="(employeesReport | filter:searchEmployeeReport).length-((employeesReport | filter:{gender:'F'} | filter:searchEmployeeReport).length+(employeesReport | filter:{gender:'M'} | filter:searchEmployeeReport).length)>0">
         <td>*Gender Not Entered :</td>
         <td>
-          {{ (employees | filter:searchEmployeeReport).length-((employees | filter:{gender:"F"} | filter:searchEmployeeReport).length+(employees | filter:{gender:"M"} | filter:searchEmployeeReport).length)}}
+          {{ (employeesReport | filter:searchEmployeeReport).length-((employeesReport | filter:{gender:"F"} | filter:searchEmployeeReport).length+(employeesReport | filter:{gender:"M"} | filter:searchEmployeeReport).length)}}
         </td>
       </tr>
       <tr>
         <td><b>Cambodian staff:<b></td>
         <td>
-          {{(employees | filter:{c:"KH"} | filter:searchEmployeeReport).length}}
+          {{(employeesReport | filter:{c:"KH"} | filter:searchEmployeeReport).length}}
         </td>
       </tr>
       <tr>
@@ -302,17 +323,17 @@
           Female:
         </td>
         <td>
-          {{(employees | filter:{c:"KH"} | filter:{gender:"F"} | filter:searchEmployeeReport).length}}
+          {{(employeesReport | filter:{c:"KH"} | filter:{gender:"F"} | filter:searchEmployeeReport).length}}
         </td>
       </tr>
       <tr>
         <td>Male:</td>
-        <td> {{(employees | filter:{c:"KH"} | filter:{gender:"M"} | filter:searchEmployeeReport).length}}</td>
+        <td> {{(employeesReport | filter:{c:"KH"} | filter:{gender:"M"} | filter:searchEmployeeReport).length}}</td>
       </tr>
       <tr>
         <td><b>Expat staff:<b></td>
         <td>
-          {{(employees | filter:{c:"!KH"} | filter:searchEmployeeReport).length}}
+          {{(employeesReport | filter:{c:"!KH"} | filter:searchEmployeeReport).length}}
         </td>
       </tr>
       <tr>
@@ -320,28 +341,28 @@
           Female:
         </td>
         <td>
-          {{(employees | filter:{c:"!KH"} | filter:{gender:"F"} | filter:searchEmployeeReport).length}}
+          {{(employeesReport | filter:{c:"!KH"} | filter:{gender:"F"} | filter:searchEmployeeReport).length}}
         </td>
       </tr>
       <tr>
         <td>Male:</td>
-        <td> {{(employees | filter:{c:"!KH"} | filter:{gender:"M"} | filter:searchEmployeeReport).length}}</td>
+        <td> {{(employeesReport | filter:{c:"!KH"} | filter:{gender:"M"} | filter:searchEmployeeReport).length}}</td>
       </tr>
       <tr ng-if="selectedNationality && selectedNationality != 'KH'">
         <td><b>{{selectedNationality}} : <b></td>
-        <td> {{(employees | filter:{c:selectedNationality} |  filter:searchEmployeeReport).length}}</td>
+        <td> {{(employeesReport | filter:{c:selectedNationality} |  filter:searchEmployeeReport).length}}</td>
       </tr>
       <tr ng-if="selectedNationality && selectedNationality != 'KH'">
         <td>
           Female:
         </td>
         <td>
-          {{(employees | filter:{c:selectedNationality} | filter:{gender:"F"} | filter:searchEmployeeReport).length}}
+          {{(employeesReport | filter:{c:selectedNationality} | filter:{gender:"F"} | filter:searchEmployeeReport).length}}
         </td>
       </tr>
       <tr ng-if="selectedNationality && selectedNationality != 'KH'">
         <td>Male:</td>
-        <td> {{(employees | filter:{c:selectedNationality} | filter:{gender:"M"} | filter:searchEmployeeReport).length}}</td>
+        <td> {{(employeesReport | filter:{c:selectedNationality} | filter:{gender:"M"} | filter:searchEmployeeReport).length}}</td>
       </tr>
     </table>
   </div>
