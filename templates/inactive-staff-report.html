@@ -4,7 +4,7 @@
       <tr>
         <td>Select Year:</td>
         <td>
-          <select ng-model="years.selectedYear" ng-options="year for year in generateYears()" ng-change="filterEmployee()" id="selecedyear" class="form-control">
+          <select ng-model="years.selectedYear" ng-options="year for year in generateYears(2005)" ng-change="filterEmployee()" id="selecedyear" class="form-control">
             <option value="">--Choose year--</option>
           </select>
         </td>
@@ -40,6 +40,7 @@
             <option value="departmentNumber">Department</option>
             <option value="title">Position</option>
             <option value="degree">Education</option>
+            <option value="maritalstatus">Marital Status</option>
           </select>
         </td>
         <td>
