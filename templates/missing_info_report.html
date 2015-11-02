@@ -221,7 +221,8 @@
           </h5>
           <h5>
             Documents
-            <li ng-hide="document.value==19 && employee.c !='KH'" ng-repeat="document in showMissingDocs(employee.documents,employee.OtherDocuments, documentType)">
+            <li ng-hide="((document.value==19 || document.value==12) && employee.c !='KH') || ((document.value==10 || document.value==11 || document.value==13) && employee.c =='KH') || (document.value==2  && employee.faith !='Christian')"
+                ng-repeat="document in showMissingDocs(employee.documents,employee.OtherDocuments, documentType)">
               <a ui-sref="admin.staff({instanceID:employee.employeeNumber})" ng-click="this.tab.setTab(5)">{{document.text}}</a>
             </li>
           </h5>
