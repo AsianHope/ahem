@@ -57,6 +57,7 @@
         {value: 'VDP-PPT', text: 'VDP Phnom Penh Thmey'},
         {value: 'VDP-PKP', text: 'VDP Prek Pneu'},
         {value: 'VDP-NKO', text: 'VDP NKO'},
+        {value: 'VDP-KR', text: 'VDP Kok Rorka'},
         {value: 'MULTI', text: 'Multiple Departments'},
         {value: 'UNK', text: 'Unknown Department'},
     ];
