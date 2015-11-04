@@ -31,28 +31,15 @@
                      if($scope.employees[i].employeeNumber==$scope.ID){
                        $scope.curemployee=$scope.employees[i];
 
-                       // get documents
-                       if($scope.curemployee.documents===undefined || $scope.curemployee.documents.length==0){
-                         $scope.document =[];
-                       }
-                       else{
-                         $scope.document = $scope.curemployee.documents;
-                       }
-
-                       // get other documents
-                       if($scope.curemployee.OtherDocuments===undefined || $scope.curemployee.OtherDocuments.length==0){
-                         $scope.other_documents =[];
-                       }
-                       else{
-                         $scope.other_documents = $scope.curemployee.OtherDocuments;
-                       }
-
-                       for (var i = 0; i<$scope.document.length; i++){
-                         if($scope.document[i]['DocumentID']==0){
-                           $scope.show_photo = true;
-                           break;
+                       if($scope.curemployee.documents !=undefined){
+                         for (var i = 0; i<$scope.curemployee.documents.length; i++){
+                           if($scope.curemployee.documents[i]['DocumentID']==0){
+                             $scope.show_photo = true;
+                             break;
+                           }
                          }
                        }
+
                        if($scope.curemployee.family_data==undefined){
                          $scope.family_data=[];
                          if($scope.curemployee.maritalstatus =='Married'){
@@ -153,28 +140,15 @@
                           if($scope.inactiveEmployees[i].employeeNumber==$scope.ID){
                             $scope.curemployee=$scope.inactiveEmployees[i];
 
-                            // get documents
-                            if($scope.curemployee.documents===undefined || $scope.curemployee.documents.length==0){
-                              $scope.document =[];
-                            }
-                            else{
-                              $scope.document = $scope.curemployee.documents;
-                            }
-
-                            // get other documents
-                            if($scope.curemployee.OtherDocuments===undefined || $scope.curemployee.OtherDocuments.length==0){
-                              $scope.other_documents =[];
-                            }
-                            else{
-                              $scope.other_documents = $scope.curemployee.OtherDocuments;
-                            }
-
-                            for (var i = 0; i<$scope.document.length; i++){
-                              if($scope.document[i]['DocumentID']==0){
-                                $scope.show_photo = true;
-                                break;
+                            if($scope.curemployee.documents != undefined){
+                              for (var i = 0; i<$scope.curemployee.documents.length; i++){
+                                if($scope.curemployee.documents[i]['DocumentID']==0){
+                                  $scope.show_photo = true;
+                                  break;
+                                }
                               }
                             }
+
                             if($scope.curemployee.family_data==undefined){
                               $scope.family_data=[];
                               if($scope.curemployee.maritalstatus =='Married'){
@@ -265,26 +239,13 @@
            if($scope.employees[i].employeeNumber==$scope.ID){
              $scope.curemployee=$scope.employees[i];
 
-            //  get documents
-             if($scope.curemployee.documents===undefined || $scope.curemployee.documents.length==0){
-               $scope.document = [];
-             }
-             else{
-               $scope.document = $scope.curemployee.documents;
-             }
-
-             // get other documents
-             if($scope.curemployee.OtherDocuments===undefined || $scope.curemployee.OtherDocuments.length==0){
-               $scope.other_documents =[];
-             }
-             else{
-               $scope.other_documents = $scope.curemployee.OtherDocuments;
-             }
-
-             for (var i = 0; i<$scope.document.length; i++){
-               if($scope.document[i]['DocumentID']==0){
-                 $scope.show_photo = true;
-                 break;
+            //  show profile picture
+             if($scope.curemployee.documents!=undefined){
+               for (var i = 0; i<$scope.curemployee.documents.length; i++){
+                 if($scope.curemployee.documents[i]['DocumentID']==0){
+                   $scope.show_photo = true;
+                   break;
+                 }
                }
              }
 
@@ -365,26 +326,12 @@
           if($scope.inactiveEmployees[i].employeeNumber==$scope.ID){
             $scope.curemployee=$scope.inactiveEmployees[i];
 
-           //  get documents
-            if($scope.curemployee.documents===undefined || $scope.curemployee.documents.length==0){
-              $scope.document = [];
-            }
-            else{
-              $scope.document = $scope.curemployee.documents;
-            }
-
-            // get other documents
-            if($scope.curemployee.OtherDocuments===undefined || $scope.curemployee.OtherDocuments.length==0){
-              $scope.other_documents =[];
-            }
-            else{
-              $scope.other_documents = $scope.curemployee.OtherDocuments;
-            }
-
-            for (var i = 0; i<$scope.document.length; i++){
-              if($scope.document[i]['DocumentID']==0){
-                $scope.show_photo = true;
-                break;
+            if($scope.curemployee.documents != undefined){
+              for (var i = 0; i<$scope.document.length; i++){
+                if($scope.document[i]['DocumentID']==0){
+                  $scope.show_photo = true;
+                  break;
+                }
               }
             }
 
@@ -466,28 +413,15 @@
           for(var i=0; i<$scope.employees.length; i++){
               if($scope.employees[i].employeeNumber==$scope.ID){
                 $scope.curemployee = $scope.employees[i+amount];
+
                 if($scope.curemployee!=undefined){
-                  if($scope.curemployee.documents===undefined || $scope.curemployee.documents.length==0){
-                    $scope.document = [];
-                  }
-                  else{
-                    $scope.document = $scope.curemployee.documents;
-                  }
-
-                  // get other documents
-                  if($scope.curemployee.OtherDocuments===undefined || $scope.curemployee.OtherDocuments.length==0){
-                    $scope.other_documents =[];
-                  }
-                  else{
-                    $scope.other_documents = $scope.curemployee.OtherDocuments;
-                  }
-
-                  for (var i = 0; i<$scope.document.length; i++){
-                    if($scope.document[i]['DocumentID']==0){
-                      $scope.show_photo = true;
-                      break;
+                  if($scope.curemployee.documents != undefined){
+                    for (var i = 0; i<$scope.curemployee.documents.length; i++){
+                      if($scope.curemployee.documents[i]['DocumentID']==0){
+                        $scope.show_photo = true;
+                        break;
+                      }
                     }
-
                   }
                   if($scope.curemployee.family_data==undefined){
                     $scope.family_data=[];
@@ -568,27 +502,13 @@
               if($scope.inactiveEmployees[i].employeeNumber==$scope.ID){
                   $scope.curemployee = $scope.inactiveEmployees[i+amount];
                 if($scope.curemployee!=undefined){
-                  if($scope.curemployee.documents===undefined || $scope.curemployee.documents.length==0){
-                    $scope.document = [];
-                  }
-                  else{
-                    $scope.document = $scope.curemployee.documents;
-                  }
-
-                  // get other documents
-                  if($scope.curemployee.OtherDocuments===undefined || $scope.curemployee.OtherDocuments.length==0){
-                    $scope.other_documents =[];
-                  }
-                  else{
-                    $scope.other_documents = $scope.curemployee.OtherDocuments;
-                  }
-
-                  for (var i = 0; i<$scope.document.length; i++){
-                    if($scope.document[i]['DocumentID']==0){
-                      $scope.show_photo = true;
-                      break;
+                  if($scope.curemployee.documents != undefined){
+                    for (var i = 0; i<$scope.curemployee.documents.length; i++){
+                      if($scope.curemployee.documents[i]['DocumentID']==0){
+                        $scope.show_photo = true;
+                        break;
+                      }
                     }
-
                   }
                   if($scope.curemployee.family_data==undefined){
                     $scope.family_data=[];
@@ -681,18 +601,22 @@
          var f = document.getElementById('file').files[0];
          $scope.files_exist =false;
          $scope.Document_exist=[];
-         for (var i = 0; i<$scope.document.length; i++){
-
-
-           if($scope.document[i]['DocumentID']==$scope.DocumentData.Documenttype.value && $scope.DocumentData.Documenttype.value!=16){
-             $scope.files_exist = true;
-             $scope.Document_exist=$scope.document[i];
+         if($scope.curemployee.documents != undefined){
+           for (var i = 0; i<$scope.curemployee.documents.length; i++){
+             if($scope.curemployee.documents[i]['DocumentID']==$scope.DocumentData.Documenttype.value && $scope.DocumentData.Documenttype.value!=16){
+               $scope.files_exist = true;
+               $scope.Document_exist=$scope.curemployee.documents[i];
+               break;
+             }
            }
          }
          if($scope.DocumentData.Documenttype.value==16 || $scope.DocumentData.Documenttype=='16'){
-           for (var i = 0; i<$scope.other_documents.length; i++){
-             if($scope.other_documents[i]['Description']==$scope.otherDoc.otherDocDescript){
-               $scope.files_exist = "duplicate";
+           if($scope.curemployee.OtherDocuments != undefined){
+             for (var i = 0; i<$scope.curemployee.OtherDocuments.length; i++){
+               if($scope.curemployee.OtherDocuments[i]['Description']==$scope.otherDoc.otherDocDescript){
+                 $scope.files_exist = "duplicate";
+                 break;
+               }
              }
            }
          }
@@ -708,12 +632,12 @@
                     function(results) {
                       var fileDirectory = results.data.file;
                       if(results.data.result=='success'){
-                        for(var i=0; i<$scope.document.length; i++){
-                          if($scope.document[i].DocumentID==$scope.Document_exist.DocumentID){
-                            $scope.document[i]['data']=fileDirectory;
+                        for(var i=0; i<$scope.curemployee.documents.length; i++){
+                          if($scope.curemployee.documents[i].DocumentID==$scope.Document_exist.DocumentID){
+                            $scope.curemployee.documents[i]['data']=fileDirectory;
                           }
                         }
-                         $scope.updateUser($scope.curemployee.uid,'documents',JSON.stringify($scope.document));
+                         $scope.updateUser($scope.curemployee.uid,'documents',JSON.stringify($scope.curemployee.documents));
                          $scope.upload_sms='Replace file successfully!';
                          $("#formUpload").trigger('reset');
                       }
@@ -739,31 +663,85 @@
                  if(results.data.result=='success'){
                    //  add other documents
                    if($scope.DocumentData.Documenttype.value==16){
-                     var document_obj = {};
-                     if($scope.other_documents.length<1){
-                       document_obj['DocumentID'] = 1;
-                     }
-                     else{
-                       document_obj['DocumentID'] =$scope.other_documents[$scope.other_documents.length-1]['DocumentID']+1;
-                     }
-                     document_obj['data'] = fileDirectory;
-                     document_obj['Description'] =$scope.otherDoc.otherDocDescript;
-                     $scope.other_documents.push(document_obj);
-                     $scope.updateUser($scope.curemployee.uid,'OtherDocuments',JSON.stringify($scope.other_documents));
+                      //  prevent add duplicate document
+                      var check = false;
+                      if($scope.curemployee.OtherDocuments.length>0 && $scope.curemployee.OtherDocuments!=undefined){
+                        for (var i = 0; i<$scope.curemployee.OtherDocuments.length; i++){
+                          if($scope.curemployee.OtherDocuments[i]['Description']==$scope.otherDoc.otherDocDescript){
+                            check = true;
+                            break;
+                          }
+                          else{
+                            check = false;
+
+                          }
+                        }
+                        // if other document exist do not add new document
+                        if(check==true){
+                          $scope.updateUser($scope.curemployee.uid,'OtherDocuments',JSON.stringify($scope.curemployee.OtherDocuments));
+                        }
+                        else{
+                          var document_obj = {};
+                          document_obj['DocumentID'] =$scope.curemployee.OtherDocuments[$scope.curemployee.OtherDocuments.length-1]['DocumentID']+1;
+                          document_obj['data'] = fileDirectory;
+                          document_obj['Description'] =$scope.otherDoc.otherDocDescript;
+                          $scope.curemployee.OtherDocuments.push(document_obj);
+                          $scope.updateUser($scope.curemployee.uid,'OtherDocuments',JSON.stringify($scope.curemployee.OtherDocuments));
+                        }
+                      }
+                      // if other document not defined add other document
+                      else{
+                        $scope.curemployee.OtherDocuments = [];
+                        var document_obj = {};
+                        document_obj['DocumentID'] = 1;
+                        document_obj['data'] = fileDirectory;
+                        document_obj['Description'] =$scope.otherDoc.otherDocDescript;
+                        $scope.curemployee.OtherDocuments.push(document_obj);
+                        $scope.updateUser($scope.curemployee.uid,'OtherDocuments',JSON.stringify($scope.curemployee.OtherDocuments));
+                      }
                    }
                    else{
-                      var document_obj = {};
+                    //  prevent add duplicate document
+                     var check = false;
+                     if($scope.curemployee.documents!=undefined  && $scope.curemployee.documents.length>0){
+                       for (var i = 0; i<$scope.curemployee.documents.length; i++){
+                         if($scope.curemployee.documents[i]['DocumentID']==$scope.DocumentData.Documenttype.value){
+                           check = true;
+                           break;
+                         }
+                         else{
+                           check = false;
+                         }
+                       }
+                      //  if document exist
+                       if(check==true){
+                         $scope.updateUser($scope.curemployee.uid,'documents',JSON.stringify($scope.curemployee.documents));
+                       }
+                      //  if document not exist add document
+                       else{
+                         var document_obj = {};
+                         document_obj['DocumentID'] = $scope.DocumentData.Documenttype.value;
+                         document_obj['data'] = fileDirectory;
+                         document_obj['Description'] =$scope.DocumentData.Documenttype.text;
+                         $scope.curemployee.documents.push(document_obj);
+                         $scope.updateUser($scope.curemployee.uid,'documents',JSON.stringify($scope.curemployee.documents));
+                       }
+                     }
+                     else{
+                       $scope.curemployee.documents = [];
+                       var document_obj = {};
                        document_obj['DocumentID'] = $scope.DocumentData.Documenttype.value;
                        document_obj['data'] = fileDirectory;
                        document_obj['Description'] =$scope.DocumentData.Documenttype.text;
-                       $scope.document.push(document_obj);
-                       $scope.updateUser($scope.curemployee.uid,'documents',JSON.stringify($scope.document));
+                       $scope.curemployee.documents.push(document_obj);
+                       $scope.updateUser($scope.curemployee.uid,'documents',JSON.stringify($scope.curemployee.documents));
+                     }
                   }
                    $scope.upload_sms='Upload file successfully!';
                     $("#formUpload").trigger('reset');
                    //  show profile picture
-                    for (var i = 0; i<$scope.document.length; i++){
-                      if($scope.document[i]['DocumentID']==0){
+                    for (var i = 0; i<$scope.curemployee.documents.length; i++){
+                      if($scope.curemployee.documents[i]['DocumentID']==0){
                         $scope.show_photo = true;
                         break;
                       }

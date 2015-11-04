@@ -10,9 +10,6 @@
   </div>
   <div class="row wrap_table_view" ng-show="this.tab.isSet(3)" style="padding-left:0 !important;">
       <table class="table_view">
-        <!-- <tr>
-          <td>{{curemployee}}</td>
-        </tr> -->
         <tr>
           <td style="font-size:30px;">
             <strong>
@@ -286,7 +283,8 @@
           <tr>
             <td style="color:red;" colspan="2" ng-if="upload_sms">
               {{upload_sms}}
-              <!-- {{curemployee}}{{employees}} -->
+
+
             </td>
           </tr>
           <tr>
@@ -328,7 +326,7 @@
           <tr>
             <th>Documents</th>
           </tr>
-          <tbody ng-repeat="documents in document track by $index">
+          <tbody ng-repeat="documents in curemployee.documents track by $index">
             <tr>
               <td>
                 <a href="{{documents.data}}" target="_blank">{{documents.Description}}</a>
@@ -340,7 +338,7 @@
           <tr>
             <th>Other Documents</th>
           </tr>
-          <tbody ng-repeat="document in other_documents track by $index">
+          <tbody ng-repeat="document in curemployee.OtherDocuments track by $index">
             <tr>
               <td>
                 <a href="{{document.data}}" target="_blank">{{document.Description}}</a>
