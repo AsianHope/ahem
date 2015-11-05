@@ -215,17 +215,6 @@
             // called no matter success or failure
             $scope.loading = false;
         });
-        EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
-          .then(
-          // success
-          function(results){
-            $scope.inactiveEmployees = results.data;
-            $scope.curInactiveEmployees = $scope.inactiveEmployees;
-          })
-          .finally(function() {
-              // called no matter success or failure
-              $scope.loading = false;
-        });
         // storageService.clearAll();
         if(localStorage.getItem('employees_local_data') !== null){
           // get localStorage data
@@ -709,7 +698,7 @@
       $("#selecedyearEmployeeReport").val("");
       $scope.searchEmployeeReport = {};
       $scope.employeesReport = $scope.employees;
-    }
+    };
     $scope.resetInactiveStaffForm = function(){
       $("#searchKey").val("");
       $("#searchValue").val("");
@@ -719,6 +708,35 @@
       // reset search result
       $scope.search = {};
       $scope.curInactiveEmployees = $scope.inactiveEmployees;
-    }
+    };
+    $scope.getAllInactiveStaff = function(){
+      $scope.loading = true;
+      EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"DISABLED")
+        .then(
+        // success
+        function(results){
+          $scope.inactiveEmployees = results.data;
+          $scope.curInactiveEmployees = $scope.inactiveEmployees;
+        });
+        EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
+          .then(
+          // success
+          function(results){
+            if($scope.inactiveEmployees.length<0){
+              $scope.inactiveEmployees = results.data;
+            }
+            else{
+              for(var i = 0 ; i<results.data.length; i++){
+                $scope.inactiveEmployees.push(results.data[i]);
+              }
+            }
+            $scope.curInactiveEmployees = $scope.inactiveEmployees;
+
+          })
+          .finally(function() {
+              // called no matter success or failure
+              $scope.loading = false;
+        });
+    };
   });
 }());
