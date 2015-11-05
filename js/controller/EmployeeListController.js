@@ -90,7 +90,8 @@
       };
       $scope.years = {
          'selectedYear':null,
-         'selectedYearEmployeeReport':null
+         'selectedYearEmployeeReport':null,
+         'selectedYearInactiveEmployee':null
       };
       // for search
       $scope.searchoption = {
@@ -576,13 +577,13 @@
        return years;
      };
      //-----------------------
+     // filter inactive employee by endate
      $scope.filterEmployee = function(){
        // reset form
        $("#searchKey").val("");
        $("#searchValue").val("");
        // reset search result
        $scope.search = {};
-       $scope.orderInactiveEmployee="";
        $scope.curInactiveEmployees = [];
        if($scope.years.selectedYear==null){
          $scope.curInactiveEmployees = $scope.inactiveEmployees;
@@ -596,6 +597,22 @@
          }
        }
      };
+     // filter inactive employee by start date
+     $scope.filterInactiveEmployeeByStartdate = function(){
+       $scope.curInactiveEmployees = [];
+       if($scope.years.selectedYearInactiveEmployee==null){
+         $scope.curInactiveEmployees = $scope.inactiveEmployees;
+       }
+       else{
+         for(var i = 0; i < $scope.inactiveEmployees.length;i++){
+           var year = new Date($scope.inactiveEmployees[i].startdate).getFullYear();
+           if($scope.years.selectedYearInactiveEmployee==year){
+             $scope.curInactiveEmployees.push($scope.inactiveEmployees[i]);
+           }
+         }
+       }
+     };
+     // filter active employee by startdate
      $scope.filterEmployeeReport = function(){
        $scope.employeesReport = [];
        if($scope.years.selectedYearEmployeeReport==null){
@@ -610,6 +627,9 @@
          }
        }
      };
+
+     //... filter by date range---
+     // filter inactive employee by date range of endate
      $scope.filterEmployeeByDateRange = function(startdate,endate){
        $scope.curInactiveEmployees = [];
        for(var i = 0; i < $scope.inactiveEmployees.length;i++){
@@ -619,6 +639,17 @@
          }
        }
      };
+     //filter inactive employee by date of startdate
+     $scope.filterInactiveEmployeeByRangeStartDate = function(From,To){
+       $scope.curInactiveEmployees = [];
+       for(var i = 0; i < $scope.inactiveEmployees.length;i++){
+         var year =$scope.inactiveEmployees[i].startdate;
+         if(year>=From && year <= To){
+           $scope.curInactiveEmployees.push($scope.inactiveEmployees[i]);
+         }
+       }
+     };
+     // filter active employee by date of startdate
      $scope.filterEmployeeReportByRangeStartDate = function(From,To){
        $scope.employeesReport = [];
        for(var i = 0; i < $scope.employees.length;i++){
@@ -705,6 +736,11 @@
       $("#selecedyear").val("");
       $("#startDate").val("");
       $("#endDate").val("");
+
+      $("#selectedYearInactiveEmployee").val("");
+      $("#fromStartDateInactive").val("");
+      $("#toEndDateInactive").val("");
+
       // reset search result
       $scope.search = {};
       $scope.curInactiveEmployees = $scope.inactiveEmployees;

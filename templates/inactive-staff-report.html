@@ -1,4 +1,27 @@
 <div class="table-responsive">
+  <form name="filterInactiveEmployeeByStartDateForm">
+    <table class="formSearchFilter" style="width:100%;">
+      <tr>
+        <td>Select Year:</td>
+        <td>
+          <select ng-model="years.selectedYearInactiveEmployee" ng-options="year for year in generateYears(1997)" ng-change="filterInactiveEmployeeByStartdate()" id="selectedYearInactiveEmployee" class="form-control">
+            <option value="">--Choose year--</option>
+          </select>
+        </td>
+        <td>Date Range : </td>
+        <td>
+          <input ng-model="fromStartDateInactive" type="date" id="fromStartDateInactive" class="form-control" required>
+        </td>
+        <td>To</td>
+        <td>
+          <input class="form-control" ng-model="toEndDateInactive" type="date" id="toEndDateInactive" class="form-control" required>
+        </td>
+        <td>
+          <button type="submit" ng-disabled="filterInactiveEmployeeByStartDateForm.$invalid" ng-click="filterInactiveEmployeeByRangeStartDate(fromStartDateInactive,toEndDateInactive)" class="btn btn-primary">Search By Start Date</button>
+        </td>
+      </tr>
+    </table>
+  </form>
   <form id="filterByYearForm" name="filterByYearForm">
     <table class="formSearchFilter" style="width:100%;">
       <tr>
@@ -17,7 +40,7 @@
           <input class="form-control" ng-model="getEndDate" type="date" id="endDate" class="form-control" required>
         </td>
         <td>
-          <button type="submit" ng-disabled="filterByYearForm.$invalid" ng-click="filterEmployeeByDateRange(getStartDate,getEndDate)" class="btn btn-primary">Search</button>
+          <button type="submit" ng-disabled="filterByYearForm.$invalid" ng-click="filterEmployeeByDateRange(getStartDate,getEndDate)" class="btn btn-primary">Search By End Date</button>
         </td>
       </tr>
     </table>
