@@ -27,6 +27,8 @@ cgitb.enable()
 import os,sys
 import json
 
+import hashlib
+
 import logging
 logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -168,16 +170,22 @@ def main():
                     data = convertToAppleBirthday(data)
 
                 if(field == 'userPassword'):
-                    data = convertPassword(data)
-                    #userPassword isn't normally returned, so let's trick the below
-                    sresult_data[0][1]['userPassword']=data
+                    sresult_data[0][1]['userPassword']=convertPassword(data)
+                    sresult_data[0][1]['sambaNTPassword']=hashlib.new('md4', data.encode('utf-16le')).digest().encode('hex').upper()
+                    # userPassword isn't normally returned, so let's trick the below
                 #if the field isn't in the result set, we need to do a MOD_ADD
                 if(field not in sresult_data[0][1]):
                     new = [(ldap.MOD_ADD,field,data)]
                     logging.debug('update.cgi field %s not found, adding it', field)
                 #otherwise do a modify
                 else:
-                    new = [(ldap.MOD_REPLACE,field,data)]
+                    if(field == 'userPassword'):
+                        new = [
+                                (ldap.MOD_REPLACE,field, convertPassword(data)),
+                                (ldap.MOD_REPLACE,'sambaNTPassword',hashlib.new('md4', data.encode('utf-16le')).digest().encode('hex').upper()),
+                            ]
+                    else:
+                        new = [(ldap.MOD_REPLACE,field,data)]
                     logging.debug('update.cgi field %s found, modifying it', field)
 
 
