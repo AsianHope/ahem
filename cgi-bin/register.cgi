@@ -37,6 +37,7 @@ def registerAccount():
     birthday = formData.getfirst("birthday","19700101")
     title = formData.getfirst("title","Not Entered")
     mail = formData.getfirst("mail","Not Entered")
+    no_email = formData.getfirst("check_email",False);
     departmentNumber = formData.getfirst("departmentNumber","Not Entered")
     userPassword = formData.getfirst("userPassword","Not Entered")
     message = formData.getfirst("message","Not Entered")
@@ -139,8 +140,8 @@ def registerAccount():
 
     attrs['employeeType'] = employeeType #Staff employeeType is 'S'
     attrs['title'] = title #Their title is their title!
-
-    attrs['mail'] = mail
+    if not no_email:
+        attrs['mail'] = mail
     attrs['apple-birthday'] = dob
     attrs['userPassword'] = ldap_md5.encrypt(userPassword)
     #attrs['userPassword'] = userPassword #plaintext is fine for unapproved accounts. We can recover and display until they change it
@@ -222,7 +223,7 @@ def registerAccount():
         personal email: '''+mailpr+'''
         '''
         msg = MIMEText(account_request + message+'</body></html>','html')
-        msg['To'] = 'lyle@asianhope.org'
+        msg['To'] = 'ssang@asianhope.org'
         msg['From'] = 'noreply@asianhope.org'
         msg['Subject'] = 'New Account Request: ' +departmentNumber+'-'+username
         try:

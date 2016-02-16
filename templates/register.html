@@ -121,8 +121,14 @@
                   </div>
                 </div>
 
-
                 <div class="form-group">
+                  <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-remove bigicon"></i></span>
+                  <div class="col-md-8">
+                    <label>No Email Address</label>
+                    <input type="checkbox" name="check_email" id="check_email" ng-model="formdata.check_email"></input>
+                  </div>
+                </div>
+                <div id="email" class="form-group">
                   <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-envelope-o bigicon"></i></span>
                   <div class="col-md-8">
                     <input id="mail" name="mail" ng-model="formdata.mail" type="text" placeholder="Email Address" class="form-control">
@@ -198,6 +204,14 @@
       var stem = ahstem;
 
       $(document).ready(function() {
+        $('#check_email').change(function() {
+          if($('input#check_email').is(':checked')){
+            $('#email').hide();
+          }
+          else{
+            $('#email').show();
+          }
+      	});
       	$('#fname').change(function() {
       		fname = $('#fname').val();
       		updateEmail();
