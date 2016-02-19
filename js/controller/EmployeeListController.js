@@ -774,5 +774,56 @@
               $scope.loading = false;
         });
     };
+    $scope.requestAccounts =[];
+    $scope.approve_sms = null;
+    $scope.isAccountRequest = false;
+    EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"REQUESTS")
+          .then(
+            // success
+            function(results){
+              $scope.requestAccounts = results.data;
+            }
+          )
+          .finally(function() {
+          // called no matter success or failure
+          $scope.loading = false;
+        });
+    $scope.getRequestAccount = function(){
+      $scope.approve_sms = null;
+      $scope.loading = true;
+      EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"REQUESTS")
+            .then(
+              // success
+              function(results){
+                $scope.requestAccounts = results.data;
+              }
+            )
+            .finally(function() {
+            // called no matter success or failure
+            $scope.loading = false;
+          });
+    }
+    $scope.approveRequestAccount = function(uid){
+      EmployeesService.approveAccount($scope.user.uname,$scope.user.pw,uid)
+          .then(
+              // success
+              function(results) {
+                if(results.data.result=='success'){
+                  $scope.getRequestAccount();
+                  $scope.approve_sms='Success !';
+                }
+                else{
+                  // alert("There was an error");
+                  $scope.approve_sms='There was an error !';
+                  console.log(results.data.result);
+                }
+              },
+              // error
+             function(results){
+              //  alert("There was an errors");
+               $scope.approve_sms='There was an error !';
+             }
+           );
+    }
   });
 }());

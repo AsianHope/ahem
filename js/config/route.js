@@ -50,6 +50,10 @@
         .state('admin.employeeReport', {
           url: '/employeeReport/',
           templateUrl: "templates/employee-report.html"
+        })
+        .state('admin.approveRequestAccount', {
+          url: '/approve-request-account/',
+          templateUrl: "templates/approve-request-account.html"
         });
 
     });

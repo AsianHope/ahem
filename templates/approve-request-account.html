@@ -1,0 +1,15 @@
+<div class="table-responsive">
+  <span ng-show="approve_sms" style="color:red;">{{approve_sms}}</span>
+  <table style="width:100%; margin-top:10px;" class="table employeelist_admin mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+      <tr><th>T</th><th>Dept</th><th>ID</th><th>First Name</th><th>Surname</th><th>Email</th><th>Approve</th></tr>
+      <tr ng-repeat="employee in requestAccounts">
+        <td style="width: 1em;">{{employee.employeeType}}</td>
+        <td style="width: 1em;">{{employee.departmentNumber}}</td>
+        <td style="width: 8em;">{{employee.employeeNumber}}</td>
+        <td style="width: 10em;">{{employee.givenName}}</td>
+        <td style="width: 10em;">{{employee.sn}}</td>
+        <td style="width: 10em;"><a href="mailto:{{employee.mail}}" target="_blank">{{employee.mail}}</a></td>
+        <td style="width: 10em;"><button class="btn btn-success" ng-click="approveRequestAccount(employee.uid)">Approve</button></td>
+      </tr>
+  </table>
+</div>

@@ -109,6 +109,21 @@
                           transformRequest: angular.identity
                         })
                   },
+                  approveAccount : function(username,password,uid) {
+                    var encoded_data = encodeURIComponent(data);
+                    var data = {
+                        username:username,
+                        pw:password,
+                        uid:uid,
+                        }
+                    var uri = encodeURI('cgi-bin/approveAccount.cgi');
+                    return $http({
+                          method  : 'POST',
+                          url     : uri,
+                          data    : $.param(data),  // pass in data as strings
+                          headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                        })
+                    },
         }
       });
   }());

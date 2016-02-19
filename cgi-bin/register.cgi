@@ -223,7 +223,7 @@ def registerAccount():
         personal email: '''+mailpr+'''
         '''
         msg = MIMEText(account_request + message+'</body></html>','html')
-        msg['To'] = 'ssang@asianhope.org'
+        msg['To'] = 'lyle@asianhope.org'
         msg['From'] = 'noreply@asianhope.org'
         msg['Subject'] = 'New Account Request: ' +departmentNumber+'-'+username
         try:
