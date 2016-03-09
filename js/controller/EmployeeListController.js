@@ -995,6 +995,10 @@
       var text_length = $('#messageSMS').val().length;
       $scope.character_typed =text_length;
     };
+    $scope.isPhoneNumberValid = function(phone_number){
+      console.log(phone_number + ":"+ /^\+(?:[0-9] ?){6,14}[0-9]$/.test(phone_number))
+      return /^\+(?:[0-9] ?){6,14}[0-9]$/.test(phone_number);
+    }
     //end emergency sms
   });
 }());

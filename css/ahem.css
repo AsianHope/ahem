@@ -1,3 +1,6 @@
+.invalid_phone_number,.invalid_phone_number a{
+  color: red !important;
+}
 .selected_row {
     background-color: #d9edf7 !important;
 }

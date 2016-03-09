@@ -27,7 +27,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="employee in employees_users | filter : search_send_sms.search_user" ng-class="{selected_row : employee.selected_user == true}">
+          <tr ng-repeat="employee in employees_users | filter : search_send_sms.search_user" ng-class="{selected_row : employee.selected_user == true , invalid_phone_number : !isPhoneNumberValid(employee.mobile)}">
             <td>
               <input type="checkbox" ng-change="change_user_select((employees_users | filter : search_send_sms.search_user))" ng-model="employee.selected_user"/>
             </td>
@@ -55,7 +55,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="employee in employees_mails | filter : search_send_sms.search_mail" ng-class="{selected_row : employee.selected_mail == true}">
+          <tr ng-repeat="employee in employees_mails | filter : search_send_sms.search_mail" ng-class="{selected_row : employee.selected_mail == true , invalid_phone_number : !isPhoneNumberValid(employee.mobile)}">
             <td>
               <input type="checkbox" ng-model="employee.selected_mail" ng-change="change_mail_select((employees_mails | filter : search_send_sms.search_mail))"/>
             </td>
