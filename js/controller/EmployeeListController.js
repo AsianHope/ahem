@@ -73,6 +73,26 @@
             .withOption('bFilter', false)
             .withOption('bPaginate', false)
             .withOption('bInfo',false)
+        this.dtOptionsSelect = DTOptionsBuilder
+            .newOptions()
+            .withOption('bFilter', false)
+            .withOption('bPaginate', false)
+            .withOption('bInfo',false)
+            .withOption('columnDefs', [ { orderable: false, targets:0}])
+      //---Emergency SMS---
+      $scope.message = {};
+      $scope.sendMessageSMS = null;
+      $scope.search_send_sms={};
+      $scope.totalCostUsers = 0;
+      $scope.totalCostMails = 0;
+      $scope.check_all={
+                      'users':false,
+                      'mails':false
+                      };
+      $scope.characters_max = 160;
+      $scope.character_typed = 0;
+      // ---end Emergency sms---
+
       $scope.showlist=false;
       $scope.loading = true;
       $scope.local_data=[];
@@ -155,6 +175,8 @@
               else{
                   $scope.employees_local_data=[];
                   $scope.employees = results.data;
+                  $scope.employees_users = $scope.employees;
+                  $scope.employees_mails = $scope.employees;
                   $scope.employeesReport = $scope.employees;
                   for(var i=0; i<$scope.employees.length; i++){
                     var emplyeeobj = {};
@@ -824,6 +846,155 @@
                $scope.approve_sms='There was an error !';
              }
            );
-    }
+    };
+    // emergency sms
+    $scope.sendSMSUsers = function(){
+      $scope.sendMessageSMS = null;
+      $scope.mobile_list = [];
+      angular.forEach($scope.employees_users, function(employee){
+        if (employee.selected_user) $scope.mobile_list.push(employee.mobile);
+      });
+      if($scope.mobile_list.length>0){
+        EmployeesService.sendSMS($scope.mobile_list,'AH Emergency Message',$scope.message.value)
+          .then(
+            // success
+            function(results) {
+              if(results.data.result=='success'){
+                $scope.sendMessageSMS = "Messages successfully sent !";
+              }
+              else{
+                $scope.sendMessageSMS = "Fail to send messages !";
+              }
+            },
+            // error
+            function(results){
+                $scope.sendMessageSMS = "Fail to send messages !";
+            }
+        );
+      }
+      //if not select user, then submit form
+      else{
+        $scope.sendMessageSMS = "Please select user !";
+      }
+      console.log("user:"+$scope.mobile_list);
+    };
+
+    $scope.sendSMSMails = function(){
+      $scope.sendMessageSMS = null;
+      $scope.mobile_list = [];
+      angular.forEach($scope.employees_mails, function(employee){
+        if (employee.selected_mail) $scope.mobile_list.push(employee.mobile);
+      });
+      if($scope.mobile_list.length>0){
+        EmployeesService.sendSMS($scope.mobile_list,'AH Emergency Message',$scope.message.value)
+          .then(
+            // success
+            function(results) {
+              if(results.data.result=='success'){
+                $scope.sendMessageSMS = "Messages successfully sent !";
+              }
+              else{
+                $scope.sendMessageSMS = "Fail to send messages !";
+              }
+            },
+            // error
+            function(results){
+              $scope.sendMessageSMS = "Fail to send messages !";
+            }
+          );
+        }
+        else{
+          $scope.sendMessageSMS = "Please select user !";
+        }
+      console.log("mail:" +$scope.mobile_list);
+    };
+
+    $scope.clearSearchUser = function(){
+      angular.forEach($scope.employees_users, function (item) {
+          item.selected_user = false;
+      });
+      $scope.check_all.users = false;
+      $scope.totalCostUsers = 0;
+    };
+
+    $scope.clearSearchMail = function(){
+      angular.forEach($scope.employees_mails, function (item) {
+        item.selected_mail = false;
+      });
+      $scope.check_all.mails = false;
+      $scope.totalCostMails = 0;
+    };
+
+    $scope.change_user_select = function(get_employees){
+      console.log("select user");
+      $scope.totalCostUsers = 0;
+      $scope.count_send_sms_users = [];
+      angular.forEach($scope.employees_users, function(employee){
+        if (employee.selected_user) {
+          $scope.count_send_sms_users.push(employee.mobile);
+        }
+      });
+      // check and uncheck select all
+      if(get_employees.length == $scope.count_send_sms_users.length){
+        $scope.check_all.users = true;
+      }
+      else {
+        $scope.check_all.users = false;
+      }
+      // calculate total cost
+      $scope.totalCostUsers = $scope.count_send_sms_users.length * 0.8;
+    };
+    $scope.change_mail_select = function(get_employees){
+      console.log("select mail");
+      $scope.totalCostMails = 0;
+      $scope.count_send_sms_mails = [];
+      angular.forEach($scope.employees_mails, function(employee){
+        if (employee.selected_mail) {
+          $scope.count_send_sms_mails.push(employee.mobile);
+        }
+      });
+      // check and uncheck select all
+      if(get_employees.length == $scope.count_send_sms_mails.length){
+        $scope.check_all.mails = true;
+      }
+      else{
+        $scope.check_all.mails = false;
+      }
+      // calculate total cost
+      $scope.totalCostMails = $scope.count_send_sms_mails.length * 0.8;
+    };
+
+    $scope.checkAllUsers = function(employees) {
+      $scope.totalCostUsers = 0;
+      angular.forEach(employees, function (item) {
+          item.selected_user = $scope.check_all.users;
+      });
+      // calculate total cost
+      if($scope.check_all.users){
+        $scope.totalCostUsers = employees.length * 0.8;
+      }
+      else{
+        $scope.totalCostUsers = 0;
+      }
+    };
+
+    $scope.checkAllMails = function(employees) {
+      angular.forEach(employees, function (item) {
+          item.selected_mail = $scope.check_all.mails;
+      });
+      // calculate total cost
+      if($scope.check_all.mails){
+        $scope.totalCostMails = employees.length * 0.8;
+      }
+      else{
+        $scope.totalCostMails = 0;
+      }
+    };
+
+    $scope.count_characters = function(){
+      var text_length = $('#messageSMS').val().length;
+      $scope.character_typed =text_length;
+    };
+    //end emergency sms
   });
 }());

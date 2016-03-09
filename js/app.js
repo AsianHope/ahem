@@ -46,6 +46,10 @@ var app =  angular.module('employeeList',['datatables','datatables.tabletools','
                 $rootScope.showInclude = true;
                 $rootScope.title = "Approve Request Account";
             }
+            else if($state.current.name === 'admin.emergencySMS') {
+                $rootScope.showInclude = true;
+                $rootScope.title = "Emergency SMS";
+            }
             else{
               $rootScope.title = "Asian Hope Employee Management System";
             }

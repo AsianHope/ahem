@@ -54,6 +54,10 @@
         .state('admin.approveRequestAccount', {
           url: '/approve-request-account/',
           templateUrl: "templates/approve-request-account.html"
+        })
+        .state('admin.emergencySMS', {
+          url: '/emergency-sms/',
+          templateUrl: "templates/emergency-sms.html"
         });
 
     });

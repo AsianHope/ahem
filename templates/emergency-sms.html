@@ -1,0 +1,74 @@
+<div class="table-responsive" ng-controller="TabController as tab">
+  <h3>Emergency SMS</h3> <span style="color:red;" ng-if="sendMessageSMS">{{sendMessageSMS}}</span>
+  <form role="form" name="sendSMS">
+    <div class="form-group">
+      <label>SMS Text</label>
+      <textarea class="form-control" rows="5" ng-model="message.value" maxlength="160" id="messageSMS" ng-keyup="count_characters()" required></textarea>
+    </div>
+    <div style="text-align:right; font-size:20px;" class="from-group">
+      <strong>{{character_typed}}/{{characters_max}}</strong>
+    </div>
+  <div class="row mdl-tabs mdl-js-tabs">
+    <div class="mdl-tabs__tab-bar" style="margin-bottom:20px;">
+      <a href ng-click="this.tab.setTab(3)" ng-class="{tab_active : this.tab.isSet(3)}" class="mdl-tabs__tab">Users</a>
+      <a href ng-click="this.tab.setTab(4)" ng-class="{tab_active : this.tab.isSet(4)}" class="mdl-tabs__tab">Mailing Lists</a>
+    </div>
+  </div>
+  <div class="" ng-show="this.tab.isSet(3)">
+    <div style="text-align:right">
+      <input placeholder="Search..." class="searchbox_send_sms" type="text" ng-model="search_send_sms.search_user" ng-keyup="clearSearchUser()"/>
+    </div>
+    <div>
+      <table id="tbl_users" datatable="ng" dt-options="elist.dtOptionsSelect" style="width:100%; margin-top:10px;" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <thead>
+          <tr>
+            <th><input type="checkbox" ng-model="check_all.users" ng-change="checkAllUsers((employees_users | filter : search_send_sms.search_user))" /></th>
+            <th>ID</th><th>Dept</th><th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="employee in employees_users | filter : search_send_sms.search_user" ng-class="{selected_row : employee.selected_user == true}">
+            <td>
+              <input type="checkbox" ng-change="change_user_select((employees_users | filter : search_send_sms.search_user))" ng-model="employee.selected_user"/>
+            </td>
+            <td><a ui-sref="admin.staff({instanceID:employee.employeeNumber})">{{employee.employeeNumber}}</a></td>
+            <td>{{employee.departmentNumber}}</td>
+            <td>{{employee.givenName}} {{employee.sn}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div></div>
+      <h5><strong>Total cost to send: {{totalCostUsers | currency}}</strong></h5>
+      <button type='button' ng-disabled="sendSMS.$invalid" ng-click="sendSMSUsers()" class="btn btn-primary">Send SMS to selected users</button>
+    </div>
+  </div>
+  <div ng-show="this.tab.isSet(4)">
+    <div style="text-align:right">
+      <input type="text" class="searchbox_send_sms" placeholder="Search..." ng-model="search_send_sms.search_mail" ng-keyup="clearSearchMail()"/>
+    </div>
+    <div>
+      <table datatable="ng" dt-options="elist.dtOptionsSelect" style="width:100%; margin-top:10px;" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <thead>
+          <tr>
+            <th><input type="checkbox" ng-model="check_all.mails" ng-change="checkAllMails((employees_mails | filter : search_send_sms.search_mail))"/></th>
+            <th>ID</th><th>Mail</th><th>Mobile</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="employee in employees_mails | filter : search_send_sms.search_mail" ng-class="{selected_row : employee.selected_mail == true}">
+            <td>
+              <input type="checkbox" ng-model="employee.selected_mail" ng-change="change_mail_select((employees_mails | filter : search_send_sms.search_mail))"/>
+            </td>
+            <td><a ui-sref="admin.staff({instanceID:employee.employeeNumber})">{{employee.employeeNumber}}</a></td>
+            <td>{{employee.mail}}</td>
+            <td>{{employee.mobile}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div></div>
+     <h5><strong>Total cost to send: {{totalCostMails | currency}}</strong></h5>
+     <button ng-disabled="sendSMS.$invalid" type='button' ng-click="sendSMSMails()" class="btn btn-primary">Send SMS to selected mails</button>
+    </div>
+  </div>
+</form>
+</div>

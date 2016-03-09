@@ -124,6 +124,20 @@
                           headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                         })
                     },
+                    sendSMS : function(userList,title,message) {
+                      var data = {
+                          userList : "['" + userList.join("','") + "']",
+                          title : title,
+                          message : message,
+                          }
+                      var uri = encodeURI('cgi-bin/sendSMS.cgi');
+                      return $http({
+                            method  : 'POST',
+                            url     : uri,
+                            data    : $.param(data),  // pass in data as strings
+                            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                          })
+                      },
         }
       });
   }());
