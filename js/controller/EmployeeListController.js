@@ -238,6 +238,18 @@
             // called no matter success or failure
             $scope.loading = false;
         });
+        // get groups
+        EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"GROUPS")
+            .then(
+              // success
+              function(results){
+                $scope.groups = results.data;
+              }
+            )
+            .finally(function() {
+              $scope.loading = false;
+            });
+
         // storageService.clearAll();
         if(localStorage.getItem('employees_local_data') !== null){
           // get localStorage data
@@ -847,6 +859,17 @@
              }
            );
     };
+    // get employee by uid
+    $scope.getEmployee  = function(uid){
+      var employee = null;
+      for(var i = 0; i < $scope.employees.length; i++){
+        if($scope.employees[i].uid==uid){
+          employee = $scope.employees[i];
+        }
+      }
+      return employee;
+    }
+
     // emergency sms
     $scope.sendSMSUsers = function(){
       $scope.sendMessageSMS = null;
@@ -882,8 +905,17 @@
     $scope.sendSMSMails = function(){
       $scope.sendMessageSMS = null;
       $scope.mobile_list = [];
-      angular.forEach($scope.employees_mails, function(employee){
-        if (employee.selected_mail) $scope.mobile_list.push(employee.mobile);
+      angular.forEach($scope.groups, function(group){
+        // if group is selected
+        if (group.selected_mail){
+          if(group.memberUid != undefined && group.memberUid.length > 0){
+            angular.forEach(group.memberUid, function(member){
+              if($scope.getEmployee(member) != null){
+                $scope.mobile_list.push($scope.getEmployee(member).mobile)
+              }
+            });
+          }
+        }
       });
       if($scope.mobile_list.length>0){
         EmployeesService.sendSMS($scope.mobile_list,'AH Emergency Message',$scope.message.value)
@@ -906,7 +938,7 @@
         else{
           $scope.sendMessageSMS = "Please select user !";
         }
-      console.log("mail:" +$scope.mobile_list);
+        console.log("mail:" +$scope.mobile_list);
     };
 
     $scope.clearSearchUser = function(){
@@ -918,7 +950,7 @@
     };
 
     $scope.clearSearchMail = function(){
-      angular.forEach($scope.employees_mails, function (item) {
+      angular.forEach($scope.groups, function (item) {
         item.selected_mail = false;
       });
       $scope.check_all.mails = false;
@@ -944,24 +976,35 @@
       // calculate total cost
       $scope.totalCostUsers = $scope.count_send_sms_users.length * 0.8;
     };
-    $scope.change_mail_select = function(get_employees){
+    $scope.change_mail_select = function(get_groups){
       console.log("select mail");
       $scope.totalCostMails = 0;
       $scope.count_send_sms_mails = [];
-      angular.forEach($scope.employees_mails, function(employee){
-        if (employee.selected_mail) {
-          $scope.count_send_sms_mails.push(employee.mobile);
+      angular.forEach($scope.groups, function(group){
+        if (group.selected_mail) {
+          $scope.count_send_sms_mails.push(group);
         }
       });
       // check and uncheck select all
-      if(get_employees.length == $scope.count_send_sms_mails.length){
+      if(get_groups.length == $scope.count_send_sms_mails.length){
         $scope.check_all.mails = true;
       }
       else{
         $scope.check_all.mails = false;
       }
+
       // calculate total cost
-      $scope.totalCostMails = $scope.count_send_sms_mails.length * 0.8;
+      if($scope.count_send_sms_mails.length > 0){
+        angular.forEach($scope.count_send_sms_mails, function (group) {
+          if(group.memberUid != undefined && group.memberUid.length > 0){
+            var each_group_cost = group.memberUid.length * 0.8;
+            $scope.totalCostMails += each_group_cost;
+          }
+        });
+      }
+      else{
+        $scope.totalCostMails = 0;
+      }
     };
 
     $scope.checkAllUsers = function(employees) {
@@ -978,13 +1021,19 @@
       }
     };
 
-    $scope.checkAllMails = function(employees) {
-      angular.forEach(employees, function (item) {
+    $scope.checkAllMails = function(groups) {
+      $scope.totalCostMails = 0;
+      angular.forEach(groups, function (item) {
           item.selected_mail = $scope.check_all.mails;
       });
       // calculate total cost
       if($scope.check_all.mails){
-        $scope.totalCostMails = employees.length * 0.8;
+        angular.forEach(groups, function (group) {
+          if(group.memberUid != undefined && group.memberUid.length > 0){
+            var each_group_cost = group.memberUid.length * 0.8;
+            $scope.totalCostMails += each_group_cost;
+          }
+        });
       }
       else{
         $scope.totalCostMails = 0;
@@ -996,7 +1045,7 @@
       $scope.character_typed =text_length;
     };
     $scope.isPhoneNumberValid = function(phone_number){
-      console.log(phone_number + ":"+ /^\+(?:[0-9] ?){6,14}[0-9]$/.test(phone_number))
+      // console.log(phone_number + ":"+ /^\+(?:[0-9] ?){6,14}[0-9]$/.test(phone_number))
       return /^\+(?:[0-9] ?){6,14}[0-9]$/.test(phone_number);
     }
     //end emergency sms

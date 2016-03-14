@@ -50,18 +50,20 @@
       <table datatable="ng" dt-options="elist.dtOptionsSelect" style="width:100%; margin-top:10px;" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
         <thead>
           <tr>
-            <th><input type="checkbox" ng-model="check_all.mails" ng-change="checkAllMails((employees_mails | filter : search_send_sms.search_mail))"/></th>
-            <th>ID</th><th>Mail</th><th>Mobile</th>
+            <th><input type="checkbox" ng-model="check_all.mails" ng-change="checkAllMails((groups | filter : search_send_sms.search_mail))"/></th>
+            <th>Group Name</th><th>Mail</th><th>Member</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="employee in employees_mails | filter : search_send_sms.search_mail" ng-class="{selected_row : employee.selected_mail == true , invalid_phone_number : !isPhoneNumberValid(employee.mobile)}">
+          <tr ng-repeat="group in groups | filter : search_send_sms.search_mail" ng-class="{selected_row : group.selected_mail == true}">
             <td>
-              <input type="checkbox" ng-model="employee.selected_mail" ng-change="change_mail_select((employees_mails | filter : search_send_sms.search_mail))"/>
+              <input type="checkbox" ng-model="group.selected_mail" ng-change="change_mail_select((groups | filter : search_send_sms.search_mail))"/>
             </td>
-            <td><a ui-sref="admin.staff({instanceID:employee.employeeNumber})">{{employee.employeeNumber}}</a></td>
-            <td>{{employee.mail}}</td>
-            <td>{{employee.mobile}}</td>
+            <td>{{group.displayName}}</td>
+            <td>{{group.mail}}</td>
+            <td>
+                {{group.memberUid.length}}
+            </td>
           </tr>
         </tbody>
       </table>
