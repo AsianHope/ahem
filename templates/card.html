@@ -1,50 +1,61 @@
 <html>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
-  <script type="text/javascript" src="../js/photobooth_min.js"></script>
-  <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
-  <!-- Latest compiled and minified CSS -->
-</head>
-<body>
+    <script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../js/photobooth_min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
 
-<div id="container" style="display:block;">
-    <div class="card">
-        <div class="logo"><img src = "../img/ahlogo.png" class = "logoimg" style="width: 100%"></div>
-        <div class="photo"></div>
-        <div id="name" class="name"></div>
-        <div id="title" class="title"></div>
-        <div class="barcode"><img src = "//services.asianhope.org/idcards/barcode.php?text=123&size=30" id = "barcodeimg" alt="blah"></div>
-        <div id ="barcodenumber" class="barcodenumber">123</div>
-        <div class="footer"><img class="footerimg" src = "../img/ahfooter.png" style="width: 100%"/> </div>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" type="text/css" href="../css/ah-staff.css">
+  </head>
+  <body>
+    <div id="container" style="display:block;">
+        <div class="card">
+            <div class="logo"><img src = "../img/ahlogo.png" class = "logoimg" style="width: 100%"></div>
+            <div id="photo" style="position:relative;" class="photo"><img id="cover" class="cover" src="../img/nophoto.jpg"/></div>
+            <div class="name">Input a Name</div>
+            <div class="title">Staff</div>
+            <div class="barcode"><img id = "barcodeimg"/></div>
+            <div class="barcodenumber">123</div>
+            <div class="cardbody">
+              <ul>
+                <li id="dob">DOB: 15-08-1981</li>
+                <li>Emergency Contact:</li>
+                <li id="econtact1">017-XXX-XXXX</li>
+                <li id="econtact2">024-XXX-XXXX</li>
+              </ul>
+            </div>
+            <div class="footer"><img class="footerimg" src = "../img/ahfooter.png" style="width: 100%"/> </div>
+        </div>
     </div>
-</div>
-<div id="controls" style="position: absolute;">
+    <div id="controls" style="position: absolute;">
+      <div id="photoControl" class="ui-widget-content" style="background-color:#ccc; opacity: 0.5;  width:200px; height:300px;"><div id="x-position"></div><div id="y-position"></div></div>
+      <div class="wr">
+          <i style="cursor:pointer;" class="fa fa-search-minus fa-1x" id="desize"></i>
+          <input type="range" value="100" min="10" max="200" id="rg" class="rg"/>
+          <i style="cursor:pointer;" class="fa fa-search-plus fa-1x"  id="insize"></i>
+      </div>
+    </div>
 
-<div id="photoControl" class="ui-widget-content" style="background-color:#ccc; opacity: 0.5;  width:200px; height:300px;"><div id="x-position"></div><div id="y-position"></div></div>
-</div>
-<div class="wr">
-    <i style="cursor:pointer;" class="fa fa-search-minus fa-2x" id="desize"></i>
-    <input type="range" value="100" min="10" max="200" id="rg" class="rg"/>
-    <i style="cursor:pointer;" class="fa fa-search-plus fa-2x"  id="insize"></i>
-  </div></body>
-    <style media="screen">
+  </body>
+  <style media="screen">
+    .wr{
+      position: absolute;
+      top: 370px;
+    }
+  </style>
+  <style>
+    @media print{
       .wr{
-        position: absolute;
-        top: 370px;
+        display: none;
       }
-    </style>
-    <style>
-      @media print{
-        .wr{
-          display: none;
-        }
-      }
-    </style>
-
-<script>
+    }
+  </style>
+</html>
+<script type='text/javascript'>
+  // ------------zoom image-----------
     var timeout_id_desize = 0,
     hold_time_desize = 50;
     var timeout_id_insize = 0,
@@ -53,75 +64,36 @@
     hold_time_setval = 50;
     var iw;
     var ih;
-    var controllw ;
-    var controllh ;
     window.onload=function(){
       var i = document.getElementById("rg").value;
-      var controll = document.getElementById("photoControl");
-      controllw = $("#photoControl").width();
-      controllh = $("#photoControl").height()
-      $("#photoControl").width(parseInt(controllw*i/100));
-      $("#photoControl").height(parseInt(controllh*i/100));
-
-      var image_url = $('.photo').css('background-image'),image;
-      // Remove url() or in case of Chrome url("")
-      image_url = image_url.match(/^url\("?(.+?)"?\)$/);
-      // if (image_url[1]) {
-          image_url = image_url[1];
-          image = new Image();
-          // just in case it is not already loaded
-          $(image).load(function () {
-              iw = image.width;
-              ih = image.height;
-              // image.style.transition = "All linear 0.5s";
-               $('.photo').css({
-                'background-size':parseInt(iw*i/100)+'px ' +parseInt(ih*i/100)+'px'
-              });
-          });
-              image.src = image_url;
-        };
+      var img2=document.getElementById("cover");
+      iw = img2.width;
+      ih = img2.height;
         function setVal()
         {
-          var img = new Image;
-          img.src = $('.photo').css('background-image').replace(/url\(|\)$/ig, "");
           var i = document.getElementById("rg").value;
-          $('.photo').css({
-            'background-size':parseInt(iw*i/100)+'px ' +parseInt(ih*i/100)+'px'
-          });
-          $("#photoControl").width(parseInt(controllw*i/100));
-          $("#photoControl").height(parseInt(controllh*i/100));
+          img2.style.width = parseInt(iw*i/100)+'px';
+          img2.style.height = parseInt(ih*i/100)+'px';
         }
       function deSize()
       {
-        var img = new Image;
-        img.src = $('.photo').css('background-image').replace(/url\(|\)$/ig, "");
-        var i = document.getElementById("rg").value-5;
+        var i = parseInt(document.getElementById("rg").value) - 3;
         document.getElementById("rg").value=i;
           if(i>=10){
-              $('.photo').css({
-                'background-size':parseInt(iw*i/100)+'px ' +parseInt(ih*i/100)+'px'
-              });
-              timeout_id_desize =setTimeout(deSize, hold_time_desize);
+            img2.style.width = parseInt(iw*i/100)+'px';
+            img2.style.height = parseInt(ih*i/100)+'px';
+            timeout_id_desize =setTimeout(deSize, hold_time_desize);
           }
-          $("#photoControl").width(parseInt(controllw*i/100));
-          $("#photoControl").height(parseInt(controllh*i/100));
-          console.log(parseInt(controllw*i/100));
-
         }
       function inSize()
       {
-        var img = new Image;
-        img.src = $('.photo').css('background-image').replace(/url\(|\)$/ig, "");
-        var i = parseInt(document.getElementById("rg").value) + 5;
+        var i = parseInt(document.getElementById("rg").value) + 3;
         document.getElementById("rg").value=i;
         if(i<=1000){
-          $('.photo').css({
-          'background-size':parseInt(iw*i/100)+'px ' +parseInt(ih*i/100)+'px'
-          });
+          img2.style.width = parseInt(iw*i/100)+'px';
+          img2.style.height = parseInt(ih*i/100)+'px';
           timeout_id_insize =setTimeout(inSize, hold_time_insize);
         }
-        $("#photoControl").width(parseInt(controllw*i/100));
-        $("#photoControl").height(parseInt(controllh*i/100));
       }
       $('#desize').mousedown(function() {
         timeout_id_desize = setTimeout(deSize(), hold_time_desize);
@@ -138,53 +110,64 @@
       }).bind('mouseup mouseleave', function() {
           clearTimeout(timeout_id_setval);
       });
-</script>
-<script type='text/javascript'>
-  $(function() {
-
-      var bcurl = "//services.asianhope.org/idcards/barcode.php";
-      var bcsize = 30;
-      var uid = getParameterByName('uid');
-      var name = getParameterByName('name');
-      var id = getParameterByName('id');
-      var title = getParameterByName('title');
-      var department = getParameterByName('department');
-      document.getElementById("name").innerHTML = name;
-      document.getElementById("title").innerHTML = title;
-      document.getElementById("barcodenumber").innerHTML=id;
-      $(".photo").css("background-image", "url('../files/"+id+"/"+id+"-"+uid+"-Photo.jpg')");
-      $('.barcode').html('<img src="'+bcurl+'?text='+id+'&size='+bcsize+'"/>');
-      $('link').attr('href','../css/ahstaffcard.css');
-      $('head').append('<link rel="stylesheet" href="../static/font-awesome/css/font-awesome.min.css" type="text/css" />');
-      $('.footerimg').attr('src','../img/ahfooter.png');
-      $('.logoimg').attr('src','../img/ahlogo.png');
-      if(department=="LIS"){
-        $('link').attr('href','../css/staffcard.css');
-        $('.footerimg').attr('src','../img/logosfooter.png');
-        $('.logoimg').attr('src','../img/logoslogo.png');
-        $('head').append('<link rel="stylesheet" href="../static/font-awesome/css/font-awesome.min.css" type="text/css" />');
-      }
-      if(department=="AHIS"){
-        $('link').attr('href','../css/ahisstaffcard.css');
-        $('.footerimg').attr('src','../img/ahisfooter.png');
-        $('.logoimg').attr('src','../img/ahislogo.png');
-        $('head').append('<link rel="stylesheet" href="../static/font-awesome/css/font-awesome.min.css" type="text/css" />');
-      }
-      function getParameterByName(name) {
-          name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-          var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-              results = regex.exec(location.search);
-          return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-      }
-      $('#photoControl').draggable({
+    }
+    // -----------------------------------------------
+    $('#photoControl').draggable({
           drag: function(){
              var position = $(this).position()
-             $('.photo').css('background-position',position.left+'px '+position.top+'px');
+             $(".cover").css({'object-position':position.left+'px '+position.top+'px'});
           }
-      });
     });
 
-</script>
-<link rel="stylesheet" type="text/css" href="../static/font-awesome/css/font-awesome.min.css" />
+    $(function() {
+      var switchTemplate = function(templatename){
 
-</html>
+      //css should have just one file: <templatename>.css
+      var css_path = '../css/';
+      //link in the css
+      $('link').attr('href',css_path+templatename+"-staff.css");
+      /*
+        img should have a number of files:
+        - <template>-logo.png
+        - <template>-footer.png
+        - <template>-watermark.png <- this is set in the .css
+      */
+      var img_path = '../img/';
+      $('.footerimg').attr('src',img_path+templatename+'footer.png');
+      $('.logoimg').attr('src',img_path+templatename+'logo.png');
+      $('head').append('<link rel="stylesheet" href="../static/font-awesome/css/font-awesome.min.css" type="text/css" />');
+    };
+    function getParameterByName(name) {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+      results = regex.exec(location.search);
+      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+    var templatename = 'ah'
+    // barcode
+    var bcurl = "//services.asianhope.org/idcards/barcode.php";
+    var bcsize = 30;
+
+    var uid = getParameterByName('uid');
+    var name = getParameterByName('name');
+    var id = getParameterByName('id');
+    var title = getParameterByName('title');
+    var department = getParameterByName('department');
+
+    $('.title').html(title);
+    $('.name').html(name);
+    $('.barcode').html('<img src="'+bcurl+'?text='+id+'&size='+bcsize+'"/>');
+    $('.barcodenumber').html(id);
+    $('.cover').attr('src','../files/'+id+'/'+id+'-'+uid+'-Photo.jpg');
+    if(department=='LIS'){
+      templatename='logos';
+    }
+    else if (department=='AHIS') {
+      templatename = 'ahis';
+    }
+    else{
+      templatename = 'ah';
+    }
+    switchTemplate(templatename);
+  });
+</script>
