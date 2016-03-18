@@ -91,6 +91,8 @@
                       };
       $scope.characters_max = 160;
       $scope.character_typed = 0;
+      $scope.selected_people_mail_list = 0;
+      $scope.selected_people_users = 0;
       // ---end Emergency sms---
 
       $scope.showlist=false;
@@ -959,6 +961,7 @@
 
     $scope.change_user_select = function(get_employees){
       console.log("select user");
+      $scope.selected_people_users = 0;
       $scope.totalCostUsers = 0;
       $scope.count_send_sms_users = [];
       angular.forEach($scope.employees_users, function(employee){
@@ -975,9 +978,11 @@
       }
       // calculate total cost
       $scope.totalCostUsers = $scope.count_send_sms_users.length * 0.06;
+      $scope.selected_people_users = $scope.count_send_sms_users.length;
     };
     $scope.change_mail_select = function(get_groups){
       console.log("select mail");
+      $scope.selected_people_mail_list = 0;
       $scope.totalCostMails = 0;
       $scope.count_send_sms_mails = [];
       angular.forEach($scope.groups, function(group){
@@ -999,6 +1004,7 @@
           if(group.memberUid != undefined && group.memberUid.length > 0){
             var each_group_cost = group.memberUid.length * 0.06;
             $scope.totalCostMails += each_group_cost;
+            $scope.selected_people_mail_list +=group.memberUid.length;
           }
         });
       }
@@ -1009,12 +1015,14 @@
 
     $scope.checkAllUsers = function(employees) {
       $scope.totalCostUsers = 0;
+      $scope.selected_people_users = 0;
       angular.forEach(employees, function (item) {
           item.selected_user = $scope.check_all.users;
       });
       // calculate total cost
       if($scope.check_all.users){
         $scope.totalCostUsers = employees.length * 0.06;
+        $scope.selected_people_users = employees.length;
       }
       else{
         $scope.totalCostUsers = 0;
@@ -1022,6 +1030,7 @@
     };
 
     $scope.checkAllMails = function(groups) {
+      $scope.selected_people_mail_list = 0;
       $scope.totalCostMails = 0;
       angular.forEach(groups, function (item) {
           item.selected_mail = $scope.check_all.mails;
@@ -1032,6 +1041,7 @@
           if(group.memberUid != undefined && group.memberUid.length > 0){
             var each_group_cost = group.memberUid.length * 0.06;
             $scope.totalCostMails += each_group_cost;
+            $scope.selected_people_mail_list +=group.memberUid.length;
           }
         });
       }

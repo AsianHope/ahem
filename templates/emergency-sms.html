@@ -5,8 +5,23 @@
       <label>SMS Text</label>
       <textarea class="form-control" rows="5" ng-model="message.value" maxlength="160" id="messageSMS" ng-keyup="count_characters()" required></textarea>
     </div>
-    <div style="text-align:right; font-size:20px;" class="from-group">
-      <strong>{{character_typed}}/{{characters_max}}</strong>
+    <div class="from-group" style="font-size:20px;">
+      <div class="col-md-6" style="text-align:left;">
+        Total cost to send:
+        <span ng-if="this.tab.isSet(3)">
+          {{totalCostUsers | currency}}
+        </span>
+        <span ng-if="this.tab.isSet(4)">
+          {{totalCostMails | currency}}
+        </span>
+      </div>
+      <div class="col-md-6" style="text-align:right;">{{character_typed}}/{{characters_max}}</div>
+    </div>
+    <div style="text-align:right;" class="form-group" ng-if="this.tab.isSet(3)">
+      <button type='button' ng-disabled="sendSMS.$invalid" ng-click="sendSMSUsers()" class="btn btn-primary">Send SMS to {{selected_people_users}} people user</button>
+    </div>
+    <div style="text-align: right;" class="form-group" ng-if="this.tab.isSet(4)">
+      <button ng-disabled="sendSMS.$invalid" type='button' ng-click="sendSMSMails()" class="btn btn-primary">Send SMS to {{selected_people_mail_list}} people mail</button>
     </div>
   <div class="row mdl-tabs mdl-js-tabs">
     <div class="mdl-tabs__tab-bar" style="margin-bottom:20px;">
@@ -37,9 +52,6 @@
           </tr>
         </tbody>
       </table>
-      <div></div>
-      <h5><strong>Total cost to send: {{totalCostUsers | currency}}</strong></h5>
-      <button type='button' ng-disabled="sendSMS.$invalid" ng-click="sendSMSUsers()" class="btn btn-primary">Send SMS to selected users</button>
     </div>
   </div>
   <div ng-show="this.tab.isSet(4)">
@@ -67,9 +79,6 @@
           </tr>
         </tbody>
       </table>
-      <div></div>
-     <h5><strong>Total cost to send: {{totalCostMails | currency}}</strong></h5>
-     <button ng-disabled="sendSMS.$invalid" type='button' ng-click="sendSMSMails()" class="btn btn-primary">Send SMS to selected mails</button>
     </div>
   </div>
 </form>
