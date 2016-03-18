@@ -974,7 +974,7 @@
         $scope.check_all.users = false;
       }
       // calculate total cost
-      $scope.totalCostUsers = $scope.count_send_sms_users.length * 0.8;
+      $scope.totalCostUsers = $scope.count_send_sms_users.length * 0.06;
     };
     $scope.change_mail_select = function(get_groups){
       console.log("select mail");
@@ -997,7 +997,7 @@
       if($scope.count_send_sms_mails.length > 0){
         angular.forEach($scope.count_send_sms_mails, function (group) {
           if(group.memberUid != undefined && group.memberUid.length > 0){
-            var each_group_cost = group.memberUid.length * 0.8;
+            var each_group_cost = group.memberUid.length * 0.06;
             $scope.totalCostMails += each_group_cost;
           }
         });
@@ -1014,7 +1014,7 @@
       });
       // calculate total cost
       if($scope.check_all.users){
-        $scope.totalCostUsers = employees.length * 0.8;
+        $scope.totalCostUsers = employees.length * 0.06;
       }
       else{
         $scope.totalCostUsers = 0;
@@ -1030,7 +1030,7 @@
       if($scope.check_all.mails){
         angular.forEach(groups, function (group) {
           if(group.memberUid != undefined && group.memberUid.length > 0){
-            var each_group_cost = group.memberUid.length * 0.8;
+            var each_group_cost = group.memberUid.length * 0.06;
             $scope.totalCostMails += each_group_cost;
           }
         });
