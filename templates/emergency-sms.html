@@ -18,10 +18,10 @@
       <div class="col-md-6" style="text-align:right;">{{character_typed}}/{{characters_max}}</div>
     </div>
     <div style="text-align:right;" class="form-group" ng-if="this.tab.isSet(3)">
-      <button type='button' ng-disabled="sendSMS.$invalid" ng-click="sendSMSUsers()" class="btn btn-primary">Send SMS to {{selected_people_users}} people user</button>
+      <button type='button' ng-disabled="sendSMS.$invalid" ng-click="sendSMSUsers()" class="btn btn-primary">Send SMS to {{selected_people_users}} people</button>
     </div>
     <div style="text-align: right;" class="form-group" ng-if="this.tab.isSet(4)">
-      <button ng-disabled="sendSMS.$invalid" type='button' ng-click="sendSMSMails()" class="btn btn-primary">Send SMS to {{selected_people_mail_list}} people mail</button>
+      <button ng-disabled="sendSMS.$invalid" type='button' ng-click="sendSMSMails()" class="btn btn-primary">Send SMS to {{selected_people_mail_list}} people</button>
     </div>
   <div class="row mdl-tabs mdl-js-tabs">
     <div class="mdl-tabs__tab-bar" style="margin-bottom:20px;">
