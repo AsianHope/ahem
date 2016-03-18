@@ -27,7 +27,7 @@ def sendMessage():
     except:
         return '{"result":"error"}'
     try:
-        response = clickatell.sendMessage(userList,message, {'from':'AsianHope'})
+        response = clickatell.sendMessage(userList,message, {'from':'AHALERTS'})
     except:
         return '{"result":"error"}'
     else:
