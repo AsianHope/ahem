@@ -8,7 +8,7 @@
     <div class="col-md-8 col-xs-12">
       <div class="row">
           <div class="well well-sm">
-            <form class="form-horizontal" ng-submit="registerAccount()">
+            <form name="register_form" class="form-horizontal" ng-submit="registerAccount()">
               <fieldset>
                 <legend class="text-center header">Register a New Account</legend>
 
@@ -17,6 +17,11 @@
                   <div class="col-md-8">
                     <label>Start Date</label>
                     <input type="date" class="form-control" name="start_date" ng-model="formdata.startdate" required></input>
+                  </div>
+                  <div ng-show="register_form.start_date.$dirty && register_form.start_date.$error.required" class="col-md-12 col-md-offset-3">
+                    <span style="color:red;" class="help-block">
+                      Start date is required.
+                    </span>
                   </div>
                 </div>
 
@@ -41,10 +46,15 @@
                 <div class="form-group">
                   <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-building-o bigicon"></i></span>
                   <div class="col-md-8">
-                    <select id="site_staff" ng-model="formdata.departmentNumber" name="site" class="form-control" required>
+                    <select id="site_staff" ng-model="formdata.departmentNumber" name="department" class="form-control" required>
                       <option selected="selected">-- Department --</option>
                       <option ng-repeat="department in departments" ng-model="formdata.departmentNumber" value="{{department.value}}">{{department.value}}</option>
                     </select>
+                  </div>
+                  <div ng-show="register_form.department.$dirty && register_form.department.$error.required" class="col-md-12 col-md-offset-3">
+                    <span style="color:red;" class="help-block">
+                      Department is required.
+                    </span>
                   </div>
                 </div>
 
@@ -55,6 +65,11 @@
                       <option selected="selected">-- Passport Country --</option>
                       <option ng-repeat="country in countries" ng-model="formdata.c" value="{{country.value}}">{{country.text}}</option>
                     </select>
+                  </div>
+                  <div ng-show="register_form.c.$dirty && register_form.c.$error.required" class="col-md-12 col-md-offset-3">
+                    <span style="color:red;" class="help-block">
+                      Passport country is required.
+                    </span>
                   </div>
                 </div>
 
@@ -83,6 +98,11 @@
                       <option>HELP</option>
                     </select>
                   </div>
+                  <div ng-show="register_form.title.$dirty && register_form.title.$error.required" class="col-md-12 col-md-offset-3">
+                    <span style="color:red;" class="help-block">
+                      Position is required.
+                    </span>
+                  </div>
                 </div>
 
 
@@ -91,12 +111,22 @@
                   <div class="col-md-8">
                     <input id="fname" name="fname" type="text" ng-model="formdata.givenName" placeholder="First Name" class="form-control" required>
                   </div>
+                  <div ng-show="register_form.fname.$dirty && register_form.fname.$error.required" class="col-md-12 col-md-offset-3">
+                    <span style="color:red;" class="help-block">
+                      First name is required.
+                    </span>
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-users bigicon"></i></span>
                   <div class="col-md-8">
                     <input id="lname" name="lname" ng-model="formdata.sn" type="text" placeholder="Family Name" class="form-control" required>
+                  </div>
+                  <div ng-show="register_form.lname.$dirty && register_form.lname.$error.required" class="col-md-12 col-md-offset-3">
+                    <span style="color:red;" class="help-block">
+                      Family Name is required.
+                    </span>
                   </div>
                 </div>
 
@@ -119,6 +149,11 @@
                   <div class="col-md-8">
                     <input type="date" value="1970-01-01" class="form-control" name="birthday" ng-model="formdata.birthday" required></input>
                   </div>
+                  <div ng-show="register_form.birthday.$dirty && register_form.birthday.$error.required" class="col-md-12 col-md-offset-3">
+                    <span style="color:red;" class="help-block">
+                      Birthday is required.
+                    </span>
+                  </div>
                 </div>
 
                 <div class="form-group">
@@ -131,20 +166,35 @@
                 <div id="email" class="form-group">
                   <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-envelope-o bigicon"></i></span>
                   <div class="col-md-8">
-                    <input id="mail" name="mail" ng-model="formdata.mail" type="text" placeholder="Email Address" class="form-control">
+                    <input id="mail" name="mail" ng-model="formdata.mail" type="email" placeholder="Email Address" class="form-control">
+                  </div>
+                  <div ng-show="register_form.mail.$dirty && register_form.mail.$error.email" class="col-md-12 col-md-offset-3">
+                    <span style="color:red;" class="help-block">
+                      Invalid email.
+                    </span>
                   </div>
                 </div>
                 <div class="form-group">
                   <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-envelope bigicon"></i></span>
                   <div class="col-md-8">
-                    <input id="mailpr" name="mailpr" ng-model="formdata.mailpr" type="text" placeholder="Personal Email Address" class="form-control">
+                    <input id="mailpr" name="mailpr" ng-model="formdata.mailpr" type="email" placeholder="Personal Email Address" class="form-control">
+                  </div>
+                  <div ng-show="register_form.mailpr.$dirty && register_form.mailpr.$error.email" class="col-md-12 col-md-offset-3">
+                    <span style="color:red;" class="help-block">
+                      Invalid email.
+                    </span>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-phone bigicon"></i></span>
                   <div class="col-md-8">
-                    <input id="phone" name="phone" ng-model="formdata.mobile" type="text" placeholder="Phone (in the form +855XXXXXXXX)" class="form-control">
+                    <input id="phone" name="phone" ng-model="formdata.mobile" valid-phone-number-format="formdata.mobile" type="text" placeholder="Phone (in the form +855XXXXXXXX)" class="form-control">
+                  </div>
+                  <div ng-show="register_form.phone.$error.validFormat" class="col-md-12 col-md-offset-3">
+                    <span style="color:red;" class="help-block">
+                      Invalid format.
+                    </span>
                   </div>
                 </div>
 
@@ -172,7 +222,7 @@
                 </div>
                 <div class="form-group">
                   <div class="col-md-12 text-center">
-                    <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                    <button ng-disabled="register_form.$invalid" type="submit" class="btn btn-primary btn-lg">Submit</button>
                   </div>
                 </div>
               </fieldset>

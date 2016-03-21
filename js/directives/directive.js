@@ -25,6 +25,29 @@
                 }
             };
           }]);
+          //validate phone number format
+          app.directive('validPhoneNumberFormat', [function () {
+            return {
+                restrict: 'A',
+                scope:true,
+                require: 'ngModel',
+                link: function (scope, elem , attrs,control) {
+                    var checker = function () {
+                        //get the value
+                        var e2 = scope.$eval(attrs.validPhoneNumberFormat);
+                        if(e2 == undefined || e2 == null || e2 == ''){
+                          return true;
+                        }
+                        else{
+                          return /^\+(?:[0-9] ?){6,14}[0-9]$/.test(e2);
+                        }
+                    };
+                    scope.$watch(checker, function (n) {
+                        control.$setValidity("validFormat", n);
+                    });
+                }
+            };
+          }]);
           // validate input type file
           app.directive('validFile',function(){
             return {
