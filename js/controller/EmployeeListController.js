@@ -415,8 +415,11 @@
         }
       };
       $scope.updateUser = function(uid, field, data){
-              var d = $q.defer();
-              EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'users','null')
+            var d = $q.defer();
+            // if field is mobile ,validate its format
+            if(field == 'mobile'){
+              if(/^\+(?:[0-9] ?){6,14}[0-9]$/.test(data) || data == '' || data == null || data == undefined){
+                EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'users','null')
                   .then(
                       // success
                       function(results) {
@@ -428,11 +431,35 @@
                         }
                       },
                       // error
-                     function(results){
-                       d.reject('Server error!');
-                     }
-                   );
-                   return d.promise;
+                      function(results){
+                        d.reject('Server error!');
+                      }
+                );
+            }
+            else{
+              d.resolve("Invalid Format");
+            }
+          }
+          // if not mobile
+          else{
+            EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'users','null')
+              .then(
+                  // success
+                  function(results) {
+                    if(results.data.result=='success'){
+                      d.resolve();
+                    }
+                    else{
+                      d.resolve("There was an error");
+                    }
+                  },
+                  // error
+                  function(results){
+                    d.reject('Server error!');
+                  }
+            );
+          }
+          return d.promise;
       }
       $scope.removeUserFromGroup=function(uid,field,data){
         var d = $q.defer();
