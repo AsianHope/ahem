@@ -871,21 +871,14 @@
       }
       return employee;
     }
-
-    // emergency sms
-    $scope.sendSMSUsers = function(){
-      $scope.sendMessageSMS = null;
-      $scope.mobile_list = [];
-      angular.forEach($scope.employees_users, function(employee){
-        if (employee.selected_user) $scope.mobile_list.push(employee.mobile);
-      });
-      if($scope.mobile_list.length>0){
-        EmployeesService.sendSMS($scope.mobile_list,'AH Emergency Message',$scope.message.value)
+    $scope.continuesSendSmsUsers = function(){
+      EmployeesService.sendSMS($scope.mobile_list,'AH Emergency Message',$scope.message.value)
           .then(
             // success
             function(results) {
               if(results.data.result=='success'){
                 $scope.sendMessageSMS = "Messages successfully sent !";
+                $scope.invalid_mobiles = [];
               }
               else{
                 $scope.sendMessageSMS = "Fail to send messages !";
@@ -896,51 +889,110 @@
                 $scope.sendMessageSMS = "Fail to send messages !";
             }
         );
+    }
+    // emergency sms
+    $scope.sendSMSUsers = function(){
+        $scope.invalid_mobiles = [];
+        $scope.checked_user = [];
+        $scope.sendMessageSMS = null;
+        $scope.mobile_list = [];
+        angular.forEach($scope.employees_users, function(employee){
+          if (employee.selected_user) $scope.checked_user.push({'name':employee.givenName + ' ' + employee.sn ,'mobile':employee.mobile});
+        });
+        if($scope.checked_user.length > 0){
+          // validate phone number
+          angular.forEach($scope.checked_user, function(employee){
+            if($scope.isPhoneNumberValid(employee.mobile)){
+              $scope.mobile_list.push(employee.mobile);
+            }
+            else{
+              $scope.invalid_mobiles.push(employee);
+            }
+          });
+          //------------------------------------------
+          if($scope.invalid_mobiles.length > 0){
+            $scope.sendMessageSMS = "Invalid phone number format !";
+          }
+          else{
+            EmployeesService.sendSMS($scope.mobile_list,'AH Emergency Message',$scope.message.value)
+                .then(
+                  // success
+                  function(results) {
+                    if(results.data.result=='success'){
+                      $scope.sendMessageSMS = "Messages successfully sent !";
+                    }
+                    else{
+                      $scope.sendMessageSMS = "Fail to send messages !";
+                    }
+                  },
+                  // error
+                  function(results){
+                      $scope.sendMessageSMS = "Fail to send messages !";
+                  }
+              );
+          }
       }
-      //if not select user, then submit form
+      // if not select user
       else{
         $scope.sendMessageSMS = "Please select user !";
       }
-      console.log("user:"+$scope.mobile_list);
     };
 
     $scope.sendSMSMails = function(){
+      $scope.invalid_mobiles = [];
+      $scope.checked_user = [];
       $scope.sendMessageSMS = null;
       $scope.mobile_list = [];
       angular.forEach($scope.groups, function(group){
         // if group is selected
         if (group.selected_mail){
-          if(group.memberUid != undefined && group.memberUid.length > 0){
-            angular.forEach(group.memberUid, function(member){
-              if($scope.getEmployee(member) != null){
-                $scope.mobile_list.push($scope.getEmployee(member).mobile)
-              }
-            });
-          }
+            if(group.memberUid != undefined && group.memberUid.length > 0){
+              angular.forEach(group.memberUid, function(member){
+                if($scope.getEmployee(member) != null){
+                  $scope.checked_user.push({'name':$scope.getEmployee(member).givenName + ' ' + $scope.getEmployee(member).sn ,'mobile':$scope.getEmployee(member).mobile});
+                }
+              });
+            }
         }
       });
-      if($scope.mobile_list.length>0){
-        EmployeesService.sendSMS($scope.mobile_list,'AH Emergency Message',$scope.message.value)
-          .then(
-            // success
-            function(results) {
-              if(results.data.result=='success'){
-                $scope.sendMessageSMS = "Messages successfully sent !";
-              }
-              else{
-                $scope.sendMessageSMS = "Fail to send messages !";
-              }
-            },
-            // error
-            function(results){
-              $scope.sendMessageSMS = "Fail to send messages !";
-            }
-          );
+      // if select user
+      if($scope.checked_user.length > 0){
+        // validate phone number
+        angular.forEach($scope.checked_user, function(employee){
+          if($scope.isPhoneNumberValid(employee.mobile)){
+            $scope.mobile_list.push(employee.mobile);
+          }
+          else{
+            $scope.invalid_mobiles.push(employee);
+          }
+        });
+        //------------------------------------------
+        if($scope.invalid_mobiles.length > 0){
+          $scope.sendMessageSMS = "Invalid phone number format !";
         }
         else{
-          $scope.sendMessageSMS = "Please select user !";
+          EmployeesService.sendSMS($scope.mobile_list,'AH Emergency Message',$scope.message.value)
+              .then(
+                // success
+                function(results) {
+                  if(results.data.result=='success'){
+                    $scope.sendMessageSMS = "Messages successfully sent !";
+                  }
+                  else{
+                    $scope.sendMessageSMS = "Fail to send messages !";
+                  }
+                },
+                // error
+                function(results){
+                    $scope.sendMessageSMS = "Fail to send messages !";
+                }
+            );
         }
-        console.log("mail:" +$scope.mobile_list);
+      }
+      // if not select user
+      else{
+        $scope.sendMessageSMS = "Please select group !";
+      }
     };
 
     $scope.clearSearchUser = function(){

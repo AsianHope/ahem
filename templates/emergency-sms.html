@@ -1,5 +1,13 @@
 <div class="table-responsive" ng-controller="TabController as tab">
   <h3>Emergency SMS</h3> <span style="color:red;" ng-if="sendMessageSMS">{{sendMessageSMS}}</span>
+  <div ng-if="invalid_mobiles" style="color:red;">
+    Note : SMS cannot send to invalid phone number format
+    <button ng-click="continuesSendSmsUsers()" class="btn btn-warning">Continues</button>
+
+    <ul style="color:red;">
+      <li ng-repeat="invalid in invalid_mobiles">Employee : {{invalid.name}} , Mobile : {{invalid.mobile}}</li>
+    </ul>
+  </div>
   <form role="form" name="sendSMS">
     <div class="form-group">
       <label>SMS Text</label>
@@ -18,10 +26,10 @@
       <div class="col-md-6" style="text-align:right;">{{character_typed}}/{{characters_max}}</div>
     </div>
     <div style="text-align:right;" class="form-group" ng-if="this.tab.isSet(3)">
-      <button type='button' ng-disabled="sendSMS.$invalid" ng-click="sendSMSUsers()" class="btn btn-primary">Send SMS to {{selected_people_users}} people</button>
+      <button type='button' ng-disabled="sendSMS.$invalid || selected_people_users < 1" ng-click="sendSMSUsers()" class="btn btn-primary">Send SMS to {{selected_people_users}} people</button>
     </div>
     <div style="text-align: right;" class="form-group" ng-if="this.tab.isSet(4)">
-      <button ng-disabled="sendSMS.$invalid" type='button' ng-click="sendSMSMails()" class="btn btn-primary">Send SMS to {{selected_people_mail_list}} people</button>
+      <button ng-disabled="sendSMS.$invalid || selected_people_mail_list < 1" type='button' ng-click="sendSMSMails()" class="btn btn-primary">Send SMS to {{selected_people_mail_list}} people</button>
     </div>
   <div class="row mdl-tabs mdl-js-tabs">
     <div class="mdl-tabs__tab-bar" style="margin-bottom:20px;">
