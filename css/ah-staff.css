@@ -18,7 +18,6 @@
     page-break-after: always;
     border:solid 3px lightgrey;
     margin: 5px;
-
 }
 .photo{
     text-align: center;
@@ -29,11 +28,11 @@
     margin-bottom: 2mm;
     border-radius:50%;
     border: 3px solid #fad596;
-    overflow: hidden;
+    z-index: 999;
 }
 .cover{
-  object-fit: cover;
-  object-fit: cover;
+  height: 100%;
+  width: 100%;
 }
 
 .logo{
@@ -97,23 +96,22 @@ font-size: small
     background-size: 200%;
     background-repeat: repeat;
     background-position: center;
-
 }
 
 .photo{
-    text-align: center;
-    width: 3.7cm;
-    height: 3.7cm;
-    position: relative;
-    left: 15%;
-    margin-bottom: 2mm;
-    border-radius:50%;
-    border: 3px solid #fad596;
-    overflow: hidden;
+  text-align: center;
+  width: 3.7cm;
+  height: 3.7cm;
+  position: relative;
+  left: 15%;
+  margin-bottom: 2mm;
+  border-radius:50%;
+  border: 3px solid #fad596;
+  z-index: 999;
 }
 .cover{
-  object-fit: cover;
-  object-fit: cover;
+  height: 100%;
+  width: 100%;
 }
 
 .logo{
