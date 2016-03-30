@@ -138,6 +138,17 @@
                             headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                           })
                       },
+                      syncGADS : function() {
+                        var data = {
+                            }
+                        var uri = encodeURI('http://192.168.1.157/cgi-bin/triggersync');
+                        return $http({
+                              method  : 'POST',
+                              url     : uri,
+                              data    : $.param(data),  // pass in data as strings
+                              headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                            })
+                        },
         }
       });
   }());
