@@ -24,6 +24,11 @@ def uploadFile():
         fn = os.path.basename(fileitem.filename)
         extension = os.path.splitext(fn)[1][1:]
 
+        # 0 = photo
+        # photos allow jpg only
+        if documentID == '0':
+            if extension != 'jpg':
+                return '{"result":"photo_not_allow"}'
         # make directory if not exist
         if not os.path.isdir('files/'+str(uidnumber)+''):
             os.makedirs('files/'+str(uidnumber))

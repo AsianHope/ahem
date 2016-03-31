@@ -641,6 +641,9 @@
                          $scope.upload_sms='Replace file successfully!';
                          $("#formUpload").trigger('reset');
                       }
+                      else if (results.data.result=='photo_not_allow') {
+                        $scope.upload_sms='Upload file fail. Photo allow jpg only !';
+                      }
                       else{
                         $scope.upload_sms='Upload file fail!';
                       }
@@ -746,6 +749,9 @@
                         break;
                       }
                     }
+                 }
+                 else if (results.data.result=='photo_not_allow') {
+                   $scope.upload_sms='Upload file fail. Photo allow jpg only !';
                  }
                  else {
                    $scope.upload_sms='Upload file fail!';
