@@ -529,19 +529,6 @@
                       function(results) {
                         if(results.data.result=='success'){
                           if(type=="youreset"){
-                            EmployeesService.syncGADS()
-                              .then(
-                                  // success
-                                  function(results){
-                                    console.log('success');
-                                    console.log(results);
-                                  },
-                                  // error
-                                   function(results){
-                                     console.log('error');
-                                     console.log(results);
-                                   }
-                               );
                             d.resolve()
                             alert('Your password has been reset! Plase login again.');
                             // back to login page

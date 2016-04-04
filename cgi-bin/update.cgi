@@ -29,6 +29,7 @@ import json
 
 import hashlib
 
+import requests
 import logging
 logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -210,11 +211,15 @@ def main():
                         new = [(ldap.MOD_REPLACE,'jsonData',modified)]
                         logging.debug('update.cgi field %s found, modifying it', field)
                     slave.modify_s(dn,new)
-            return '{"result":"success"}'
             slave.unbind_s()
             logging.info('%s modified user %s, field: %s, data: %s', username, uid, field, data)
             ##send email when reset password
             if(field == 'userPassword'):
+                try:
+                    response = requests.get('http://192.168.1.157/cgi-bin/triggersync')
+                except Exception as e:
+                    pass
+
                 if(reset_type == 'youreset'):
                     reset_password= '''
                     <html>
@@ -279,7 +284,7 @@ def main():
                 clickatell = Http(CLICKATELL_CREDENTIALS['username'],CLICKATELL_CREDENTIALS['password'],CLICKATELL_CREDENTIALS['apiID'])
                 response = clickatell.sendMessage(data,"This number is now your AH emergency contact number", {'from':'AHALERTS'})
                 logging.info('clickatell message sent, response: %s', response)
-
+            return '{"result":"success"}'
     else:
         return '{"result":"error"}'
 def convertToAppleBirthday(data):
