@@ -29,6 +29,7 @@ def approveRequestAccount():
     username = formData.getvalue("username",None)
     pw = formData.getvalue("pw",None)
     uid = formData.getvalue("uid",None)
+    action = formData.getvalue("action")
     #don't require a valid certificate.. we don't currently have one!
     ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
@@ -49,7 +50,10 @@ def approveRequestAccount():
         return '{"result":"error"}'
         sys.exit(1)
     try :
-        slave.rename_s('uid='+uid+',cn=requests,dc=asianhope,dc=org', 'uid='+uid+'', 'cn=users,dc=asianhope,dc=org')
+        if action == 'delete' :
+            slave.delete_s('uid='+uid+',cn=requests,dc=asianhope,dc=org')
+        else:
+            slave.rename_s('uid='+uid+',cn=requests,dc=asianhope,dc=org', 'uid='+uid+'', 'cn=users,dc=asianhope,dc=org')
     except ldap.INSUFFICIENT_ACCESS:
         return '{"result":"permission_denied"}'
     except ldap.NO_SUCH_OBJECT:

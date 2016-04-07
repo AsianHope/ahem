@@ -866,8 +866,8 @@
             $scope.loading = false;
           });
     }
-    $scope.approveRequestAccount = function(uid){
-      EmployeesService.approveAccount($scope.user.uname,$scope.user.pw,uid)
+    $scope.approveRequestAccount = function(uid,action){
+      EmployeesService.approveAccount($scope.user.uname,$scope.user.pw,uid,action)
           .then(
               // success
               function(results) {

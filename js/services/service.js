@@ -109,12 +109,13 @@
                           transformRequest: angular.identity
                         })
                   },
-                  approveAccount : function(username,password,uid) {
+                  approveAccount : function(username,password,uid,action) {
                     var encoded_data = encodeURIComponent(data);
                     var data = {
                         username:username,
                         pw:password,
                         uid:uid,
+                        action:action
                         }
                     var uri = encodeURI('cgi-bin/approveAccount.cgi');
                     return $http({
