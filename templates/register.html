@@ -254,14 +254,14 @@
       var stem = ahstem;
 
       $(document).ready(function() {
-        $('#check_email').change(function() {
-          if($('input#check_email').is(':checked')){
-            $('#email').hide();
-          }
-          else{
-            $('#email').show();
-          }
-      	});
+        // $('#check_email').change(function() {
+        //   if($('input#check_email').is(':checked')){
+        //     $('#email').hide();
+        //   }
+        //   else{
+        //     $('#email').show();
+        //   }
+      	// });
       	$('#fname').change(function() {
       		fname = $('#fname').val();
       		updateEmail();
@@ -300,38 +300,42 @@
       	});
 
       $('#mail').change(function() {
-      	checkUid($('#mail').val());
+      	checkUid($('#mail').val(),fname,lname,true);
       });
       var updateEmail = function() {
       	var uid = fname.substring(0, 1) + lname.replace(/\s+/g, '');
       	uid = uid.toLowerCase();
 
-      	var email = uid + '@' + stem;
+      	var email = uid + stem;
       	email = email.toLowerCase();
-
-      	checkUid(email);
+      	checkUid(email,fname,lname,false);
       }
 
-      var checkUid = function(useruid) {
+      var checkUid = function(email,firstname,lastname,is_change_uid) {
 
-      	uid = useruid.split('@')[0]; //make sure we're checking a UID and not an email address
-      	userstem = useruid.split('@')[1];
-      	//if there is no user stem set it to the default, if there is prepend the @ we stripped above
-      	if (userstem.length == 0) userstem = stem;
-      	else userstem = '@' + userstem;
+      	uid = email.split('@')[0]; //make sure we're checking a UID and not an email address
+      	// userstem = useruid.split('@')[1];
+      	// //if there is no user stem set it to the default, if there is prepend the @ we stripped above
+      	// if (userstem.length == 0) userstem = stem;
+      	// else userstem = '@' + userstem;
+        userstem = stem;
       	//post our suggestion.
       	$.post("cgi-bin/verifyuid.cgi", {
-      			uid: uid
+      			uid: uid,
+            givenName:firstname,
+            sn : lastname,
+            isChangeUid: is_change_uid
       		},
       		function(data, status) {
       			data = data.replace(/\s/g, '');
       			if (data == "1") {
       				$('#mail').val('');
-      				$('#mail').attr("placeholder", useruid + " in use, please re-enter");
+      				$('#mail').attr("placeholder", uid + " in use, please re-enter");
       				$('#mail').css("border", "#FF0000 1px solid");
       				$('#mail').css("color", "#FF0000");
       			} else {
       				$('#mail').val(data + userstem);
+
       				$('#mail').css("border", "#00AA00 1px solid");
       				$('#mail').css("color", "#00AA00");
       			}
