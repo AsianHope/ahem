@@ -22,6 +22,7 @@ import json
 import hashlib
 
 import logging
+import requests
 logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
 def approveRequestAccount():
@@ -59,6 +60,11 @@ def approveRequestAccount():
     except ldap.NO_SUCH_OBJECT:
         return '{"result":"no_such_object"}'
     else:
+        if action != 'delete' :
+            try:
+                response = requests.get('http://192.168.1.157/cgi-bin/triggersync')
+            except Exception as e:
+                pass
         return '{"result":"success"}'
 
 
