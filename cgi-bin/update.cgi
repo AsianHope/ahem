@@ -150,7 +150,6 @@ def main():
         #find user
         ldap_slave_result_id = slave.search(sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
         sresult_set = []
-
         #only expecting one result... if we have more than one, you'll have a bad time
         sresult_type, sresult_data = slave.result(ldap_slave_result_id,0)
 
@@ -192,6 +191,15 @@ def main():
 
                 #future - add to log file saying who performed what
                 slave.modify_s(dn,new)
+
+                # if update employee type
+                if field == 'employeeType':
+                    inactive_result_id = slave.search("cn=inactive,"+sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
+                    inactive_sresult_type, inactive_sresult_data = slave.result(inactive_result_id,0)
+
+                    # if this uid is inactive
+                    if(inactive_sresult_data != []):
+                        slave.rename_s('uid='+uid+',cn=inactive,dc=asianhope,dc=org', 'uid='+uid+'', 'cn=users,dc=asianhope,dc=org')
             #if it's an extended field, then we're going to pull the JSON and rewrite it
             else:
                     #if the jsonData hasn't been added to the entry, add it.
