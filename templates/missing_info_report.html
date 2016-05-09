@@ -21,7 +21,7 @@
         </th>
       </tr>
       <tr ng-repeat="employee in employees | filter:searchMissingInfor | orderBy:orderProp">
-        <td><a ui-sref="admin.staff({instanceID:employee.employeeNumber})"><h5><strong>{{employee.sn}},{{employee.givenName}}</strong></h5></a></td>
+        <td><a ui-sref="admin.staff({instanceID:employee.uidNumber})"><h5><strong>{{employee.sn}},{{employee.givenName}}</strong></h5></a></td>
         <td>
           <h5 ng-if="!employee.sn">
             <a  href="#" title="Click to edit: Surname" editable-text="employee.sn"
@@ -215,7 +215,7 @@
             </a>
           </h5>
           <h5 ng-if="!employee.family_data && employee.maritalstatus=='Married'">
-            <a ui-sref="admin.staff({instanceID:employee.employeeNumber})" ng-click="this.tab.setTab(4)">
+            <a ui-sref="admin.staff({instanceID:employee.uidNumber})" ng-click="this.tab.setTab(4)">
               Family data (spouse , child)
             </a>
           </h5>
@@ -223,7 +223,7 @@
             Documents
             <li ng-hide="((document.value==19 || document.value==12) && employee.c !='KH') || ((document.value==10 || document.value==11 || document.value==13) && employee.c =='KH') || (document.value==2  && employee.faith !='Christian')"
                 ng-repeat="document in showMissingDocs(employee.documents,employee.OtherDocuments, documentType)">
-              <a ui-sref="admin.staff({instanceID:employee.employeeNumber})" ng-click="this.tab.setTab(5)">{{document.text}}</a>
+              <a ui-sref="admin.staff({instanceID:employee.uidNumber})" ng-click="this.tab.setTab(5)">{{document.text}}</a>
             </li>
           </h5>
         </td>

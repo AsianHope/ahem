@@ -287,7 +287,7 @@
     </thead>
     <tbody>
       <tr data-ng-repeat="inactive_employee in curInactiveEmployees | filter:search | orderBy:orderByField:reverseSort track by $index">
-          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedID == false}" style="width: 10em;"><a ui-sref="admin.staff({instanceID:inactive_employee.employeeNumber})">{{inactive_employee.employeeNumber}}</a></td>
+          <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedID == false}" style="width: 10em;"><a ui-sref="admin.staff({instanceID:inactive_employee.uidNumber})">{{inactive_employee.uidNumber}}</a></td>
           <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedGivenName == false}" style="width: 10em;">{{inactive_employee.givenName}}</td>
           <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedSn == false}" style="width: 10em;">{{inactive_employee.sn | uppercase}}</td>
           <td ng-class="{hideColumn : inactiveEmployeesCheck.checkedSnkh == false}" style="width: 10em;">{{inactive_employee.snkh}}</td>

@@ -262,7 +262,7 @@
       </thead>
       <tbody>
         <tr data-ng-repeat="employee in employeesReport | filter:searchEmployeeReport | filter:searchEmployeeReport | orderBy:orderByField:reverseSort track by $index">
-            <td ng-class="{hideColumn : objCheck.checkedID == false}" style="width: 10em;"><a ui-sref="admin.staff({instanceID:employee.employeeNumber})">{{employee.employeeNumber}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedID == false}" style="width: 10em;"><a ui-sref="admin.staff({instanceID:employee.uidNumber})">{{employee.uidNumber}}</a></td>
             <td ng-class="{hideColumn : objCheck.checkedGivenName == false}" style="width: 10em;">{{employee.givenName}}</td>
             <td ng-class="{hideColumn : objCheck.checkedSn == false}" style="width: 10em;">{{employee.sn | uppercase}}</td>
             <td ng-class="{hideColumn : objCheck.checkedSnkh == false}" style="width: 10em;">{{employee.snkh}}</td>

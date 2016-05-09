@@ -54,7 +54,7 @@
             <td>
               <input type="checkbox" ng-change="change_user_select((employees_users | filter : search_send_sms.search_user))" ng-model="employee.selected_user"/>
             </td>
-            <td><a ui-sref="admin.staff({instanceID:employee.employeeNumber})">{{employee.employeeNumber}}</a></td>
+            <td><a ui-sref="admin.staff({instanceID:employee.uidNumber})">{{employee.uidNumber}}</a></td>
             <td>{{employee.departmentNumber}}</td>
             <td>{{employee.givenName}} {{employee.sn}}</td>
           </tr>

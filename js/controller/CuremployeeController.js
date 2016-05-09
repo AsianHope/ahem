@@ -28,7 +28,7 @@
                   $scope.employees = results.data;
                   // get curemployee
                  for(var i=0; i<$scope.employees.length; i++){
-                     if($scope.employees[i].employeeNumber==$scope.ID){
+                     if($scope.employees[i].uidNumber==$scope.ID){
                        $scope.curemployee=$scope.employees[i];
 
                        if($scope.curemployee.documents !=undefined){
@@ -137,7 +137,7 @@
                        $scope.inactiveEmployees = results.data;
                        // get curemployee
                       for(var i=0; i<$scope.inactiveEmployees.length; i++){
-                          if($scope.inactiveEmployees[i].employeeNumber==$scope.ID){
+                          if($scope.inactiveEmployees[i].uidNumber==$scope.ID){
                             $scope.curemployee=$scope.inactiveEmployees[i];
 
                             if($scope.curemployee.documents != undefined){
@@ -236,7 +236,7 @@
       else{
         // get curemployee
        for(var i=0; i<$scope.employees.length; i++){
-           if($scope.employees[i].employeeNumber==$scope.ID){
+           if($scope.employees[i].uidNumber==$scope.ID){
              $scope.curemployee=$scope.employees[i];
 
             //  show profile picture
@@ -323,7 +323,7 @@
        }
       //  current employee in INACTIVE staff
       for(var i=0; i<$scope.inactiveEmployees.length; i++){
-          if($scope.inactiveEmployees[i].employeeNumber==$scope.ID){
+          if($scope.inactiveEmployees[i].uidNumber==$scope.ID){
             $scope.curemployee=$scope.inactiveEmployees[i];
 
             if($scope.curemployee.documents != undefined){
@@ -411,7 +411,7 @@
 
       $scope.shift = function(amount){
           for(var i=0; i<$scope.employees.length; i++){
-              if($scope.employees[i].employeeNumber==$scope.ID){
+              if($scope.employees[i].uidNumber==$scope.ID){
                 $scope.curemployee = $scope.employees[i+amount];
 
                 if($scope.curemployee!=undefined){
@@ -491,7 +491,7 @@
                       $scope.family_data=$scope.curemployee.family_data;
                     }
                   }
-                  $location.path("/admin/staff/"+$scope.curemployee.employeeNumber);
+                  $location.path("/admin/staff/"+$scope.curemployee.uidNumber);
                   break;
               }
             }
@@ -499,7 +499,7 @@
           // =================
           // get current employee in inactive staff
           for(var i=0; i<$scope.inactiveEmployees.length; i++){
-              if($scope.inactiveEmployees[i].employeeNumber==$scope.ID){
+              if($scope.inactiveEmployees[i].uidNumber==$scope.ID){
                   $scope.curemployee = $scope.inactiveEmployees[i+amount];
                 if($scope.curemployee!=undefined){
                   if($scope.curemployee.documents != undefined){
@@ -578,7 +578,7 @@
                       $scope.family_data=$scope.curemployee.family_data;
                     }
                   }
-                  $location.path("/admin/staff/"+$scope.curemployee.employeeNumber);
+                  $location.path("/admin/staff/"+$scope.curemployee.uidNumber);
                   break;
               }
             }

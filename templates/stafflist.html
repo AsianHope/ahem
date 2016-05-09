@@ -9,7 +9,7 @@
             <tr ng-repeat="employee in employees | filter:query | orderBy:orderProp">
                 <td style="width: 1em;">{{employee.employeeType}}</a></td>
                 <td style="width: 1em;">{{employee.departmentNumber}}</a></td>
-                <td style="width: 8em;"><a ui-sref="admin.staff({instanceID:employee.employeeNumber})">{{employee.employeeNumber}}</a></td>
+                <td style="width: 8em;"><a ui-sref="admin.staff({instanceID:employee.uidNumber})">{{employee.uidNumber}}</a></td>
                 <td style="width: 10em;">{{employee.givenName}}</td>
                 <td style="width: 10em;">{{employee.sn}}</td>
                 <td style="width: 10em;">{{employee.mobile}}</td>
