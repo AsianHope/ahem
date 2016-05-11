@@ -200,6 +200,11 @@ def main():
                     # if this uid is inactive
                     if(inactive_sresult_data != []):
                         slave.rename_s('uid='+uid+',cn=inactive,dc=asianhope,dc=org', 'uid='+uid+'', 'cn=users,dc=asianhope,dc=org')
+                        try:
+                            response = requests.get('http://192.168.1.157/cgi-bin/triggersync')
+                        except Exception as e:
+                            pass
+
             #if it's an extended field, then we're going to pull the JSON and rewrite it
             else:
                     #if the jsonData hasn't been added to the entry, add it.
