@@ -220,7 +220,8 @@ def registerAccount():
 
         -----<br/>
 
-        personal email: '''+mailpr+'''
+        personal email: '''+mailpr+'''<br/>
+        job title: '''+title+'''<br/>
         '''
         msg = MIMEText(account_request + message+'</body></html>','html')
         msg['To'] = 'lyle@asianhope.org'
