@@ -29,6 +29,7 @@
         checkedMail : true,
         checkedMailpr : true
       };
+      
       $scope.inactiveEmployeesCheck = {
         checkedID : true,
         checkedGivenName : true,
@@ -807,35 +808,6 @@
       // reset search result
       $scope.search = {};
       $scope.curInactiveEmployees = $scope.inactiveEmployees;
-    };
-    $scope.getAllInactiveStaff = function(){
-      $scope.loading = true;
-      EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"DISABLED")
-        .then(
-        // success
-        function(results){
-          $scope.inactiveEmployees = results.data;
-          $scope.curInactiveEmployees = $scope.inactiveEmployees;
-        });
-        EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
-          .then(
-          // success
-          function(results){
-            if($scope.inactiveEmployees.length<0){
-              $scope.inactiveEmployees = results.data;
-            }
-            else{
-              for(var i = 0 ; i<results.data.length; i++){
-                $scope.inactiveEmployees.push(results.data[i]);
-              }
-            }
-            $scope.curInactiveEmployees = $scope.inactiveEmployees;
-
-          })
-          .finally(function() {
-              // called no matter success or failure
-              $scope.loading = false;
-        });
     };
     $scope.requestAccounts =[];
     $scope.approve_sms = null;
