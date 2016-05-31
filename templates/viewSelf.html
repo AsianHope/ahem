@@ -144,7 +144,7 @@
           </tr>
           <tr ng-repeat="curGroup in curGroups | orderBy:'cn'">
             <td>{{curGroup.cn}}</td>
-            <td><a href="mailto:{{curGroup.mail}}" target="_blank">{{curGroup.mail}}</a></td>
+            <td><a ng-style="style_anchor()" href="mailto:{{curGroup.mail}}" target="_blank">{{curGroup.mail}}</a></td>
           </tr>
         </table>
       </div>
