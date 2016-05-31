@@ -6,7 +6,6 @@
       });
       $scope.ID =$stateParams.instanceID;
       $scope.otherDoc = {};
-      $scope.show_photo=false;
       $scope.loading = true;
       $scope.family_data=[];
       $scope.document=[];
@@ -30,15 +29,6 @@
                  for(var i=0; i<$scope.employees.length; i++){
                      if($scope.employees[i].uidNumber==$scope.ID){
                        $scope.curemployee=$scope.employees[i];
-
-                       if($scope.curemployee.documents !=undefined){
-                         for (var i = 0; i<$scope.curemployee.documents.length; i++){
-                           if($scope.curemployee.documents[i]['DocumentID']==0){
-                             $scope.show_photo = true;
-                             break;
-                           }
-                         }
-                       }
 
                        if($scope.curemployee.family_data==undefined){
                          $scope.family_data=[];
@@ -140,15 +130,6 @@
                           if($scope.inactiveEmployees[i].uidNumber==$scope.ID){
                             $scope.curemployee=$scope.inactiveEmployees[i];
 
-                            if($scope.curemployee.documents != undefined){
-                              for (var i = 0; i<$scope.curemployee.documents.length; i++){
-                                if($scope.curemployee.documents[i]['DocumentID']==0){
-                                  $scope.show_photo = true;
-                                  break;
-                                }
-                              }
-                            }
-
                             if($scope.curemployee.family_data==undefined){
                               $scope.family_data=[];
                               if($scope.curemployee.maritalstatus =='Married'){
@@ -239,16 +220,6 @@
            if($scope.employees[i].uidNumber==$scope.ID){
              $scope.curemployee=$scope.employees[i];
 
-            //  show profile picture
-             if($scope.curemployee.documents!=undefined){
-               for (var i = 0; i<$scope.curemployee.documents.length; i++){
-                 if($scope.curemployee.documents[i]['DocumentID']==0){
-                   $scope.show_photo = true;
-                   break;
-                 }
-               }
-             }
-
              if($scope.curemployee.family_data==undefined){
                $scope.family_data=[];
                if($scope.curemployee.maritalstatus =='Married'){
@@ -325,15 +296,6 @@
       for(var i=0; i<$scope.inactiveEmployees.length; i++){
           if($scope.inactiveEmployees[i].uidNumber==$scope.ID){
             $scope.curemployee=$scope.inactiveEmployees[i];
-
-            if($scope.curemployee.documents != undefined){
-              for (var i = 0; i<$scope.document.length; i++){
-                if($scope.document[i]['DocumentID']==0){
-                  $scope.show_photo = true;
-                  break;
-                }
-              }
-            }
 
             if($scope.curemployee.family_data==undefined){
               $scope.family_data=[];
@@ -415,14 +377,6 @@
                 $scope.curemployee = $scope.employees[i+amount];
 
                 if($scope.curemployee!=undefined){
-                  if($scope.curemployee.documents != undefined){
-                    for (var i = 0; i<$scope.curemployee.documents.length; i++){
-                      if($scope.curemployee.documents[i]['DocumentID']==0){
-                        $scope.show_photo = true;
-                        break;
-                      }
-                    }
-                  }
                   if($scope.curemployee.family_data==undefined){
                     $scope.family_data=[];
                     // if he/she Married
@@ -502,14 +456,6 @@
               if($scope.inactiveEmployees[i].uidNumber==$scope.ID){
                   $scope.curemployee = $scope.inactiveEmployees[i+amount];
                 if($scope.curemployee!=undefined){
-                  if($scope.curemployee.documents != undefined){
-                    for (var i = 0; i<$scope.curemployee.documents.length; i++){
-                      if($scope.curemployee.documents[i]['DocumentID']==0){
-                        $scope.show_photo = true;
-                        break;
-                      }
-                    }
-                  }
                   if($scope.curemployee.family_data==undefined){
                     $scope.family_data=[];
                     // if he/she Married
@@ -742,13 +688,6 @@
                   }
                    $scope.upload_sms='Upload file successfully!';
                     $("#formUpload").trigger('reset');
-                   //  show profile picture
-                    for (var i = 0; i<$scope.curemployee.documents.length; i++){
-                      if($scope.curemployee.documents[i]['DocumentID']==0){
-                        $scope.show_photo = true;
-                        break;
-                      }
-                    }
                  }
                  else if (results.data.result=='photo_not_allow') {
                    $scope.upload_sms='Upload file fail. Photo allow jpg only !';

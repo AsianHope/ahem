@@ -388,8 +388,7 @@
 <!-- profile pic -->
 <div class="center_div col-md-5 col-xs-5">
   <div class="row">
-    <div ng-if="show_photo==true" class="center_div profile_pic" style="background-size:cover !important; background:#eee; background-image: url('files/{{curemployee.uidNumber}}/{{curemployee.uidNumber}}-{{curemployee.uid}}-Photo.jpg');"></div>
-    <div ng-if="show_photo==false" class="center_div profile_pic" style="display:table; text-align:center; background:#eee;"><h3 style="display:table-cell; vertical-align:middle;">No Photo Available</h3></div>
+    <div class="center_div profile_pic" style="background-size:cover !important; background:#eee; background-image: url('files/{{curemployee.uidNumber}}/{{curemployee.uidNumber}}-{{curemployee.uid}}-Photo.jpg'), url('../img/no_image_available.gif');"></div>
   </div>
   <div class="row" style="margin-top:30px; position:relative;left: -6px;" >
       <div class="text-center col-md-6 col-xs-12 col-sm-6">
