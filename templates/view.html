@@ -362,7 +362,7 @@
           <td><a href="mailto:{{curGroup.mail}}" target="_blank">{{curGroup.mail}}</a></td>
           <!-- $scope.removeUserFromGroup=function(uid,field,data) -->
           <td>
-            <a title="Click to : Remove employee from {{curGroup.cn}}" href ng-click="removeUserFromGroup(curemployee.uid,curGroup.cn,curemployee.uid) ; showGroup(curemployee.uid)">
+            <a title="Click to : Remove employee from {{curGroup.cn}}" href ng-click="removeUserFromGroup(curemployee.uid,curGroup.cn,curemployee.uid)">
               <span class="glyphicon glyphicon-trash"></span>
             </a>
           </td>
@@ -376,7 +376,7 @@
             <option value="">--Choose group--</option>
           </select>
         </td>
-        <td><button ng-disabled="!group_name" ng-click="addUserToGroup(curemployee.uid,group_name,curemployee.uid)  ; showGroup(curemployee.uid)" class="btn btn-primary">Add to Group</button></td>
+        <td><button ng-disabled="!group_name" ng-click="addUserToGroup(curemployee.uid,group_name,curemployee.uid)" class="btn btn-primary">Add to Group</button></td>
       </tr>
       <tr>
         <td style="color:red;" colspan="3" ng-show="modifyGroupSms">{{modifyGroupSms}}</td>

@@ -29,7 +29,7 @@
         checkedMail : true,
         checkedMailpr : true
       };
-      
+
       $scope.inactiveEmployeesCheck = {
         checkedID : true,
         checkedGivenName : true,
@@ -470,7 +470,8 @@
                  function(results) {
                    if(results.data.result=='success'){
                      $scope.modifyGroupSms="Remove employee from group success!";
-                     d.resolve()
+                     $scope.showGroup(uid);
+                     d.resolve();
                    }
                    if(results.data.result=='no_such_attribute'){
                      $scope.modifyGroupSms="Remove employee Fail! Don't have this emplyee in group.";
@@ -497,6 +498,7 @@
                   function(results) {
                     if(results.data.result=='success'){
                       $scope.modifyGroupSms="Add employee to group success!";
+                      $scope.showGroup(uid);
                       d.resolve();
                     }
                     if(results.data.result=='value_exists'){
