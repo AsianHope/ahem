@@ -38,4 +38,13 @@
         document.getElementById('search').value = "";
         document.getElementById('search').focus();
      });
+      //  ------ hit / to search ------
+       $(document).keydown(function(e) {
+         if (e.keyCode===191) {
+           e.preventDefault();
+           $("#search").focus();
+           $("#search").select();
+           return;
+         }
+       });
   </script>

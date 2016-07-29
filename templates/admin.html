@@ -133,5 +133,15 @@
         //       $(".menu").css("top", "174px");
         //   }
         //   });
+
+        //---------------- hit / to search----------------
+        $(document).keydown(function(e) {
+          if (e.keyCode===191) {
+            e.preventDefault();
+            $("#search").focus();
+            $("#search").select();
+            return;
+          }
+        }); 
     });
   </script>
