@@ -59,6 +59,8 @@ def approveRequestAccount():
         return '{"result":"permission_denied"}'
     except ldap.NO_SUCH_OBJECT:
         return '{"result":"no_such_object"}'
+    except Exception as e:
+          return '{"result":"'+str(e)+'"}'
     else:
         if action != 'delete' :
             try:

@@ -135,8 +135,8 @@ def main():
         # if no value to remove
         except ldap.NO_SUCH_ATTRIBUTE:
             return '{"result":"no_such_attribute"}'
-        except Exception:
-            return '{"result":"error"}'
+        except Exception as e:
+            return '{"result":"'+str(e)+'"}'
         else:
             return '{"result":"success"}'
         slave.unbind_s()
@@ -190,7 +190,13 @@ def main():
 
 
                 #future - add to log file saying who performed what
-                slave.modify_s(dn,new)
+                try:
+                    slave.modify_s(dn,new)
+                except ldap.INSUFFICIENT_ACCESS:
+                    sms =  'Insufficient permission to update'
+                    return '{"result":"'+sms+'"}'
+                except Exception, e:
+                    return '{"result":"'+str(e)+'"}'
 
                 # if update employee type
                 if field == 'employeeType':
@@ -223,7 +229,15 @@ def main():
                         modified = json.dumps(original)
                         new = [(ldap.MOD_REPLACE,'jsonData',modified)]
                         logging.debug('update.cgi field %s found, modifying it', field)
-                    slave.modify_s(dn,new)
+
+                    try:
+                        slave.modify_s(dn,new)
+                    except ldap.INSUFFICIENT_ACCESS:
+                        sms =  'Insufficient permission to update!'
+                        return '{"result":"'+sms+'"}'
+                    except Exception, e:
+                        return '{"result":"'+str(e)+'"}'
+
             slave.unbind_s()
             logging.info('%s modified user %s, field: %s, data: %s', username, uid, field, data)
             ##send email when reset password

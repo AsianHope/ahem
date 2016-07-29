@@ -428,7 +428,7 @@
                           d.resolve();
                         }
                         else{
-                          d.resolve("There was an error");
+                          d.resolve(results.data.result);
                         }
                       },
                       // error
@@ -451,7 +451,7 @@
                       d.resolve();
                     }
                     else{
-                      d.resolve("There was an error");
+                      d.resolve(results.data.result);
                     }
                   },
                   // error
@@ -477,8 +477,8 @@
                      $scope.modifyGroupSms="Remove employee Fail! Don't have this emplyee in group.";
                      d.resolve()
                    }
-                   if(results.data.result=="error"){
-                      $scope.modifyGroupSms="Fail to remove employee from group!";
+                   else{
+                      $scope.modifyGroupSms="Fail to remove employee from group! "+results.data.result +".";
                       d.resolve("There was an error");
                     }
                  },
@@ -505,9 +505,9 @@
                       $scope.modifyGroupSms="Emplyee already exist in this group!";
                       d.resolve();
                     }
-                    if(results.data.result=="error"){
-                       d.resolve();
-                       $scope.modifyGroupSms="Fail to add employee to group!";
+                    else{
+                       $scope.modifyGroupSms="Fail to add employee to group! "+results.data.result +".";
+                       d.resolve("There was an error");
                      }
                   },
                   // error
@@ -547,7 +547,7 @@
 
                         else {
                           d.resolve();
-                          alert('You don\'t have permission to update.');
+                          alert('There was an error !'+results.data.result+'.');
                         }
                       },
                       // error
@@ -851,7 +851,7 @@
                 }
                 else{
                   // alert("There was an error");
-                  $scope.approve_sms='There was an error !';
+                  $scope.approve_sms='There was an error! ' + results.data.result + '.';
                   console.log(results.data.result);
                 }
               },
