@@ -5876,7 +5876,7 @@ fieldset[disabled] .navbar-inverse .navbar-btn.active {
 .login-form .login-field {
   border-radius: 6px;
   box-shadow: none;
-  padding: 22px;
+  height: 40px;
   font-size: 17px;
   text-indent: 3px;
   border-color: transparent;
