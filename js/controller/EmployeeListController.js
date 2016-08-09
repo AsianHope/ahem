@@ -1,6 +1,7 @@
 (function () {
     'use strict';
     app.controller('EmployeeListController',function (DTOptionsBuilder,$scope, $http, $filter, $q,$location,EmployeesService,storageService) {
+      $scope.isInactiveStaff = false;
       $scope.objCheck = {
         checkedID : true,
         checkedGivenName : true,
@@ -270,6 +271,7 @@
         };
         //begin internal functions
         $scope.refreshEmployeeData = function(){
+          $scope.isInactiveStaff = false;
           $scope.loading = true;
           $scope.employees = [];
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"ALL")
@@ -285,6 +287,7 @@
               });
         };
         $scope.showRequestedAccounts = function(){
+          $scope.isInactiveStaff = false;
           $scope.loading = true;
           $scope.employees = [];
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"REQUESTS")
@@ -300,6 +303,7 @@
             });
           };
         $scope.showDisabledAccounts = function(){
+          $scope.isInactiveStaff = false;
           $scope.loading = true;
           $scope.employees = [];
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"DISABLED")
@@ -315,6 +319,7 @@
             });
         };
         $scope.showInactiveAccounts = function(){
+          $scope.isInactiveStaff = true;
           $scope.loading = true;
           $scope.employees = [];
           EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
@@ -1112,5 +1117,27 @@
       return /^\+(?:[0-9] ?){6,14}[0-9]$/.test(phone_number);
     }
     //end emergency sms
+
+
+    $scope.reactiveEmployee = function(uid,notes){
+      var data = notes + "\n* Account reactivated on: " + new Date().toISOString().slice(0,10) + ".";
+      EmployeesService.updateEmployees(uid,'notes',data,$scope.user.uname,$scope.user.pw,'users','reactivate')
+        .then(
+            // success
+            function(results) {
+              if(results.data.result=='success'){
+                alert("success");
+                $scope.showInactiveAccounts();
+              }
+              else{
+                alert("error: "+results.data.result);
+              }
+            },
+            // error
+            function(results){
+              alert('server error');
+            }
+      );
+    }
   });
 }());

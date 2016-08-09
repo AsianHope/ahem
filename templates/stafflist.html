@@ -1,6 +1,6 @@
   <div class="table-responsive">
         <table style="width:100%; margin-top:10px;" class="table employeelist_admin mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-            <tr><th>T</th><th>Dept</th><th>ID</th><th>First Name</th><th>Surname</th><th>Phone</th><th>Email</th></tr>
+            <tr><th>T</th><th>Dept</th><th>ID</th><th>First Name</th><th>Surname</th><th>Phone</th><th>Email</th><th ng-if="isInactiveStaff">Reactivate</th></tr>
             <!-- <tr ng-show="!checkStorage()" ng-hide="local_data">
               <td colspan="7" style="text-align:center;">
                  <img src="../img/loading.GIF" alt="loading image"/>
@@ -14,6 +14,7 @@
                 <td style="width: 10em;">{{employee.sn}}</td>
                 <td style="width: 10em;">{{employee.mobile}}</td>
                 <td style="width: 10em;"><a href="mailto:{{employee.mail}}" target="_blank">{{employee.mail}}</a></td>
+                <td ng-if="isInactiveStaff" style="width: 10em;"><button ng-click="reactiveEmployee(employee.uid,employee.notes)" class="btn btn-warning">Reactivate</button></td>
             </tr>
           </table>
   </div>

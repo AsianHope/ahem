@@ -161,82 +161,135 @@ def main():
         else:
             #pull the dn from the search result
             dn=sresult_data[0][0]
+            # ===========reactivate user===================
+            if modifyType == 'reactivate':
+                if 'employeeType' not in sresult_data[0][1]:
+                    updateEmployeeType = (ldap.MOD_ADD,'employeeType','FT');
+                else:
+                    updateEmployeeType = (ldap.MOD_REPLACE,'employeeType','FT');
 
-            #if it's an ldap field, we should insert it directly
-            if field in ldapfields:
-
-                #unless if it's a birthday, then we should convert it.
-                if(field == 'apple-birthday'):
-                    data = convertToAppleBirthday(data)
-
-                if(field == 'userPassword'):
-                    sresult_data[0][1]['userPassword']=convertPassword(data)
-                    sresult_data[0][1]['sambaNTPassword']=hashlib.new('md4', data.encode('utf-16le')).digest().encode('hex').upper()
-                    # userPassword isn't normally returned, so let's trick the below
-                #if the field isn't in the result set, we need to do a MOD_ADD
-                if(field not in sresult_data[0][1]):
-                    new = [(ldap.MOD_ADD,field,data)]
+                #if the jsonData hasn't been added to the entry, add it.
+                if('jsonData' not in sresult_data[0][1]):
+                    #this breaks with family_data, but you can't see family data unless you have a spouse
+                    new = [
+                            (ldap.MOD_ADD,'jsonData','{"'+field+'":"'+data+'"}'),
+                            updateEmployeeType
+                    ]
                     logging.debug('update.cgi field %s not found, adding it', field)
                 #otherwise do a modify
                 else:
-                    if(field == 'userPassword'):
-                        new = [
-                                (ldap.MOD_REPLACE,field, convertPassword(data)),
-                                (ldap.MOD_REPLACE,'sambaNTPassword',hashlib.new('md4', data.encode('utf-16le')).digest().encode('hex').upper()),
-                            ]
-                    else:
-                        new = [(ldap.MOD_REPLACE,field,data)]
+                    original = json.loads(sresult_data[0][1]['jsonData'][0])
+                    #first try to load the incoming data as json
+                    try:
+                        original[field]=json.loads(data)
+                    except ValueError: #if that doesn't work, it's probably a single value
+                        original[field]=data
+
+                    # remove end date
+                    try:
+                        del original['enddate']
+                    except:
+                        pass
+
+                    modified = json.dumps(original)
+                    new = [
+                        (ldap.MOD_REPLACE,'jsonData',modified),
+                        updateEmployeeType
+                    ]
                     logging.debug('update.cgi field %s found, modifying it', field)
-
-
-                #future - add to log file saying who performed what
                 try:
                     slave.modify_s(dn,new)
+
+                    # move user from inactive to users dn
+                    slave.rename_s('uid='+uid+',cn=inactive,dc=asianhope,dc=org', 'uid='+uid+'', 'cn=users,dc=asianhope,dc=org')
+                    try:
+                        response = requests.get('http://192.168.1.157/cgi-bin/triggersync')
+                    except Exception as e:
+                        pass
+
                 except ldap.INSUFFICIENT_ACCESS:
-                    sms =  'Insufficient permission to update'
+                    sms =  'Insufficient permission to update!'
                     return '{"result":"'+sms+'"}'
                 except Exception, e:
                     return '{"result":"'+str(e)+'"}'
-
-                # if update employee type
-                if field == 'employeeType':
-                    inactive_result_id = slave.search("cn=inactive,"+sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
-                    inactive_sresult_type, inactive_sresult_data = slave.result(inactive_result_id,0)
-
-                    # if this uid is inactive
-                    if(inactive_sresult_data != []):
-                        slave.rename_s('uid='+uid+',cn=inactive,dc=asianhope,dc=org', 'uid='+uid+'', 'cn=users,dc=asianhope,dc=org')
-                        try:
-                            response = requests.get('http://192.168.1.157/cgi-bin/triggersync')
-                        except Exception as e:
-                            pass
-
-            #if it's an extended field, then we're going to pull the JSON and rewrite it
+                # ===========end reactivate user=============
             else:
-                    #if the jsonData hasn't been added to the entry, add it.
-                    if('jsonData' not in sresult_data[0][1]):
-                #this breaks with family_data, but you can't see family data unless you have a spouse
-                        new = [(ldap.MOD_ADD,'jsonData','{"'+field+'":"'+data+'"}')]
+                #if it's an ldap field, we should insert it directly
+                if field in ldapfields:
+
+                    #unless if it's a birthday, then we should convert it.
+                    if(field == 'apple-birthday'):
+                        data = convertToAppleBirthday(data)
+
+                    if(field == 'userPassword'):
+                        sresult_data[0][1]['userPassword']=convertPassword(data)
+                        sresult_data[0][1]['sambaNTPassword']=hashlib.new('md4', data.encode('utf-16le')).digest().encode('hex').upper()
+                        # userPassword isn't normally returned, so let's trick the below
+                    #if the field isn't in the result set, we need to do a MOD_ADD
+                    if(field not in sresult_data[0][1]):
+                        new = [(ldap.MOD_ADD,field,data)]
                         logging.debug('update.cgi field %s not found, adding it', field)
                     #otherwise do a modify
                     else:
-                        original = json.loads(sresult_data[0][1]['jsonData'][0])
-                #first try to load the incoming data as json
-                        try:
-                            original[field]=json.loads(data)
-                        except ValueError: #if that doesn't work, it's probably a single value
-                            original[field]=data
-                        modified = json.dumps(original)
-                        new = [(ldap.MOD_REPLACE,'jsonData',modified)]
+                        if(field == 'userPassword'):
+                            new = [
+                                    (ldap.MOD_REPLACE,field, convertPassword(data)),
+                                    (ldap.MOD_REPLACE,'sambaNTPassword',hashlib.new('md4', data.encode('utf-16le')).digest().encode('hex').upper()),
+                                ]
+                        else:
+                            new = [(ldap.MOD_REPLACE,field,data)]
                         logging.debug('update.cgi field %s found, modifying it', field)
 
+
+                    #future - add to log file saying who performed what
                     try:
                         slave.modify_s(dn,new)
                     except ldap.INSUFFICIENT_ACCESS:
-                        sms =  'Insufficient permission to update!'
+                        sms =  'Insufficient permission to update'
                         return '{"result":"'+sms+'"}'
                     except Exception, e:
                         return '{"result":"'+str(e)+'"}'
+
+                    # if update employee type
+                    if field == 'employeeType':
+                        inactive_result_id = slave.search("cn=inactive,"+sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
+                        inactive_sresult_type, inactive_sresult_data = slave.result(inactive_result_id,0)
+
+                        # if this uid is inactive
+                        if(inactive_sresult_data != []):
+                            slave.rename_s('uid='+uid+',cn=inactive,dc=asianhope,dc=org', 'uid='+uid+'', 'cn=users,dc=asianhope,dc=org')
+                            try:
+                                response = requests.get('http://192.168.1.157/cgi-bin/triggersync')
+                            except Exception as e:
+                                pass
+
+                #if it's an extended field, then we're going to pull the JSON and rewrite it
+                else:
+                        #if the jsonData hasn't been added to the entry, add it.
+                        if('jsonData' not in sresult_data[0][1]):
+                    #this breaks with family_data, but you can't see family data unless you have a spouse
+                            new = [(ldap.MOD_ADD,'jsonData','{"'+field+'":"'+data+'"}')]
+                            logging.debug('update.cgi field %s not found, adding it', field)
+                        #otherwise do a modify
+                        else:
+                            original = json.loads(sresult_data[0][1]['jsonData'][0])
+                    #first try to load the incoming data as json
+                            try:
+                                original[field]=json.loads(data)
+                            except ValueError: #if that doesn't work, it's probably a single value
+                                original[field]=data
+                            modified = json.dumps(original)
+                            new = [(ldap.MOD_REPLACE,'jsonData',modified)]
+                            logging.debug('update.cgi field %s found, modifying it', field)
+
+                        try:
+                            slave.modify_s(dn,new)
+                        except ldap.INSUFFICIENT_ACCESS:
+                            sms =  'Insufficient permission to update!'
+                            return '{"result":"'+sms+'"}'
+                        except Exception, e:
+                            return '{"result":"'+str(e)+'"}'
+                # =====================================================
 
             slave.unbind_s()
             logging.info('%s modified user %s, field: %s, data: %s', username, uid, field, data)
