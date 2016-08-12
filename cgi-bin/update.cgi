@@ -31,6 +31,8 @@ import hashlib
 
 import requests
 import logging
+
+from datetime import date
 logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
 ldapfields = [
@@ -185,9 +187,16 @@ def main():
                     except ValueError: #if that doesn't work, it's probably a single value
                         original[field]=data
 
-                    # remove end date
+                    # remove end date and start date
                     try:
                         del original['enddate']
+                        del original['startdate']
+                    except:
+                        pass
+                    
+                    # replace start date with today date
+                    try:
+                        original['startdate'] = date.today().isoformat()
                     except:
                         pass
 

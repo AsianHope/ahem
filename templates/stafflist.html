@@ -14,7 +14,7 @@
                 <td style="width: 10em;">{{employee.sn}}</td>
                 <td style="width: 10em;">{{employee.mobile}}</td>
                 <td style="width: 10em;"><a href="mailto:{{employee.mail}}" target="_blank">{{employee.mail}}</a></td>
-                <td ng-if="isInactiveStaff" style="width: 10em;"><button ng-click="reactiveEmployee(employee.uid,employee.notes)" class="btn btn-warning">Reactivate</button></td>
+                <td ng-if="isInactiveStaff" style="width: 10em;"><button ng-click="reactiveEmployee(employee.uid,employee.notes,employee.startdate,employee.enddate)" class="btn btn-warning">Reactivate</button></td>
             </tr>
           </table>
   </div>

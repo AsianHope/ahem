@@ -392,6 +392,27 @@
 
         return 'approximately '+years+' year(s), '+months+' month(s), '+days+' day(s)';
       };
+      //rough approximation
+      $scope.calTimeBetween = function(startDate, endDate){
+        if (endDate=='Unknown') return ;
+        if (startDate=='Unknown') return ;
+        var start = new Date(startDate);
+        var end = new Date(endDate);
+        var diff = (end - start);
+
+        //1000ms/s * 60s/min * 60m/hr * 24 hrs/day
+        var day = 1000 * 60 * 60 * 24;
+
+        var years = Math.floor(diff/(365*day));
+        if (years>=1) diff -= 365*years*day;
+
+        var months = Math.floor(diff/(31*day));
+        if(months>=1) diff-=31*months*day;
+
+        var days= Math.floor(diff/day);
+
+        return years+' year(s), '+months+' month(s), '+days+' day(s)';
+      };
       $scope.duration = function(startDate, endDate){
         if (endDate === 'present') endDate=new Date();
         var start = new Date(startDate);
@@ -1119,8 +1140,21 @@
     //end emergency sms
 
 
-    $scope.reactiveEmployee = function(uid,notes){
+    $scope.reactiveEmployee = function(uid,notes,startdate,enddate){
+      if (enddate==undefined || enddate==null){
+        enddate = 'Unknown';
+      }
+      if (startdate==undefined || startdate==null){
+        startdate = 'Unknown';
+      }
       var data = notes + "\n* Account reactivated on: " + new Date().toISOString().slice(0,10) + ".";
+      if(startdate =='Unknown' || enddate == 'Unknown'){
+        data = data + "\nPrevious employment dates: "+startdate+" to "+enddate+".";
+      }
+      else{
+        data = data + "\nPrevious employment dates: "+startdate+" to "+enddate+" ["+$scope.calTimeBetween(startdate, enddate)+"].";
+
+      }
       EmployeesService.updateEmployees(uid,'notes',data,$scope.user.uname,$scope.user.pw,'users','reactivate')
         .then(
             // success
@@ -1131,6 +1165,7 @@
               }
               else{
                 alert("error: "+results.data.result);
+                console.log(results.data);
               }
             },
             // error
