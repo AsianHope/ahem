@@ -908,7 +908,7 @@
                 $scope.invalid_mobiles = [];
               }
               else{
-                $scope.sendMessageSMS = "Fail to send messages !";
+                $scope.sendMessageSMS = "Fail to send messages ! " + results.data.result;
               }
             },
             // error
@@ -949,7 +949,7 @@
                       $scope.sendMessageSMS = "Messages successfully sent !";
                     }
                     else{
-                      $scope.sendMessageSMS = "Fail to send messages !";
+                      $scope.sendMessageSMS = "Fail to send messages ! " + results.data.result;
                     }
                   },
                   // error
@@ -1006,7 +1006,7 @@
                     $scope.sendMessageSMS = "Messages successfully sent !";
                   }
                   else{
-                    $scope.sendMessageSMS = "Fail to send messages !";
+                    $scope.sendMessageSMS = "Fail to send messages ! " + results.data.result;
                   }
                 },
                 // error
@@ -1056,7 +1056,7 @@
         $scope.check_all.users = false;
       }
       // calculate total cost
-      $scope.totalCostUsers = $scope.count_send_sms_users.length * 0.06;
+      $scope.totalCostUsers = $scope.count_send_sms_users.length * 0.01083;
       $scope.selected_people_users = $scope.count_send_sms_users.length;
     };
     $scope.change_mail_select = function(get_groups){
@@ -1081,7 +1081,7 @@
       if($scope.count_send_sms_mails.length > 0){
         angular.forEach($scope.count_send_sms_mails, function (group) {
           if(group.memberUid != undefined && group.memberUid.length > 0){
-            var each_group_cost = group.memberUid.length * 0.06;
+            var each_group_cost = group.memberUid.length * 0.01083;
             $scope.totalCostMails += each_group_cost;
             $scope.selected_people_mail_list +=group.memberUid.length;
           }
@@ -1100,7 +1100,7 @@
       });
       // calculate total cost
       if($scope.check_all.users){
-        $scope.totalCostUsers = employees.length * 0.06;
+        $scope.totalCostUsers = employees.length * 0.01083;
         $scope.selected_people_users = employees.length;
       }
       else{
@@ -1118,7 +1118,7 @@
       if($scope.check_all.mails){
         angular.forEach(groups, function (group) {
           if(group.memberUid != undefined && group.memberUid.length > 0){
-            var each_group_cost = group.memberUid.length * 0.06;
+            var each_group_cost = group.memberUid.length * 0.01083;
             $scope.totalCostMails += each_group_cost;
             $scope.selected_people_mail_list +=group.memberUid.length;
           }
