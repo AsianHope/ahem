@@ -499,7 +499,7 @@
                      $scope.showGroup(uid);
                      d.resolve();
                    }
-                   if(results.data.result=='no_such_attribute'){
+                   else if(results.data.result=='no_such_attribute'){
                      $scope.modifyGroupSms="Remove employee Fail! Don't have this emplyee in group.";
                      d.resolve()
                    }
@@ -527,7 +527,7 @@
                       $scope.showGroup(uid);
                       d.resolve();
                     }
-                    if(results.data.result=='value_exists'){
+                    else if(results.data.result=='value_exists'){
                       $scope.modifyGroupSms="Emplyee already exist in this group!";
                       d.resolve();
                     }
