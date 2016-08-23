@@ -30,6 +30,7 @@
                  for(var i=0; i<$scope.employees.length; i++){
                      if($scope.employees[i].uidNumber==$scope.ID){
                        $scope.curemployee=$scope.employees[i];
+                       $scope.showGroup($scope.curemployee.uid);
 
                        if($scope.curemployee.family_data==undefined){
                          $scope.family_data=[];
@@ -220,6 +221,7 @@
        for(var i=0; i<$scope.employees.length; i++){
            if($scope.employees[i].uidNumber==$scope.ID){
              $scope.curemployee=$scope.employees[i];
+             $scope.showGroup($scope.curemployee.uid)
 
              if($scope.curemployee.family_data==undefined){
                $scope.family_data=[];
