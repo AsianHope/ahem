@@ -2,7 +2,7 @@
   <h3>Emergency SMS</h3> <span style="color:red;" ng-if="sendMessageSMS">{{sendMessageSMS}}</span>
   <div ng-if="invalid_mobiles" style="color:red;">
     Note : SMS cannot send to invalid phone number format
-    <button ng-click="continuesSendSmsUsers()" class="btn btn-warning">Continues</button>
+    <button ng-if="mobile_list" ng-click="continuesSendSmsUsers()" class="btn btn-warning">Continues</button>
 
     <ul style="color:red;">
       <li ng-repeat="invalid in invalid_mobiles">Employee : {{invalid.name}} , Mobile : {{invalid.mobile}}</li>
@@ -17,10 +17,10 @@
       <div class="col-md-6" style="text-align:left;">
         Total cost to send:
         <span ng-if="this.tab.isSet(3)">
-          {{totalCostUsers | currency}}
+          $ {{totalCostUsers}}
         </span>
         <span ng-if="this.tab.isSet(4)">
-          {{totalCostMails | currency}}
+          $ {{totalCostMails}}
         </span>
       </div>
       <div class="col-md-6" style="text-align:right;">{{character_typed}}/{{characters_max}}</div>

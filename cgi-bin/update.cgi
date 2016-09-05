@@ -11,8 +11,15 @@ from email.mime.text import MIMEText
 import ldap
 import ldap.modlist as modlist
 
-from clickatell.http import Http
-from credentials import CLICKATELL_CREDENTIALS
+# clickatell
+# from clickatell.http import Http
+# from credentials import CLICKATELL_CREDENTIALS
+
+# twilio
+from credentials import TWILIO_CREDENTIALS
+from twilio import TwilioRestException
+from twilio.rest import TwilioRestClient
+
 from credentials import LDAP_CREDENTIALS
 from credentials import SERVER
 
@@ -31,6 +38,8 @@ import hashlib
 
 import requests
 import logging
+
+from datetime import date
 logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
 ldapfields = [
@@ -185,9 +194,16 @@ def main():
                     except ValueError: #if that doesn't work, it's probably a single value
                         original[field]=data
 
-                    # remove end date
+                    # remove end date and start date
                     try:
                         del original['enddate']
+                        del original['startdate']
+                    except:
+                        pass
+
+                    # replace start date with today date
+                    try:
+                        original['startdate'] = date.today().isoformat()
                     except:
                         pass
 
@@ -361,9 +377,24 @@ def main():
             #-----------end send mail-------
             #and finally, if it was their mobile number - let them know it was updated!
             if username == uid and field == 'mobile':
-                clickatell = Http(CLICKATELL_CREDENTIALS['username'],CLICKATELL_CREDENTIALS['password'],CLICKATELL_CREDENTIALS['apiID'])
-                response = clickatell.sendMessage(data,"This number is now your AH emergency contact number", {'from':'AHALERTS'})
-                logging.info('clickatell message sent, response: %s', response)
+                # clickatell = Http(CLICKATELL_CREDENTIALS['username'],CLICKATELL_CREDENTIALS['password'],CLICKATELL_CREDENTIALS['apiID'])
+                # response = clickatell.sendMessage(data,"This number is now your AH emergency contact number", {'from':'AHALERTS'})
+                # logging.info('clickatell message sent, response: %s', response)
+                # ---------------twilio---------------
+                try :
+                    client = TwilioRestClient(TWILIO_CREDENTIALS['ACCOUNT_SID'], TWILIO_CREDENTIALS['AUTH_TOKEN'])
+
+                    message = client.messages.create(
+                        to=data,
+                        messaging_service_sid=TWILIO_CREDENTIALS['MESSAGING_SERVICE_SID'],
+                        # from_ = '+1 855-326-1089',
+                        body="This number is now your AH emergency contact number.",
+                    )
+                    logging.info('Twilio message sent.')
+                except TwilioRestException as e:
+                    logging.debug('Twilio fail to send message, error: %s', e.msg)
+                except Exception as e:
+                    logging.debug('Twilio fail to send message, response: %s', e)
             return '{"result":"success"}'
     else:
         return '{"result":"error"}'

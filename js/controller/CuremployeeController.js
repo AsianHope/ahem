@@ -4,6 +4,7 @@
       $scope.$watch('$viewContentLoaded', function(){
             componentHandler.upgradeAllRegistered();
       });
+      $scope.modifyGroupSms=null;
       $scope.ID =$stateParams.instanceID;
       $scope.otherDoc = {};
       $scope.loading = true;
@@ -29,6 +30,7 @@
                  for(var i=0; i<$scope.employees.length; i++){
                      if($scope.employees[i].uidNumber==$scope.ID){
                        $scope.curemployee=$scope.employees[i];
+                       $scope.showGroup($scope.curemployee.uid);
 
                        if($scope.curemployee.family_data==undefined){
                          $scope.family_data=[];
@@ -219,6 +221,7 @@
        for(var i=0; i<$scope.employees.length; i++){
            if($scope.employees[i].uidNumber==$scope.ID){
              $scope.curemployee=$scope.employees[i];
+             $scope.showGroup($scope.curemployee.uid)
 
              if($scope.curemployee.family_data==undefined){
                $scope.family_data=[];
@@ -722,5 +725,54 @@
           return document_result;
 
         };
+        // ------------------- add and remove group------------------
+        $scope.removeUserFromGroup=function(uid,field,data){
+          EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'groups','remove')
+               .then(
+                   // success
+                   function(results) {
+                     if(results.data.result=='success'){
+                       $scope.modifyGroupSms="Remove employee from group success!";
+                       $scope.showGroup(uid);
+                     }
+                     else if(results.data.result=='no_such_attribute'){
+                       $scope.modifyGroupSms="Remove employee Fail! Don't have this emplyee in group.";
+                     }
+                     else{
+                        $scope.modifyGroupSms="Fail to remove employee from group! "+results.data.result +".";
+                      }
+                   },
+                   // error
+                  function(results){
+                    $scope.modifyGroupSms="Server error!";
+                  });
+        }
+        $scope.addUserToGroup = function(uid,field,data){
+          if(field!=null){
+            EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'groups','add')
+                .then(
+                    // success
+                    function(results) {
+                      if(results.data.result=='success'){
+                        $scope.modifyGroupSms="Add employee to group success!";
+                        $scope.showGroup(uid);
+                      }
+                      else if(results.data.result=='value_exists'){
+                        $scope.modifyGroupSms="Emplyee already exist in this group!";
+                      }
+                      else{
+                         $scope.modifyGroupSms="Fail to add employee to group! "+results.data.result +".";
+                       }
+                    },
+                    // error
+                   function(results){
+                     $scope.modifyGroupSms="Server error!";
+                   }
+                 );
+              }
+            else{
+              $scope.modifyGroupSms="Please choose group!";
+            }
+        }
     });
   }());
