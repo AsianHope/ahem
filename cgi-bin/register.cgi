@@ -122,6 +122,8 @@ def registerAccount():
     attrs['homeDirectory'] = '/home/'+username
     attrs['loginShell'] = '/bin/bash' #once approved we'll change this
     attrs['sambaSID'] = 'S-1-5-21-3527002495-2526512175-3850050249-'+str(uidnumber)#need to generate last bit?
+    attrs['apple-generateduid'] = '0AF98A95-2157-4D42-99A7-4DEB2A9'+str(uidnumber)
+    attrs['authAuthority'] = ';basic;'
     attrs['sn'] = sn
     attrs['givenName'] = givenName
     attrs['gecos']= givenName+' '+sn
@@ -152,6 +154,13 @@ def registerAccount():
     attrs['sambaLMPassword'] = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
     attrs['sambaPasswordHistory'] = '0000000000000000000000000000000000000000000000000000000000000000'
     attrs['sambaPwdLastSet'] = '1427421912'
+    attrs['shadowExpire'] = '-1'
+    attrs['shadowFlag'] = '0'
+    attrs['shadowInactive'] = '0'
+    attrs['shadowLastChange'] = '16724'
+    attrs['shadowMax'] = '99999'
+    attrs['shadowMin'] = '0'
+    attrs['shadowWarning'] = '7'
 
     json_attrs = {'snkh':snkh, 'givenNamekh':givenNamekh,'mailpr':mailpr,'startdate':startdate}
     attrs['jsonData'] = json.dumps(json_attrs)
