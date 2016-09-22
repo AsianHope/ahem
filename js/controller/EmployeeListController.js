@@ -137,7 +137,6 @@
 
       $scope.groups =[];
       $scope.curGroups = [];
-      $scope.modifyGroupSms=null;
 
       $scope.keyPress = function(){
         $scope.showlist=true;
@@ -488,66 +487,7 @@
           }
           return d.promise;
       }
-      $scope.removeUserFromGroup=function(uid,field,data){
-        var d = $q.defer();
-        EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'groups','remove')
-             .then(
-                 // success
-                 function(results) {
-                   if(results.data.result=='success'){
-                     $scope.modifyGroupSms="Remove employee from group success!";
-                     $scope.showGroup(uid);
-                     d.resolve();
-                   }
-                   if(results.data.result=='no_such_attribute'){
-                     $scope.modifyGroupSms="Remove employee Fail! Don't have this emplyee in group.";
-                     d.resolve()
-                   }
-                   else{
-                      $scope.modifyGroupSms="Fail to remove employee from group! "+results.data.result +".";
-                      d.resolve("There was an error");
-                    }
-                 },
-                 // error
-                function(results){
-                  d.reject('Server error!');
-                  $scope.modifyGroupSms="Server error!";
-                });
-             return d.promise;
-      }
-      $scope.addUserToGroup = function(uid,field,data){
-        var d = $q.defer();
-        if(field!=null){
-          EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'groups','add')
-              .then(
-                  // success
-                  function(results) {
-                    if(results.data.result=='success'){
-                      $scope.modifyGroupSms="Add employee to group success!";
-                      $scope.showGroup(uid);
-                      d.resolve();
-                    }
-                    if(results.data.result=='value_exists'){
-                      $scope.modifyGroupSms="Emplyee already exist in this group!";
-                      d.resolve();
-                    }
-                    else{
-                       $scope.modifyGroupSms="Fail to add employee to group! "+results.data.result +".";
-                       d.resolve("There was an error");
-                     }
-                  },
-                  // error
-                 function(results){
-                   d.reject('Server error!');
-                   $scope.modifyGroupSms="Server error!";
-                 }
-               );
-            }
-          else{
-            $scope.modifyGroupSms="Please choose group!";
-          }
-          return d.promise;
-      }
+
       $scope.resetPassword = function(uid,data,type,confirmpass){
               var d = $q.defer();
               // if Password match
@@ -908,7 +848,7 @@
                 $scope.invalid_mobiles = [];
               }
               else{
-                $scope.sendMessageSMS = "Fail to send messages !";
+                $scope.sendMessageSMS = "Fail to send messages ! " + results.data.result;
               }
             },
             // error
@@ -949,7 +889,7 @@
                       $scope.sendMessageSMS = "Messages successfully sent !";
                     }
                     else{
-                      $scope.sendMessageSMS = "Fail to send messages !";
+                      $scope.sendMessageSMS = "Fail to send messages ! " + results.data.result;
                     }
                   },
                   // error
@@ -1006,7 +946,7 @@
                     $scope.sendMessageSMS = "Messages successfully sent !";
                   }
                   else{
-                    $scope.sendMessageSMS = "Fail to send messages !";
+                    $scope.sendMessageSMS = "Fail to send messages ! " + results.data.result;
                   }
                 },
                 // error
@@ -1056,7 +996,7 @@
         $scope.check_all.users = false;
       }
       // calculate total cost
-      $scope.totalCostUsers = $scope.count_send_sms_users.length * 0.06;
+      $scope.totalCostUsers = $scope.count_send_sms_users.length * 0.01083;
       $scope.selected_people_users = $scope.count_send_sms_users.length;
     };
     $scope.change_mail_select = function(get_groups){
@@ -1081,7 +1021,7 @@
       if($scope.count_send_sms_mails.length > 0){
         angular.forEach($scope.count_send_sms_mails, function (group) {
           if(group.memberUid != undefined && group.memberUid.length > 0){
-            var each_group_cost = group.memberUid.length * 0.06;
+            var each_group_cost = group.memberUid.length * 0.01083;
             $scope.totalCostMails += each_group_cost;
             $scope.selected_people_mail_list +=group.memberUid.length;
           }
@@ -1100,7 +1040,7 @@
       });
       // calculate total cost
       if($scope.check_all.users){
-        $scope.totalCostUsers = employees.length * 0.06;
+        $scope.totalCostUsers = employees.length * 0.01083;
         $scope.selected_people_users = employees.length;
       }
       else{
@@ -1118,7 +1058,7 @@
       if($scope.check_all.mails){
         angular.forEach(groups, function (group) {
           if(group.memberUid != undefined && group.memberUid.length > 0){
-            var each_group_cost = group.memberUid.length * 0.06;
+            var each_group_cost = group.memberUid.length * 0.01083;
             $scope.totalCostMails += each_group_cost;
             $scope.selected_people_mail_list +=group.memberUid.length;
           }

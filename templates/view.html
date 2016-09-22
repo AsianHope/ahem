@@ -2,10 +2,10 @@
 <div id="change_text_color" style="color:#488FCC;" class="center_div col-md-7 col-xs-7">
   <div class="row mdl-tabs mdl-js-tabs">
     <div class="mdl-tabs__tab-bar" style="margin-bottom:20px;">
-      <a href ng-click="this.tab.setTab(3)" class="mdl-tabs__tab">Employee</a>
-      <a href ng-click="this.tab.setTab(4)" class="mdl-tabs__tab" ng-show="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.c!='KH' && ((curemployee.maritalstatus.trim()=='Single' && curemployee.children>0) || curemployee.maritalstatus=='Married')">Family</a>
-      <a href ng-click="this.tab.setTab(5)" class="mdl-tabs__tab">Document</a>
-      <a href ng-click="this.tab.setTab(6); showGroup(curemployee.uid)" class="mdl-tabs__tab">Group</a>
+      <a href ng-click="this.tab.setTab(3)" class="mdl-tabs__tab" ng-class="{'is-active': this.tab.isSet(3)}">Employee</a>
+      <a href ng-click="this.tab.setTab(4)" class="mdl-tabs__tab" ng-class="{'is-active': this.tab.isSet(4)}" ng-show="curemployee.maritalstatus!=null && curemployee.maritalstatus!='Not Entered' && curemployee.c!='KH' && ((curemployee.maritalstatus.trim()=='Single' && curemployee.children>0) || curemployee.maritalstatus=='Married')">Family</a>
+      <a href ng-click="this.tab.setTab(5)" class="mdl-tabs__tab" ng-class="{'is-active': this.tab.isSet(5)}">Document</a>
+      <a href ng-click="this.tab.setTab(6); showGroup(curemployee.uid)" class="mdl-tabs__tab" ng-class="{'is-active': this.tab.isSet(6)}">Group</a>
   </div>
   </div>
   <div class="row wrap_table_view" ng-show="this.tab.isSet(3)" style="padding-left:0 !important;">
