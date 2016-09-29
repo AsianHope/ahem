@@ -5,6 +5,8 @@ import json
 import cgitb
 import ldap
 import ldap.modlist as modlist
+import urllib
+import urllib2
 
 from slackclient import SlackClient
 from credentials import SLACK
@@ -66,7 +68,6 @@ def approveRequestAccount(uid,action):
     logging.debug('Binding to '+SERVER)
 
     slave = ldap.initialize(SERVER)
-    l = ldap.initialize(SERVER)
 
     slave.protocol_version = ldap.VERSION3
 
@@ -82,6 +83,34 @@ def approveRequestAccount(uid,action):
             slave.delete_s('uid='+uid+',cn=requests,dc=asianhope,dc=org')
         else:
             slave.rename_s('uid='+uid+',cn=requests,dc=asianhope,dc=org', 'uid='+uid+'', 'cn=users,dc=asianhope,dc=org')
+            #pull renamed record
+
+            ldap_slave_result_id = slave.search('cn=users,dc=asianhope,dc=org',ldap.SCOPE_SUBTREE,'uid='+uid,['jsonData'])
+            sresult_type, sresult_data = slave.result(ldap_slave_result_id,0)
+            #grab plain-text password from jsonData['notes']
+            jsondata = json.loads(sresult_data[0][1]['jsonData'][0])
+            password = jsondata['notes']
+            #log in to koha with the password
+            koha_url = 'https://koha.asianhope.org/cgi-bin/koha/opac-user.pl'
+            values = { 'userid': uid,
+                       'password': password,
+                       'koha_login_context': 'opac' }
+            data = urllib.urlencode(values)
+            req = urllib2.Request(koha_url,data)
+            notes = 'Koha account activated' #hopeful
+            try:
+                response = urllib2.urlopen(req)
+            except URLError:
+                logging.debug('could NOT log in to Koha for some reason')
+                notes = 'Koha account creation failure - manually insert this record please'
+                pass
+            
+            #rewrite record with notes indicating status of Koha account status
+            jsondata['notes'] = notes
+            new = [(ldap.MOD_REPLACE,'jsonData',json.dumps(jsondata))]
+            slave.modify_s('uid='+uid+',cn=users,dc=asianhope,dc=org',new)
+
+
     except ldap.INSUFFICIENT_ACCESS:
         return False
     except ldap.NO_SUCH_OBJECT:
