@@ -7,6 +7,7 @@ import ldap
 import ldap.modlist as modlist
 import urllib
 import urllib2
+from urllib2 import URLError
 
 from slackclient import SlackClient
 from credentials import SLACK
@@ -65,14 +66,14 @@ def AccountRequestApprover():
 def approveRequestAccount(uid,action):
     #don't require a valid certificate.. we don't currently have one!
     ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
-    logging.debug('Binding to '+SERVER)
+    logging.debug('Slack Account Approver Binding to '+SERVER)
 
     slave = ldap.initialize(SERVER)
 
     slave.protocol_version = ldap.VERSION3
 
     try:
-    	logging.debug('Binding with '+LDAP_CREDENTIALS['dn'])
+    	logging.debug('Slack Account Approver Binding with '+LDAP_CREDENTIALS['dn'])
         slave.simple_bind_s(LDAP_CREDENTIALS['dn'],LDAP_CREDENTIALS['password'])
     except:
         logging.debug('-- could not bind to server --')
@@ -85,6 +86,7 @@ def approveRequestAccount(uid,action):
             slave.rename_s('uid='+uid+',cn=requests,dc=asianhope,dc=org', 'uid='+uid+'', 'cn=users,dc=asianhope,dc=org')
             #pull renamed record
 
+	    logging.debug('Slack account approver attempting to rename record')
             ldap_slave_result_id = slave.search('cn=users,dc=asianhope,dc=org',ldap.SCOPE_SUBTREE,'uid='+uid,['jsonData'])
             sresult_type, sresult_data = slave.result(ldap_slave_result_id,0)
             #grab plain-text password from jsonData['notes']
@@ -98,6 +100,7 @@ def approveRequestAccount(uid,action):
             data = urllib.urlencode(values)
             req = urllib2.Request(koha_url,data)
             notes = 'Koha account activated' #hopeful
+	    logging.debug('attempting to activate koha account')
             try:
                 response = urllib2.urlopen(req)
             except URLError:
@@ -106,17 +109,24 @@ def approveRequestAccount(uid,action):
                 pass
             
             #rewrite record with notes indicating status of Koha account status
-            jsondata['notes'] = notes
-            new = [(ldap.MOD_REPLACE,'jsonData',json.dumps(jsondata))]
-            slave.modify_s('uid='+uid+',cn=users,dc=asianhope,dc=org',new)
+	    logging.debug('setting notes regarding koha status')
+            try:
+            	jsondata['notes'] = notes
+            	new = [(ldap.MOD_REPLACE,'jsonData',json.dumps(jsondata))]
+            	slave.modify_s('uid='+uid+',cn=users,dc=asianhope,dc=org',new)
+	    except:
+		pass
 
 
     except ldap.INSUFFICIENT_ACCESS:
+	logging.debug('INSUFFICIENT ACCESS')
         return False
     except ldap.NO_SUCH_OBJECT:
+	logging.debug('NO_SUCH_OBJECT')
         return False
     except Exception as e:
-          return False
+	 logging.debug(e)
+         return False
     else:
         if action != 'delete' :
             try:
