@@ -617,7 +617,7 @@
                    if($scope.DocumentData.Documenttype.value==16){
                       //  prevent add duplicate document
                       var check = false;
-                      if($scope.curemployee.OtherDocuments.length>0 && $scope.curemployee.OtherDocuments!=undefined){
+                      if($scope.curemployee.OtherDocuments!=undefined && $scope.curemployee.OtherDocuments.length>0 ){
                         for (var i = 0; i<$scope.curemployee.OtherDocuments.length; i++){
                           if($scope.curemployee.OtherDocuments[i]['Description']==$scope.otherDoc.otherDocDescript){
                             check = true;
