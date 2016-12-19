@@ -28,7 +28,8 @@
         checkedFaith : true,
         checkedMobile : true,
         checkedMail : true,
-        checkedMailpr : true
+        checkedMailpr : true,
+        checkedGroups : true
       };
 
       $scope.inactiveEmployeesCheck = {
@@ -1114,5 +1115,14 @@
             }
       );
     }
+    $scope.get_groups = function(uid){
+      var groups = []
+      jQuery.each($scope.groups, function(i, v) {
+        if ( jQuery.inArray(uid, v.memberUid) > -1 ) {
+             groups.push(v.mail)
+        }
+        });
+      return groups.toString().replace(/,/g, ", ")
+    };
   });
 }());

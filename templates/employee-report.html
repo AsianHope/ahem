@@ -175,6 +175,10 @@
           <input type="checkbox" ng-model="objCheck.checkedMailpr"/>
           Personal Email
         </td>
+        <td>
+          <input type="checkbox" ng-model="objCheck.checkedGroups"/>
+          Groups
+        </td>
       </tr>
     </table>
     <table id="employee_report" datatable="ng" dt-options="elist.dtOptionsShortOnly"  style="width:100%; margin-top:10px;" class="tbl_employee_report table mdl-data-table mdl-js-data-table mdl-shadow--2dp">
@@ -258,6 +262,9 @@
           <th ng-class="{hideColumn : objCheck.checkedMailpr == false}">
             Personal Email
           </th>
+          <th ng-class="{hideColumn : objCheck.checkedGroups == false}">
+            Groups
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -288,6 +295,7 @@
             <td ng-class="{hideColumn : objCheck.checkedMobile == false}" style="width: 1em;">{{employee.mobile || "Not Entered"}}</a></td>
             <td ng-class="{hideColumn : objCheck.checkedMail == false}" style="width: 1em;">{{employee.mail || "Not Entered"}}</a></td>
             <td ng-class="{hideColumn : objCheck.checkedMailpr == false}" style="width: 1em;">{{employee.mailpr || "Not Entered"}}</a></td>
+            <td ng-class="{hideColumn : objCheck.checkedGroups == false}" style="width: 1em;">{{get_groups(employee.uid)}}</td>
         </tr>
       </tbody>
     </table>
