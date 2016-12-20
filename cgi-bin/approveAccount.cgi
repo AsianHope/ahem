@@ -7,7 +7,6 @@
 import ldap
 import ldap.modlist as modlist
 
-from clickatell.http import Http
 from credentials import SERVER
 
 import cgi

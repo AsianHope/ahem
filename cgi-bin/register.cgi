@@ -54,6 +54,10 @@ def registerAccount():
     mypass = formData.getfirst("mypass","Not Entered")
     #get dob in apple-birthday format, magic number at the end is 7:00am, UTC+7
     dob = birthday.replace('-','')+'070000Z'
+    groups = formData.getvalue("groups",None)
+    # convert string of groups to list
+    if groups:
+      groups_list = [x for x in groups.split(',')]
 
     #pull out the username
     splits = mail.split('@')
@@ -169,6 +173,37 @@ def registerAccount():
     logging.debug(ldif)
     try:
         s.add_s(dn,ldif)
+        # ---------------add user to groups------------
+        # if have email address add user to group
+        if not no_email:
+          if groups_list:
+              for g in groups_list:
+                  modify_group = [
+                      (ldap.MOD_ADD,'memberUid',username),
+                      (ldap.MOD_ADD,'member','uid='+username+',cn=users,dc=asianhope,dc=org')
+                  ]
+                  sbaseDN = "cn=groups,dc=asianhope,dc=org"
+                  ssearchScope = ldap.SCOPE_SUBTREE
+                  sretrieveAttributes = None;
+                  ssearchFilter = "cn="+g
+
+                  #find groups
+                  ldap_slave_result_id = s.search(sbaseDN,ssearchScope,ssearchFilter,sretrieveAttributes)
+                  sresult_set = []
+                  #only expecting one result... if we have more than one, you'll have a bad time
+                  sresult_type, sresult_data = s.result(ldap_slave_result_id,0)
+
+                  if(sresult_data == []):
+                      logging.debug('register.cgi could not find cn :'+g)
+                  else:
+                      #pull the dn from the search result
+                      group_dn=sresult_data[0][0]
+                      try:
+                          s.modify_s(group_dn,modify_group)
+                      except Exception:
+                        pass
+
+
     except ldap.ALREADY_EXISTS:
         return '{"result":"already_exists"}'
     except Exception:

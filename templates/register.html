@@ -57,6 +57,23 @@
                     </span>
                   </div>
                 </div>
+                <div class="form-group">
+                  <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-users bigicon"></i></span>
+                  <div class="col-md-8">
+                    <div class="col-md-10" style="padding-left:0;">
+                      <select id="groups" name="groups" ng-model="group" class="form-control" required>
+                        <option selected="selected">-- Group --</option>
+                        <option ng-repeat="group in groups"  value="{{group.cn}}">{{group.mail}}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <a href ng-click="add_groups()"><i class="fa fa-plus-circle bigicon" aria-hidden="true"></i></a>
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-md-offset-3" ng-if="added_groups" style="margin-top:10px;">
+                   {{display_added_group()}}
+                  </div>
+                </div>
 
                 <div class="form-group">
                   <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-flag bigicon"></i></span>
@@ -308,11 +325,11 @@
 
       	var email = uid + stem;
       	email = email.toLowerCase();
+
       	checkUid(email,fname,lname,false);
       }
 
       var checkUid = function(email,firstname,lastname,is_change_uid) {
-
       	uid = email.split('@')[0]; //make sure we're checking a UID and not an email address
       	// userstem = useruid.split('@')[1];
       	// //if there is no user stem set it to the default, if there is prepend the @ we stripped above
