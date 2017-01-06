@@ -58,6 +58,20 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <span class="col-md-1 col-md-offset-2 text-center"><i class="fa  fa-user bigicon"></i></span>
+                  <div class="col-md-8">
+                    <select ng-model="formdata.manager" name="manager" class="form-control" id="manager">
+                      <option selected="selected" value="">-- Manager --</option>
+                      <option ng-repeat="employee in active_employees | orderBy : 'givenName'" ng-model="formdata.manager" value="{{employee.uid}}">{{employee.givenName}} {{employee.sn}}</option>
+                    </select>
+                  </div>
+                  <div ng-show="register_form.manager.$dirty && register_form.manager.$error.required" class="col-md-12 col-md-offset-3">
+                    <span style="color:red;" class="help-block">
+                      Manager is required.
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
                   <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-users bigicon"></i></span>
                   <div class="col-md-8">
                     <div class="col-md-10" style="padding-left:0;">
@@ -259,8 +273,17 @@
         font-size: 35px;
         color: #36A0FF;
       }
+      /*select2 custom style*/
+      .select2-container--default .select2-selection--single .select2-selection__rendered{
+        line-height: 34px !important;
+      }
+      .select2-container--default .select2-selection--single,
+      .select2-container--default .select2-selection--single .select2-selection__arrow{
+        height: 34px !important;
+      }
     </style>
     <!-- Contact Form - END -->
+    <script type="text/javascript" src="static/select2/js/select2.js"></script>
     <script type='text/javascript'>
       var uname = 'No suggestions yet!';
       var fname = '';
@@ -271,6 +294,9 @@
       var stem = ahstem;
 
       $(document).ready(function() {
+        $('#manager').select2({
+          placeholder: "---Select a Manager---",
+        });
         // $('#check_email').change(function() {
         //   if($('input#check_email').is(':checked')){
         //     $('#email').hide();

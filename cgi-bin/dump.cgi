@@ -103,7 +103,9 @@ def jsonifyUser(user):
             'l',
             'mobile',
             'postalAddress',
-            'description'
+            'description',
+            'manager',
+
         ]
 
         #assign values for all fields with something in them

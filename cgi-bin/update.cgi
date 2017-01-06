@@ -57,7 +57,8 @@ ldapfields = [
     'apple-birthday',
     'jsonData',
     'userPassword',
-    'postalAddress'
+    'postalAddress',
+    'manager'
 ]
 def main():
     formData = cgi.FieldStorage()

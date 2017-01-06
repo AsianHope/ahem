@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    app.controller('CuremployeeCtrl',function ($scope,$http,$stateParams,$location,EmployeesService,modalDialog){
+    app.controller('CuremployeeCtrl',function ($scope,$http,$stateParams,$location,EmployeesService,modalDialog,$q){
       $scope.$watch('$viewContentLoaded', function(){
             componentHandler.upgradeAllRegistered();
       });
@@ -26,10 +26,31 @@
                 }
                 else {
                   $scope.employees = results.data;
+                  $scope.active_employees = $scope.employees;
                   // get curemployee
                  for(var i=0; i<$scope.employees.length; i++){
                      if($scope.employees[i].uidNumber==$scope.ID){
                        $scope.curemployee=$scope.employees[i];
+
+                       $scope.curemployee['managerData'] = null;
+                       if($scope.curemployee.manager){
+                         EmployeesService.getManager($scope.user.uname,$scope.user.pw,$scope.curemployee.manager)
+                             .then(
+                                 // success
+                                 function(results) {
+                                    $scope.curemployee['managerData'] = results.data;
+                                 },
+                                 // error
+                                function(results){
+                                  $scope.curemployee['managerData'] = {"result":"fail_retrive"}
+
+                                }
+                              );
+                       }
+                       else{
+                         $scope.curemployee['managerData'] = {"result":"missing_manager"}
+                       }
+
                        $scope.showGroup($scope.curemployee.uid);
 
                        if($scope.curemployee.family_data==undefined){
@@ -132,6 +153,25 @@
                           if($scope.inactiveEmployees[i].uidNumber==$scope.ID){
                             $scope.curemployee=$scope.inactiveEmployees[i];
 
+                            $scope.curemployee['managerData'] = null;
+                            if($scope.curemployee.manager){
+                              EmployeesService.getManager($scope.user.uname,$scope.user.pw,$scope.curemployee.manager)
+                                  .then(
+                                      // success
+                                      function(results) {
+                                         $scope.curemployee['managerData'] = results.data;
+                                      },
+                                      // error
+                                     function(results){
+                                       $scope.curemployee['managerData'] = {"result":"fail_retrive"}
+
+                                     }
+                                   );
+                            }
+                            else{
+                              $scope.curemployee['managerData'] = {"result":"missing_manager"}
+                            }
+
                             if($scope.curemployee.family_data==undefined){
                               $scope.family_data=[];
                               if($scope.curemployee.maritalstatus =='Married'){
@@ -221,6 +261,25 @@
        for(var i=0; i<$scope.employees.length; i++){
            if($scope.employees[i].uidNumber==$scope.ID){
              $scope.curemployee=$scope.employees[i];
+             $scope.curemployee['managerData'] = null;
+             if($scope.curemployee.manager){
+               EmployeesService.getManager($scope.user.uname,$scope.user.pw,$scope.curemployee.manager)
+                   .then(
+                       // success
+                       function(results) {
+                          $scope.curemployee['managerData'] = results.data;
+                       },
+                       // error
+                      function(results){
+                        $scope.curemployee['managerData'] = {"result":"fail_retrive"}
+
+                      }
+                    );
+             }
+             else{
+               $scope.curemployee['managerData'] = {"result":"missing_manager"}
+             }
+
              $scope.showGroup($scope.curemployee.uid)
 
              if($scope.curemployee.family_data==undefined){
@@ -300,6 +359,25 @@
           if($scope.inactiveEmployees[i].uidNumber==$scope.ID){
             $scope.curemployee=$scope.inactiveEmployees[i];
 
+            $scope.curemployee['managerData'] = null;
+            if($scope.curemployee.manager){
+              EmployeesService.getManager($scope.user.uname,$scope.user.pw,$scope.curemployee.manager)
+                  .then(
+                      // success
+                      function(results) {
+                         $scope.curemployee['managerData'] = results.data;
+                      },
+                      // error
+                     function(results){
+                       $scope.curemployee['managerData'] = {"result":"fail_retrive"}
+
+                     }
+                   );
+            }
+            else{
+              $scope.curemployee['managerData'] = {"result":"missing_manager"}
+            }
+
             if($scope.curemployee.family_data==undefined){
               $scope.family_data=[];
               if($scope.curemployee.maritalstatus =='Married'){
@@ -373,7 +451,33 @@
           }
       }
       }
-
+      $scope.get_title = function(manager){
+        var title = "Click to edit: Manager"
+        if(manager && manager.managerData){
+          if(manager.managerData.result=='missing_manager'){
+            title += " (Manager not Entered.)"
+          }
+          else if((manager.managerData.data) && (manager.managerData.data.cnGroup=='inactive' || manager.managerData.data.employeeType=='NLE')){
+            title += " (Manager is not active employee.)"
+          }
+          else if((manager.managerData.data) && (manager.managerData.data.cnGroup=='users' && (manager.managerData.data.departmentNumber=='CPU' || manager.managerData.data.departmentNumber=='DUP'))){
+            title += " (Manager department is incorrect.)"
+          }
+          else if((manager.managerData.data) && (manager.managerData.data.cnGroup!='users')){
+            title += " (Manager is not in Users.)"
+          }
+          else if(manager.managerData.result=='not_found'){
+            title += " (Manager not found.)"
+          }
+          else if(manager.managerData.result=='fail_retrive'){
+            title += " (Cannot get manager. Server error. )"
+          }
+          else if(manager.managerData.result=='error'){
+            title += " (Cannot get manager. Failed to bind server.)"
+          }
+        }
+        return title
+      }
       $scope.shift = function(amount){
           for(var i=0; i<$scope.employees.length; i++){
               if($scope.employees[i].uidNumber==$scope.ID){
@@ -774,5 +878,73 @@
               $scope.modifyGroupSms="Please choose group!";
             }
         }
+        $scope.updateUser = function(uid, field, data){
+              var d = $q.defer();
+              // if field is mobile ,validate its format
+            if(field == 'mobile'){
+              if(/^\+(?:[0-9] ?){6,14}[0-9]$/.test(data) || data == '' || data == null || data == undefined){
+                  EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'users','null')
+                    .then(
+                        // success
+                        function(results) {
+                          if(results.data.result=='success'){
+                            d.resolve();
+                          }
+                          else{
+                            d.resolve(results.data.result);
+                          }
+                        },
+                        // error
+                        function(results){
+                          d.reject('Server error!');
+                        }
+                  );
+              }
+              else{
+                d.resolve("Invalid Format");
+              }
+            }
+            // if not mobile
+            else{
+              if(field == 'manager'){
+                data = "uid="+data+",cn=users,dc=asianhope,dc=org"
+              }
+              EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'users','null')
+                .then(
+                    // success
+                    function(results) {
+                      if(results.data.result=='success'){
+                        // if field is manager retrive manager object
+                        if(field == 'manager'){
+                            EmployeesService.getManager($scope.user.uname,$scope.user.pw,data)
+                                .then(
+                                    // success
+                                    function(results) {
+                                       $scope.curemployee['managerData'] = results.data;
+                                    },
+                                    // error
+                                   function(results){
+                                     $scope.curemployee['managerData'] = {"result":"fail_retrive"}
+
+                                   }
+                                 );
+                        }
+                        console.log('success')
+                        d.resolve();
+                      }
+                      else{
+                        console.log('error:'+results.data)
+                        d.resolve(results.data.result);
+                      }
+                    },
+                    // error
+                    function(results){
+                      d.reject('Server error!');
+                    }
+              );
+            }
+            return d.promise;
+        }
+
     });
   }());

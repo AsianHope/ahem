@@ -82,6 +82,22 @@
                       headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                     })
                 },
+                getManager : function(username,pw,dn) {
+
+                  var encoded_data = encodeURIComponent(data);
+                  var data = {
+                      username:username,
+                      pw:pw,
+                      dn:dn
+                      }
+                  var uri = encodeURI('cgi-bin/getManager.cgi');
+                  return $http({
+                        method  : 'POST',
+                        url     : uri,
+                        data    : $.param(data),  // pass in data as strings
+                        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                      })
+                  },
                 addEmployee : function(formdata) {
                   var uri = encodeURI('cgi-bin/register.cgi');
                   return $http({

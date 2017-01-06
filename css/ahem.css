@@ -1,3 +1,9 @@
+.invalid_manager{
+  color: red !important;
+}
+.warning_manager{
+  color: orange !important;
+}
 .invalid_phone_number,.invalid_phone_number a{
   color: red !important;
 }

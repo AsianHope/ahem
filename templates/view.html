@@ -70,6 +70,25 @@
         </tr>
         <tr>
           <td>
+            <a
+              id="select_search"
+              ng-class="{
+                  'warning_manager': (curemployee.managerData.data) && ((curemployee.managerData.data.cnGroup!='users') || (curemployee.managerData.data.employeeType=='NLE' || curemployee.managerData.data.departmentNumber=='DUP' || curemployee.managerData.data.departmentNumber=='CPU')) ,
+                  'invalid_manager': (curemployee.managerData.result=='missing_manager' || curemployee.managerData.result=='not_found')
+                 }"
+              href="#"
+              title ="{{get_title(curemployee)}}"
+              editable-select="curemployee.managerData.data.uid"
+              e-ng-options="employee.uid as (employee.givenName + ' ' + employee.sn) for employee in active_employees | orderBy : 'givenName'"
+              onbeforesave="updateUser(curemployee.uid,'manager',$data)">
+                {{curemployee.managerData.data ? curemployee.managerData.data.givenName+' '+curemployee.managerData.data.sn : 'Manager'}}
+            </a>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <a href="mailto:{{curemployee.mail}}" target="_blank"> <i class="fa fa-envelope-o"></i> {{curemployee.mail}}</a>
           </td>
           <td>

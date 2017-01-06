@@ -41,7 +41,7 @@ def registerAccount():
     departmentNumber = formData.getfirst("departmentNumber","Not Entered")
     userPassword = formData.getfirst("userPassword","Not Entered")
     message = formData.getfirst("message","Not Entered")
-    employeeType= formData.getvalue("employeeType",'just for test') #radio buttons are tricky - have to get value
+    employeeType= formData.getvalue("employeeType",'FT') #radio buttons are tricky - have to get value
     l = formData.getvalue("l","US")
     c = formData.getfirst("c","Not Entered")
     startdate = formData.getfirst("startdate","Not Entered")
@@ -55,6 +55,7 @@ def registerAccount():
     #get dob in apple-birthday format, magic number at the end is 7:00am, UTC+7
     dob = birthday.replace('-','')+'070000Z'
     groups = formData.getvalue("groups",None)
+    manager = formData.getvalue("manager",None)
     # convert string of groups to list
     if groups:
       groups_list = [x for x in groups.split(',')]
@@ -122,6 +123,8 @@ def registerAccount():
                             'top']
 
     attrs['cn'] = username
+    if manager:
+      attrs['manager'] = 'uid='+manager+',cn=users,dc=asianhope,dc=org'
 
     attrs['homeDirectory'] = '/home/'+username
     attrs['loginShell'] = '/bin/bash' #once approved we'll change this

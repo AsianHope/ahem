@@ -14,7 +14,8 @@
            'l':'KH',
            'c':'US',
            'apple-birthday':'1970-01-01',
-           'departmentNumber':'UNK'
+           'departmentNumber':'UNK',
+           'manager':$scope.user.uname
         };
 
         $scope.group = 'staff'
@@ -64,7 +65,7 @@
          };
          $scope.resetRequestForm = function(){
            $scope.success_message = null;
-           $scope.formdata = {'l':'KH'};
+           $scope.formdata = {'l':'KH','manager':$scope.user.uname};
            $scope.added_groups = ['staff'];
            $scope.tempPasswordRegister();
          };

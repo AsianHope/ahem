@@ -179,6 +179,7 @@
               else{
                   $scope.employees_local_data=[];
                   $scope.employees = results.data;
+                  $scope.active_employees = results.data
                   $scope.employees_users = $scope.employees;
                   $scope.employees_mails = $scope.employees;
                   $scope.employeesReport = $scope.employees;
@@ -279,6 +280,7 @@
                   // success
                   function(results){
                     $scope.employees = results.data;
+                    $scope.active_employees = results.data
                   }
                 )
                 .finally(function() {
@@ -441,53 +443,6 @@
           }
         }
       };
-      $scope.updateUser = function(uid, field, data){
-            var d = $q.defer();
-            // if field is mobile ,validate its format
-            if(field == 'mobile'){
-              if(/^\+(?:[0-9] ?){6,14}[0-9]$/.test(data) || data == '' || data == null || data == undefined){
-                EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'users','null')
-                  .then(
-                      // success
-                      function(results) {
-                        if(results.data.result=='success'){
-                          d.resolve();
-                        }
-                        else{
-                          d.resolve(results.data.result);
-                        }
-                      },
-                      // error
-                      function(results){
-                        d.reject('Server error!');
-                      }
-                );
-            }
-            else{
-              d.resolve("Invalid Format");
-            }
-          }
-          // if not mobile
-          else{
-            EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'users','null')
-              .then(
-                  // success
-                  function(results) {
-                    if(results.data.result=='success'){
-                      d.resolve();
-                    }
-                    else{
-                      d.resolve(results.data.result);
-                    }
-                  },
-                  // error
-                  function(results){
-                    d.reject('Server error!');
-                  }
-            );
-          }
-          return d.promise;
-      }
 
       $scope.resetPassword = function(uid,data,type,confirmpass){
               var d = $q.defer();
