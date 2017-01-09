@@ -79,7 +79,7 @@ def getUsers():
               (ldap.MOD_REPLACE,'manager',manager_correct_dn),
           ]
 
-          # slave.modify_s(dn,new)
+          slave.modify_s(dn,new)
         manager = jsonifyUser(sresult_data)
           # convert from uid=ssang,cn=users,dc=asianhope,dc=org to cn=users
         cnGroup =  sresult_data[0][0].split(",")[1] # cn=users
