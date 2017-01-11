@@ -17,18 +17,40 @@
            'departmentNumber':'UNK',
            'manager':$scope.user.uname
         };
-
+        $scope.remove = false
         $scope.group = 'staff'
         $scope.added_groups = ['staff']
         $scope.add_groups = function(){
           // prevent duplicate value
           if ($scope.added_groups.indexOf($scope.group) == -1) {
             $scope.added_groups.push($scope.group)
+            $scope.changedGroup()
           }
         }
         $scope.display_added_group = function(){
           return $scope.added_groups.toString().replace(/,/g, ", ")
         }
+        $scope.remove_groups = function(){
+          if ($scope.group != 'staff'){
+            var index = $scope.added_groups.indexOf($scope.group)
+            $scope.added_groups.splice(index,1)
+            $scope.changedGroup()
+
+          }
+          else{
+            alert('Cannot remove group Staff!')
+          }
+        }
+        // check if should show remove or add button
+        $scope.changedGroup = function(){
+          // if current select group exist in added_groups, show remove button
+          if ($scope.added_groups.indexOf($scope.group) == -1) {
+            $scope.remove=false
+          }
+          else{
+            $scope.remove=true
+          }
+        };
 
         //  taken from http://www.javascriptkit.com/script/script2/passwordgenerate.shtml
          $scope.tempPasswordRegister= function(){

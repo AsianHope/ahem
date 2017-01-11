@@ -75,13 +75,14 @@
                   <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-users bigicon"></i></span>
                   <div class="col-md-8">
                     <div class="col-md-10" style="padding-left:0;">
-                      <select id="groups" name="groups" ng-model="group" class="form-control" required>
-                        <option selected="selected">-- Group --</option>
-                        <option ng-repeat="group in groups"  value="{{group.cn}}">{{group.mail}}</option>
+                      <select id="groups" name="groups" ng-model="group" class="form-control" ng-change="changedGroup()" required>
+                        <option selected="selected" value="">-- Group --</option>
+                        <option ng-repeat="group in groups | orderBy : 'mail'"  value="{{group.cn}}">{{group.mail}}</option>
                       </select>
                     </div>
                     <div class="col-md-2">
-                      <a href ng-click="add_groups()"><i class="fa fa-plus-circle bigicon" aria-hidden="true"></i></a>
+                      <a href ng-click="add_groups()" ng-if="remove==false"><i class="fa fa-plus-circle bigicon" aria-hidden="true"></i></a>
+                      <a href ng-click="remove_groups()" ng-if="remove==true"><i class="fa fa-times-circle bigicon" aria-hidden="true" style="color:red;"></i></a>
                     </div>
                   </div>
                   <div class="col-md-12 col-md-offset-3" ng-if="added_groups" style="margin-top:10px;">
@@ -297,6 +298,9 @@
         $('#manager').select2({
           placeholder: "---Select a Manager---",
         });
+        $("#groups").select2({
+          placeholder: "---Select a Group---",
+        })
         // $('#check_email').change(function() {
         //   if($('input#check_email').is(':checked')){
         //     $('#email').hide();
