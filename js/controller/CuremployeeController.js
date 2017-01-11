@@ -929,11 +929,15 @@
                                    }
                                  );
                         }
+                        else if (field=='employeeType' && data=='NLE') {
+                          var today = moment(new Date).format("YYYY-MM-DD")
+                          EmployeesService.updateEmployees(uid,'enddate',today,$scope.user.uname,$scope.user.pw,'users','null');
+                        }
                         console.log('success')
                         d.resolve();
                       }
                       else{
-                        console.log('error:'+results.data)
+                        console.log(results)
                         d.resolve(results.data.result);
                       }
                     },
