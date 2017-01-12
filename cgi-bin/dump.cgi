@@ -60,10 +60,21 @@ def getUsers():
         sbaseDN = "cn=requests,dc=asianhope,dc=org"
 
     elif scope=='DISABLED':
-        ssearchFilter = '(employeeType=NLE)'
+        # ssearchFilter = '(employeeType=NLE)'
+        ssearchFilter = '''(&
+                            (employeeType=NLE)
+                            (|(mail=*@asianhope.org)(!(mail=*)))
+                            (!(|(departmentNumber=CPU)(departmentNumber=DUP)))
+
+                          )'''
 
     elif scope=='INACTIVE':
-        ssearchFilter = 'mail=*@asianhope.org'
+        # ssearchFilter = 'mail=*@asianhope.org'
+        ssearchFilter = '''(&
+                            (|(mail=*@asianhope.org)(!(mail=*)))
+                            (!(|(departmentNumber=CPU)(departmentNumber=DUP)))
+                            (!(cn=inactive))
+                        )'''
         sbaseDN = "cn=inactive,dc=asianhope,dc=org"
 
     elif scope=='GROUPS':
