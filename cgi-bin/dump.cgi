@@ -61,11 +61,12 @@ def getUsers():
 
     elif scope=='DISABLED':
         # ssearchFilter = '(employeeType=NLE)'
+        # except test user lfoolery
         ssearchFilter = '''(&
                             (employeeType=NLE)
                             (|(mail=*@asianhope.org)(!(mail=*)))
                             (!(|(departmentNumber=CPU)(departmentNumber=DUP)))
-
+                            (!(cn=tfoolery))
                           )'''
 
     elif scope=='INACTIVE':
@@ -74,8 +75,28 @@ def getUsers():
                             (|(mail=*@asianhope.org)(!(mail=*)))
                             (!(|(departmentNumber=CPU)(departmentNumber=DUP)))
                             (!(cn=inactive))
+                            (!(cn=tfoolery))
                         )'''
         sbaseDN = "cn=inactive,dc=asianhope,dc=org"
+    # disable+inactive
+    elif scope=='ALLINACTIVE':
+        sbaseDN = "dc=asianhope,dc=org"
+        ssearchFilter = '''(|
+                          (&
+                            (cn:dn:=users)
+                            (employeeType=NLE)
+                            (|(mail=*@asianhope.org)(!(mail=*)))
+                            (!(|(departmentNumber=CPU)(departmentNumber=DUP)))
+                            (!(cn=tfoolery))
+                          )
+                          (&
+                            (cn:dn:=inactive)
+                            (|(mail=*@asianhope.org)(!(mail=*)))
+                            (!(|(departmentNumber=CPU)(departmentNumber=DUP)))
+                            (!(cn=inactive))
+                            (!(cn=tfoolery))
+                          )
+                          )'''
 
     elif scope=='GROUPS':
         ssearchFilter = 'mail=*@asianhope.org'
