@@ -243,6 +243,17 @@
             // called no matter success or failure
             $scope.loading = false;
         });
+        EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"ALLINACTIVE")
+          .then(
+          // success
+          function(results){
+            $scope.inactiveEmployees = results.data;
+            $scope.curInactiveEmployees = $scope.inactiveEmployees;
+          })
+          .finally(function() {
+              // called no matter success or failure
+              $scope.loading = false;
+          });
         // get groups
         EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"GROUPS")
             .then(
