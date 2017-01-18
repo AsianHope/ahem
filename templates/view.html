@@ -71,6 +71,7 @@
         <tr>
           <td>
             <a
+              onshow="loadMG()"
               id="select_search"
               ng-class="{
                   'warning_manager': (curemployee.managerData.data) && ((curemployee.managerData.data.cnGroup!='users') || (curemployee.managerData.data.employeeType=='NLE' || curemployee.managerData.data.departmentNumber=='DUP' || curemployee.managerData.data.departmentNumber=='CPU')) ,
@@ -440,10 +441,25 @@
  #show_resetpass{
    display: none;
  }
+.select2-container{
+  width: 150px !important;
+}
+/*select2 custom style*/
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+  line-height: 32px !important;
+}
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+  height: 32px !important;
+}
+.select2-container--default{
+  border-radius: 6px !important;
+}
 </style>
 <script type="text/javascript">
-   $('#hide_resetpass').click(function() {
-     $(this).hide();
-     $("#show_resetpass").show();
-   });
+  $('#hide_resetpass').click(function() {
+   $(this).hide();
+  $("#show_resetpass").show();
+  });
 </script>
+<script type="text/javascript" src="static/select2/js/select2.js"></script>

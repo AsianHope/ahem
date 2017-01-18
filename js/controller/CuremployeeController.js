@@ -959,6 +959,10 @@
             }
             return d.promise;
         }
+        $scope.loadMG = function(){
+          $('.editable-input').select2()
+
+        }
 
     });
   }());
