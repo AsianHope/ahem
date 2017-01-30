@@ -1090,5 +1090,76 @@
         });
       return groups.toString().replace(/,/g, ", ")
     };
+    $scope.updateUser = function(uid, field, data){
+          var d = $q.defer();
+          // if field is mobile ,validate its format
+        if(field == 'mobile'){
+          if(/^\+(?:[0-9] ?){6,14}[0-9]$/.test(data) || data == '' || data == null || data == undefined){
+              EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'users','null')
+                .then(
+                    // success
+                    function(results) {
+                      if(results.data.result=='success'){
+                        d.resolve();
+                      }
+                      else{
+                        d.resolve(results.data.result);
+                      }
+                    },
+                    // error
+                    function(results){
+                      d.reject('Server error!');
+                    }
+              );
+          }
+          else{
+            d.resolve("Invalid Format");
+          }
+        }
+        // if not mobile
+        else{
+          if(field == 'manager'){
+            data = "uid="+data+",cn=users,dc=asianhope,dc=org"
+          }
+          EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'users','null')
+            .then(
+                // success
+                function(results) {
+                  if(results.data.result=='success'){
+                    // if field is manager retrive manager object
+                    if(field == 'manager'){
+                        EmployeesService.getManager($scope.user.uname,$scope.user.pw,data)
+                            .then(
+                                // success
+                                function(results) {
+                                   $scope.curemployee['managerData'] = results.data;
+                                },
+                                // error
+                               function(results){
+                                 $scope.curemployee['managerData'] = {"result":"fail_retrive"}
+
+                               }
+                             );
+                    }
+                    else if (field=='employeeType' && data=='NLE') {
+                      var today = moment(new Date).format("YYYY-MM-DD")
+                      EmployeesService.updateEmployees(uid,'enddate',today,$scope.user.uname,$scope.user.pw,'users','null');
+                    }
+                    console.log('success')
+                    d.resolve();
+                  }
+                  else{
+                    console.log(results)
+                    d.resolve(results.data.result);
+                  }
+                },
+                // error
+                function(results){
+                  d.reject('Server error!');
+                }
+          );
+        }
+        return d.promise;
+    }
   });
 }());
