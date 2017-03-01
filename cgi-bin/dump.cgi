@@ -19,10 +19,9 @@ import cgi
 import os,sys
 import json
 import logging
+from encryptPassword import encrypt_pw,decrypt_pw
 logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
-
 def getUsers():
-
     #if we're in offline mode, just print and exit.
     if(OPTIONS['OFFLINE_MODE']):
         f = open(OPTIONS['OFFLINE_FILE'],'r')
@@ -34,8 +33,26 @@ def getUsers():
     username = formData.getlist("username")[0]
     pw = formData.getlist("pw")[0]
     scope = formData.getlist("scope")[0]
+    url = formData.getfirst("url",None)
+    encrypted= formData.getfirst("encrypted","false")
+    is_request_admin = False
+    admin = False
 
     logging.debug('%s attempting to pull data in scope: %s', username,scope)
+
+    # check if password is send with encrypt or not
+    if encrypted == 'true':
+      encrypted_pw = pw
+      pw = decrypt_pw(pw)
+      if pw == 'error':
+        logging.warning('Decrypt password failed')
+        return None
+    else:
+      encrypted_pw = encrypt_pw(pw)
+      if encrypted_pw == 'error':
+        logging.warning('Encrypt password failed')
+        return None
+
     #don't require a valid certificate.. we don't currently have one!
     ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
@@ -55,6 +72,25 @@ def getUsers():
     sretrieveAttributes = ['*']
     #employees are either FT or PT and don't belong to the CPU or DUP department, others are students
     ssearchFilter = "(&(!(|(departmentNumber=CPU)(departmentNumber=DUP)))(|(employeeType=FT)(employeeType=PT)))"
+
+    # //permission
+    sbaseDNGroup = "cn=Directory Operators,cn=groups,dc=asianhope,dc=org"
+    ssearchScopeGroup  = ldap.SCOPE_SUBTREE
+    ssearchFilterGroup  = "memberUid="+username
+
+    ldap_slave_result_id = slave.search(sbaseDNGroup ,ssearchScopeGroup ,ssearchFilterGroup ,sretrieveAttributes)
+    sresult_typeGroup , sresult_dataGroup  = slave.result(ldap_slave_result_id,0)
+    if(sresult_dataGroup == []):
+      admin = False
+    else:
+      admin = True
+    # if request to admin url and not in admin group, return 'permission_denied'
+    # check request is admin url
+    if url is not None:
+      is_request_admin = url.startswith("/admin")
+
+    if (is_request_admin == True) & (admin == False):
+      return "permission_denied"
 
     if scope=='REQUESTS':
         sbaseDN = "cn=requests,dc=asianhope,dc=org"
@@ -114,6 +150,12 @@ def getUsers():
            users.append(jsonifyUser(sresult_data))
 
     logging.info('dump delivered.')
+    return {
+      'is_admin':admin,
+      'encrypted_pw':encrypted_pw,
+      'users':users,
+      'result':'success'
+    }
     return users
 
 def jsonifyUser(user):
@@ -181,6 +223,9 @@ if __name__ == "__main__":
     #print "Content-type: text/html; charset=utf-8"
     print
     if users is not None:
-        print json.dumps(users,'utf-8')
+        if users == "permission_denied":
+          print '{"result":"permission_denied"}'
+        else:
+          print json.dumps(users,'utf-8')
     else:
         print '{"result":"error"}'

@@ -38,6 +38,7 @@ import hashlib
 
 import requests
 import logging
+from encryptPassword import decrypt_pw
 
 from datetime import date
 logging.basicConfig(filename='ahem.log',level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
@@ -70,6 +71,7 @@ def main():
     uid = formData.getvalue("uid",None)
     cn = formData.getvalue("cn",None)
     modifyType = formData.getvalue("modifyType",None)
+    encrypted= formData.getfirst("encrypted","false")
     try:
         data = urllib.unquote(formData.getvalue("data",None))
     except:
@@ -84,6 +86,14 @@ def main():
         logging.debug('%s attempting to modify user %s, field: %s, data: %s', username, uid, field, data)
     else:
         logging.debug('%s attempting to modify password',username)
+        
+    # check if password is send with encrypt or not
+    if encrypted == 'true':
+      pw = decrypt_pw(pw)
+      if pw == 'error':
+        logging.warning('Decrypt password failed')
+        return '{"result":"error"}'
+
     #don't require a valid certificate.. we don't currently have one!
     ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 

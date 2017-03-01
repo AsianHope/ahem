@@ -1,3 +1,12 @@
+.logout{
+  right: 0;
+  position: fixed !important;
+  z-index: 3;
+  top: 22px;
+  color: white;
+  display: block;
+  margin-right: 45px;
+}
 .invalid_manager{
   color: red !important;
 }

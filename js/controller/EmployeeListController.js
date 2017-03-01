@@ -1,6 +1,7 @@
 (function () {
     'use strict';
-    app.controller('EmployeeListController',function (DTOptionsBuilder,$scope, $http, $filter, $q,$location,EmployeesService,storageService) {
+    app.controller('EmployeeListController',function (DTOptionsBuilder,$scope, $http, $filter, $q,$location,EmployeesService,storageService,$rootScope,$window) {
+
       $scope.isInactiveStaff = false;
       $scope.objCheck = {
         checkedID : true,
@@ -167,22 +168,48 @@
        };
 
       $scope.tempPassword();
-      EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"CURSTAFF")
+      var user_session = JSON.parse($window.sessionStorage.getItem('user'));
+      var encrypted = false;
+      if(user_session!=null){
+        if(user_session.password != undefined && user_session.password !=null){
+          encrypted = true;
+        }
+      }
+      EmployeesService.getEmployees($rootScope.user.uname,$rootScope.user.pw,"CURSTAFF",encrypted)
         .then(
             // success
             function(results) {
               if(results.data.result=='error'){
-                    //pop us back out to the login screen
-                   $scope.user.uname = null;
-                   $scope.user.pw = null;
+                   //pop us back out to the login screen
+                   $rootScope.user.uname = null;
+                   $rootScope.user.pw = null;
+                   sessionStorage.removeItem('user');
+              }
+              else if(results.data.result=="permission_denied"){
+                   $rootScope.user.uname = null;
+                   $rootScope.user.pw = null;
+                   $rootScope.permission_denied = true;
+                   sessionStorage.removeItem('user');
               }
               else{
+
+                  if( (user_session==null) || (user_session.password==undefined) || (user_session.password==null)){
+                    var json = {
+                        "username": $rootScope.user.uname,
+                        "password": results.data.encrypted_pw,
+                    }
+                    // set session
+                    $window.sessionStorage.setItem('user',JSON.stringify(json));
+                    $rootScope.user.pw = results.data.encrypted_pw;
+                  }
                   $scope.employees_local_data=[];
-                  $scope.employees = results.data;
-                  $scope.active_employees = results.data
+                  $rootScope.user.isAdmin = results.data.is_admin
+                  $scope.employees = results.data.users;
+                  $scope.active_employees = results.data.users;
                   $scope.employees_users = $scope.employees;
                   $scope.employees_mails = $scope.employees;
                   $scope.employeesReport = $scope.employees;
+
                   for(var i=0; i<$scope.employees.length; i++){
                     var emplyeeobj = {};
                     emplyeeobj['employeeType'] = $scope.employees[i].employeeType;
@@ -206,7 +233,7 @@
                      //--------route pass by id--------
                   for(var i=0; i<$scope.employees.length; i++){
                     //view profile
-                    if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
+                    if($scope.employees[i].cn.localeCompare($rootScope.user.uname) == 0){
                       $scope.selfselect=$scope.employees[i];
                       if($scope.selfselect.departmentNumber=="LIS"){
                         jQuery("#table_th,#demo-ribbon,#demo-header,#btn_profile,#btn_print_card,#btn_print_change").css('background-color', '#488FCC');
@@ -236,30 +263,35 @@
             },
             // error
             function(results) {
-              $scope.user.uname = null;
-              $scope.user.pw = null;
+              $rootScope.user.uname = null;
+              $rootScope.user.pw = null;
+              sessionStorage.removeItem('user');
             })
         .finally(function() {
             // called no matter success or failure
             $scope.loading = false;
         });
-        EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"ALLINACTIVE")
+        EmployeesService.getEmployees($rootScope.user.uname,$rootScope.user.pw,"ALLINACTIVE",encrypted)
           .then(
           // success
           function(results){
-            $scope.inactiveEmployees = results.data;
-            $scope.curInactiveEmployees = $scope.inactiveEmployees;
+            if(results.data.result=='success'){
+              $scope.inactiveEmployees = results.data.users;
+              $scope.curInactiveEmployees = $scope.inactiveEmployees;
+            }
           })
           .finally(function() {
               // called no matter success or failure
               $scope.loading = false;
           });
         // get groups
-        EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"GROUPS")
+        EmployeesService.getEmployees($rootScope.user.uname,$rootScope.user.pw,"GROUPS",encrypted)
             .then(
               // success
               function(results){
-                $scope.groups = results.data;
+                if(results.data.result=='success'){
+                  $scope.groups = results.data.users;
+                }
               }
             )
             .finally(function() {
@@ -286,12 +318,14 @@
           $scope.isInactiveStaff = false;
           $scope.loading = true;
           $scope.employees = [];
-          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"ALL")
+          EmployeesService.getEmployees($rootScope.user.uname,$rootScope.user.pw,"ALL",true)
                 .then(
                   // success
                   function(results){
-                    $scope.employees = results.data;
-                    $scope.active_employees = results.data
+                    if(results.data.result=='success'){
+                      $scope.employees = results.data.users;
+                      $scope.active_employees = results.data.users;
+                    }
                   }
                 )
                 .finally(function() {
@@ -303,11 +337,13 @@
           $scope.isInactiveStaff = false;
           $scope.loading = true;
           $scope.employees = [];
-          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"REQUESTS")
+          EmployeesService.getEmployees($rootScope.user.uname,$rootScope.user.pw,"REQUESTS",true)
               .then(
                 // success
                 function(results){
-                  $scope.employees = results.data;
+                  if(results.data.result=='success'){
+                    $scope.employees = results.data.users;
+                  }
                 }
               )
               .finally(function() {
@@ -319,11 +355,13 @@
           $scope.isInactiveStaff = false;
           $scope.loading = true;
           $scope.employees = [];
-          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"DISABLED")
+          EmployeesService.getEmployees($rootScope.user.uname,$rootScope.user.pw,"DISABLED",true)
               .then(
                 // success
                 function(results){
-                  $scope.employees = results.data;
+                  if(results.data.result=='success'){
+                    $scope.employees = results.data.users;
+                  }
                 }
               )
               .finally(function() {
@@ -335,11 +373,13 @@
           $scope.isInactiveStaff = true;
           $scope.loading = true;
           $scope.employees = [];
-          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"INACTIVE")
+          EmployeesService.getEmployees($rootScope.user.uname,$rootScope.user.pw,"INACTIVE",true)
               .then(
                 // success
                 function(results){
-                  $scope.employees = results.data;
+                  if(results.data.result=='success'){
+                    $scope.employees = results.data.users;
+                  }
                 }
               )
               .finally(function() {
@@ -351,16 +391,18 @@
         $scope.showGroup = function(uid){
           $scope.curGroups = [];
           $scope.loading = true;
-          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"GROUPS")
+          EmployeesService.getEmployees($rootScope.user.uname,$rootScope.user.pw,"GROUPS",true)
               .then(
                 // success
                 function(results){
-                  $scope.groups = results.data;
-                  for(var i=0; i<$scope.groups.length; i++){
-                    if($scope.groups[i]['memberUid']!= undefined){
-                      for(var j=0;j<$scope.groups[i]['memberUid'].length;j++){
-                        if($scope.groups[i]['memberUid'][j]==uid){
-                          $scope.curGroups.push($scope.groups[i]);
+                  if(results.data.result=='success'){
+                    $scope.groups = results.data.users;
+                    for(var i=0; i<$scope.groups.length; i++){
+                      if($scope.groups[i]['memberUid']!= undefined){
+                        for(var j=0;j<$scope.groups[i]['memberUid'].length;j++){
+                          if($scope.groups[i]['memberUid'][j]==uid){
+                            $scope.curGroups.push($scope.groups[i]);
+                          }
                         }
                       }
                     }
@@ -373,11 +415,13 @@
         };
         $scope.showAllGroups = function(){
           $scope.loading = true;
-          EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"GROUPS")
+          EmployeesService.getEmployees($rootScope.user.uname,$rootScope.user.pw,"GROUPS",true)
               .then(
                 // success
                 function(results){
-                  $scope.groups = results.data;
+                  if(results.data.result=='success'){
+                    $scope.groups = results.data.users;
+                  }
                 }
               )
               .finally(function() {
@@ -448,7 +492,7 @@
       // not use
       this.selectSelf = function(){
         for(var i=0; i<$scope.employees.length; i++){
-          if($scope.employees[i].cn.localeCompare($scope.user.uname) == 0){
+          if($scope.employees[i].cn.localeCompare($rootScope.user.uname) == 0){
             this.selfselect=$scope.employees[i];
              break;
           }
@@ -458,43 +502,54 @@
       $scope.resetPassword = function(uid,data,type,confirmpass){
               var d = $q.defer();
               // if Password match
-              if(confirmpass==$scope.user.pw){
-                EmployeesService.resetPassword(uid,data,$scope.user.uname,$scope.user.pw,type)
-                  .then(
-                      // success
-                      function(results) {
-                        if(results.data.result=='success'){
-                          if(type=="youreset"){
-                            d.resolve()
-                            alert('Your password has been reset! Plase login again.');
-                            // back to login page
-                            $scope.user.uname = null;
-                            $scope.user.pw = null;
-                          }
-                          else{
-                            d.resolve()
-                            alert("Password has been reset!");
-                            $scope.current_pass="";
-                          }
-                        }
+              EmployeesService.verifyPassword(confirmpass,$rootScope.user.pw)
+                .then(
+                    // success
+                    function(re){
+                      if(re.data.result=='true'){
+                        EmployeesService.resetPassword(uid,data,$rootScope.user.uname,$rootScope.user.pw,type,true)
+                          .then(
+                              // success
+                              function(results) {
+                                if(results.data.result=='success'){
+                                  if(type=="youreset"){
+                                    d.resolve()
+                                    alert('Your password has been reset! Plase login again.');
+                                    // back to login page
+                                    $rootScope.user.uname = null;
+                                    $rootScope.user.pw = null;
+                                    sessionStorage.removeItem('user');
+                                  }
+                                  else{
+                                    d.resolve()
+                                    alert("Password has been reset!");
+                                    $scope.current_pass="";
+                                  }
+                                }
 
-                        else {
-                          d.resolve();
-                          alert('There was an error !'+results.data.result+'.');
-                        }
-                      },
-                      // error
-                       function(results){
-                         alert('Server error!');
-                         d.reject('Server error!');
-                       }
-                   );
-                   }
-                  //  if password not match
-                   else{
-                     alert('Your current passwords do not match.');
-                   }
-                  return d.promise;
+                                else {
+                                  d.resolve();
+                                  console.log($rootScope.user.uname+$rootScope.user.pw)
+                                  alert('There was an error !'+results.data.result+'.');
+                                }
+                              },
+                              // error
+                               function(results){
+                                 alert('Server error!');
+                                 d.reject('Server error!');
+                               }
+                           );
+                      }
+                      else{
+                        alert('Your current passwords do not match.');
+                      }
+                    },
+                    function(re){
+                      alert('Server error!');
+                      d.reject('Server error!');
+                    }
+               )
+              return d.promise;
       }
 
       $scope.decodeAppleBirthday = function(applebirthday){
@@ -747,11 +802,13 @@
     $scope.requestAccounts =[];
     $scope.approve_sms = null;
     $scope.isAccountRequest = false;
-    EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"REQUESTS")
+    EmployeesService.getEmployees($rootScope.user.uname,$rootScope.user.pw,"REQUESTS",true)
           .then(
             // success
             function(results){
-              $scope.requestAccounts = results.data;
+              if(results.data.result=='success'){
+                $scope.requestAccounts = results.data.users;
+              }
             }
           )
           .finally(function() {
@@ -761,11 +818,13 @@
     $scope.getRequestAccount = function(){
       $scope.approve_sms = null;
       $scope.loading = true;
-      EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"REQUESTS")
+      EmployeesService.getEmployees($rootScope.user.uname,$rootScope.user.pw,"REQUESTS",true)
             .then(
               // success
               function(results){
-                $scope.requestAccounts = results.data;
+                if(results.data.result=='success'){
+                  $scope.requestAccounts = results.data.users;
+                }
               }
             )
             .finally(function() {
@@ -774,7 +833,7 @@
           });
     }
     $scope.approveRequestAccount = function(uid,action){
-      EmployeesService.approveAccount($scope.user.uname,$scope.user.pw,uid,action)
+      EmployeesService.approveAccount($rootScope.user.uname,$rootScope.user.pw,uid,action,true)
           .then(
               // success
               function(results) {
@@ -1062,7 +1121,7 @@
         data = data + "\nPrevious employment dates: "+startdate+" to "+enddate+" ["+$scope.calTimeBetween(startdate, enddate)+"].";
 
       }
-      EmployeesService.updateEmployees(uid,'notes',data,$scope.user.uname,$scope.user.pw,'users','reactivate')
+      EmployeesService.updateEmployees(uid,'notes',data,$rootScope.user.uname,$rootScope.user.pw,'users','reactivate',true)
         .then(
             // success
             function(results) {
@@ -1072,7 +1131,6 @@
               }
               else{
                 alert("error: "+results.data.result);
-                console.log(results.data);
               }
             },
             // error
@@ -1095,7 +1153,7 @@
           // if field is mobile ,validate its format
         if(field == 'mobile'){
           if(/^\+(?:[0-9] ?){6,14}[0-9]$/.test(data) || data == '' || data == null || data == undefined){
-              EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'users','null')
+              EmployeesService.updateEmployees(uid,field,data,$rootScope.user.uname,$rootScope.user.pw,'users','null',true)
                 .then(
                     // success
                     function(results) {
@@ -1121,14 +1179,14 @@
           if(field == 'manager'){
             data = "uid="+data+",cn=users,dc=asianhope,dc=org"
           }
-          EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'users','null')
+          EmployeesService.updateEmployees(uid,field,data,$rootScope.user.uname,$rootScope.user.pw,'users','null',true)
             .then(
                 // success
                 function(results) {
                   if(results.data.result=='success'){
                     // if field is manager retrive manager object
                     if(field == 'manager'){
-                        EmployeesService.getManager($scope.user.uname,$scope.user.pw,data)
+                        EmployeesService.getManager($rootScope.user.uname,$rootScope.user.pw,data,true)
                             .then(
                                 // success
                                 function(results) {
@@ -1143,7 +1201,7 @@
                     }
                     else if (field=='employeeType' && data=='NLE') {
                       var today = moment(new Date).format("YYYY-MM-DD")
-                      EmployeesService.updateEmployees(uid,'enddate',today,$scope.user.uname,$scope.user.pw,'users','null');
+                      EmployeesService.updateEmployees(uid,'enddate',today,$rootScope.user.uname,$rootScope.user.pw,'users','null',true);
                     }
                     console.log('success')
                     d.resolve();

@@ -7,3 +7,5 @@ rest/ahem_REST/restless/migrations
 *.sqlite3
 cgi-bin/credentials.py
 static/dump.json
+cgi-bin/encryptPassword.py
+cgi-bin/encryptPassword.cgi

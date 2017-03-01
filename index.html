@@ -28,7 +28,12 @@
           </section>
             <!-- If not logged in !-->
             <div class="login_content" ng-show="user.uname == null">
-            <div style="top:30px;" class="col-md-8 col-md-offset-2" >
+            <div ng-if="permission_denied ==true" class="container" style="color:white;">
+              <h2>Access Denied</h2>
+              <h4>you don't have permission to access "{{current_url}}" on this server.</h4>
+              <h4><a style="color:white;" href="#" ng-click="back_to_home()">go back to home page</a></h4>
+            </div>
+            <div style="top:30px;" class="col-md-8 col-md-offset-2" ng-show="permission_denied ==false">
                 <div class="col-md-12" style="padding:30px;">
                   <div class="col-md-4 col-xs-12 col-xs-offset-2 col-md-offset-0 col-sm-offset-4">
                     <div class="login-icon">
@@ -59,12 +64,11 @@
       </div>
         <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="static/moment.min.js"></script>
-        
+
         <script type="text/javascript" src="angular-datatables/vendor/datatables/media/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="angular-datatables/vendor/datatables-tabletools/js/dataTables.tableTools.js"></script>
 
         <script type="text/javascript" src="js/angular.min.js"></script>
-
         <script type="text/javascript" src="angular-datatables/dist/angular-datatables.min.js"></script>
         <script type="text/javascript" src="angular-datatables/dist/plugins/tabletools/angular-datatables.tabletools.min.js"></script>
 

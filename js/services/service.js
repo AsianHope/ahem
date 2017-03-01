@@ -25,15 +25,17 @@
             }
         };
     });
-    angular.module('Service', []).factory('EmployeesService', function($http) {
+    angular.module('Service', []).factory('EmployeesService', function($http,$location) {
         return {
-          getEmployees : function(username,password,scope) {
+          getEmployees : function(username,password,scope,encrypted=false) {
                 // return $http.get('/api/todos');
                 var data = {
                       "username": username,
                       "pw": password,
                       // scope:'CURSTAFF'
-                      "scope":scope
+                      "scope":scope,
+                      "url":$location.$$url,
+                      "encrypted":encrypted
                       }
                 var uri = encodeURI('cgi-bin/dump.cgi');
                 return $http({
@@ -43,7 +45,7 @@
                         "headers" : {"Content-Type": "application/x-www-form-urlencoded" }  // set the headers so angular passing info as form data (not request payload)
                       });
             },
-            updateEmployees : function(uid,field,data,username,password,cn,modifyType) {
+            updateEmployees : function(uid,field,data,username,password,cn,modifyType,encrypted=false) {
               var encoded_data = encodeURIComponent(data);
               var data = {
                   uid: uid,
@@ -52,7 +54,8 @@
                   username:username,
                   pw:password,
                   cn:cn,
-                  modifyType:modifyType
+                  modifyType:modifyType,
+                  encrypted:encrypted
                   }
               var uri = encodeURI('cgi-bin/update.cgi');
               return $http({
@@ -62,7 +65,7 @@
                     headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                   })
               },
-              resetPassword : function(uid,data,username,password,type) {
+              resetPassword : function(uid,data,username,password,type,encrypted=false) {
                 var encoded_data = encodeURIComponent(data);
                 var data = {
                     uid: uid,
@@ -72,7 +75,8 @@
                     pw:password,
                     reset_type:type,
                     cn:'users',
-                    modifyType:'null'
+                    modifyType:'null',
+                    encrypted:encrypted
                     }
                 var uri = encodeURI('cgi-bin/update.cgi');
                 return $http({
@@ -82,13 +86,14 @@
                       headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                     })
                 },
-                getManager : function(username,pw,dn) {
+                getManager : function(username,pw,dn,encrypted=false) {
 
                   var encoded_data = encodeURIComponent(data);
                   var data = {
                       username:username,
                       pw:pw,
-                      dn:dn
+                      dn:dn,
+                      encrypted:encrypted
                       }
                   var uri = encodeURI('cgi-bin/getManager.cgi');
                   return $http({
@@ -125,13 +130,14 @@
                           transformRequest: angular.identity
                         })
                   },
-                  approveAccount : function(username,password,uid,action) {
+                  approveAccount : function(username,password,uid,action,encrypted=false) {
                     var encoded_data = encodeURIComponent(data);
                     var data = {
                         username:username,
                         pw:password,
                         uid:uid,
-                        action:action
+                        action:action,
+                        encrypted:encrypted
                         }
                     var uri = encodeURI('cgi-bin/approveAccount.cgi');
                     return $http({
@@ -166,6 +172,19 @@
                               headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                             })
                         },
+                        verifyPassword : function(confirm_password,current_password) {
+                          var data = {
+                                confirm_password : confirm_password,
+                                current_password : current_password
+                              }
+                          var uri = encodeURI('cgi-bin/verifyPassword.cgi');
+                          return $http({
+                                method  : 'POST',
+                                url     : uri,
+                                data    : $.param(data),  // pass in data as strings
+                                headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                              })
+                          },
         }
       });
   }());

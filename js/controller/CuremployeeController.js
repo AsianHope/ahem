@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    app.controller('CuremployeeCtrl',function ($scope,$http,$stateParams,$location,EmployeesService,modalDialog,$q){
+    app.controller('CuremployeeCtrl',function ($scope,$http,$stateParams,$location,EmployeesService,modalDialog,$q,$rootScope,$window){
       $scope.$watch('$viewContentLoaded', function(){
             componentHandler.upgradeAllRegistered();
       });
@@ -15,17 +15,40 @@
       $scope.files_exist= false;
       $scope.Document_exist=[];
       if($scope.employees.length==0){
-        EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"CURSTAFF")
+        var user_session = JSON.parse($window.sessionStorage.getItem('user'));
+        var encrypted = false;
+        if(user_session!=null){
+          if(user_session.password != undefined && user_session.password !=null){
+            encrypted = true;
+          }
+        }
+        EmployeesService.getEmployees($rootScope.user.uname,$rootScope.user.pw,"CURSTAFF",encrypted)
           .then(
               // success
               function(results) {
                 if(results.data.result=='error'){
                     //pop us back out to the login screen
-                  $scope.user.uname = null;
-                  $scope.user.pw = null;
+                    $rootScope.user.uname = null;
+                    $rootScope.user.pw = null;
+                    sessionStorage.removeItem('user');
+                }
+                else if(results.data.result=="permission_denied"){
+                    $rootScope.user.uname = null;
+                    $rootScope.user.pw = null;
+                    $rootScope.permission_denied = true;
+                    sessionStorage.removeItem('user');
                 }
                 else {
-                  $scope.employees = results.data;
+                  if( (user_session==null) || (user_session.password==undefined) || (user_session.password==null)){
+                      var json = {
+                        "username": $rootScope.user.uname,
+                        "password": results.data.encrypted_pw,
+                      }
+                      // set session
+                      $window.sessionStorage.setItem('user',JSON.stringify(json));
+                      $rootScope.user.pw = results.data.encrypted_pw;
+                  }
+                  $scope.employees = results.data.users;
                   $scope.active_employees = $scope.employees;
                   // get curemployee
                   for(var i=0; i<$scope.employees.length; i++){
@@ -34,7 +57,7 @@
 
                        $scope.curemployee['managerData'] = null;
                        if($scope.curemployee.manager){
-                         EmployeesService.getManager($scope.user.uname,$scope.user.pw,$scope.curemployee.manager)
+                         EmployeesService.getManager($rootScope.user.uname,$rootScope.user.pw,$scope.curemployee.manager,true)
                              .then(
                                  // success
                                  function(results) {
@@ -130,8 +153,7 @@
                     //  ------------------get curemployee in inactive employee------------------
                     //  get current employee in inactive employee
                     $scope.loading = true;
-                    console.log('get inactive...........')
-                    EmployeesService.getEmployees($scope.user.uname,$scope.user.pw,"ALLINACTIVE")
+                    EmployeesService.getEmployees($rootScope.user.uname,$rootScope.user.pw,"ALLINACTIVE",true)
                       .then(
                           // success
                           function(results) {
@@ -140,7 +162,7 @@
                                 $scope.curemployee=null;
                             }
                             else {
-                              $scope.inactiveEmployees = results.data;
+                              $scope.inactiveEmployees = results.data.users;
                               // get curemployee
                              for(var i=0; i<$scope.inactiveEmployees.length; i++){
                                  if($scope.inactiveEmployees[i].uidNumber==$scope.ID){
@@ -148,7 +170,7 @@
 
                                    $scope.curemployee['managerData'] = null;
                                    if($scope.curemployee.manager){
-                                     EmployeesService.getManager($scope.user.uname,$scope.user.pw,$scope.curemployee.manager)
+                                     EmployeesService.getManager($rootScope.user.uname,$rootScope.user.pw,$scope.curemployee.manager,true)
                                          .then(
                                              // success
                                              function(results) {
@@ -252,8 +274,9 @@
               },
               // error
               function(results){
-               $scope.user.uname = null;
-               $scope.user.pw = null;
+               $rootScope.user.uname = null;
+               $rootScope.user.pw = null;
+               sessionStorage.removeItem('user');
              })
              .finally(function() {
                // called no matter success or failure
@@ -262,14 +285,13 @@
       }
       // if have employees data
       else{
-        console.log('not new')
         // get curemployee
        for(var i=0; i<$scope.employees.length; i++){
            if($scope.employees[i].uidNumber==$scope.ID){
              $scope.curemployee=$scope.employees[i];
              $scope.curemployee['managerData'] = null;
              if($scope.curemployee.manager){
-               EmployeesService.getManager($scope.user.uname,$scope.user.pw,$scope.curemployee.manager)
+               EmployeesService.getManager($rootScope.user.uname,$rootScope.user.pw,$scope.curemployee.manager,true)
                    .then(
                        // success
                        function(results) {
@@ -370,7 +392,7 @@
 
                $scope.curemployee['managerData'] = null;
                if($scope.curemployee.manager){
-                 EmployeesService.getManager($scope.user.uname,$scope.user.pw,$scope.curemployee.manager)
+                 EmployeesService.getManager($rootScope.user.uname,$rootScope.user.pw,$scope.curemployee.manager,true)
                      .then(
                          // success
                          function(results) {
@@ -841,7 +863,7 @@
         };
         // ------------------- add and remove group------------------
         $scope.removeUserFromGroup=function(uid,field,data){
-          EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'groups','remove')
+          EmployeesService.updateEmployees(uid,field,data,$rootScope.user.uname,$rootScope.user.pw,'groups','remove',true)
                .then(
                    // success
                    function(results) {
@@ -863,7 +885,7 @@
         }
         $scope.addUserToGroup = function(uid,field,data){
           if(field!=null){
-            EmployeesService.updateEmployees(uid,field,data,$scope.user.uname,$scope.user.pw,'groups','add')
+            EmployeesService.updateEmployees(uid,field,data,$rootScope.user.uname,$rootScope.user.pw,'groups','add',true)
                 .then(
                     // success
                     function(results) {
@@ -888,7 +910,7 @@
               $scope.modifyGroupSms="Please choose group!";
             }
         }
-        
+
         $scope.loadMG = function(){
           $('.editable-input').select2()
 

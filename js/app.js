@@ -2,7 +2,31 @@ var app =  angular.module('employeeList',['datatables','datatables.tabletools','
 (function () {
    'use strict';
    app.run(function(editableOptions,$rootScope, $state, $location, $timeout){
-        editableOptions.theme='bs3';
+         $rootScope.$on('$viewContentLoaded', function(){
+              $timeout(function(){
+                componentHandler.upgradeAllRegistered();
+              })
+            })
+
+         editableOptions.theme='bs3';
+         var routeCount = 0;
+         $rootScope.$on('$stateChangeStart', function (e,toState) {
+           $rootScope.current_url = $location.absUrl();
+           routeCount+=1
+
+           var url_for_admin = '/admin'
+           var current_url = $location.url()
+           var is_request_to_admin = current_url.startsWith(url_for_admin)
+
+           if (is_request_to_admin==true && $rootScope.user.isAdmin==false && routeCount > 1){
+             $rootScope.permission_denied = true;
+             $rootScope.user.uname = null;
+             $rootScope.user.pw = null;
+             $rootScope.user.isAdmin==false;
+             sessionStorage.removeItem('user');
+           }
+
+         })
         $rootScope.$on('$stateChangeSuccess', function(event, toState){
             $rootScope.$state = $state;
             $rootScope.showInclude = false;

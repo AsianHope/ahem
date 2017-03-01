@@ -70,6 +70,9 @@
           </div>
           </main>
         </div>
+        <a class="logout" ng-click="logout()">
+          <i class="fa fa-sign-out" aria-hidden="true" style="font-size: 23px;"></i>
+        </a>
         <a ui-sref="admin.register" class="noprint">
           <button id="btn_register" style="background:#488FCC;" class=" mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--accent">
             <i id="icon_float_register" class="material-icons">add</i>
@@ -142,6 +145,6 @@
             $("#search").select();
             return;
           }
-        }); 
+        });
     });
   </script>
