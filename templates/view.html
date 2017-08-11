@@ -392,7 +392,7 @@
           Group
         </td>
         <td>
-          <select id="group" ng-model="group_name" ng-options="group.cn as group.cn for group in groups" required>
+          <select id="group" ng-model="group_name" ng-options="group.cn as group.cn for group in groups | orderBy: 'mail'" required>
             <option value="">--Choose group--</option>
           </select>
         </td>
